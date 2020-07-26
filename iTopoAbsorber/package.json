@@ -1,0 +1,24 @@
+{
+  "name": "itopoearth",
+  "version": "1.0.0",
+  "description": "iTopoEarth All Codes",
+  "main": "iTopoStation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenstudy/RisingEarth.git"
+  },
+  "author": "zeping.zhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zenstudy/RisingEarth/issues"
+  },
+  "homepage": "https://github.com/zenstudy/RisingEarth#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-generator": "^4.16.1",
+    "xmlhttprequest": "^1.8.0"
+  }
+}

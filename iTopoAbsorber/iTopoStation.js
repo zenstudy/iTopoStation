@@ -1,0 +1,134 @@
+var express = require('express');
+var path = require('path');
+var bodyParser = require('body-parser');
+const http = require('https');
+const fs = require('fs');
+
+let {
+	iTopoAbsorber
+} = require('./iTopoAbsorber.js');
+
+/*let {
+	pTopoDataMapEarth
+} = require('./iTopoStation/dataMap/pTopoDataMapEarth.js');*/
+
+//require的核心概念：在导出的文件中定义module.exports，导出的对象类型不予限定（可为任意类型）。在导入的文件中使用require()引入即可使用。本质上，是将要导出的对象，赋值给module这个对象的exports属性，在其他文件中通过require这个方法来访问exports这个属性。上面b.js中，require(./a.js) = exports 这个对象，然后使用es6取值方式从exports对象中取出test的值。
+
+
+var app = express();
+var router = express.Router();
+
+//这一句中可能要注意一下，express.static()是处理静态请求的，
+//设置了public文件，public下所有文件都会以静态资料文件形式返回
+//（如样式、脚本、图片素材等文件）
+app.use(express.static(path.join(__dirname, 'iTopoStation')));
+
+/*
+//下面代码表示当用户使用/访问时，调用routes，即routes目录下的index.js文件，
+//其中.js后缀省略，用/users访问时，调用routes目录下users.js文件
+var routes = require('./routes/index');
+var users = require('./routes/users');
+app.use('/', routes);
+app.use('/users', users);
+*/
+
+app.get('/ZenNodes', function(req, res) {
+	// 目标url
+	const pageUrl = "https://supernodes1.eu.zensystem.io/grid/all/nodes";
+	const jsonFName = __dirname + '/iTopoStation/ZenSuperNodes.json';
+	let html = '';
+	// 请求url，返回html
+	http.get(pageUrl, function(res2) {
+		res2.on('data', function(data) {
+			html += data;
+		});
+		res2.on('end', function() {
+			//数据获取完，执行回调函数
+			//console.log(html);
+			// dealHTML(html);
+			res.send(html);
+
+			fs.writeFile(jsonFName, html, function(err) {
+				if (err) console.error(err);
+				console.log('数据已经写入' + jsonFName);
+			});
+
+		});
+	});
+});
+
+app.get('/SecureNodes', function(req, res) {
+	// 目标url
+	const pageUrl = "https://securenodes1.na.zensystem.io/grid/all/nodes";
+	const jsonFName = __dirname + '/iTopoStation/ZenSecureNodes.json';
+	let html = '';
+	// 请求url，返回html
+	http.get(pageUrl, function(res2) {
+		res2.on('data', function(data) {
+			html += data;
+		});
+		res2.on('end', function() {
+			//数据获取完，执行回调函数
+			//console.log(html);
+			// dealHTML(html);
+			res.send(html);
+
+			fs.writeFile(jsonFName, html, function(err) {
+				if (err) console.error(err);
+				console.log('数据已经写入' + jsonFName);
+			});
+
+		});
+	});
+});
+
+app.get('/', function(req, res) {
+	// 目标url
+	const pageUrl = "https://securenodes1.na.zensystem.io/grid/all/nodes";
+	const indexPageFile = __dirname + '/iTopoStation/index.html';
+	let html = '';
+
+	// 请求url，返回html
+	http.get(pageUrl, function(res2) {
+		res2.on('data', function(data) {
+			//html += data;
+		});
+		res2.on('end', function() {
+			fs.readFile(indexPageFile, 'utf-8', function(err, data) {
+				res.send(data);
+				if (err) {
+					throw err;
+				}
+			});
+		});
+	});
+});
+
+// POST method route —— 根据请求路径来处理客户端发出的Post请求。
+//app.post('/', function (req, res) {
+// res.send('POST request to the homepage');
+//});
+
+/* GET home page. */
+// router.get('/', function(req, res, next) {
+//     res.render('index', { title: 'Express' });
+//   });
+
+
+var server = app.listen(8081, function() {
+	var host = server.address().address;
+	var port = server.address().port;
+	console.log("express app listening at port:%s", port);
+});
+
+//npm install node-schedule --save
+//var schedule = require('node-schedule');
+//var j = schedule.scheduleJob('2 0 * * *', function(){  //每天00：02执行
+//需要定时执行的内容
+const ZENSUPERNODESURL = "https://supernodes1.eu.zensystem.io/grid/all/nodes";
+const ZENSUPERJSONFILENAME = "ZenSuperNodes.json";
+const ZENSECURENODESURL = "https://securenodes1.na.zensystem.io/grid/all/nodes";
+const ZENSECUREFILENAME = "ZenSecureNodes.json";
+	iTopoAbsorber.FetchHorizenNodesInfo(ZENSUPERNODESURL,ZENSUPERJSONFILENAME);
+//	iTopoAbsorber.FetchHorizenNodesInfo(ZENSECURENODESURL,ZENSECUREFILENAME);
+//});
