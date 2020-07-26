@@ -183,7 +183,7 @@ iTopoEarthModel.ReCreate = function() {
 			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
 			iTopoEarthModel.MarkCanteenOnPlane(iTopoEarthModel.earthSettings.CANTEEN_YUHUAZHAI_FILE);
 		}else if (iTopoEarthModel.earthSettings.MAP_KIND == "共创基地") {
-			layerMarks.add(createModelTitle("松果家园位置",
+			layerMarks.add(createModelTitle("共创基地",
 			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
 			iTopoEarthModel.MarkiTopoBaseOnPlane(iTopoEarthModel.earthSettings.CANTEEN_ITOPOBASE_FILE);
 		}
@@ -215,7 +215,7 @@ iTopoEarthModel.ReCreate = function() {
 			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
 			iTopoEarthModel.MarkCanteenOnSphere(iTopoEarthModel.earthSettings.CANTEEN_YUHUAZHAI_FILE);
 		}else if (iTopoEarthModel.earthSettings.MAP_KIND == "共创基地") {
-			layerMarks.add(createModelTitle("松果家园位置",
+			layerMarks.add(createModelTitle("共创基地",
 			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
 			iTopoEarthModel.MarkiTopoBaseOnSphere(iTopoEarthModel.earthSettings.CANTEEN_ITOPOBASE_FILE);
 		}
@@ -674,7 +674,7 @@ iTopoEarthModel.MarkiTopoBaseOnPlane = function(url) {
 			const originHelper = new THREE.Object3D();
 			for (var i = 0; i < json.length; i++) {
 				var option = {
-					"textValue": json[i].city,
+					"textValue": json[i].title,
 					"fontColor": iTopoEarthModel.earthSettings.markingTextColor,
 					"fontSize": 14,
 					"pos": [json[i].lng, json[i].lat]
@@ -745,7 +745,7 @@ iTopoEarthModel.MarkiTopoBaseOnPlane = function(url) {
 
 				if (!textMarked) {
 
-					markedNames.push(json[i].city);
+					markedNames.push(json[i].title);
 
 					// 添加文字说明
 					let textLength = option.textValue.length;
@@ -792,10 +792,10 @@ iTopoEarthModel.MarkCanteenOnPlane = function(url) {
 			const originHelper = new THREE.Object3D();
 			for (var i = 0; i < json.length; i++) {
 				var option = {
-					"textValue": json[i].city,
+					"textValue": json[i].title,
 					"fontColor": iTopoEarthModel.earthSettings.markingTextColor,
 					"fontSize": 14,
-					"pos": [json[i].lon, json[i].lat]
+					"pos": [json[i].lng, json[i].lat]
 				}
 
 				{
@@ -857,13 +857,13 @@ iTopoEarthModel.MarkCanteenOnPlane = function(url) {
 				let textMarked = false;
 
 				markedNames.forEach((mn) => {
-					if (mn === json[i].city)
+					if (mn === json[i].title)
 						textMarked = true;
 				})
 
 				if (!textMarked) {
 
-					markedNames.push(json[i].city);
+					markedNames.push(json[i].title);
 
 					// 添加文字说明
 					let textLength = option.textValue.length;
@@ -1023,8 +1023,7 @@ iTopoEarthModel.MarkiTopoBaseOnSphere = function(url) {
 		response.json().then(function(json) {
 			for (var i = 0; i < json.length; i++) {
 				const position = createPosition(json[i].lng, json[i].lat, iTopoEarthModel.earthSettings.CITY_RADIUS);
-
-				layerMarks.add(createLightConeMark(position, json[i].city + ", " + json[i].country)); // 地标
+				layerMarks.add(createLightConeMark(position, json[i].title)); // 地标
 			}
 		})
 	}).catch(function(e) {
