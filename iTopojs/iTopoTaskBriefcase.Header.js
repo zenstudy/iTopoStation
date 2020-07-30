@@ -2,10 +2,11 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea, UIInteger } from '../js/libs/ui.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js'
+import { UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea  } from '../js/libs/ui.js';
+import { UIOutliner, UITexture } from '../js/libs/ui.three.js';
 
-function LightEarthDialog( editor ) {
+function iTopoTaskBriefcaseHeader( editor ) {
+
 	var lightEarthInfo = {
 		taskType: 'Canteen',
 		longitude:0,
@@ -13,20 +14,12 @@ function LightEarthDialog( editor ) {
 		lightWish:"light wish"
 	};
 
+	var signals = editor.signals;
 	var strings = editor.strings;
 
-	var container = new UISpan();
-	var dlgTitleRow = new UIRow();
-	dlgTitleRow.add( new UIText( strings.getKey( 'LightToolbar/lightEarth' ) ).setWidth( '120px' ) );
-	container.add(dlgTitleRow);
-
-	var dlgBody = new UIPanel();
-	// dlgBody.setBorderTop( '0' );
-	// dlgBody.setPaddingTop( '20px' );
-	// dlgBody.setPaddingBottom( '20px' );
-	dlgBody.setMargin( '20px' );
-
-	container.add(dlgBody);
+	var container = new UIPanel();
+	container.setBorderTop( '0' );
+	container.setPaddingTop( '20px' );
 
 	{
 		var options = {
@@ -46,9 +39,8 @@ function LightEarthDialog( editor ) {
 		taskTypeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/taskType' ) ).setWidth( '90px' ) );
 		taskTypeRow.add( taskTypeSelect );
 
-		dlgBody.add( taskTypeRow );
+		container.add( taskTypeRow );
 	}
-
 
 	{
 		var longitudeRow = new UIRow();
@@ -62,7 +54,7 @@ function LightEarthDialog( editor ) {
 		} );
 		longitudeRow.add( longitudeValueUI );
 
-		dlgBody.add( longitudeRow );
+		container.add( longitudeRow );
 	}
 
 	{
@@ -77,13 +69,13 @@ function LightEarthDialog( editor ) {
 		} );
 		latitudeRow.add( latitudeValueUI );
 
-		dlgBody.add( latitudeRow );
+		container.add( latitudeRow );
 	}
 
 	{
 		var lightWishTitleRow = new UIRow();
 		lightWishTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/lightWish' ) ).setWidth( '120px' ) );
-		dlgBody.add( lightWishTitleRow );
+		container.add( lightWishTitleRow );
 
 		var lightWishTextAreaRow = new UIRow();
 		var lightWishValueUI = new UITextArea().setWidth( '250px' ).setHeight( '80px' ).setFontSize( '12px' )/*.onChange( update )*/;
@@ -93,37 +85,43 @@ function LightEarthDialog( editor ) {
 		} );
 		lightWishTextAreaRow.add( lightWishValueUI );
 
-		dlgBody.add( lightWishTextAreaRow );
+		container.add( lightWishTextAreaRow );
 	}
 
-	var buttonPanel = new UIPanel();
-	buttonPanel.setPaddingLeft( '20px' );
-	buttonPanel.setPaddingRight( '20px' );
-	buttonPanel.setPaddingBottom( '20px' );
-	container.add( buttonPanel );
 
-	{
-		var lightEarth = new UIButton( strings.getKey( 'LightToolbar/lightEarth' ) );
-		lightEarth.setMarginRight( '20px' );
-		lightEarth.onClick( function () {
+	var ignoreObjectSelectedSignal = false;
 
-			iTopoEarthModel.generateEarthCache();
-			iTopoEarthModel.lightEarth(editor.camera);
-			document.body.removeChild(document.getElementById("iTopoDialog"));
-		} );
-		buttonPanel.add( lightEarth );
+	function refreshUI() {
+
+		if ( editor.selected !== null ) {
+
+			lightWishValueUI.setValue( editor.selected.id );
+
+		}
 	}
 
-	{
-		var cancelBtn = new UIButton( strings.getKey( 'LightToolbar/cancel' ) );
-		cancelBtn.onClick( function () {
-			document.body.removeChild(document.getElementById("iTopoDialog"));
-		} );
-		buttonPanel.add( cancelBtn );
-	}
+	refreshUI();
 
-	//
+	// events
+
+	signals.editorCleared.add( refreshUI );
+
+	signals.sceneGraphChanged.add( refreshUI );
+
+	signals.objectSelected.add( function ( object ) {
+
+		if ( ignoreObjectSelectedSignal === true ) return;
+
+		if ( object !== null ) {
+			refreshUI();
+		} else {
+			//outliner.setValue( null );
+		}
+
+	} );
+
 	return container;
+
 }
 
-export { LightEarthDialog };
+export { iTopoTaskBriefcaseHeader };

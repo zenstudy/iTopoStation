@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIButton, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger } from '../js/libs/ui.js';
+import { UIPanel, UIButton, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 
 function LightStarDialog( editor ) {
@@ -20,6 +20,7 @@ function LightStarDialog( editor ) {
 	var dlgTitleRow = new UIRow();
 	dlgTitleRow.add( new UIText( strings.getKey( 'LightToolbar/lightStars' ) ).setWidth( '120px' ) );
 	container.add(dlgTitleRow);
+//	container.add( new UIBreak() );
 
 	var dlgBody = new UIPanel();
 	// dlgBody.setBorderTop( '0' );

@@ -449,6 +449,9 @@ function iTopoViewport( editor ) {
 
 	signals.objectAdded.add( function ( object ) {
 
+		if(object.name == "layerPlanet" || object.name == "layerCloud")
+			return;
+		console.log(object.name);
 		object.traverse( function ( child ) {
 
 			objects.push( child );
@@ -731,10 +734,12 @@ function iTopoViewport( editor ) {
 
 		TWEEN.update();
 
-		if(iTopoEarthModel.earthSettings.GLOBAL_KIND == 'Global3D')
+		if(iTopoEarthModel.earthSettings.GLOBAL_KIND == 'Global3D')	{
 			render();
-		else if ( needsUpdate === true )
+		}
+		else if ( needsUpdate === true ){
 			render();
+		}
 	}
 
 	requestAnimationFrame( animate );

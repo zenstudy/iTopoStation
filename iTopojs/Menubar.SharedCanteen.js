@@ -32,16 +32,14 @@ function MenubarSharedCanteen( editor ) {
 	});
 	options.add(yuhuazhaiMenu);
 
-	// HorizenSecureNodesMap
-	// var horizenSecureMenu = new UIRow();
-	// horizenSecureMenu.setClass('option');
-	// horizenSecureMenu.setTextContent(strings.getKey('menubar/blockChain/HorizenSecureNodesMap'));
-	// horizenSecureMenu.onClick(function() {
-	// 	editor.clear();
-	// 	iTopoEarthModel.earthSettings.MAP_KIND = '雨花斋';
-	// 	iTopoEarthModel.ReCreate();
-	// });
-	// options.add(horizenSecureMenu);
+	// sharedCookbook
+	var sharedCookbookMenu = new UIRow();
+	sharedCookbookMenu.setClass('option');
+	sharedCookbookMenu.setTextContent(strings.getKey('menubar/SharedCanteen/sharedCookbook'));
+	sharedCookbookMenu.onClick(function() {
+		alert("coming soon!")
+	});
+	options.add(sharedCookbookMenu);
 
 	return container;
 

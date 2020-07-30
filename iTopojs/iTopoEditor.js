@@ -185,7 +185,7 @@ iTopoEditor.prototype = {
 
 		}
 
-		// this.signals.objectAdded.dispatch( object );
+		this.signals.objectAdded.dispatch( object );
 		// this.signals.sceneGraphChanged.dispatch();
 
 	},

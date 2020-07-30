@@ -1,10 +1,21 @@
 import * as THREE from '../../build/three.module.js';
-import { TWEEN } from '../../examples/jsm/libs/tween.module.min.js';
-import { BufferGeometryUtils } from '../../examples/jsm/utils/BufferGeometryUtils.js';
+import {
+	TWEEN
+} from '../../examples/jsm/libs/tween.module.min.js';
+import {
+	BufferGeometryUtils
+} from '../../examples/jsm/utils/BufferGeometryUtils.js';
 import * as DMCTRY from './countries.js';
-import { MeshLine,	MeshLineMaterial } from './THREE.MeshLine.js';
-import { Editor } from '../js/Editor.js';
-import { AddiTopoObjCommand } from './AddiTopoObjCommand.js';
+import {
+	MeshLine,
+	MeshLineMaterial
+} from './THREE.MeshLine.js';
+import {
+	Editor
+} from '../js/Editor.js';
+import {
+	AddiTopoObjCommand
+} from './AddiTopoObjCommand.js';
 
 var PLANETSTATUS = {
 	STOP: 0,
@@ -52,8 +63,8 @@ iTopoEarthModel.earthSettings = {
 	HORIZEN_SUPERNODES_FILE: "./iTopojs/json/ZenSuperNodes.json",
 	HORIZEN_SECURENODES_FILE: "./iTopojs/json/ZenSecureNodes.json",
 
-	CANTEEN_YUHUAZHAI_FILE:"./iTopojs/json/iTopoCanteen.json",
-	CANTEEN_ITOPOBASE_FILE:"./iTopojs/json/iTopobase.json",
+	CANTEEN_YUHUAZHAI_FILE: "./iTopojs/json/iTopoCanteen.json",
+	CANTEEN_ITOPOBASE_FILE: "./iTopojs/json/iTopobase.json",
 
 	WORLD_LINE_WIDTH: 0.81,
 	// 地图z轴厚度
@@ -79,9 +90,6 @@ iTopoEarthModel.earthSettings = {
 }
 
 iTopoEarthModel.generateEarthCache = function() {
-
-	let hexagonLine = new THREE.CircleGeometry(iTopoEarthModel.earthSettings.HEXAGON_RADIUS, 6);
-	hexagonLine.vertices.shift(); // 第一个节点是中心点
 
 	earthCache = {
 		earthBufferSphere: new THREE.SphereBufferGeometry(iTopoEarthModel.earthSettings.CITY_RADIUS, 50, 50),
@@ -144,6 +152,8 @@ iTopoEarthModel.generateEarthCache = function() {
 		starPositions: []
 	}
 
+	let hexagonLine = new THREE.CircleGeometry(iTopoEarthModel.earthSettings.HEXAGON_RADIUS, 6);
+	hexagonLine.vertices.shift(); // 第一个节点是中心点
 	earthCache.circleLineGeom.vertices = hexagonLine.vertices;
 }
 
@@ -170,21 +180,25 @@ iTopoEarthModel.ReCreate = function() {
 
 		if (iTopoEarthModel.earthSettings.MAP_KIND == "超级节点儿") {
 			layerMarks.add(createModelTitle("Horizen Super Nodes Distribution Map",
-				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3 * iTopoEarthModel.earthSettings.zHeight),
+				60));
 			iTopoEarthModel.MarkZenNodesOnPlane(iTopoEarthModel.earthSettings.HORIZEN_SUPERNODES_FILE);
 			//iTopoEarthModel.MarkZenNodeParticleOnPlane(iTopoEarthModel.earthSettings.HORIZEN_SUPERNODES_FILE);
 		} else if (iTopoEarthModel.earthSettings.MAP_KIND == "普通节点儿") {
 			layerMarks.add(createModelTitle("Horizen Secure Nodes Distribution Map",
-			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3 * iTopoEarthModel.earthSettings.zHeight),
+				60));
 			iTopoEarthModel.MarkZenNodesOnPlane(iTopoEarthModel.earthSettings.HORIZEN_SECURENODES_FILE);
 			//iTopoEarthModel.MarkZenNodeParticleOnPlane(iTopoEarthModel.earthSetting.HORIZEN_SECURENODES_FILE);
 		} else if (iTopoEarthModel.earthSettings.MAP_KIND == "雨花斋") {
 			layerMarks.add(createModelTitle("雨花斋全国分布图",
-			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3 * iTopoEarthModel.earthSettings.zHeight),
+				60));
 			iTopoEarthModel.MarkCanteenOnPlane(iTopoEarthModel.earthSettings.CANTEEN_YUHUAZHAI_FILE);
-		}else if (iTopoEarthModel.earthSettings.MAP_KIND == "共创基地") {
+		} else if (iTopoEarthModel.earthSettings.MAP_KIND == "共创基地") {
 			layerMarks.add(createModelTitle("共创基地",
-			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3 * iTopoEarthModel.earthSettings.zHeight),
+				60));
 			iTopoEarthModel.MarkiTopoBaseOnPlane(iTopoEarthModel.earthSettings.CANTEEN_ITOPOBASE_FILE);
 		}
 
@@ -204,19 +218,23 @@ iTopoEarthModel.ReCreate = function() {
 
 		if (iTopoEarthModel.earthSettings.MAP_KIND == "超级节点儿") {
 			layerMarks.add(createModelTitle("Horizen Super Nodes Distribution Map",
-				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, iTopoEarthModel.earthSettings.CITY_RADIUS), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, iTopoEarthModel.earthSettings.CITY_RADIUS),
+				60));
 			iTopoEarthModel.MarkZenNodesOnSphere(iTopoEarthModel.earthSettings.HORIZEN_SUPERNODES_FILE);
 		} else if (iTopoEarthModel.earthSettings.MAP_KIND == "普通节点儿") {
 			layerMarks.add(createModelTitle("Horizen Secure Nodes Distribution Map",
-				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, iTopoEarthModel.earthSettings.CITY_RADIUS), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, iTopoEarthModel.earthSettings.CITY_RADIUS),
+				60));
 			iTopoEarthModel.MarkZenNodesOnSphere(iTopoEarthModel.earthSettings.HORIZEN_SECURENODES_FILE);
-		}else if (iTopoEarthModel.earthSettings.MAP_KIND == "雨花斋") {
+		} else if (iTopoEarthModel.earthSettings.MAP_KIND == "雨花斋") {
 			layerMarks.add(createModelTitle("雨花斋全国分布图",
-			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3 * iTopoEarthModel.earthSettings.zHeight),
+				60));
 			iTopoEarthModel.MarkCanteenOnSphere(iTopoEarthModel.earthSettings.CANTEEN_YUHUAZHAI_FILE);
-		}else if (iTopoEarthModel.earthSettings.MAP_KIND == "共创基地") {
+		} else if (iTopoEarthModel.earthSettings.MAP_KIND == "共创基地") {
 			layerMarks.add(createModelTitle("共创基地",
-			 	new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3*iTopoEarthModel.earthSettings.zHeight), 60));
+				new THREE.Vector3(0, iTopoEarthModel.earthSettings.CITY_RADIUS + 50, 3 * iTopoEarthModel.earthSettings.zHeight),
+				60));
 			iTopoEarthModel.MarkiTopoBaseOnSphere(iTopoEarthModel.earthSettings.CANTEEN_ITOPOBASE_FILE);
 		}
 
@@ -224,7 +242,7 @@ iTopoEarthModel.ReCreate = function() {
 
 		iTopoEarthModel.createStars();
 
-//		iTopoEarthModel.AddCountryMark();
+		//		iTopoEarthModel.AddCountryMark();
 	}
 
 	layerPlanet.name = "layerPlanet";
@@ -244,7 +262,8 @@ iTopoEarthModel.lightStars = function(camera) {
 	var plusOrMinus = Math.round(Math.random()) * 2 - 1;
 	var lngx = plusOrMinus * Math.random() * 180;
 	var latx = plusOrMinus * Math.random() * 90;
-	const starPoint = createPosition(lngx, latx, iTopoEarthModel.earthSettings.CITY_RADIUS * (iTopoEarthModel.earthSettings.COLUD_RADIUS_RATIO +
+	const starPoint = createPosition(lngx, latx, iTopoEarthModel.earthSettings.CITY_RADIUS * (iTopoEarthModel.earthSettings
+		.COLUD_RADIUS_RATIO +
 		Math.random()));
 	const seeFrom = createPosition(lngx, latx, 2 * iTopoEarthModel.earthSettings.CITY_RADIUS * iTopoEarthModel.earthSettings
 		.COLUD_RADIUS_RATIO);
@@ -268,13 +287,68 @@ iTopoEarthModel.lightEarth = function(camera) {
 	const seeFrom = createPosition(lngx, latx, 2 * iTopoEarthModel.earthSettings.CITY_RADIUS * iTopoEarthModel.earthSettings
 		.COLUD_RADIUS_RATIO);
 
+	var lightConeHeight = randomLightConeHeight();
 	const position = createPosition(lngx, latx, iTopoEarthModel.earthSettings.CITY_RADIUS);
-	var  lightCone = createLightConeMark(position, "myiTopoLight"); // 地标
+	var lightCone = createLightConeMark(position, lightConeHeight, "myiTopoLight"); // 地标
 	editor.execute(new AddiTopoObjCommand(editor, lightCone));
 
 	iTopoEarthModel.ParticlesMove(seeFrom, camera);
 	camera.position.copy(seeFrom);
 	camera.lookAt(0, 0, 0);
+
+	//绘制食堂的情况
+	var canteenCenter = createPosition(lngx, latx, iTopoEarthModel.earthSettings.CITY_RADIUS + lightConeHeight);
+	var grp = new THREE.Group();
+	for (var i = 2; i < 10; i++) {
+		var radius = 3 * i; //设置同心圆，只有半径不一样
+		var factorOrbit = new THREE.CircleGeometry(radius, 20); //半径，分段数
+		factorOrbit.vertices.shift(); // 第一个节点是中心点
+
+		var material = new THREE.MeshBasicMaterial({
+			color: +randomColor(),
+		})
+		var cycleMesh = new THREE.LineLoop(factorOrbit, material);
+		cycleMesh.position.copy(canteenCenter);
+		cycleMesh.lookAt(0, 0, 0);
+
+		cycleMesh.updateWorldMatrix(true, false);
+		var matrix = cycleMesh.matrixWorld;
+
+		grp.add(cycleMesh);
+
+		var geometry = new THREE.SphereGeometry(1, 22, 16);
+		var material2 = new THREE.MeshBasicMaterial({
+			color: +randomColor()
+		})
+		var ball = new THREE.Mesh(geometry, material2);
+		var ballCenter = factorOrbit.vertices[0].clone();
+
+		ballCenter = ballCenter.applyMatrix4(matrix);
+		ball.position.copy(ballCenter);
+		grp.add(ball);
+
+		tweenComplete(factorOrbit,ball, matrix,1);
+	}
+
+	editor.execute(new AddiTopoObjCommand(editor, grp));
+}
+
+function tweenComplete(factorOrbit, ball, matrix) {
+	var stepCount = factorOrbit.vertices.length-1;
+	var tween = new TWEEN.Tween({step:0})
+		.to({step:stepCount}, 10000)
+		.easing(TWEEN.Easing.Linear.None)
+//		.delay(1000)
+		.onUpdate(function(index) {
+//			console.log(index);
+			var pos = factorOrbit.vertices[Math.round(index.step)].clone();
+			pos = pos.applyMatrix4(matrix);
+			ball.position.copy(pos);
+		})
+		.onComplete(function() {
+			tweenComplete(factorOrbit, ball, matrix);
+		})
+		.start();
 }
 
 iTopoEarthModel.ParticlesMove = function(camera2Pos, camera) {
@@ -1023,7 +1097,7 @@ iTopoEarthModel.MarkiTopoBaseOnSphere = function(url) {
 		response.json().then(function(json) {
 			for (var i = 0; i < json.length; i++) {
 				const position = createPosition(json[i].lng, json[i].lat, iTopoEarthModel.earthSettings.CITY_RADIUS);
-				layerMarks.add(createLightConeMark(position, json[i].title)); // 地标
+				layerMarks.add(createLightConeMark(position, randomLightConeHeight(), json[i].title)); // 地标
 			}
 		})
 	}).catch(function(e) {
@@ -1042,7 +1116,7 @@ iTopoEarthModel.MarkCanteenOnSphere = function(url) {
 			for (var i = 0; i < json.length; i++) {
 				const position = createPosition(json[i].lng, json[i].lat, iTopoEarthModel.earthSettings.CITY_RADIUS);
 
-				layerMarks.add(createLightConeMark(position, json[i].city + ", " + json[i].country)); // 地标
+				layerMarks.add(createLightConeMark(position, randomLightConeHeight(), json[i].city + ", " + json[i].country)); // 地标
 			}
 		})
 	}).catch(function(e) {
@@ -1061,7 +1135,7 @@ iTopoEarthModel.MarkZenNodesOnSphere = function(url) {
 			for (var i = 0; i < json.length; i++) {
 				const position = createPosition(json[i].lon, json[i].lat, iTopoEarthModel.earthSettings.CITY_RADIUS);
 
-				layerMarks.add(createLightConeMark(position, json[i].city + ", " + json[i].country)); // 地标
+				layerMarks.add(createLightConeMark(position, randomLightConeHeight(), json[i].city + ", " + json[i].country)); // 地标
 			}
 		})
 	}).catch(function(e) {
@@ -1446,19 +1520,25 @@ iTopoEarthModel.createEarthAxis = function() {
 iTopoEarthModel.AddCountryMark = function() {
 	// 地标及光锥
 	for (let i = 0, length = DMCTRY.countries.length; i < length; i++) {
-		const position = createPosition(DMCTRY.countries[i].position[0],DMCTRY.countries[i].position[1], iTopoEarthModel.earthSettings.CITY_RADIUS);
-		layerMarks.add(createLightConeMark(position, DMCTRY.countries[i].name)); // 地标
+		const position = createPosition(DMCTRY.countries[i].position[0], DMCTRY.countries[i].position[1], iTopoEarthModel.earthSettings
+			.CITY_RADIUS);
+		layerMarks.add(createLightConeMark(position, randomLightConeHeight(), DMCTRY.countries[i].name)); // 地标
 	}
 }
 
-function createLightConeMark(position, contryName) {
+function randomLightConeHeight() {
+	let height = (Math.random() * (iTopoEarthModel.earthSettings.COLUD_RADIUS_RATIO - 1.1) + 0.1) * iTopoEarthModel.earthSettings
+		.CITY_RADIUS;
+	return height;
+}
+
+function createLightConeMark(position, height, contryName) {
 	let lightConeMarkGrp = new THREE.Group();
 	lightConeMarkGrp.name = contryName;
 
 	let circleLine = new THREE.LineLoop(earthCache.circleLineGeom, earthCache.markBorderMaterial);
 	let circlePlane = new THREE.Mesh(earthCache.hexagonPlane, earthCache.markAreaMaterial);
 
-	let height = Math.random() * (iTopoEarthModel.earthSettings.COLUD_RADIUS_RATIO - 1) * iTopoEarthModel.earthSettings.CITY_RADIUS;
 	let matrix1 = new THREE.Matrix4;
 	matrix1.makeRotationX(Math.PI / 2);
 	matrix1.setPosition(new THREE.Vector3(0, 0, height / -2));

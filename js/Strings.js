@@ -333,17 +333,27 @@ function Strings( config ) {
 			'iTopoDialog/lightStars/latitude' : 'Latitude',
 			'iTopoDialog/lightStars/starWish' : 'Star Wish',
 
+			'iTopoDialog/lightEarth/taskType' : 'Task Type',
+			'iTopoDialog/lightEarth/longitude' : 'Longitude',
+			'iTopoDialog/lightEarth/latitude' : 'Latitude',
+			'iTopoDialog/lightEarth/lightWish' : 'Light Wish',
+
 			'menubar/EcologicalFarm':'Ecological Farm',
 			'menubar/SharedCanteen': 'Shared Canteen',
 			'menubar/blockChain' : 'Block Chain',
 			'menubar/Login' : 'Login',
 
 			'menubar/SharedCanteen/yuhuazhai': 'Yuhuazhai',
+			'menubar/SharedCanteen/sharedCookbook': 'Shared Cookbook',
 
 			'menubar/EcologicalFarm/itopoBase': 'iTopoBase',
 
 			'menubar/blockChain/HorizenSecureNodesMap' :'Horizen Secure Nodes Map',
 			'menubar/blockChain/horizenSuperNodesMap'  :'horizen Super Nodes Map',
+
+			'sidebar/iTopoTask' : 'iTopoTask',
+			'sidebar/iTopoTask/dynamic': 'dynamic',
+			'sidebar/iTopoTask/participants' : 'participants',
 		},
 
 		fr: {

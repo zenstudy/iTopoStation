@@ -31,8 +31,14 @@ AddiTopoObjCommand.prototype = {
 	execute: function () {
 
 		this.editor.addObject( this.object );
-//		this.editor.select( this.object );
 
+		if(this.object.name == "layerPlanet"
+			|| this.object.name == "layerCloud"
+			|| this.object.name == "layerMarks"
+			|| this.object.name == "layerStars")
+			return;
+
+		this.editor.select( this.object );
 	},
 
 	undo: function () {
