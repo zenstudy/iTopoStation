@@ -98,14 +98,6 @@ function iTopoEditor() {
 
 	this.scene = new THREE.Scene();
 	this.scene.name = 'Scene';
-	// this.scene.background = new THREE.Color('#86c9c9');
-	// var ambientLight = new THREE.AmbientLight(0x555555); // 环境光
-	// ambientLight.name = 'ambientLight';
-	// var directionalLight = new THREE.DirectionalLight(0xffffff);
-	// directionalLight.position.set(-.5, .5, -1.5).normalize();
-	// directionalLight.name = 'directionalLight';
-	// this.scene.add(ambientLight);
-	// this.scene.add(directionalLight);
 
 	this.sceneHelpers = new THREE.Scene();
 
@@ -162,17 +154,17 @@ iTopoEditor.prototype = {
 
 	addObject: function ( object, parent, index ) {
 
-		var scope = this;
+		// var scope = this;
 
-		object.traverse( function ( child ) {
+		// object.traverse( function ( child ) {
 
-			if ( child.geometry !== undefined ) scope.addGeometry( child.geometry );
-			if ( child.material !== undefined ) scope.addMaterial( child.material );
+		// 	if ( child.geometry !== undefined ) scope.addGeometry( child.geometry );
+		// 	if ( child.material !== undefined ) scope.addMaterial( child.material );
 
-			scope.addCamera( child );
-			scope.addHelper( child );
+		// 	scope.addCamera( child );
+		// 	scope.addHelper( child );
 
-		} );
+		// } );
 
 		if ( parent === undefined ) {
 
@@ -180,8 +172,8 @@ iTopoEditor.prototype = {
 
 		} else {
 
-			parent.children.splice( index, 0, object );
-			object.parent = parent;
+		 	parent.children.splice( index, 0, object );
+		 	object.parent = parent;
 
 		}
 

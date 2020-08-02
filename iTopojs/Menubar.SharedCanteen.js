@@ -4,6 +4,7 @@
 
 import { UIPanel, UIRow, UIButton } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
+import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
 function MenubarSharedCanteen( editor ) {
 
@@ -27,7 +28,7 @@ function MenubarSharedCanteen( editor ) {
 	yuhuazhaiMenu.setTextContent(strings.getKey('menubar/SharedCanteen/yuhuazhai'));
 	yuhuazhaiMenu.onClick(function() {
 		editor.clear();
-		iTopoEarthModel.earthSettings.MAP_KIND = '雨花斋';
+		iTopoEarthSettings.MAP_KIND = '雨花斋';
 		iTopoEarthModel.ReCreate();
 	});
 	options.add(yuhuazhaiMenu);

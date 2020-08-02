@@ -2,15 +2,20 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea, UIInteger } from '../js/libs/ui.js';
+import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea,UINumber, UIInteger, UIInput } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 
 function LightEarthDialog( editor ) {
+
 	var lightEarthInfo = {
+		uuid:THREE.MathUtils.generateUUID(),
 		taskType: 'Canteen',
 		longitude:0,
 		latitude:0,
-		lightWish:"light wish"
+		lightWish:"light wish",
+		city: "恩施",
+		title: "湖北恩施宣恩县:松果家园",
+		address: "湖北恩施宣恩县",
 	};
 
 	var strings = editor.strings;
@@ -27,6 +32,26 @@ function LightEarthDialog( editor ) {
 	dlgBody.setMargin( '20px' );
 
 	container.add(dlgBody);
+
+	{
+		// uuid
+		var geometryUUIDRow = new UIRow();
+		var geometryUUID = new UIInput().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
+		geometryUUID.setValue( THREE.MathUtils.generateUUID() );
+		var geometryUUIDRenew = new UIButton( strings.getKey( 'iTopoDialog/lightEarth/new' ) ).setMarginLeft( '7px' ).onClick( function () {
+
+			geometryUUID.setValue( THREE.MathUtils.generateUUID() );
+
+			editor.execute( new SetGeometryValueCommand( editor, editor.selected, 'uuid', geometryUUID.getValue() ) );
+
+		} );
+
+		geometryUUIDRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/uuid' ) ).setWidth( '90px' ) );
+		geometryUUIDRow.add( geometryUUID );
+		geometryUUIDRow.add( geometryUUIDRenew );
+
+		dlgBody.add( geometryUUIDRow );
+	}
 
 	{
 		var options = {
@@ -55,7 +80,7 @@ function LightEarthDialog( editor ) {
 
 		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/longitude' ) ).setWidth( '120px' ) );
 
-		var longitudeValueUI = new UIInteger( lightEarthInfo.longitude ).setRange( 2, Infinity );
+		var longitudeValueUI = new UINumber( lightEarthInfo.longitude ).setRange( 2, Infinity );
 		longitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -70,7 +95,7 @@ function LightEarthDialog( editor ) {
 
 		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/latitude' ) ).setWidth( '120px' ) );
 
-		var latitudeValueUI = new UIInteger( lightEarthInfo.latitude ).setRange( 2, Infinity );
+		var latitudeValueUI = new UINumber( lightEarthInfo.latitude ).setRange( 2, Infinity );
 		latitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -107,8 +132,7 @@ function LightEarthDialog( editor ) {
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
 
-			iTopoEarthModel.generateEarthCache();
-			iTopoEarthModel.lightEarth(editor.camera);
+			iTopoEarthModel.lightEarth(geometryUUID.getValue(),editor.camera);
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
 		buttonPanel.add( lightEarth );

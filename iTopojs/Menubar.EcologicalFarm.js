@@ -4,6 +4,7 @@
 
 import { UIPanel, UIRow, UIButton } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
+import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
 function MenubarEcologicalFarm( editor ) {
 
@@ -27,8 +28,9 @@ function MenubarEcologicalFarm( editor ) {
 	itopoBaseMenu.setTextContent(strings.getKey('menubar/EcologicalFarm/itopoBase'));
 	itopoBaseMenu.onClick(function() {
 		editor.clear();
-		iTopoEarthModel.earthSettings.MAP_KIND = '共创基地';
+		iTopoEarthSettings.MAP_KIND = '共创基地';
 		iTopoEarthModel.ReCreate();
+		iTopoEarthModel.RotateToBeijing(editor.camera);
 	});
 	options.add(itopoBaseMenu);
 

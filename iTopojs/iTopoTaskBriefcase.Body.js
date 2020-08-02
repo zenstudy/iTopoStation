@@ -5,6 +5,7 @@
 import { UITabbedPanel } from '../js/libs/ui.js';
 
 import { iTopoTaskChildDynamic } from './iTopoTaskChild.Dynamic.js';
+import { iTopoTaskChildContribute } from './iTopoTaskChild.Contribute.js';
 import { iTopoTaskChildParticipants } from './iTopoTaskChild.Participants.js';
 
 function iTopoTaskBriefcaseBody( editor ) {
@@ -15,6 +16,7 @@ function iTopoTaskBriefcaseBody( editor ) {
 	container.setId( 'properties' );
 
 	container.addTab( 'dynamic', strings.getKey( 'sidebar/iTopoTask/dynamic' ), new iTopoTaskChildDynamic( editor ) );
+	container.addTab( 'contribute ', strings.getKey( 'sidebar/iTopoTask/contribute' ), new iTopoTaskChildContribute( editor ) );
 	container.addTab( 'participants ', strings.getKey( 'sidebar/iTopoTask/participants' ), new iTopoTaskChildParticipants( editor ) );
 
 	container.select( 'dynamic' );

@@ -333,6 +333,8 @@ function Strings( config ) {
 			'iTopoDialog/lightStars/latitude' : 'Latitude',
 			'iTopoDialog/lightStars/starWish' : 'Star Wish',
 
+			'iTopoDialog/lightEarth/new':'NEW',
+			'iTopoDialog/lightEarth/uuid':'UUID',
 			'iTopoDialog/lightEarth/taskType' : 'Task Type',
 			'iTopoDialog/lightEarth/longitude' : 'Longitude',
 			'iTopoDialog/lightEarth/latitude' : 'Latitude',
@@ -353,6 +355,7 @@ function Strings( config ) {
 
 			'sidebar/iTopoTask' : 'iTopoTask',
 			'sidebar/iTopoTask/dynamic': 'dynamic',
+			'sidebar/iTopoTask/contribute':'contribute',
 			'sidebar/iTopoTask/participants' : 'participants',
 		},
 

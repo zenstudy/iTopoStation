@@ -87,8 +87,7 @@ function LightStarDialog( editor ) {
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 
-			iTopoEarthModel.generateEarthCache();
-			iTopoEarthModel.lightStars(editor.camera);
+			iTopoEarthModel.lightStars(THREE.MathUtils.generateUUID(),editor.camera);
 
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );

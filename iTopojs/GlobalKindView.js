@@ -4,6 +4,7 @@
 
 import { UISelect } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js';
+import {iTopoEarthSettings} from'./iTopoEarthSettings.js';
 
 function GlobalKindView( editor ) {
 
@@ -17,7 +18,7 @@ function GlobalKindView( editor ) {
 	globalSelect.setTop( '10px' );
 	globalSelect.onChange( function () {
 		editor.clear();
-		iTopoEarthModel.earthSettings.GLOBAL_KIND = this.getValue();
+		iTopoEarthSettings.GLOBAL_KIND = this.getValue();
 		iTopoEarthModel.ReCreate();
 
 	} );
@@ -29,7 +30,7 @@ function GlobalKindView( editor ) {
 
 		var options = {Global2D: "Global2D", Global3D: "Global3D"};
 		globalSelect.setOptions( options );
-		globalSelect.setValue( iTopoEarthModel.earthSettings.GLOBAL_KIND );
+		globalSelect.setValue( iTopoEarthSettings.GLOBAL_KIND );
 	}
 
 	return globalSelect;

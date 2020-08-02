@@ -23,6 +23,9 @@ import { SetScaleCommand } from '../js/commands/SetScaleCommand.js';
 import { TWEEN } from '../../examples/jsm/libs/tween.module.min.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js';
 
+import {iTopoBaseHelper} from'./iTopoBaseHelper.js';
+import {iTopoEarthSettings} from'./iTopoEarthSettings.js';
+
 function iTopoViewport( editor ) {
 
 	var signals = editor.signals;
@@ -66,9 +69,9 @@ function iTopoViewport( editor ) {
 
 	var box = new THREE.Box3();
 
-	var selectionBox = new THREE.BoxHelper();
-	selectionBox.material.depthTest = false;
-	selectionBox.material.transparent = true;
+	var selectionBox = new iTopoBaseHelper();
+//	selectionBox.material.depthTest = false;
+//	selectionBox.material.transparent = true;
 	selectionBox.visible = false;
 	sceneHelpers.add( selectionBox );
 
@@ -157,7 +160,7 @@ function iTopoViewport( editor ) {
 
 	} );
 
-	sceneHelpers.add( transformControls );
+	//sceneHelpers.add( transformControls );
 
 	// object picking
 
@@ -205,27 +208,18 @@ function iTopoViewport( editor ) {
 				var object = intersects[ 0 ].object;
 
 				if ( object.userData.object !== undefined ) {
-
 					// helper
-
 					editor.select( object.userData.object );
-
 				} else {
-
 					editor.select( object );
-
 				}
 
 			} else {
-
 				editor.select( null );
-
 			}
 
 			render();
-
 		}
-
 	}
 
 	function onMouseDown( event ) {
@@ -364,20 +358,20 @@ function iTopoViewport( editor ) {
 
 		renderer = newRenderer;
 
-		renderer.setClearColor( iTopoEarthModel.earthSettings.BACKGROUND_COLOR );
+		renderer.setClearColor( iTopoEarthSettings.BACKGROUND_COLOR );
 
 		if ( window.matchMedia ) {
 
 			var mediaQuery = window.matchMedia( '(prefers-color-scheme: dark)' );
 			mediaQuery.addListener( function ( event ) {
 
-				renderer.setClearColor( event.matches ? 0x333333 : iTopoEarthModel.earthSettings.BACKGROUND_COLOR );
+				renderer.setClearColor( event.matches ? 0x333333 : iTopoEarthSettings.BACKGROUND_COLOR );
 
 				if ( scene.background === null ) render();
 
 			} );
 
-			renderer.setClearColor( mediaQuery.matches ? 0x333333 : iTopoEarthModel.earthSettings.BACKGROUND_COLOR );
+			renderer.setClearColor( mediaQuery.matches ? 0x333333 : iTopoEarthSettings.BACKGROUND_COLOR );
 
 		}
 
@@ -411,14 +405,11 @@ function iTopoViewport( editor ) {
 		transformControls.detach();
 
 		if ( object !== null && object !== scene && object !== camera ) {
-
 			box.setFromObject( object );
 
 			if ( box.isEmpty() === false ) {
-
 				selectionBox.setFromObject( object );
 				selectionBox.visible = true;
-
 			}
 
 			transformControls.attach( object );
@@ -734,7 +725,7 @@ function iTopoViewport( editor ) {
 
 		TWEEN.update();
 
-		if(iTopoEarthModel.earthSettings.GLOBAL_KIND == 'Global3D')	{
+		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D')	{
 			render();
 		}
 		else if ( needsUpdate === true ){
@@ -761,8 +752,10 @@ function iTopoViewport( editor ) {
 		renderer.render( scene, editor.viewportCamera );
 		scene.remove( grid );
 
-		// if(iTopoEarthModel.earthSettings.GLOBAL_KIND == 'Global3D')
-		// 	scene.rotation.y += iTopoEarthModel.earthSettings.EARTH_ROTATE_SPEED;
+		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
+			 scene.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
+			 sceneHelpers.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
+		 }
 
 		if ( camera === editor.viewportCamera ) {
 

@@ -4,6 +4,7 @@
 
 import { UISelect } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js';
+import {iTopoEarthSettings} from'./iTopoEarthSettings.js';
 
 function GlobalStyleView( editor ) {
 
@@ -17,7 +18,7 @@ function GlobalStyleView( editor ) {
 	globalSelect.setTop( '40px' );
 	globalSelect.onChange( function () {
 		editor.clear();
-		iTopoEarthModel.earthSettings.EARTH_STYLE = this.getValue();
+		iTopoEarthSettings.EARTH_STYLE = this.getValue();
 		iTopoEarthModel.ReCreate();
 
 	} );
@@ -29,7 +30,7 @@ function GlobalStyleView( editor ) {
 
 		var options = {标准地图: "标准地图", 粒子地壳: "粒子地壳", 彩色地壳:'彩色地壳', 线框地壳: "线框地壳"};
 		globalSelect.setOptions( options );
-		globalSelect.setValue( iTopoEarthModel.earthSettings.EARTH_STYLE );
+		globalSelect.setValue( iTopoEarthSettings.EARTH_STYLE );
 	}
 
 	return globalSelect;

@@ -2,16 +2,22 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea  } from '../js/libs/ui.js';
+import { UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../js/libs/ui.js';
 import { UIOutliner, UITexture } from '../js/libs/ui.three.js';
+import { iTopoEarthModel } from './iTopoEarthModel.js'
+import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
 function iTopoTaskBriefcaseHeader( editor ) {
 
 	var lightEarthInfo = {
+		uuid:THREE.MathUtils.generateUUID(),
 		taskType: 'Canteen',
 		longitude:0,
 		latitude:0,
-		lightWish:"light wish"
+		lightWish:"light wish",
+		city: "恩施",
+		title: "湖北恩施宣恩县:松果家园",
+		address: "湖北恩施宣恩县",
 	};
 
 	var signals = editor.signals;
@@ -22,9 +28,20 @@ function iTopoTaskBriefcaseHeader( editor ) {
 	container.setPaddingTop( '20px' );
 
 	{
+		// uuid
+		var geometryUUIDRow = new UIRow();
+		var geometryUUID = new UIInput().setWidth( '120px' ).setFontSize( '12px' ).setDisabled( true );
+		geometryUUID.setValue( lightEarthInfo.uuid );
+		geometryUUIDRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/uuid' ) ).setWidth( '90px' ) );
+		geometryUUIDRow.add( geometryUUID );
+
+		container.add( geometryUUIDRow );
+	}
+
+	{
 		var options = {
-			Canteen: 'Canteen',
-			EcologicalFarm: 'Ecological Farm',
+			Canteen: "Canteen",
+			EcologicalFarm: "EcologicalFarm",
 		};
 
 		var taskTypeRow = new UIRow();
@@ -47,7 +64,7 @@ function iTopoTaskBriefcaseHeader( editor ) {
 
 		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/longitude' ) ).setWidth( '120px' ) );
 
-		var longitudeValueUI = new UIInteger( lightEarthInfo.longitude ).setRange( 2, Infinity );
+		var longitudeValueUI = new UINumber( lightEarthInfo.longitude ).setRange( 2, Infinity );
 		longitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -62,7 +79,7 @@ function iTopoTaskBriefcaseHeader( editor ) {
 
 		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/latitude' ) ).setWidth( '120px' ) );
 
-		var latitudeValueUI = new UIInteger( lightEarthInfo.latitude ).setRange( 2, Infinity );
+		var latitudeValueUI = new UINumber( lightEarthInfo.latitude ).setRange( 2, Infinity );
 		latitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -94,9 +111,28 @@ function iTopoTaskBriefcaseHeader( editor ) {
 	function refreshUI() {
 
 		if ( editor.selected !== null ) {
-
-			lightWishValueUI.setValue( editor.selected.id );
-
+			fetch(iTopoEarthSettings.CANTEEN_ITOPOBASE_FILE, {
+				method: 'GET',
+				mode: 'cors', // 允许发送跨域请求
+				credentials: 'include'
+			}).then(function(response) {
+				//打印返回的json数据
+				response.json().then(function(json) {
+					for (var i = 0; i < json.length; i++) {
+						console.log(editor.selected.name);
+						if(json[i].uuid === editor.selected.name) {
+							geometryUUID.setValue( json[i].uuid );
+							taskTypeSelect.setOptions( options );
+							taskTypeSelect.setValue(json[i].taskType);
+							longitudeValueUI.setValue( json[i].lng );
+							latitudeValueUI.setValue( json[i].lat );
+							lightWishValueUI.setValue( json[i].lightWish );
+						}
+					}
+				})
+			}).catch(function(e) {
+				console.log('error: ' + e.toString());
+			})
 		}
 	}
 

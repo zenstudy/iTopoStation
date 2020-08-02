@@ -4,6 +4,7 @@
 
 import {UIPanel,UIRow,UIButton} from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
+import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
 function MenubarBlockChain(editor) {
 
@@ -27,7 +28,7 @@ function MenubarBlockChain(editor) {
 	horizenSuperMenu.setTextContent(strings.getKey('menubar/blockChain/horizenSuperNodesMap'));
 	horizenSuperMenu.onClick(function() {
 		editor.clear();
-		iTopoEarthModel.earthSettings.MAP_KIND = '超级节点儿';
+		iTopoEarthSettings.MAP_KIND = '超级节点儿';
 		iTopoEarthModel.ReCreate();
 	});
 	options.add(horizenSuperMenu);
@@ -38,7 +39,7 @@ function MenubarBlockChain(editor) {
 	horizenSecureMenu.setTextContent(strings.getKey('menubar/blockChain/HorizenSecureNodesMap'));
 	horizenSecureMenu.onClick(function() {
 		editor.clear();
-		iTopoEarthModel.earthSettings.MAP_KIND = '普通节点儿';
+		iTopoEarthSettings.MAP_KIND = '普通节点儿';
 		iTopoEarthModel.ReCreate();
 	});
 	options.add(horizenSecureMenu);

@@ -19,11 +19,8 @@ function AddiTopoObjCommand( editor, object ) {
 
 	this.object = object;
 	if ( object !== undefined ) {
-
 		this.name = 'Add Object: ' + object.name;
-
 	}
-
 }
 
 AddiTopoObjCommand.prototype = {
@@ -38,7 +35,10 @@ AddiTopoObjCommand.prototype = {
 			|| this.object.name == "layerStars")
 			return;
 
+	if(this.object.children.length ==0 )
 		this.editor.select( this.object );
+	else
+		this.editor.select( this.object.children[0] );
 	},
 
 	undo: function () {

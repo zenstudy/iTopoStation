@@ -1,10 +1,16 @@
 [{
+	"uuid": "88F48BD-823C-42F1-857A-124E495B351B",
+	"taskType": "EcologicalFarm",
+	"lightWish":"惬意的田园生活",
 	"city": "恩施",
 	"title": "湖北恩施宣恩县:松果家园",
 	"address": "湖北恩施宣恩县",
 	"lng":109.70856547433189,
 	"lat":29.775887951829443
 }, {
+	"uuid": "5DFB04FA-1091-4169-AB9D-FF2673CC4476",
+	"taskType": "EcologicalFarm",
+	"lightWish":"新种子计划，保存能够发芽的种子，一起劳动，一起创造",
 	"city": "延边朝鲜族自治州",
 	"title": "长白山生态有机谷",
 	"address": "地处长白山腹地，松花江的上游（源头）",

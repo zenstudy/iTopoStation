@@ -211,7 +211,8 @@ const assets = [
 	"./iTopojs/iTopoEarthModel.js",
 	"./iTopojs/iTopoViewport.js",
 	"./iTopojs/PickHelper.js",
-	"./iTopojs/THREE.MeshLine.js"
+	"./iTopojs/THREE.MeshLine.js",
+	"./iTopojs/json/iTopobase.json"
 ];
 
 self.addEventListener( 'install', async function () {
