@@ -119,7 +119,7 @@ function iTopoTaskBriefcaseHeader( editor ) {
 				//打印返回的json数据
 				response.json().then(function(json) {
 					for (var i = 0; i < json.length; i++) {
-						console.log(editor.selected.name);
+						console.log(editor.selected.userData);
 						if(json[i].uuid === editor.selected.name) {
 							geometryUUID.setValue( json[i].uuid );
 							taskTypeSelect.setOptions( options );

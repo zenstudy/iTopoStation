@@ -1,24 +1,50 @@
 import * as THREE from '../../build/three.module.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js';
-import { iTopoEarthSettings } from './iTopoEarthSettings.js';
-import { iTopoEarthCache } from './iTopoEarthCache.js';
+import {
+	iTopoEarthModel
+} from './iTopoEarthModel.js';
+import {
+	iTopoEarthSettings
+} from './iTopoEarthSettings.js';
+import {
+	iTopoEarthCache
+} from './iTopoEarthCache.js';
 
 export var iTopoEarthBuilder = iTopoEarthBuilder || {};
 
-iTopoEarthBuilder.createLightConeMark = function(position, height, objName) {
+function createPosition(lng, lat, radius) {
+	let spherical = new THREE.Spherical;
+	spherical.radius = radius;
+	spherical.theta = (lng + 90) * (Math.PI / 180);
+	spherical.phi = (90 - lat) * (Math.PI / 180);
+	let position = new THREE.Vector3();
+	position.setFromSpherical(spherical);
+	return position;
+}
+
+iTopoEarthBuilder.createLightConeMark1 = function(option) {
+
+	var lightConeMark = {};
+
+	var position;
+
+	var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
+	var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
+	if(option.GlobalKind === "Global3D" )
+		position = createPosition(option.pos[0], option.pos[1], option.sphereRadius);
+	else
+		position = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight);
+
 	let index = Math.floor(Math.random() * 100) % 2;
-	console.log(index);
-	console.log(iTopoEarthCache);
 	let material = iTopoEarthCache.markLightMaterial[index];
 
-	let circleLine = new THREE.LineLoop(iTopoEarthCache.circleLineGeom, iTopoEarthCache.markBorderMaterial);
 	let circlePlane = new THREE.Mesh(iTopoEarthCache.hexagonPlane, iTopoEarthCache.markPlaneMaterial);
+	let circleLine = new THREE.LineLoop(iTopoEarthCache.circleLineGeom, iTopoEarthCache.markBorderMaterial);
 
 	let matrix1 = new THREE.Matrix4;
 	matrix1.makeRotationX(Math.PI / 2);
-	matrix1.setPosition(new THREE.Vector3(0, 0, height / -2));
+	matrix1.setPosition(new THREE.Vector3(0, 0, - option.lightConeHeight / 2));
 
-	let geometry = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, height);
+	let geometry = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
 	geometry.applyMatrix4(matrix1);
 
 	let plane1 = new THREE.Mesh(geometry, material);
@@ -28,69 +54,352 @@ iTopoEarthBuilder.createLightConeMark = function(position, height, objName) {
 	var lightConeGrp = new THREE.Group();
 
 	circlePlane.position.copy(position);
-	circlePlane.lookAt(0, 0, 0);
-	circlePlane.name = objName;
-
 	circleLine.position.copy(position);
-	circleLine.lookAt(0, 0, 0);
-	circleLine.name = objName;
-
 	plane1.position.copy(position);
-	plane1.lookAt(0, 0, 0);
-	plane1.name = objName;
-
 	plane2.position.copy(position);
-	plane2.lookAt(0, 0, 0);
-	plane2.name = objName;
+
+	circlePlane.name = option.objName;
+	circleLine.name = option.objName;
+	plane1.name = option.objName;
+	plane2.name = option.objName;
+
+	circlePlane.userData = option.objectUUID;
+	circleLine.userData = option.objectUUID;
+	plane1.userData = option.objectUUID;
+	plane2.userData = option.objectUUID;
+
+	if(option.GlobalKind === "Global3D"){
+		circlePlane.lookAt(0, 0, 0);
+		circleLine.lookAt(0, 0, 0);
+		plane1.lookAt(0, 0, 0);
+		plane2.lookAt(0, 0, 0);
+	} else {
+	//	circlePlane.lookAt(position.x, position.y, 0);
+	//	circleLine.lookAt(position.x, position.y, 0);
+		plane1.lookAt(position.x, position.y, 0);
+		plane2.lookAt(position.x, position.y, 0);
+	}
 
 	lightConeGrp.add(circlePlane);
 	lightConeGrp.add(circleLine);
 	lightConeGrp.add(plane1);
 	lightConeGrp.add(plane2);
 
-	return lightConeGrp;
+	lightConeMark.lightConeGrp = lightConeGrp;
+
+	if (!option.textMarked) {
+
+		// 添加文字说明
+		let textLength = option.textValue.length;
+		let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createVerCanvasFont(option.fontSize,5, option.textValue, option.fontColor));
+
+		let fontMesh = new THREE.Sprite(new THREE.SpriteMaterial({map: texture}));
+
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
+			fontMesh.scale.x = 1;
+			fontMesh.scale.y = textLength + 1;
+			var	ptOnSphere = createPosition(option.pos[0], option.pos[1], iTopoEarthSettings.CITY_RADIUS + option.lightConeHeight + 0.5);
+			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
+			fontMesh.lookAt(0, 0, 0);
+		} else {
+			fontMesh.scale.x = iTopoEarthSettings.mapScaleSize;
+			fontMesh.scale.y = iTopoEarthSettings.mapScaleSize*(textLength);
+			var cityZfont = iTopoEarthSettings.zHeight + option.lightConeHeight + option.fontSize / option.average + 0.5;
+			fontMesh.position.set(cityX, cityY, cityZfont); // 定义提示文字显示位置
+		}
+
+		lightConeMark.fontMesh = fontMesh;
+	}
+
+	return lightConeMark;
+}
+
+iTopoEarthBuilder.createLightConeMark = function(option) {
+
+	var lightConeMark = {};
+
+	var position;
+
+	var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
+	var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
+	if(option.GlobalKind === "Global3D" )
+		position = createPosition(option.pos[0], option.pos[1], option.sphereRadius);
+	else
+		position = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight);
+
+	let index = Math.floor(Math.random() * 100) % 2;
+	let material = iTopoEarthCache.markLightMaterial[index];
+
+	let circlePlane = new THREE.Mesh(iTopoEarthCache.hexagonPlane, iTopoEarthCache.markPlaneMaterial);
+	let circleLine = new THREE.LineLoop(iTopoEarthCache.circleLineGeom, iTopoEarthCache.markBorderMaterial);
+
+	let matrix1 = new THREE.Matrix4;
+	matrix1.makeRotationX(Math.PI / 2);
+	matrix1.setPosition(new THREE.Vector3(0, 0, - option.lightConeHeight / 2));
+
+	let geometry = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
+	geometry.applyMatrix4(matrix1);
+
+	let plane1 = new THREE.Mesh(geometry, material);
+	let plane2 = plane1.clone();
+	plane2.rotation.z = Math.PI / 2;
+
+	var lightConeGrp = new THREE.Group();
+
+	circlePlane.position.copy(position);
+	circleLine.position.copy(position);
+	plane1.position.copy(position);
+	plane2.position.copy(position);
+
+	circlePlane.name = option.objName;
+	circleLine.name = option.objName;
+	plane1.name = option.objName;
+	plane2.name = option.objName;
+
+	circlePlane.userData = option.objectUUID;
+	circleLine.userData = option.objectUUID;
+	plane1.userData = option.objectUUID;
+	plane2.userData = option.objectUUID;
+
+	if(option.GlobalKind === "Global3D"){
+		circlePlane.lookAt(0, 0, 0);
+		circleLine.lookAt(0, 0, 0);
+		plane1.lookAt(0, 0, 0);
+		plane2.lookAt(0, 0, 0);
+	} else {
+	//	circlePlane.lookAt(position.x, position.y, 0);
+	//	circleLine.lookAt(position.x, position.y, 0);
+		plane1.lookAt(position.x, position.y, 0);
+		plane2.lookAt(position.x, position.y, 0);
+	}
+
+	lightConeGrp.add(circlePlane);
+	lightConeGrp.add(circleLine);
+	lightConeGrp.add(plane1);
+	lightConeGrp.add(plane2);
+
+	lightConeMark.lightConeGrp = lightConeGrp;
+
+	if (!option.textMarked) {
+
+		if(option.GlobalKind === "Global3D" ){
+
+			let matrix2 = new THREE.Matrix4;
+			matrix2.makeRotationX(-Math.PI / 2);
+			let matrix3 = new THREE.Matrix4;
+			matrix3.makeRotationY(Math.PI );
+			matrix2.multiply (matrix3);
+			matrix2.setPosition(new THREE.Vector3(0, 0, -3*option.lightConeHeight / 2));
+			let textPanel = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
+			textPanel.applyMatrix4(matrix2);
+
+			let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createVerCanvasFont(option.fontSize,5, option.textValue, option.fontColor));
+			let material2 = new THREE.MeshBasicMaterial({
+			    map: texture,
+			    side: THREE.DoubleSide,
+			    opacity: 1,
+			    transparent: true,
+			  });
+
+			let fontMesh = new THREE.Mesh(textPanel, material2);
+
+			position = createPosition(option.pos[0], option.pos[1], option.sphereRadius);
+			fontMesh.position.copy(position);
+			fontMesh.lookAt(0, 0, 0);
+			lightConeMark.fontMesh = fontMesh;
+		} else {
+			let matrix2 = new THREE.Matrix4;
+			matrix2.makeRotationX(Math.PI / 2);
+			matrix2.setPosition(new THREE.Vector3(0, 0, option.lightConeHeight / 2));
+			let textPanel = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
+			textPanel.applyMatrix4(matrix2);
+
+			let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createVerCanvasFont(option.fontSize,5, option.textValue, option.fontColor));
+			let material2 = new THREE.MeshBasicMaterial({
+			    map: texture,
+			    side: THREE.DoubleSide,
+			    opacity: 1,
+			    transparent: true,
+			  });
+
+			let fontMesh = new THREE.Mesh(textPanel, material2);
+
+			position = new THREE.Vector3(cityX, cityY,option.lightConeHeight + iTopoEarthSettings.zHeight);
+			fontMesh.position.copy(position);
+			fontMesh.lookAt(position.x, position.y, 100);
+			lightConeMark.fontMesh = fontMesh;
+		}
+	}
+
+	return lightConeMark;
+}
+
+iTopoEarthBuilder.createBalloonMark = function(option) {
+	var balloonMark = {};
+	const originHelper = new THREE.Object3D();
+	var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
+	var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
+
+	{
+		// 球体
+		let ball = new THREE.SphereBufferGeometry(iTopoEarthSettings.circularRadio);
+
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
+			var	ptOnSphere = createPosition(option.pos[0], option.pos[1], iTopoEarthSettings.CITY_RADIUS + iTopoEarthSettings.circularHeight);
+			originHelper.position.copy(ptOnSphere);
+			originHelper.lookAt(0, 0, 0);
+			originHelper.updateWorldMatrix(true, false);
+			ball.applyMatrix4(originHelper.matrixWorld);
+		} else 	{
+			var cityZball=iTopoEarthSettings.circularHeight + iTopoEarthSettings.zHeight;
+			originHelper.position.set(cityX, cityY, cityZball);
+			originHelper.updateWorldMatrix(true, false);
+			ball.applyMatrix4(originHelper.matrixWorld);
+		}
+
+		// make an array to store colors for each vertex
+		const numVerts = ball.getAttribute('position').count;
+		const itemSize = 3; // r, g, b
+		const colors = new Uint8Array(itemSize * numVerts);
+
+		// copy the color into the colors array for each vertex
+		colors.forEach((v, ndx) => {
+			colors[ndx] = iTopoEarthSettings.markingSymbolColor;
+		});
+
+		const colorAttrib = new THREE.BufferAttribute(colors, itemSize, true);
+		ball.setAttribute('color', colorAttrib);
+		balloonMark.ball = ball;
+	}
+
+	{
+		// 圆锥体
+		let cylinder = new THREE.CylinderBufferGeometry(iTopoEarthSettings.circularRadio, 0, iTopoEarthSettings.circularHeight);
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
+			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],iTopoEarthSettings.CITY_RADIUS + iTopoEarthSettings.circularHeight/2);
+			originHelper.position.copy(ptOnSphere);
+			originHelper.lookAt(0, 0, 0);
+			originHelper.updateWorldMatrix(true, false);
+
+			cylinder.rotateX( -Math.PI / 2) ;
+			cylinder.applyMatrix4(originHelper.matrixWorld);
+		} else 	{
+			var cityZcylinder = iTopoEarthSettings.circularHeight / 2 + iTopoEarthSettings.zHeight;
+			originHelper.position.set(cityX, cityY, cityZcylinder);
+			originHelper.rotation.x = Math.PI / 2;
+			originHelper.updateWorldMatrix(true, false);
+
+			cylinder.applyMatrix4(originHelper.matrixWorld);
+		}
+
+		// make an array to store colors for each vertex
+		const numVerts2 = cylinder.getAttribute('position').count;
+		const itemSize2 = 3; // r, g, b
+		const colors2 = new Uint8Array(itemSize2 * numVerts2);
+
+		// copy the color into the colors array for each vertex
+		colors2.forEach((v, ndx) => {
+			colors2[ndx] = iTopoEarthSettings.markingSymbolColor;
+		});
+
+		const colorAttrib2 = new THREE.BufferAttribute(colors2, itemSize2, true);
+		cylinder.setAttribute('color', colorAttrib2);
+
+		balloonMark.cylinder = cylinder;
+	}
+
+	if (!option.textMarked) {
+
+		// 添加文字说明
+		let textLength = option.textValue.length;
+		let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLength * option.fontSize * option.average,
+			option.fontSize * option.average, option.textValue, option.fontColor));
+		let fontMesh = new THREE.Sprite(new THREE.SpriteMaterial({
+			map: texture
+		}));
+
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],
+				iTopoEarthSettings.CITY_RADIUS + iTopoEarthSettings.circularHeight+iTopoEarthSettings.circularRadio+0.5);
+			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
+			fontMesh.lookAt(0, 0, 0);
+		} else {
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+			var cityZfont = iTopoEarthSettings.zHeight + iTopoEarthSettings.circularHeight
+				+ iTopoEarthSettings.circularRadio + option.fontSize / option.average + 0.5;
+			fontMesh.position.set(cityX, cityY, cityZfont); // 定义提示文字显示位置
+		}
+
+		balloonMark.fontMesh = fontMesh;
+	}
+
+	return balloonMark;
 }
 
 //https://blog.csdn.net/weixin_39452320/article/details/87207684
-iTopoEarthBuilder.createStar = function(starPoint, objName) {
-	let uniforms = {
-		texture: {
-			value: new THREE.TextureLoader().load(iTopoEarthSettings.DOT_PNG_PATH)
-		}
-	};
+//https://blog.csdn.net/lin5165352/article/details/83055028
+//https://blog.csdn.net/lin5165352/article/details/83055606
+iTopoEarthBuilder.createStar = function(option) {
 
-	var starShaderMaterial = new THREE.ShaderMaterial({
-		uniforms: uniforms,
-		vertexShader: `attribute float size;
-        varying vec3 vColor;
-        void main() {
-            vColor = color;
-            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-            gl_PointSize = size * ( 300.0 / -mvPosition.z );
-            gl_Position = projectionMatrix * mvPosition;
+	let starPoint;
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D")
+	{
+		starPoint = createPosition(option.pos[0], option.pos[1],
+			iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud );
+	}  else {
+		//console.log(option);
+		var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
+		var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
+		starPoint = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight + option.starSize/2+
+		iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud);
+	}
 
-        }`,
-		fragmentShader: `uniform sampler2D texture;
-        varying vec3 vColor;
-        void main() {
-            gl_FragColor = vec4( vColor, 1.0 );
-            gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
-
-        }`,
-
-		blending: THREE.AdditiveBlending,
-		depthTest: false,
-		transparent: true,
-		vertexColors: true
-
-	});
-
-	var starGeo = new THREE.SphereBufferGeometry(6, 50, 50);
-	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.starShaderMaterial);
+	var starGeo = new THREE.SphereBufferGeometry(option.starSize, 50, 50);
+	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.waveShaderMaterial);
 	starMesh.position.copy(starPoint);
-	starMesh.name = objName;
+	starMesh.name = option.textValue;
+	starMesh.userData = option.objectUUID;
 
 	return starMesh;
+}
+
+// canvas实现文字函数
+iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
+	var canvas = document.createElement('canvas');
+	canvas.width = w;
+	canvas.height = h;
+	var ctx = canvas.getContext('2d');
+	//ctx.fillStyle = iTopoEarthSettings.markingBackground;
+	//ctx.fillRect(0, 0, w, h);
+	ctx.font = h + "px '微软雅黑'";
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.fillStyle = fontColor;
+	ctx.fillText(textValue, w / 2, h / 2);
+	document.body.append(canvas)
+	return canvas;
+}
+
+iTopoEarthBuilder.createVerCanvasFont = function(fontSize, dpi, textValue, fontColor) {
+	var canvas = document.createElement('canvas');
+	canvas.width = fontSize*dpi;
+	canvas.height = fontSize*dpi*(textValue.length+1);
+	var ctx = canvas.getContext('2d');
+	//ctx.fillStyle = iTopoEarthSettings.markingBackground;
+	//ctx.fillRect(0, 0, w, h);
+	ctx.font = fontSize*dpi + "px '微软雅黑'";
+	//ctx.font = "Bold " + h + "px Arial";
+	ctx.textAlign = 'left';
+	ctx.textBaseline = 'top';
+	ctx.fillStyle = fontColor;
+    for (let i = 0; i < textValue.length; i++) {
+         ctx.fillText(textValue[i], 0, i * (canvas.height / (textValue.length)));
+     }
+	document.body.append(canvas)
+	return canvas;
 }
 
 //lineH=单行文字行高
@@ -132,6 +441,53 @@ iTopoEarthBuilder.createModelTitle = function(modelTitle, position, titleH) {
 			//非最后一行
 			ctx.fillText(modelTitle.substr(0, splitIndex - 1), x, y + lineIndex * titleH);
 			modelTitle = modelTitle.slice(splitIndex - 1)
+		}
+		lineIndex++;
+		splitIndex = 1;
+	}
+
+	let texture = new THREE.Texture(canvas);
+	texture.needsUpdate = true;
+
+	//使用Sprite显示文字
+	let material = new THREE.SpriteMaterial({
+		map: texture
+	});
+	let textObj = new THREE.Sprite(material);
+	textObj.scale.set(200, 200 * canvas.height / canvas.width, 1);
+	textObj.position.copy(position);
+	return textObj;
+}
+
+// 绘制多行文本
+iTopoEarthBuilder.createMultiText = function(multiText, position, lineH, lineW) {
+	let canvas = document.createElement("canvas");
+	canvas.setAttribute("width", lineW);
+	let ctx = canvas.getContext("2d");
+	ctx.fillStyle = "#ffff00";
+	ctx.font = "Bold " + lineH + "px Arial";
+	console.log(ctx.font);
+	ctx.lineWidth = 4;
+	ctx.textBaseline = "top";
+
+	console.log(lineW);
+
+	let x = 0,
+		y = 0,
+		splitIndex = 1,
+		lineIndex = 0;
+	while (multiText != '') {
+		while ((splitIndex <= multiText.length) && (ctx.measureText(multiText.substr(0, splitIndex)).width < lineW)) {
+			splitIndex++;
+		}
+		//最后一行 不用换行
+		if (splitIndex - 1 == multiText.length) {
+			ctx.fillText(multiText, x, y + lineIndex * lineH);
+			multiText = ''
+		} else {
+			//非最后一行
+			ctx.fillText(multiText.substr(0, splitIndex - 1), x, y + lineIndex * lineH);
+			multiText = multiText.slice(splitIndex - 1)
 		}
 		lineIndex++;
 		splitIndex = 1;
@@ -339,4 +695,121 @@ iTopoEarthBuilder.createEarthWithColorPicture = function() {
 	var sphereMesh = new THREE.Mesh(iTopoEarthCache.earthBufferSphere, material);
 
 	return sphereMesh;
+}
+
+/* 创建字体精灵 */
+ iTopoEarthBuilder.makeTextSprite = function(message, parameters) {
+
+	if (parameters === undefined) parameters = {};
+
+	/* 字体 */
+	let fontface = parameters.hasOwnProperty("fontface") ?
+		parameters["fontface"] : "Arial";
+
+	/* 字体大小 */
+	let fontsize = parameters.hasOwnProperty("fontsize") ?
+		parameters["fontsize"] : iTopoEarthSettings.markingFontSize;
+
+	/* 边框厚度 */
+	let borderThickness = parameters.hasOwnProperty("borderThickness") ?
+		parameters["borderThickness"] : 4;
+
+	/* 边框颜色 */
+	let borderColor = parameters.hasOwnProperty("borderColor") ?
+		parameters["borderColor"] : {
+			r: 0,
+			g: 0,
+			b: 0,
+			a: 1.0
+		};
+
+	/* 背景颜色 */
+	let backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
+		parameters["backgroundColor"] : {
+			r: 255,
+			g: 255,
+			b: 255,
+			a: 1.0
+		};
+
+	/* 创建画布 */
+	let canvas = document.createElement('canvas');
+	let context = canvas.getContext('2d');
+
+	/* 字体加粗 */
+	context.font = "Bold " + fontsize + "px " + fontface;
+
+	/* 获取文字的大小数据，高度取决于文字的大小 */
+	let metrics = context.measureText(message);
+	let textWidth = metrics.width;
+	console.log('文字metrics::', metrics);
+
+	/* 背景颜色 */
+	context.fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," +
+		backgroundColor.b + "," + backgroundColor.a + ")";
+
+	/* 边框的颜色 */
+	context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," +
+		borderColor.b + "," + borderColor.a + ")";
+	context.lineWidth = borderThickness;
+
+	/* 绘制圆角矩形 */
+	iTopoEarthBuilder.roundRect(context, borderThickness / 2, borderThickness / 2, textWidth + borderThickness, fontsize * 1.4 +
+		borderThickness, 30);
+
+	/* 字体颜色 */
+	context.fillStyle = "rgba(0, 0, 0, 1.0)";
+	context.fillText(message, borderThickness, fontsize + borderThickness, textWidth);
+
+	/* 画布内容用于纹理贴图 */
+	let texture = new THREE.Texture(canvas);
+	texture.needsUpdate = true;
+
+	let spriteMaterial = new THREE.SpriteMaterial({
+		map: texture
+	});
+	let sprite = new THREE.Sprite(spriteMaterial);
+
+	console.log(spriteMaterial);
+	console.log(canvas.width);
+
+	/* 缩放比例 */
+	sprite.scale.set(10, 5, 1);
+
+	return sprite;
+}
+
+/**
+ * @method 绘制圆角矩形
+ * @param {*} ctx canvas画布
+ * @param {*} x x位置
+ * @param {*} y y位置
+ * @param {*} w 宽
+ * @param {*} h 高
+ * @param {*} r 圆角的半径
+ */
+iTopoEarthBuilder.roundRect = function(ctx, x, y, w, h, r) {
+
+	ctx.beginPath();
+	// 起始点（左上圆角处的直线位置）
+	ctx.moveTo(x + r, y);
+	// 矩形上宽线条（突出来一点）
+	ctx.lineTo(x + w * 1.5 - r, y);
+	// 绘制左上圆角（二次贝塞尔曲线）
+	ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+	// 右高线条
+	ctx.lineTo(x + w, y + h - r);
+	// 右下圆角
+	ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+	// 左下线条
+	ctx.lineTo(x + r, y + h);
+	// 左下圆角
+	ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+	// 左高线条
+	ctx.lineTo(x, y + r);
+	// 左上圆角
+	ctx.quadraticCurveTo(x, y, x + r, y);
+	ctx.closePath();
+	ctx.fill();
+	ctx.stroke();
 }

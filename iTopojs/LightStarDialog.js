@@ -86,9 +86,9 @@ function LightStarDialog( editor ) {
 		var lightStars = new UIButton( strings.getKey( 'LightToolbar/lightStars' ) );
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
-
+			editor.scene.rotation.y = 0;
+			editor.sceneHelpers.rotation.y = 0;
 			iTopoEarthModel.lightStars(THREE.MathUtils.generateUUID(),editor.camera);
-
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
 		buttonPanel.add( lightStars );

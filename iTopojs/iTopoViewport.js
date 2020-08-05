@@ -721,16 +721,16 @@ function iTopoViewport( editor ) {
 
 		}
 
-	//	if ( needsUpdate === true ) render();
+		render();
 
 		TWEEN.update();
 
-		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D')	{
+		//if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D')	{
 			render();
-		}
-		else if ( needsUpdate === true ){
-			render();
-		}
+		//}
+		//else if ( needsUpdate === true ){
+		//	render();
+		//}
 	}
 
 	requestAnimationFrame( animate );
@@ -755,15 +755,17 @@ function iTopoViewport( editor ) {
 		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
 			 scene.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
 			 sceneHelpers.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
+			 //iTopoEarthModel.RotateToBeijing(editor.camera);
+		 }  else {
+			scene.rotation.y = 0;
+			sceneHelpers.rotation.y = 0;
 		 }
 
 		if ( camera === editor.viewportCamera ) {
-
 			renderer.autoClear = false;
 			if ( showSceneHelpers === true ) renderer.render( sceneHelpers, camera );
 			viewHelper.render( renderer );
 			renderer.autoClear = true;
-
 		}
 
 		endTime = performance.now();

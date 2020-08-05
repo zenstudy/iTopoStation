@@ -131,7 +131,8 @@ function LightEarthDialog( editor ) {
 		var lightEarth = new UIButton( strings.getKey( 'LightToolbar/lightEarth' ) );
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
-
+			editor.scene.rotation.y = 0;
+			editor.sceneHelpers.rotation.y = 0;
 			iTopoEarthModel.lightEarth(geometryUUID.getValue(),editor.camera);
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );

@@ -1,4 +1,4 @@
-export var countries = [
+export var COUNTRIES = [
 	{
 	name: "中国",
 	position: [116.20, 39.55]

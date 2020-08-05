@@ -5,7 +5,7 @@ import { MeshLine,MeshLineMaterial } from './THREE.MeshLine.js';
 export var iTopoEarthSettings = iTopoEarthSettings || {};
 
 iTopoEarthSettings = {
-	GLOBAL_KIND: "Global3D",
+	GLOBAL_KIND: "Global2D",
 	MAP_KIND: "共创基地", //{超级节点儿,普通节点儿,共创基地,雨花斋}
 	CITY_RADIUS: 180,
 	CITY_MARGIN: 0.1,
@@ -50,7 +50,10 @@ iTopoEarthSettings = {
 	// 地图线条颜色,拉伸时地图侧边颜色
 	earthLandBorderColor: '#0e2a42',
 	// 标记颜色
+	markingKind:"lightCone",//"lightCone", "balloon"
 	markingTextColor: '#44efe4',
 	markingSymbolColor: '#004cff',
-	markingPlaneColor: '#ffffff'
+	markingPlaneColor: '#ffffff',
+	topicFontSize:60,
+	markingFontSize:5
 }
