@@ -1,13 +1,7 @@
 import * as THREE from '../../build/three.module.js';
-import {
-	iTopoEarthModel
-} from './iTopoEarthModel.js';
-import {
-	iTopoEarthSettings
-} from './iTopoEarthSettings.js';
-import {
-	iTopoEarthCache
-} from './iTopoEarthCache.js';
+import {iTopoEarthModel} from './iTopoEarthModel.js';
+import {iTopoEarthSettings} from './iTopoEarthSettings.js';
+import {iTopoEarthCache} from './iTopoEarthCache.js';
 
 export var iTopoEarthBuilder = iTopoEarthBuilder || {};
 
@@ -29,7 +23,7 @@ iTopoEarthBuilder.createLightConeMark1 = function(option) {
 
 	var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
 	var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
-	if(option.GlobalKind === "Global3D" )
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D" )
 		position = createPosition(option.pos[0], option.pos[1], option.sphereRadius);
 	else
 		position = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight);
@@ -44,7 +38,7 @@ iTopoEarthBuilder.createLightConeMark1 = function(option) {
 	matrix1.makeRotationX(Math.PI / 2);
 	matrix1.setPosition(new THREE.Vector3(0, 0, - option.lightConeHeight / 2));
 
-	let geometry = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
+	let geometry = new THREE.PlaneGeometry(iTopoEarthSettings.circularRadius * 2, option.lightConeHeight);
 	geometry.applyMatrix4(matrix1);
 
 	let plane1 = new THREE.Mesh(geometry, material);
@@ -58,17 +52,23 @@ iTopoEarthBuilder.createLightConeMark1 = function(option) {
 	plane1.position.copy(position);
 	plane2.position.copy(position);
 
-	circlePlane.name = option.objName;
-	circleLine.name = option.objName;
-	plane1.name = option.objName;
-	plane2.name = option.objName;
+	circlePlane.name = option.textValue;
+	circleLine.name = option.textValue;
+	plane1.name = option.textValue;
+	plane2.name = option.textValue;
+	lightConeGrp.name = option.textValue;
 
-	circlePlane.userData = option.objectUUID;
-	circleLine.userData = option.objectUUID;
-	plane1.userData = option.objectUUID;
-	plane2.userData = option.objectUUID;
+	var userData = {
+		objectUUID: option.objectUUID,
+		objectType: option.objectType,
+	}
+	circlePlane.userData = userData;
+	circleLine.userData = userData;
+	plane1.userData = userData;
+	plane2.userData = userData;
+	lightConeGrp.userData = userData;
 
-	if(option.GlobalKind === "Global3D"){
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
 		circlePlane.lookAt(0, 0, 0);
 		circleLine.lookAt(0, 0, 0);
 		plane1.lookAt(0, 0, 0);
@@ -122,7 +122,7 @@ iTopoEarthBuilder.createLightConeMark = function(option) {
 
 	var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
 	var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
-	if(option.GlobalKind === "Global3D" )
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D" )
 		position = createPosition(option.pos[0], option.pos[1], option.sphereRadius);
 	else
 		position = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight);
@@ -137,7 +137,7 @@ iTopoEarthBuilder.createLightConeMark = function(option) {
 	matrix1.makeRotationX(Math.PI / 2);
 	matrix1.setPosition(new THREE.Vector3(0, 0, - option.lightConeHeight / 2));
 
-	let geometry = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
+	let geometry = new THREE.PlaneGeometry(iTopoEarthSettings.circularRadius * 2, option.lightConeHeight);
 	geometry.applyMatrix4(matrix1);
 
 	let plane1 = new THREE.Mesh(geometry, material);
@@ -151,17 +151,24 @@ iTopoEarthBuilder.createLightConeMark = function(option) {
 	plane1.position.copy(position);
 	plane2.position.copy(position);
 
-	circlePlane.name = option.objName;
-	circleLine.name = option.objName;
-	plane1.name = option.objName;
-	plane2.name = option.objName;
+	circlePlane.name = option.textValue;
+	circleLine.name = option.textValue;
+	plane1.name = option.textValue;
+	plane2.name = option.textValue;
+	lightConeGrp.name = option.textValue;
 
-	circlePlane.userData = option.objectUUID;
-	circleLine.userData = option.objectUUID;
-	plane1.userData = option.objectUUID;
-	plane2.userData = option.objectUUID;
+	var userData = {
+		objectUUID: option.objectUUID,
+		objectType: option.objectType,
+	}
 
-	if(option.GlobalKind === "Global3D"){
+	circlePlane.userData = userData;
+	circleLine.userData = userData;
+	plane1.userData = userData;
+	plane2.userData = userData;
+	lightConeGrp.userData = userData;
+
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
 		circlePlane.lookAt(0, 0, 0);
 		circleLine.lookAt(0, 0, 0);
 		plane1.lookAt(0, 0, 0);
@@ -182,15 +189,16 @@ iTopoEarthBuilder.createLightConeMark = function(option) {
 
 	if (!option.textMarked) {
 
-		if(option.GlobalKind === "Global3D" ){
-
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D" ){
+			let planeW = option.fontSize/iTopoEarthSettings.mapScaleSize;
+			let planeH = option.fontSize*(option.textValue.length+1)/iTopoEarthSettings.mapScaleSize;
 			let matrix2 = new THREE.Matrix4;
 			matrix2.makeRotationX(-Math.PI / 2);
 			let matrix3 = new THREE.Matrix4;
 			matrix3.makeRotationY(Math.PI );
 			matrix2.multiply (matrix3);
-			matrix2.setPosition(new THREE.Vector3(0, 0, -3*option.lightConeHeight / 2));
-			let textPanel = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
+			matrix2.setPosition(new THREE.Vector3(0, 0, -option.lightConeHeight-planeH/2 ));
+			let textPanel = new THREE.PlaneGeometry(planeW, planeH);
 			textPanel.applyMatrix4(matrix2);
 
 			let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createVerCanvasFont(option.fontSize,5, option.textValue, option.fontColor));
@@ -208,10 +216,12 @@ iTopoEarthBuilder.createLightConeMark = function(option) {
 			fontMesh.lookAt(0, 0, 0);
 			lightConeMark.fontMesh = fontMesh;
 		} else {
+			let planeW = option.fontSize/iTopoEarthSettings.mapScaleSize;
+			let planeH = option.fontSize*(option.textValue.length+1)/iTopoEarthSettings.mapScaleSize;
 			let matrix2 = new THREE.Matrix4;
 			matrix2.makeRotationX(Math.PI / 2);
-			matrix2.setPosition(new THREE.Vector3(0, 0, option.lightConeHeight / 2));
-			let textPanel = new THREE.PlaneGeometry(iTopoEarthSettings.HEXAGON_RADIUS * 2, option.lightConeHeight);
+			matrix2.setPosition(new THREE.Vector3(0, 0, planeH / 2));
+			let textPanel = new THREE.PlaneGeometry(planeW,planeH);
 			textPanel.applyMatrix4(matrix2);
 
 			let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createVerCanvasFont(option.fontSize,5, option.textValue, option.fontColor));
@@ -226,7 +236,7 @@ iTopoEarthBuilder.createLightConeMark = function(option) {
 
 			position = new THREE.Vector3(cityX, cityY,option.lightConeHeight + iTopoEarthSettings.zHeight);
 			fontMesh.position.copy(position);
-			fontMesh.lookAt(position.x, position.y, 100);
+			fontMesh.lookAt(position.x, position.y, option.lightConeHeight + iTopoEarthSettings.zHeight*2);
 			lightConeMark.fontMesh = fontMesh;
 		}
 	}
@@ -353,15 +363,20 @@ iTopoEarthBuilder.createStar = function(option) {
 		//console.log(option);
 		var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
 		var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
-		starPoint = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight + option.starSize/2+
-		iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud);
+		starPoint = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight + option.starSize/2
+			+ iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud);
+	}
+
+	var userData = {
+		objectUUID: option.objectUUID,
+		objectType: option.objectType,
 	}
 
 	var starGeo = new THREE.SphereBufferGeometry(option.starSize, 50, 50);
 	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.waveShaderMaterial);
 	starMesh.position.copy(starPoint);
 	starMesh.name = option.textValue;
-	starMesh.userData = option.objectUUID;
+	starMesh.userData = userData;
 
 	return starMesh;
 }

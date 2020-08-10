@@ -323,40 +323,8 @@ function Strings( config ) {
 			'viewport/info/objects': 'Objects',
 			'viewport/info/vertices': 'Vertices',
 			'viewport/info/triangles': 'Triangles',
-			'viewport/info/frametime': 'Frametime',
+			'viewport/info/frametime': 'Frametime'
 
-			'LightToolbar/lightStars': 'Light Stars',
-			'LightToolbar/lightEarth': 'Light Earth',
-			'LightToolbar/cancel' : 'Cancel',
-
-			'iTopoDialog/lightStars/longitude' : 'Longitude',
-			'iTopoDialog/lightStars/latitude' : 'Latitude',
-			'iTopoDialog/lightStars/starWish' : 'Star Wish',
-
-			'iTopoDialog/lightEarth/new':'NEW',
-			'iTopoDialog/lightEarth/uuid':'UUID',
-			'iTopoDialog/lightEarth/taskType' : 'Task Type',
-			'iTopoDialog/lightEarth/longitude' : 'Longitude',
-			'iTopoDialog/lightEarth/latitude' : 'Latitude',
-			'iTopoDialog/lightEarth/lightWish' : 'Light Wish',
-
-			'menubar/EcologicalFarm':'Ecological Farm',
-			'menubar/SharedCanteen': 'Shared Canteen',
-			'menubar/blockChain' : 'Block Chain',
-			'menubar/Login' : 'Login',
-
-			'menubar/SharedCanteen/yuhuazhai': 'Yuhuazhai',
-			'menubar/SharedCanteen/sharedCookbook': 'Shared Cookbook',
-
-			'menubar/EcologicalFarm/itopoBase': 'iTopoBase',
-
-			'menubar/blockChain/HorizenSecureNodesMap' :'Horizen Secure Nodes Map',
-			'menubar/blockChain/horizenSuperNodesMap'  :'horizen Super Nodes Map',
-
-			'sidebar/iTopoTask' : 'iTopoTask',
-			'sidebar/iTopoTask/dynamic': 'dynamic',
-			'sidebar/iTopoTask/contribute':'contribute',
-			'sidebar/iTopoTask/participants' : 'participants',
 		},
 
 		fr: {
@@ -674,10 +642,8 @@ function Strings( config ) {
 			'viewport/info/objects': 'Objets',
 			'viewport/info/vertices': 'Sommets',
 			'viewport/info/triangles': 'Triangles',
-			'viewport/info/frametime': 'Temps de trame',
+			'viewport/info/frametime': 'Temps de trame'
 
-			'LightToolbar/lightStars': 'Light Stars',
-			'LightToolbar/lightEarth': 'Light Earth',
 		},
 
 		zh: {
@@ -978,10 +944,8 @@ function Strings( config ) {
 			'viewport/info/objects': '物体',
 			'viewport/info/vertices': '顶点',
 			'viewport/info/triangles': '三角形',
-			'viewport/info/frametime': '帧时',
+			'viewport/info/frametime': '帧时'
 
-			'LightToolbar/lightStars': '点亮星空',
-			'LightToolbar/lightEarth': '点亮地球',
 		}
 
 	};

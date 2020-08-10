@@ -4,15 +4,16 @@
 
 import * as THREE from '../../build/three.module.js';
 
-import { Config } from '../js/Config.js';
+
 import { Loader } from '../js/Loader.js';
 import { History as _History } from '../js/History.js';
-import { Strings } from '../js/Strings.js';
 import { Storage as _Storage } from '../js/Storage.js';
+import { iTopoStrings } from './iTopoStrings.js';
+import { iTopoConfig } from './iTopoConfig.js';
 
 var _DEFAULT_CAMERA = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );
 _DEFAULT_CAMERA.name = 'Camera';
-_DEFAULT_CAMERA.position.set( 0, 0, 500 );
+_DEFAULT_CAMERA.position.set( 0, 0, Math.PI* 1800 );
 _DEFAULT_CAMERA.lookAt( new THREE.Vector3() );
 
 function iTopoEditor() {
@@ -87,10 +88,10 @@ function iTopoEditor() {
 
 	};
 
-	this.config = new Config();
+	this.config = new iTopoConfig();
 	this.history = new _History( this );
 	this.storage = new _Storage();
-	this.strings = new Strings( this.config );
+	this.strings = new iTopoStrings( this.config );
 
 	this.loader = new Loader( this );
 
@@ -100,6 +101,52 @@ function iTopoEditor() {
 	this.scene.name = 'Scene';
 
 	this.sceneHelpers = new THREE.Scene();
+
+	{
+	  // const skyColor = 0xB1E1FF;  // light blue
+	  // const groundColor = 0xB97A20;  // brownish orange
+	  // const intensity = 1;
+	  // const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+	  // this.sceneHelpers.add(light);
+	}
+
+	{
+	  const color = 0xFFFFFF;
+	  const intensity = 1;
+	  const light = new THREE.DirectionalLight(color, intensity);
+	  light.position.set(0, 0, 50);
+	  this.sceneHelpers.add(light);
+	  this.sceneHelpers.add(light.target);
+	}
+
+	{
+		var ambient = new THREE.AmbientLight(0xffffff);
+		this.sceneHelpers.add(ambient);
+	}
+
+	{ //lights()光影自己改哦
+
+	    //聚光灯
+	    //  SpotLight( color：颜色, intensity：强度, distance：发光距离, angle：角度, penumbra：边缘范围, decay：衰减 )
+	    // var spotLight = new THREE.SpotLight(0xffffff, 1);
+	    // spotLight.position.set(0, 500, 0);
+	    // spotLight.angle = Math.PI / 6;
+	    // spotLight.penumbra = 0.05; //边缘范围，反比
+	    // spotLight.decay = 2; //衰减系数，反比
+	    // spotLight.distance = 400; //发光距离
+	    // spotLight.castShadow = true; //阴影
+	    // spotLight.shadow.mapSize.width = 1024;
+	    // spotLight.shadow.mapSize.height = 1024;
+	    // spotLight.shadow.camera.near = 10; //近截面
+	    // spotLight.shadow.camera.far = 250;
+	    // this.sceneHelpers.add(spotLight);
+
+		// 聚光灯显示助手SpotLightHelper( light:灯光, color：颜色 )
+	//	var lightHelper = new THREE.SpotLightHelper(spotLight, 0xdfdfdf);
+	//	this.sceneHelpers.add(lightHelper);
+	}
+
+
 
 	this.object = {};
 	this.geometries = {};
@@ -117,6 +164,11 @@ function iTopoEditor() {
 
 	this.cameras = {};
 	this.viewportCamera = this.camera;
+
+	// {
+	// 	this.cameraHelper = new THREE.CameraHelper(this.viewportCamera);
+	// 	this.scene.add(this.cameraHelper);
+	// }
 
 	this.addCamera( this.camera );
 

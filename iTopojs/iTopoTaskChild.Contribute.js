@@ -17,7 +17,7 @@ function iTopoTaskChildContribute( editor ) {
 	var container = new UIPanel();
 	container.setDisplay( 'none' );
 
-	container.add( new UIText( strings.getKey( 'sidebar/script' ) ).setTextTransform( 'uppercase' ) );
+	container.add( new UIText( strings.getKey( 'sidebar/contribute' ) ).setTextTransform( 'uppercase' ) );
 	container.add( new UIBreak() );
 	container.add( new UIBreak() );
 
@@ -26,7 +26,7 @@ function iTopoTaskChildContribute( editor ) {
 	var scriptsContainer = new UIRow();
 	container.add( scriptsContainer );
 
-	var newScript = new UIButton( strings.getKey( 'sidebar/script/new' ) );
+	var newScript = new UIButton( strings.getKey( 'sidebar/contribute/newTask' ) );
 	newScript.onClick( function () {
 
 		var script = { name: '', source: 'function update( event ) {}' };

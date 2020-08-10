@@ -1,23 +1,21 @@
-import * as THREE from '../../build/three.module.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js';
-import { MeshLine,MeshLineMaterial } from './THREE.MeshLine.js';
-
 export var iTopoEarthSettings = iTopoEarthSettings || {};
 
 iTopoEarthSettings = {
-	GLOBAL_KIND: "Global2D",
+	GLOBAL_KIND: "Global3D",
 	MAP_KIND: "共创基地", //{超级节点儿,普通节点儿,共创基地,雨花斋}
-	CITY_RADIUS: 180,
-	CITY_MARGIN: 0.1,
+	CITY_RADIUS: 1800,
 	BLINT_SPEED: 0.1,
-	HEXAGON_RADIUS: 1,
 	EARTH_ROTATE_SPEED: 0.0001,
 	COLUD_RADIUS_RATIO: 1.382,
 
 	EARTH_STYLE: "标准地图", //'粒子地壳'/线框地壳;
 
+	EARTH_PNG_WORLDGEOMETRY:"./iTopojs/img/earth_worldGeometry.PNG",
+	EARTH_PNG_COUNTRY_INDEX_TEXTURE:"./iTopojs/BASEmODELfILES/WORLD/country-index-texture.PNG",
+	EARTH_PNG_COUNTRY_OUTLINES:"./iTopojs/BASEmODELfILES/WORLD/country-outlines-4k.PNG",
 	EARTH_IMG_BLACKANDWIHTE: "./iTopojs/img/earth.jpg",
 	EARTH_IMG_BLUE: "./iTopojs/img/earth_atmos_4096.jpg",
+
 	coludImg: "./iTopojs/img/clouds.jpg",
 	DOT_PNG_PATH: "./iTopojs/img/dot.png",
 	LAND_MARK_LIGHTRAY_JPG: "./iTopojs/img/lightray.jpg",
@@ -29,17 +27,22 @@ iTopoEarthSettings = {
 	HORIZEN_SECURENODES_FILE: "./iTopojs/json/ZenSecureNodes.json",
 
 	CANTEEN_YUHUAZHAI_FILE: "./iTopojs/json/iTopoCanteen.json",
-	CANTEEN_ITOPOBASE_FILE: "./iTopojs/json/iTopobase.json",
-
-	WORLD_LINE_WIDTH: 0.81,
+	ITOPOBASE_FILE: "./iTopojs/json/iTopobase.json",
+//	CANTEEN_ITOPOBASE_FILE: "./iTopoAbsorber/iTopobase.json",
 	// 地图z轴厚度
-	zHeight: 10,
+	zHeight: 33,
+
+	starSize: 10,
+
+	WORLD_LINE_WIDTH: 3,
+	CITY_MARGIN: 1,
+
 	// 标记圆锥体高度
 	circularHeight: 6,
 	// 圆锥体和球体直径
-	circularRadio: 2,
-	// 地图缩放比例
-	mapScaleSize: 2.2,
+	circularRadius: 6,
+	// 地图缩放比例360/(1800*Math.PI )
+	mapScaleSize: 1/Math.PI,
 
 	mapTitleColor: "#0867ff",
 	BACKGROUND_COLOR: '#86c9c9',

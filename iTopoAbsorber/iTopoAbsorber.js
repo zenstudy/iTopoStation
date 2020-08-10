@@ -4,15 +4,6 @@ const https = require('https');
 const fs = require('fs');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-/*  var per = {
-        name:'zhangsan',
-        age:25,
-        job:'html',
-        sayName:function(){
-            alert(this.name);
-        }
-    }*/
-
 var json;
 let zNodeArray = new Array();
 
@@ -31,7 +22,7 @@ var iTopoAbsorber = {
 			res2.on('end', function() {
 				//数据获取完，执行回调函数
 				json = JSON.parse(html);
-				
+
 				console.log("Get IPs to resolve...");
 				let IPs = new Array();
 				for (var i = 0; i < json.rows.length; i++) {
@@ -126,7 +117,7 @@ function ResolveIPInfo(IPs, startIndex, jsonFName) {
 						ResolveIPInfo(IPs, startIndex + 100, jsonFName);
 					}, timeOut);
 				}
-			} 
+			}
 			else if(xhr.status == 429){
 				let timeOut = 15000;
 				console.log('太多请求, wait for ' + timeOut + ' to try again...');
@@ -166,11 +157,12 @@ function ResolveIPInfo(IPs, startIndex, jsonFName) {
 }
 
 function findZenNode(IPs, ipToSearch, startIndex, endIndex) {
+	
 	if(startIndex >= IPs.length)
 		return -1;
 	if(endIndex > IPs.length)
 		return -1;
-	
+
 	for (let ii = startIndex; ii < endIndex; ii++) {
 		if (IPs[ii] == ipToSearch) {
 			return ii;
@@ -179,6 +171,4 @@ function findZenNode(IPs, ipToSearch, startIndex, endIndex) {
 	return -1;
 }
 
-module.exports = {
-	iTopoAbsorber
-};
+module.exports = { iTopoAbsorber };

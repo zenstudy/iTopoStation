@@ -1,6 +1,5 @@
 import * as THREE from '../../build/three.module.js';
 import { MeshLine,MeshLineMaterial } from './THREE.MeshLine.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js';
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
 export var iTopoEarthCache = iTopoEarthCache || {};
@@ -8,7 +7,7 @@ export var iTopoEarthCache = iTopoEarthCache || {};
 function generateEarthCache() {
 
 	iTopoEarthCache = {
-		earthBufferSphere: new THREE.SphereBufferGeometry(iTopoEarthSettings.CITY_RADIUS, 50, 50),
+		earthBufferSphere: new THREE.SphereBufferGeometry(iTopoEarthSettings.CITY_RADIUS, iTopoEarthSettings.CITY_RADIUS, iTopoEarthSettings.CITY_RADIUS),
 		earthBufferCloud: new THREE.SphereBufferGeometry(iTopoEarthSettings.COLUD_RADIUS_RATIO * iTopoEarthSettings.CITY_RADIUS,
 			66,
 			44),
@@ -79,11 +78,10 @@ function generateEarthCache() {
 		sphereShaderMaterial: getSphereShaderMaterial() ,
 
 		circleLineGeom: new THREE.Geometry(),
-		hexagonPlane: new THREE.CircleGeometry(iTopoEarthSettings.HEXAGON_RADIUS - iTopoEarthSettings
-			.CITY_MARGIN, 24),
+		hexagonPlane: new THREE.CircleGeometry(iTopoEarthSettings.circularRadius - iTopoEarthSettings.CITY_MARGIN, 24),
 	}
 
-	let hexagonLine = new THREE.CircleGeometry(iTopoEarthSettings.HEXAGON_RADIUS, 24);
+	let hexagonLine = new THREE.CircleGeometry(iTopoEarthSettings.circularRadius, 24);
 	hexagonLine.vertices.shift(); // 第一个节点是中心点
 	iTopoEarthCache.circleLineGeom.vertices = hexagonLine.vertices;
 }

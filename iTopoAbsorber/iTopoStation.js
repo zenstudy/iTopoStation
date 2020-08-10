@@ -8,9 +8,7 @@ let {
 	iTopoAbsorber
 } = require('./iTopoAbsorber.js');
 
-/*let {
-	pTopoDataMapEarth
-} = require('./iTopoStation/dataMap/pTopoDataMapEarth.js');*/
+/*let {pTopoDataMapEarth} = require('./iTopoStation/dataMap/pTopoDataMapEarth.js');*/
 
 //require的核心概念：在导出的文件中定义module.exports，导出的对象类型不予限定（可为任意类型）。在导入的文件中使用require()引入即可使用。本质上，是将要导出的对象，赋值给module这个对象的exports属性，在其他文件中通过require这个方法来访问exports这个属性。上面b.js中，require(./a.js) = exports 这个对象，然后使用es6取值方式从exports对象中取出test的值。
 
@@ -32,10 +30,26 @@ app.use('/', routes);
 app.use('/users', users);
 */
 
+/* GET home page. */
+// router.get('/', function(req, res, next) {
+//     res.render('index', { title: 'Express' });
+//   });
+
+app.get('/', function(req, res) {
+	const indexPageFile = __dirname + '/iTopoCanteen.html';
+
+	fs.readFile(indexPageFile, 'utf-8', function(err, data) {
+		res.send(data);
+		if (err) {
+			throw err;
+		}
+	});
+});
+
 app.get('/ZenNodes', function(req, res) {
 	// 目标url
 	const pageUrl = "https://supernodes1.eu.zensystem.io/grid/all/nodes";
-	const jsonFName = __dirname + '/iTopoStation/ZenSuperNodes.json';
+
 	let html = '';
 	// 请求url，返回html
 	http.get(pageUrl, function(res2) {
@@ -48,6 +62,7 @@ app.get('/ZenNodes', function(req, res) {
 			// dealHTML(html);
 			res.send(html);
 
+			const jsonFName = __dirname + '/iTopoStation/ZenSuperNodes.json';
 			fs.writeFile(jsonFName, html, function(err) {
 				if (err) console.error(err);
 				console.log('数据已经写入' + jsonFName);
@@ -60,7 +75,7 @@ app.get('/ZenNodes', function(req, res) {
 app.get('/SecureNodes', function(req, res) {
 	// 目标url
 	const pageUrl = "https://securenodes1.na.zensystem.io/grid/all/nodes";
-	const jsonFName = __dirname + '/iTopoStation/ZenSecureNodes.json';
+
 	let html = '';
 	// 请求url，返回html
 	http.get(pageUrl, function(res2) {
@@ -73,6 +88,7 @@ app.get('/SecureNodes', function(req, res) {
 			// dealHTML(html);
 			res.send(html);
 
+			const jsonFName = __dirname + '/iTopoStation/ZenSecureNodes.json';
 			fs.writeFile(jsonFName, html, function(err) {
 				if (err) console.error(err);
 				console.log('数据已经写入' + jsonFName);
@@ -82,37 +98,96 @@ app.get('/SecureNodes', function(req, res) {
 	});
 });
 
-app.get('/', function(req, res) {
-	// 目标url
-	const pageUrl = "https://securenodes1.na.zensystem.io/grid/all/nodes";
-	const indexPageFile = __dirname + '/iTopoStation/index.html';
-	let html = '';
+// POST method route —— 根据请求路径来处理客户端发出的Post请求。
+// app.post('/', function (req, res) {
+// 	res.send('POST request to the homepage');
+// });
 
-	// 请求url，返回html
-	http.get(pageUrl, function(res2) {
-		res2.on('data', function(data) {
-			//html += data;
+app.get('/lightEarth', function(req, res) {
+	res.send('the lightEarth page');
+});
+
+app.post('/lightEarth', function(req, res) {
+
+	var postData = "";
+
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
+
+	//res.setHeader("application/json; charset=utf-8");
+	//JSON.parse()
+	//
+	//res.send(JSON.stringify(lightTask));
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+		console.log("Received POST data :") + postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		res.write(postData);
+		var newLightTask = JSON.parse(postData);
+		const iTopoJsonFName = '../iTopoJs/json/iTopobase.json';
+		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var lightTasks = JSON.parse(data);
+				console.log(lightTasks);
+				lightTasks.push(newLightTask);
+
+				fs.writeFile(iTopoJsonFName, JSON.stringify(lightTasks), function(err) {
+					if (err) console.error(err);
+					console.log('数据已经写入' + iTopoJsonFName);
+				});
+			}
 		});
-		res2.on('end', function() {
-			fs.readFile(indexPageFile, 'utf-8', function(err, data) {
-				res.send(data);
-				if (err) {
-					throw err;
-				}
-			});
-		});
+
+		res.end();
 	});
 });
 
-// POST method route —— 根据请求路径来处理客户端发出的Post请求。
-//app.post('/', function (req, res) {
-// res.send('POST request to the homepage');
-//});
+app.post('/iTopoEarthLogin', function(req, res) {
 
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//     res.render('index', { title: 'Express' });
-//   });
+	var postData = "";
+
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
+
+	//res.setHeader("application/json; charset=utf-8");
+	//JSON.parse()
+	//
+	//res.send(JSON.stringify(lightTask));
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+		console.log("Received POST data :") + postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		res.write(postData);
+		var newUserStarInfo = JSON.parse(postData);
+		const iTopoJsonFName = '../iTopoJs/json/iTopoUser.json';
+		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var userStarInfos = JSON.parse(data);
+				console.log(userStarInfos);
+				userStarInfos.push(newUserStarInfo);
+
+				fs.writeFile(iTopoJsonFName, JSON.stringify(userStarInfos), function(err) {
+					if (err) console.error(err);
+					console.log('数据已经写入' + iTopoJsonFName);
+				});
+			}
+		});
+
+		res.end();
+	});
+});
 
 
 var server = app.listen(8081, function() {
@@ -129,6 +204,6 @@ const ZENSUPERNODESURL = "https://supernodes1.eu.zensystem.io/grid/all/nodes";
 const ZENSUPERJSONFILENAME = "ZenSuperNodes.json";
 const ZENSECURENODESURL = "https://securenodes1.na.zensystem.io/grid/all/nodes";
 const ZENSECUREFILENAME = "ZenSecureNodes.json";
-	iTopoAbsorber.FetchHorizenNodesInfo(ZENSUPERNODESURL,ZENSUPERJSONFILENAME);
+//	iTopoAbsorber.FetchHorizenNodesInfo(ZENSUPERNODESURL,ZENSUPERJSONFILENAME);
 //	iTopoAbsorber.FetchHorizenNodesInfo(ZENSECURENODESURL,ZENSECUREFILENAME);
 //});

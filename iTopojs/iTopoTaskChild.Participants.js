@@ -171,7 +171,7 @@ function iTopoTaskChildParticipants( editor ) {
 	var geometryNameRow = new UIRow();
 	var geometryName = new UIInput().setWidth( '150px' ).setFontSize( '12px' ).onChange( function () {
 
-		editor.execute( new SetGeometryValueCommand( editor, editor.selected, 'name', geometryName.getValue() ) );
+	//	editor.execute( new SetGeometryValueCommand( editor, editor.selected, 'name', geometryName.getValue() ) );
 
 	} );
 

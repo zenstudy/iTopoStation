@@ -37,7 +37,6 @@ iTopoEarthModel.ReCreate = function() {
 	layerCloud = new THREE.Object3D();
 	layerMarks = new THREE.Object3D();
 	layerStars = new THREE.Object3D();
-
 	//iTopoEarthModel.createEarthAxis();
 
 	let titlePos;
@@ -53,8 +52,8 @@ iTopoEarthModel.ReCreate = function() {
 	iTopoEarthModel.MarkiTopoStars();
 
 	if (iTopoEarthSettings.MAP_KIND == "共创基地") {
-		iTopoEarthModel.MarkiTopoBase(iTopoEarthSettings.CANTEEN_ITOPOBASE_FILE);
-		iTopoEarthModel.MarkCountries();
+		iTopoEarthModel.MarkiTopoBase(iTopoEarthSettings.ITOPOBASE_FILE);
+//		iTopoEarthModel.MarkCountries();
 	} else if (iTopoEarthSettings.MAP_KIND == "雨花斋") {
 		iTopoEarthModel.MarkCanteen(iTopoEarthSettings.CANTEEN_YUHUAZHAI_FILE);
 	}else if (iTopoEarthSettings.MAP_KIND == "超级节点儿") {
@@ -122,20 +121,16 @@ iTopoEarthModel.RotateToBeijing = function(camera) {
 	camera.lookAt(0, 0, 0);
 }
 
-iTopoEarthModel.lightStars = function(objUUID, camera) {
-	var plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-	var plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-	var lngx = plusOrMinus_lngx * (Math.random() * 180);
-	var latx = plusOrMinus_latx * (Math.random() * 90);
+iTopoEarthModel.lightStars = function(userStarInfo) {
 
 	var option = {
-		"objectUUID": THREE.MathUtils.generateUUID(),
-		"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
-		"pos": [lngx, latx],
+		"objectUUID": userStarInfo.starUUID,
+		"objectType": userStarInfo.starType,
+		"pos": [userStarInfo.lng, userStarInfo.lat],
 		"starSize": 3 + 3 * Math.random(),
 		"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS,
 		"textMarked": false,
-		"textValue": "我的星星" + lngx + "," + latx,
+		"textValue": "我的星星" + userStarInfo.objectUUID,
 		"fontColor": iTopoEarthSettings.markingTextColor,
 		"fontSize": iTopoEarthSettings.markingFontSize,
 		"average": getAverage(),
@@ -144,69 +139,81 @@ iTopoEarthModel.lightStars = function(objUUID, camera) {
 	var star = iTopoEarthBuilder.createStar(option);
 
 	editor.execute(new AddiTopoObjCommand(editor, star));
+	console.log(star.userData);
 
-	const seeFrom = createPosition(lngx, latx, 2 * iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);
-	iTopoEarthModel.ParticlesMove(seeFrom, camera);
-	camera.position.copy(seeFrom);
-	camera.lookAt(0, 0, 0);
+	const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
+		+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );
+	iTopoEarthModel.ParticlesMove(seeFrom, editor.camera);
+	editor.camera.position.copy(seeFrom);
+	editor.camera.lookAt(0, 0, 0);
 }
 
-iTopoEarthModel.lightEarth = function(objUUID, camera) {
-	var plusOrMinus = Math.round(Math.random()) * 2 - 1;
-	var lngx = plusOrMinus * Math.random() * 180;
-	var latx = plusOrMinus * Math.random() * 90;
-	//var lnglatx = [plusOrMinus * Math.random() * 180, plusOrMinus * Math.random() * 90];
-	const seeFrom = createPosition(lngx, latx, 2 * iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);
+// iTopoEarthModel.lightEarth = function(objUUID, camera) {
+// 	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
+// 	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
+// 	const lngx = plusOrMinus_lngx * (Math.random() * 180);
+// 	const latx = plusOrMinus_latx * (Math.random() * 90);
 
-	iTopoEarthModel.ParticlesMove(seeFrom, camera);
-	camera.position.copy(seeFrom);
-	camera.lookAt(0, 0, 0);
+// 	const lookat = createPosition(lngx, latx, iTopoEarthSettings.CITY_RADIUS*1.2 );
+
+// 	let seeFrom = (plusOrMinus_latx === 1)?
+// 		createPosition(lngx, latx - 28, iTopoEarthSettings.CITY_RADIUS*1.3)
+// 		: createPosition(lngx, latx + 28, iTopoEarthSettings.CITY_RADIUS*1.3);
+
+// //	iTopoEarthModel.ParticlesMove(seeFrom, editor.camera);
+// 	editor.camera.position.copy(seeFrom);
+// 	editor.camera.lookAt(lookat.x, lookat.y, lookat.z);
+// //	camera.up.set(0,iTopoEarthSettings.CITY_RADIUS*3,0);
+
+// 	var option = {
+// 		"objectUUID": objUUID,
+// 		"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+// 		"pos": [lngx, latx],
+// 		"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
+// 		"lightConeHeight": randomLightConeHeight(),
+// 		"textMarked": false,
+// 		"textValue": "共创基地" + lngx + "," + latx,
+// 		"fontColor": iTopoEarthSettings.markingTextColor,
+// 		"fontSize": iTopoEarthSettings.markingFontSize,
+// 		"average": getAverage(),
+// 	}
+
+// 	var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
+// 	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
+// 	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.fontMesh));
+// }
+
+iTopoEarthModel.lightEarth = function(lightTask) {
+
+	const seeFrom = createPosition(lightTask.lng, lightTask.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);
+
+	iTopoEarthModel.ParticlesMove(seeFrom);
+	editor.camera.position.copy(seeFrom);
+	editor.camera.lookAt(0, 0, 0);
 
 	var option = {
-		"objectUUID": objUUID,
-		"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
-		"pos": [lngx, latx],
+		"objectUUID": lightTask.baseUUID,
+		"objectType": lightTask.taskType,
+		"pos": [lightTask.lng, lightTask.lat],
 		"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
 		"lightConeHeight": randomLightConeHeight(),
 		"textMarked": false,
-		"textValue": "共创基地" + lngx + "," + latx,
+		"textValue": lightTask.title,
 		"fontColor": iTopoEarthSettings.markingTextColor,
 		"fontSize": iTopoEarthSettings.markingFontSize,
 		"average": getAverage(),
 	}
 
 	var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
 	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.fontMesh));
+	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
 }
 
-function tweenComplete(factorOrbit, ball, matrix) {
-	var stepCount = factorOrbit.vertices.length - 1;
-	var tween = new TWEEN.Tween({
-			step: 0
-		})
-		.to({
-			step: stepCount
-		}, 10000)
-		.easing(TWEEN.Easing.Linear.None)
-		//		.delay(1000)
-		.onUpdate(function(index) {
-			//			console.log(index);
-			var pos = factorOrbit.vertices[Math.round(index.step)].clone();
-			pos = pos.applyMatrix4(matrix);
-			ball.position.copy(pos);
-		})
-		.onComplete(function() {
-			tweenComplete(factorOrbit, ball, matrix);
-		})
-		.start();
-}
-
-iTopoEarthModel.ParticlesMove = function(camera2Pos, camera) {
+iTopoEarthModel.ParticlesMove = function(camera2Pos) {
 	let endP = {
-		x: camera.position.x,
-		y: camera.position.y,
-		z: camera.position.z,
+		x: editor.camera.position.x,
+		y: editor.camera.position.y,
+		z: editor.camera.position.z,
 	}
 	var tween = new TWEEN.Tween(endP);
 	tween.to({
@@ -217,12 +224,12 @@ iTopoEarthModel.ParticlesMove = function(camera2Pos, camera) {
 
 	function onUpdate(object) {
 		let aniCamera = new THREE.Vector3(object.x, object.y, object.z);
-		camera.position.copy(aniCamera);
-		camera.lookAt(0, 0, 0);
+		editor.camera.position.copy(aniCamera);
+		editor.camera.lookAt(0, 0, 0);
 	}
 
 	function onComplete(object) {
-		camera.position.copy(camera2Pos);
+		editor.camera.position.copy(camera2Pos);
 	}
 
 	tween.onUpdate(onUpdate);
@@ -241,10 +248,10 @@ iTopoEarthModel.MarkiTopoStars = function() {
 
 		var option = {
 			"objectUUID": THREE.MathUtils.generateUUID(),
-			"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+			"objectType": 'Star',
 			"pos": [lngx, latx],
-			"starSize": 3 + 3 * Math.random(),
-			"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS*30,
+			"starSize": iTopoEarthSettings.starSize * (1 + Math.random()),
+			"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS * 5,
 			"textMarked": false,
 			"textValue": "我的星星" + lngx + "," + latx,
 			"fontColor": iTopoEarthSettings.markingTextColor,
@@ -476,10 +483,11 @@ var CreateWorldSphereMap = function() {
 			})
 
 			// 创建地球
-
+			//var earthPic = new THREE.TextureLoader().load(iTopoEarthSettings.EARTH_PNG_WORLDGEOMETRY);
+			var earthPic = new THREE.CanvasTexture(createCanvas(2048, 1024, worldGeometry));
 			var sphereMesh = new THREE.Mesh(iTopoEarthCache.earthBufferSphere,
 				new THREE.MeshBasicMaterial({
-					map: new THREE.CanvasTexture(createCanvas(2048, 1024, worldGeometry)),
+					map: earthPic,
 					side: THREE.FrontSide
 				}));
 
@@ -535,8 +543,8 @@ iTopoEarthModel.MarkCountries = function() {
 	for (let i = 0, length = COUNTRIES.length; i < length; i++) {
 
 		var option = {
-			"objectUUID": "",
-			"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+			"objectUUID": THREE.MathUtils.generateUUID(),
+			"objectType": 'Country',
 			"pos": [COUNTRIES[i].position[0], COUNTRIES[i].position[1]],
 			"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
 			"lightConeHeight": randomLightConeHeight(),
@@ -567,8 +575,8 @@ iTopoEarthModel.MarkiTopoBase = function(url) {
 				for (var i = 0; i < json.length; i++) {
 
 					var option = {
-						"objectUUID": json[i].uuid,
-						"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+						"objectUUID": json[i].baseUUID,
+						"objectType": json[i].taskType,
 						"pos": [json[i].lng, json[i].lat],
 						"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
 						"lightConeHeight": randomLightConeHeight(),
@@ -581,8 +589,8 @@ iTopoEarthModel.MarkiTopoBase = function(url) {
 
 					// 地标
 					var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-					layerMarks.add(lightConeMark.lightConeGrp);
-					//editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
+					//layerMarks.add(lightConeMark.lightConeGrp);
+					editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
 					layerMarks.add(lightConeMark.fontMesh);
 				}
 			} else if (iTopoEarthSettings.markingKind === "balloon") {
@@ -591,8 +599,8 @@ iTopoEarthModel.MarkiTopoBase = function(url) {
 
 				for (var i = 0; i < json.length; i++) {
 					var option = {
-						"objectUUID": json[i].uuid,
-						"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+						"objectUUID": json[i].baseUUID,
+						"objectType": json[i].taskType,
 						"pos": [json[i].lng, json[i].lat],
 						"textMarked": false,
 						"textValue": json[i].title,
@@ -640,8 +648,8 @@ iTopoEarthModel.MarkCanteen = function(url) {
 
 				for (var i = 0; i < json.length; i++) {
 					var option = {
-						"objectUUID": "",
-						"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+						"objectUUID": THREE.MathUtils.generateUUID(),
+						"objectType": 'Canteen',
 						"pos": [json[i].lng, json[i].lat],
 						"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
 						"lightConeHeight": randomLightConeHeight(),
@@ -662,8 +670,8 @@ iTopoEarthModel.MarkCanteen = function(url) {
 
 				for (var i = 0; i < json.length; i++) {
 					var option = {
-						"objectUUID": "",
-						"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+						"objectUUID": THREE.MathUtils.generateUUID(),
+						"objectType": 'Canteen',
 						"pos": [json[i].lng, json[i].lat],
 						"textMarked": false,
 						"textValue": json[i].title,
@@ -713,8 +721,8 @@ iTopoEarthModel.MarkZenNodes = function(url) {
 				for (var i = 0; i < json.length; i++) {
 
 					var option = {
-						"objectUUID": "",
-						"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+						"objectUUID": THREE.MathUtils.generateUUID(),
+						"objectType": 'ZNode',
 						"pos": [json[i].lon, json[i].lat],
 						"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
 						"lightConeHeight": randomLightConeHeight(),
@@ -739,8 +747,8 @@ iTopoEarthModel.MarkZenNodes = function(url) {
 				for (var i = 0; i < json.length; i++) {
 
 					var option = {
-						"objectUUID": "",
-						"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
+						"objectUUID": THREE.MathUtils.generateUUID(),
+						"objectType": 'ZNode',
 						"pos": [json[i].lon, json[i].lat],
 						"textMarked": false,
 						"textValue": json[i].city,
@@ -908,4 +916,11 @@ function randomLightConeHeight() {
 	let height = (Math.random() * (iTopoEarthSettings.COLUD_RADIUS_RATIO - 1.1) + 0.1) * iTopoEarthSettings
 		.CITY_RADIUS;
 	return height;
+}
+
+function downloadEarthCanvas(){
+	var earthCanvas = createCanvas(2048, 1024, worldGeometry);
+	//localStorage.setItem( "savedImageData", earthCanvas.toDataURL("image/png") );
+	var image = earthCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+	window.location.href=image; // it will save locally
 }

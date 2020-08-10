@@ -13,7 +13,7 @@ import { EditorControls } from '../js/EditorControls.js';
 
 import { GlobalKindView } from './GlobalKindView.js';
 import { GlobalStyleView } from './GlobalStyleView.js';
-import { ViewportInfo } from '../js/Viewport.Info.js';
+import { iTopoViewportInfo } from './iTopoViewport.Info.js';
 import { ViewHelper } from '../js/Viewport.ViewHelper.js';
 
 import { SetPositionCommand } from '../js/commands/SetPositionCommand.js';
@@ -36,7 +36,7 @@ function iTopoViewport( editor ) {
 
 	container.add( new GlobalKindView( editor ) );
 	container.add( new GlobalStyleView( editor ) );
-	container.add( new ViewportInfo( editor ) );
+	container.add( new iTopoViewportInfo( editor ) );
 
 	//
 
@@ -406,7 +406,7 @@ function iTopoViewport( editor ) {
 
 		if ( object !== null && object !== scene && object !== camera ) {
 			box.setFromObject( object );
-
+			console.log(object.userData.objectUUID + ',' + object.userData.objectType);
 			if ( box.isEmpty() === false ) {
 				selectionBox.setFromObject( object );
 				selectionBox.visible = true;
@@ -752,14 +752,16 @@ function iTopoViewport( editor ) {
 		renderer.render( scene, editor.viewportCamera );
 		scene.remove( grid );
 
-		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
-			 scene.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
-			 sceneHelpers.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
-			 //iTopoEarthModel.RotateToBeijing(editor.camera);
-		 }  else {
-			scene.rotation.y = 0;
-			sceneHelpers.rotation.y = 0;
-		 }
+		//editor.cameraHelper.update();
+
+		// if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
+		// 	 scene.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
+		// 	 sceneHelpers.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
+		// 	 //iTopoEarthModel.RotateToBeijing(editor.camera);
+		//  }  else {
+		// 	scene.rotation.y = 0;
+		// 	sceneHelpers.rotation.y = 0;
+		//  }
 
 		if ( camera === editor.viewportCamera ) {
 			renderer.autoClear = false;

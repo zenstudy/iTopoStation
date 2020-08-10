@@ -35,7 +35,7 @@ input {
 
 textarea {
 	tab-size: 4;
-	white-space: pre;
+	white-space: normal;
 	word-wrap: normal;
 	vertical-align: middle;
 }

@@ -9,15 +9,15 @@ import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
 function iTopoTaskBriefcaseHeader( editor ) {
 
-	var lightEarthInfo = {
-		uuid:THREE.MathUtils.generateUUID(),
+	var lightTask = {
+		baseUUID:THREE.MathUtils.generateUUID(),
 		taskType: 'Canteen',
+		title: "湖北恩施宣恩县:松果家园",
+		city: "恩施",
+		address: "湖北恩施宣恩县",
 		longitude:0,
 		latitude:0,
 		lightWish:"light wish",
-		city: "恩施",
-		title: "湖北恩施宣恩县:松果家园",
-		address: "湖北恩施宣恩县",
 	};
 
 	var signals = editor.signals;
@@ -28,11 +28,11 @@ function iTopoTaskBriefcaseHeader( editor ) {
 	container.setPaddingTop( '20px' );
 
 	{
-		// uuid
+		// baseUUID
 		var geometryUUIDRow = new UIRow();
 		var geometryUUID = new UIInput().setWidth( '120px' ).setFontSize( '12px' ).setDisabled( true );
-		geometryUUID.setValue( lightEarthInfo.uuid );
-		geometryUUIDRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/uuid' ) ).setWidth( '90px' ) );
+		geometryUUID.setValue( lightTask.baseUUID );
+		geometryUUIDRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/baseUUID' ) ).setWidth( '90px' ) );
 		geometryUUIDRow.add( geometryUUID );
 
 		container.add( geometryUUIDRow );
@@ -50,7 +50,7 @@ function iTopoTaskBriefcaseHeader( editor ) {
 		taskTypeSelect.setValue( options.Canteen );
 		taskTypeSelect.onChange( function () {
 			var value = this.getValue();
-			lightEarthInfo.taskType = value;
+			lightTask.taskType = value;
 		} );
 
 		taskTypeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/taskType' ) ).setWidth( '90px' ) );
@@ -60,11 +60,57 @@ function iTopoTaskBriefcaseHeader( editor ) {
 	}
 
 	{
+		// title
+		var titleRow = new UIRow();
+		titleRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/title' ) ).setWidth( '90px' ) );
+
+		var titleInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
+		titleInput.setValue( lightTask.title );
+		titleInput.onChange( function () {
+			lightTask.title = this.getValue();
+		} );
+		titleRow.add( titleInput );
+
+		container.add( titleRow );
+	}
+
+	{
+		// city
+		var cityRow = new UIRow();
+		cityRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/city' ) ).setWidth( '90px' ) );
+
+		var cityInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
+		cityInput.setValue( lightTask.city );
+		cityInput.onChange( function () {
+			lightTask.city = this.getValue();
+		} );
+		cityRow.add( cityInput );
+
+		container.add( cityRow );
+	}
+
+	{
+		// address
+		var addressRow = new UIRow();
+		addressRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/address' ) ).setWidth( '90px' ) );
+
+		var addressInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
+		addressInput.setValue( lightTask.address );
+		addressInput.onChange( function () {
+			lightTask.lng = this.getValue();
+		} );
+		addressRow.add( addressInput );
+
+		container.add( addressRow );
+	}
+
+
+	{
 		var longitudeRow = new UIRow();
 
 		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/longitude' ) ).setWidth( '120px' ) );
 
-		var longitudeValueUI = new UINumber( lightEarthInfo.longitude ).setRange( 2, Infinity );
+		var longitudeValueUI = new UINumber( lightTask.longitude ).setRange( 2, Infinity );
 		longitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -79,7 +125,7 @@ function iTopoTaskBriefcaseHeader( editor ) {
 
 		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/latitude' ) ).setWidth( '120px' ) );
 
-		var latitudeValueUI = new UINumber( lightEarthInfo.latitude ).setRange( 2, Infinity );
+		var latitudeValueUI = new UINumber( lightTask.latitude ).setRange( 2, Infinity );
 		latitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -95,12 +141,15 @@ function iTopoTaskBriefcaseHeader( editor ) {
 		container.add( lightWishTitleRow );
 
 		var lightWishTextAreaRow = new UIRow();
-		var lightWishValueUI = new UITextArea().setWidth( '250px' ).setHeight( '80px' ).setFontSize( '12px' )/*.onChange( update )*/;
+		var lightWishValueUI = new UITextArea().setWidth( '250px' ).setFontSize( '12px' )/*.onChange( update )*/;
+		lightWishValueUI.dom.style.height = '662px';
+		console.log(lightWishValueUI.dom);
 		lightWishValueUI.onKeyUp( function () {
-			lightEarthInfo.lightWish = this.getValue();
+			lightTask.lightWish = this.getValue();
 
 		} );
 		lightWishTextAreaRow.add( lightWishValueUI );
+		console.log(lightWishTextAreaRow.dom);
 
 		container.add( lightWishTextAreaRow );
 	}
@@ -111,24 +160,34 @@ function iTopoTaskBriefcaseHeader( editor ) {
 	function refreshUI() {
 
 		if ( editor.selected !== null ) {
-			fetch(iTopoEarthSettings.CANTEEN_ITOPOBASE_FILE, {
+			fetch(iTopoEarthSettings.ITOPOBASE_FILE, {
 				method: 'GET',
 				mode: 'cors', // 允许发送跨域请求
 				credentials: 'include'
 			}).then(function(response) {
 				//打印返回的json数据
 				response.json().then(function(json) {
+					var found = 'false';
 					for (var i = 0; i < json.length; i++) {
-						console.log(editor.selected.userData);
-						if(json[i].uuid === editor.selected.name) {
-							geometryUUID.setValue( json[i].uuid );
+						if(json[i].baseUUID === editor.selected.userData.objectUUID) {
+							found = 'true';
+							geometryUUID.setValue( json[i].baseUUID );
 							taskTypeSelect.setOptions( options );
 							taskTypeSelect.setValue(json[i].taskType);
+							titleInput.setValue(json[i].title);
+							cityInput.setValue(json[i].city);
+							addressInput.setValue(json[i].address);
 							longitudeValueUI.setValue( json[i].lng );
 							latitudeValueUI.setValue( json[i].lat );
 							lightWishValueUI.setValue( json[i].lightWish );
 						}
 					}
+
+					if (found === 'false'){
+						console.log('error: did not find object:' + editor.selected.userData.baseUUID 
+						+ ' in ' + iTopoEarthSettings.ITOPOBASE_FILE);
+					}
+
 				})
 			}).catch(function(e) {
 				console.log('error: ' + e.toString());

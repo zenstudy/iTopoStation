@@ -6,6 +6,7 @@ import * as THREE from '../../build/three.module.js';
 
 import { UIPanel, UIButton } from '../js/libs/ui.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
+import { iTopoEarthLogin } from './iTopoEarthLogin.js';
 
 function MenubarLogin( editor ) {
 	var strings = editor.strings;
@@ -17,7 +18,17 @@ function MenubarLogin( editor ) {
 	title.setClass( 'title' );
 	title.onClick( function () {
 
-		window.open( 'https://www.flaticon.com/packs/interface-44', '_blank' );
+		var dlgContainer = new UIPanel();
+		dlgContainer.setId( 'iTopoDialog' );
+		dlgContainer.setDisplay( 'block' );
+
+		var dlg = new UIPanel();
+		dlgContainer.add(dlg);
+
+		var loginDlg = new iTopoEarthLogin( editor );
+		dlg.add(loginDlg);
+
+		document.body.appendChild(dlgContainer.dom);
 
 	} );
 	container.add( title );
