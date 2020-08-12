@@ -127,7 +127,7 @@ iTopoEarthModel.CreateiTopoSkyCastle = function() {
 	var castle = new iTopoSkyCastle();
 	var option = {
 		"objectUUID": castle.castleUUID,
-		"objectType": 'iTopoSkyCastle',
+		"objectType": "iTopoType/TaskObject/iTopoSkyCastle",
 		"pos": [castle.lng, castle.lat],
 		"starSize": castle.size,
 		"dis2Cloud": castle.dis2Cloud,
@@ -286,7 +286,7 @@ iTopoEarthModel.MarkiTopoStars = function() {
 
 				var option = {
 					"objectUUID": json[i].starUUID,
-					"objectType": 'Star',
+					"objectType": "iTopoType/TaskObject/Star",
 					"pos": [json[i].lng, json[i].lat],
 					"starSize": iTopoEarthSettings.starSize * (1 + Math.random())*3,
 					"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS * 2,

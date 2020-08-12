@@ -6,6 +6,7 @@ import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { ajaxPost } from './ajaxPostHelper.js'
 
 function LightEarthDialog( editor ) {
+	var strings = editor.strings;
 
 	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
 	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
@@ -14,7 +15,7 @@ function LightEarthDialog( editor ) {
 
 	var lightTask = {
 		"baseUUID": THREE.MathUtils.generateUUID(),
-		"taskType": "EcologicalFarm",
+		"taskType": 'iTopoType/TaskObject/EcologicalFarm',
 		"title": "有机农场",
 		"city": "城市1",
 		"address": "详细地址1",
@@ -23,8 +24,6 @@ function LightEarthDialog( editor ) {
 		"lightWish":"共同创造基地",
 		"QRcode":"./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
 	}
-
-	var strings = editor.strings;
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
@@ -44,7 +43,7 @@ function LightEarthDialog( editor ) {
 		var geometryUUIDRow = new UIRow();
 		var geometryUUID = new UIInput().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
 		geometryUUID.setValue( THREE.MathUtils.generateUUID() );
-		var geometryUUIDRenew = new UIButton( strings.getKey( 'iTopoDialog/lightEarth/new' ) ).setMarginLeft( '7px' ).onClick( function () {
+		var geometryUUIDRenew = new UIButton( strings.getKey( 'iTopoDialog/lightEarth/newUUID' ) ).setMarginLeft( '7px' ).onClick( function () {
 
 			geometryUUID.setValue( THREE.MathUtils.generateUUID() );
 
@@ -61,19 +60,18 @@ function LightEarthDialog( editor ) {
 
 	{
 		var options = {
-			Canteen: 'Canteen',
-			EcologicalFarm: 'EcologicalFarm',
+			'iTopoType/TaskObject/Canteen': strings.getKey( 'iTopoType/TaskObject/Canteen' ),
+			'iTopoType/TaskObject/EcologicalFarm': strings.getKey( 'iTopoType/TaskObject/EcologicalFarm' ),
 		};
-
 		var taskTypeRow = new UIRow();
 		taskTypeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/taskType' ) ).setWidth( '90px' ) );
 
 		var taskTypeSelect = new UISelect().setWidth( '160px' );
 		taskTypeSelect.setOptions( options );
-		taskTypeSelect.setValue( lightTask.taskType );
+		taskTypeSelect.setValue(lightTask.taskType);
 		taskTypeSelect.onChange( function () {
 			var value = this.getValue();
-			lightTask.taskType = value;
+			lightTask.taskType =  value;
 			console.log(lightTask.taskType );
 		} );
 

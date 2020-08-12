@@ -16,7 +16,7 @@ function iTopoEarthLogin( editor ) {
 	//var config = editor.config;
 	var userStarInfo = {
 		starUUID: THREE.MathUtils.generateUUID(),
-		starType: 'star',
+		starType: 'iTopoType/TaskObject/Star',
 		cellPhone:13688888888,
 		password:'lightstar',
 		lng:lng,

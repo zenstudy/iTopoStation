@@ -10,8 +10,14 @@ function iTopoStrings( config ) {
 
 
 		zh: {
+			'iTopoType/TaskObject/Star':'星体',
+			'iTopoType/TaskObject/EcologicalFarm':'生态基地',
+			'iTopoType/TaskObject/Canteen':'共享食堂',
+			'iTopoType/TaskObject/iTopoSkyCastle':'联络协调中心',
+
 			'menubar/iTopoEarthHub': '共享地球',
 			'menubar/iTopoEarthHub/iTopoSupportLand' : '天空之城',
+			'menubar/iTopoEarthHub/dynamicVallage' : '动力谷',
 
 			'menubar/EcologicalFarm':'生态基地',
 			'menubar/EcologicalFarm/itopoBase': '生态农场',
@@ -55,7 +61,7 @@ function iTopoStrings( config ) {
 			'iTopoDialog/lightStars/latitude' : '纬度',
 			'iTopoDialog/lightStars/starWish' : '星语星愿',
 
-			'iTopoDialog/lightEarth/new':'新建',
+			'iTopoDialog/lightEarth/newUUID':'换UUID',
 			'iTopoDialog/lightEarth/baseUUID':'基地UUID',
 			'iTopoDialog/lightEarth/taskType' : '任务类型',
 			'iTopoDialog/lightEarth/longitude' : '经度',

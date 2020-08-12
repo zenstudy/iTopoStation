@@ -6,12 +6,15 @@ import { UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger
 import { UIOutliner, UITexture } from '../js/libs/ui.three.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
+import { iTopoSkyCastle} from './iTopoSkyCastle.js';
 
 function iTopoTaskBriefcaseHeader(editor) {
+	var signals = editor.signals;
+	var strings = editor.strings;
 
 	var lightTask = {
 		baseUUID: THREE.MathUtils.generateUUID(),
-		taskType: 'Canteen',
+		taskType: "iTopoType/TaskObject/EcologicalFarm",
 		title: "湖北恩施宣恩县:松果家园",
 		city: "恩施",
 		address: "湖北恩施宣恩县",
@@ -19,9 +22,6 @@ function iTopoTaskBriefcaseHeader(editor) {
 		latitude: 0,
 		lightWish: "light wish",
 	};
-
-	var signals = editor.signals;
-	var strings = editor.strings;
 
 	var container = new UIPanel();
 	container.setBorderTop('0');
@@ -40,16 +40,17 @@ function iTopoTaskBriefcaseHeader(editor) {
 
 	{
 		var options = {
-			Canteen: "Canteen",
-			EcologicalFarm: "EcologicalFarm",
+			'iTopoType/TaskObject/Canteen': strings.getKey( 'iTopoType/TaskObject/Canteen' ),
+			'iTopoType/TaskObject/EcologicalFarm': strings.getKey( 'iTopoType/TaskObject/EcologicalFarm' ),
 		};
 
 		var taskTypeRow = new UIRow();
 		var taskTypeSelect = new UISelect().setWidth('150px');
 		taskTypeSelect.setOptions(options);
-		taskTypeSelect.setValue(options.Canteen);
+		taskTypeSelect.setValue(strings.getKey(lightTask.taskType));
 		taskTypeSelect.onChange(function() {
 			var value = this.getValue();
+			console.log(value);
 			lightTask.taskType = value;
 		});
 
@@ -160,6 +161,12 @@ function iTopoTaskBriefcaseHeader(editor) {
 	function refreshUI() {
 
 		if (editor.selected !== null) {
+		//	container.setDisplay( 'block' );
+			var castle = new iTopoSkyCastle();
+			if(castle.castleUUID === editor.selected.userData.objectUUID){
+				geometryUUID.setValue(castle.castleUUID);
+				return;
+			}
 
 			let P1 = new Promise(resolve => {
 				fetch(iTopoEarthSettings.ITOPOBASE_FILE, {
@@ -180,7 +187,7 @@ function iTopoTaskBriefcaseHeader(editor) {
 								longitudeValueUI.setValue(json[i].lng);
 								latitudeValueUI.setValue(json[i].lat);
 								lightWishValueUI.setValue(json[i].lightWish);
-								break;
+								return;
 							}
 						}
 					})
@@ -188,6 +195,7 @@ function iTopoTaskBriefcaseHeader(editor) {
 					console.log('error: ' + e.toString());
 				})
 			});
+
 			let P2 = new Promise(resolve => {
 				fetch(iTopoEarthSettings.ITOPOUSER_FILE, {
 					method: 'GET',
@@ -207,7 +215,7 @@ function iTopoTaskBriefcaseHeader(editor) {
 								// longitudeValueUI.setValue(json[i].lng);
 								// latitudeValueUI.setValue(json[i].lat);
 								// lightWishValueUI.setValue(json[i].lightWish);
-								break;
+								return;
 							}
 						}
 					})
@@ -220,6 +228,8 @@ function iTopoTaskBriefcaseHeader(editor) {
 				.then(value => {
 					console.log(value);
 				})
+		} else {
+		//	container.setDisplay( 'none' );
 		}
 	}
 

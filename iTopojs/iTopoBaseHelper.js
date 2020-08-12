@@ -129,11 +129,12 @@ iTopoBaseHelper.prototype.updateBase = function() {
 		this.baseDynamic(orbits[i], balls[i]);
 	}
 
-	if (this.object.userData.objectType === 'Canteen' || this.object.userData.objectType === 'EcologicalFarm') {
+	if (this.object.userData.objectType === 'iTopoType/TaskObject/Canteen'
+	|| this.object.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm') {
 		this.loadiTopoGLTFModel();
 	}
 
-	if(this.userData.objectType ==='Star'){
+	if(this.userData.objectType ==='iTopoType/TaskObject/Star'){
 		console.log(this.position);
 		var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
 		this.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
@@ -247,9 +248,9 @@ iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
 	}
 
 iTopoBaseHelper.prototype.getBaseModelURL = function() {
-	if (this.userData.objectType === "EcologicalFarm")
+	if (this.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm')
 		return './iTopojs/baseModelFiles/mountain_landscape/scene.gltf';
-	else if (this.userData.objectType === "Canteen")
+	else if (this.userData.objectType === 'iTopoType/TaskObject/Canteen')
 		return './iTopojs/baseModelFiles/simple_house_scene/scene.gltf';
 	console.log(this.userData.objectUUID + ':' + this.userData.objectType + ' did not find gltf file.');
 	return '';
@@ -257,9 +258,9 @@ iTopoBaseHelper.prototype.getBaseModelURL = function() {
 
 iTopoBaseHelper.prototype.getBaseModelScale = function() {
 
-	if (this.userData.objectType === "EcologicalFarm")
+	if (this.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm')
 		return 1;
-	else if (this.userData.objectType === "Canteen")
+	else if (this.userData.objectType === 'iTopoType/TaskObject/Canteen')
 		return 30;
 
 	return 1;

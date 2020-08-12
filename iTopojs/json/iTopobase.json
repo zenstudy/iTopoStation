@@ -1,6 +1,6 @@
 [{
 	"baseUUID": "88F48BD-823C-42F1-857A-124E495B351B",
-	"taskType": "EcologicalFarm",
+	"taskType": "iTopoType/TaskObject/EcologicalFarm",
 	"title": "松果家园",
 	"city": "恩施",
 	"address": "湖北恩施宣恩县",
@@ -10,7 +10,7 @@
 	"QRcode": "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
 }, {
 	"baseUUID": "5DFB04FA-1091-4169-AB9D-FF2673CC4476",
-	"taskType": "EcologicalFarm",
+	"taskType": "iTopoType/TaskObject/EcologicalFarm",
 	"title": "长白山生态有机谷",
 	"city": "延边朝鲜族自治州",
 	"address": "地处长白山腹地，松花江的上游（源头）",
@@ -20,7 +20,7 @@
 	"QRcode": "./iTopojs/QRcode/5DFB04FA-1091-4169-AB9D-FF2673CC4476.jpg"
 }, {
 	"baseUUID": "E7411AF8-DD5B-4863-895A-C1DF80098B7C",
-	"taskType": "EcologicalFarm",
+	"taskType": "iTopoType/TaskObject/EcologicalFarm",
 	"title": "成都都江堰观音山:酵素",
 	"city": "成都",
 	"address": "成都都江堰观音山",
@@ -30,7 +30,7 @@
 	"QRcode": "./iTopojs/QRcode/E7411AF8-DD5B-4863-895A-C1DF80098B7C.jpg"
 }, {
 	"baseUUID": "D44F75B6-DBCD-4328-A0EB-B40E1E89EAA9",
-	"taskType": "Canteen",
+	"taskType": "iTopoType/TaskObject/Canteen",
 	"title": "雨花斋",
 	"city": "汉中市",
 	"address": "东关街道南一环路聚兴名苑丁家营新村旁",
@@ -40,7 +40,7 @@
 	"QRcode": "lightWish2"
 }, {
 	"baseUUID": "FEDC6F8F-F40E-4F72-8D7A-23BAFD67DD36",
-	"taskType": "Canteen",
+	"taskType": "iTopoType/TaskObject/Canteen",
 	"title": "雨花斋互助式免费素食餐厅",
 	"city": "长沙市",
 	"address": "长沙市雨花区井湾路与曙光南路交叉口东50米",
@@ -49,53 +49,13 @@
 	"lightWish": "楊枝甘露",
 	"QRcode": "lightWish3"
 }, {
-	"baseUUID": "45550CB6-33C9-4C88-A4F1-D3AC40070D84",
-	"taskType": "EcologicalFarm",
+	"baseUUID": "E2821CB0-A556-48FD-8776-F76940DBAA34",
+	"taskType": "iTopoType/TaskObject/EcologicalFarm",
 	"title": "有机农场",
 	"city": "城市1",
 	"address": "详细地址1",
-	"lng": 126.1003227895313,
-	"lat": 58.94017707358745,
-	"lightWish": "共同创造基地",
-	"QRcode": "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
-}, {
-	"baseUUID": "8D796B45-87EE-41E4-92C1-AC68F1021CF5",
-	"taskType": "EcologicalFarm",
-	"title": "有机农场",
-	"city": "城市1",
-	"address": "详细地址1",
-	"lng": -71.95206788359849,
-	"lat": -80.85106747664263,
-	"lightWish": "共同创造基地",
-	"QRcode": "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
-}, {
-	"baseUUID": "FB5D082F-1A58-4A6E-8C8F-9C8781918A29",
-	"taskType": "EcologicalFarm",
-	"title": "有机农场",
-	"city": "城市1",
-	"address": "详细地址1",
-	"lng": 111.64624079983822,
-	"lat": 26.86360520190278,
-	"lightWish": "共同创造基地",
-	"QRcode": "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
-}, {
-	"baseUUID": "EA8FFE47-49F7-4D7E-8F26-7B5107582E2C",
-	"taskType": "EcologicalFarm",
-	"title": "有机农场",
-	"city": "城市1",
-	"address": "详细地址1",
-	"lng": 32.726195374601026,
-	"lat": 54.97412821173656,
-	"lightWish": "共同创造基地",
-	"QRcode": "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
-}, {
-	"baseUUID": "829447E8-4481-4B50-94E5-1052273BC491",
-	"taskType": "EcologicalFarm",
-	"title": "有机农场",
-	"city": "城市1",
-	"address": "详细地址1",
-	"lng": 126.52215820873724,
-	"lat": 9.140811048842192,
+	"lng": 157.08744582212043,
+	"lat": 10.817254179065017,
 	"lightWish": "共同创造基地",
 	"QRcode": "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
 }]
