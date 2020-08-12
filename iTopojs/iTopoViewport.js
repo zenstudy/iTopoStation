@@ -406,7 +406,7 @@ function iTopoViewport( editor ) {
 
 		if ( object !== null && object !== scene && object !== camera ) {
 			box.setFromObject( object );
-			console.log(object.userData.objectUUID + ',' + object.userData.objectType);
+			console.log('objectUUID=' + object.userData.objectUUID + ',objectType=' + object.userData.objectType);
 			if ( box.isEmpty() === false ) {
 				selectionBox.setFromObject( object );
 				selectionBox.visible = true;
@@ -442,11 +442,11 @@ function iTopoViewport( editor ) {
 
 		if(object.name == "layerPlanet" || object.name == "layerCloud")
 			return;
-		console.log(object.name);
+
+		console.log( 'added object = '+ object.name);
+
 		object.traverse( function ( child ) {
-
 			objects.push( child );
-
 		} );
 
 	} );
@@ -752,16 +752,16 @@ function iTopoViewport( editor ) {
 		renderer.render( scene, editor.viewportCamera );
 		scene.remove( grid );
 
-		//editor.cameraHelper.update();
+	//	editor.cameraHelper.update();
 
-		// if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
-		// 	 scene.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
-		// 	 sceneHelpers.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
-		// 	 //iTopoEarthModel.RotateToBeijing(editor.camera);
-		//  }  else {
-		// 	scene.rotation.y = 0;
-		// 	sceneHelpers.rotation.y = 0;
-		//  }
+		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
+			 scene.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
+			 sceneHelpers.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
+			 //iTopoEarthModel.RotateToBeijing(editor.camera);
+		 }  else {
+			scene.rotation.y = 0;
+			sceneHelpers.rotation.y = 0;
+		 }
 
 		if ( camera === editor.viewportCamera ) {
 			renderer.autoClear = false;

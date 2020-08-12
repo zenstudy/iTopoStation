@@ -103,18 +103,18 @@ function iTopoEditor() {
 	this.sceneHelpers = new THREE.Scene();
 
 	{
-	  // const skyColor = 0xB1E1FF;  // light blue
-	  // const groundColor = 0xB97A20;  // brownish orange
-	  // const intensity = 1;
-	  // const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
-	  // this.sceneHelpers.add(light);
+	  const skyColor = 0xB1E1FF;  // light blue
+	  const groundColor = 0xB97A20;  // brownish orange
+	  const intensity = 1;
+	  const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+	  this.sceneHelpers.add(light);
 	}
 
 	{
 	  const color = 0xFFFFFF;
 	  const intensity = 1;
 	  const light = new THREE.DirectionalLight(color, intensity);
-	  light.position.set(0, 0, 50);
+	  light.position.set(0, 50, 50);
 	  this.sceneHelpers.add(light);
 	  this.sceneHelpers.add(light.target);
 	}
@@ -127,19 +127,19 @@ function iTopoEditor() {
 	{ //lights()光影自己改哦
 
 	    //聚光灯
-	    //  SpotLight( color：颜色, intensity：强度, distance：发光距离, angle：角度, penumbra：边缘范围, decay：衰减 )
-	    // var spotLight = new THREE.SpotLight(0xffffff, 1);
-	    // spotLight.position.set(0, 500, 0);
-	    // spotLight.angle = Math.PI / 6;
-	    // spotLight.penumbra = 0.05; //边缘范围，反比
-	    // spotLight.decay = 2; //衰减系数，反比
-	    // spotLight.distance = 400; //发光距离
-	    // spotLight.castShadow = true; //阴影
-	    // spotLight.shadow.mapSize.width = 1024;
-	    // spotLight.shadow.mapSize.height = 1024;
-	    // spotLight.shadow.camera.near = 10; //近截面
-	    // spotLight.shadow.camera.far = 250;
-	    // this.sceneHelpers.add(spotLight);
+	    //SpotLight( color：颜色, intensity：强度, distance：发光距离, angle：角度, penumbra：边缘范围, decay：衰减 )
+	    var spotLight = new THREE.SpotLight(0xffffff, 1);
+	    spotLight.position.set(0, 500, 0);
+	    spotLight.angle = Math.PI / 6;
+	    spotLight.penumbra = 0.05; //边缘范围，反比
+	    spotLight.decay = 2; //衰减系数，反比
+	    spotLight.distance = 400; //发光距离
+	    spotLight.castShadow = true; //阴影
+	    spotLight.shadow.mapSize.width = 1024;
+	    spotLight.shadow.mapSize.height = 1024;
+	    spotLight.shadow.camera.near = 10; //近截面
+	    spotLight.shadow.camera.far = 250;
+	    this.sceneHelpers.add(spotLight);
 
 		// 聚光灯显示助手SpotLightHelper( light:灯光, color：颜色 )
 	//	var lightHelper = new THREE.SpotLightHelper(spotLight, 0xdfdfdf);

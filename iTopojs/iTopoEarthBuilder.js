@@ -381,6 +381,35 @@ iTopoEarthBuilder.createStar = function(option) {
 	return starMesh;
 }
 
+iTopoEarthBuilder.createSkyCastle = function(option) {
+
+	let starPoint;
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D")
+	{
+		starPoint = createPosition(option.pos[0], option.pos[1],
+			iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud );
+	}  else {
+		//console.log(option);
+		var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
+		var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
+		starPoint = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight + option.starSize/2
+			+ iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud);
+	}
+
+	var userData = {
+		objectUUID: option.objectUUID,
+		objectType: option.objectType,
+	}
+
+	var starGeo = new THREE.SphereBufferGeometry(option.starSize, 50, 50);
+	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.sphereShaderMaterial);
+	starMesh.position.copy(starPoint);
+	starMesh.name = option.textValue;
+	starMesh.userData = userData;
+
+	return starMesh;
+}
+
 // canvas实现文字函数
 iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
 	var canvas = document.createElement('canvas');

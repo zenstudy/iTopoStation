@@ -28,7 +28,7 @@ iTopoEarthSettings = {
 
 	CANTEEN_YUHUAZHAI_FILE: "./iTopojs/json/iTopoCanteen.json",
 	ITOPOBASE_FILE: "./iTopojs/json/iTopobase.json",
-//	CANTEEN_ITOPOBASE_FILE: "./iTopoAbsorber/iTopobase.json",
+	ITOPOUSER_FILE: "./iTopojs/json/iTopoUser.json",
 	// 地图z轴厚度
 	zHeight: 33,
 

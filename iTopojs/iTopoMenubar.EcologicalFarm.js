@@ -6,7 +6,7 @@ import { UIPanel, UIRow, UIButton } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
-function MenubarEcologicalFarm( editor ) {
+function iTopoMenubarEcologicalFarm( editor ) {
 
 	var strings = editor.strings;
 
@@ -38,4 +38,4 @@ function MenubarEcologicalFarm( editor ) {
 
 }
 
-export { MenubarEcologicalFarm };
+export { iTopoMenubarEcologicalFarm };

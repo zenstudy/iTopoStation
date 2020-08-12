@@ -183,25 +183,22 @@ function LightEarthDialog( editor ) {
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
 
-				ajaxPost('http://127.0.0.1:8081/lightEarth', JSON.stringify(lightTask),
-				function fnSucceed(jsonData)
-				{
-					console.log(JSON.parse(jsonData));
-					editor.scene.rotation.y = 0;
-					editor.sceneHelpers.rotation.y = 0;
-					iTopoEarthModel.lightEarth(lightTask);
-				},
-				function fnFail()
-				{
-					console.log("post failed.");
-				},
-				function fnLoading()
-				{
+			ajaxPost('http://127.0.0.1:8081/lightEarth', JSON.stringify(lightTask),
+			function fnSucceed(jsonData)
+			{
+				console.log(JSON.parse(jsonData));
+				editor.scene.rotation.y = 0;
+				editor.sceneHelpers.rotation.y = 0;
+				iTopoEarthModel.lightEarth(lightTask);
+			},
+			function fnFail()
+			{
+				console.log("post failed.");
+			},
+			function fnLoading()
+			{
 
-				}
-			);
-
-
+			});
 
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 

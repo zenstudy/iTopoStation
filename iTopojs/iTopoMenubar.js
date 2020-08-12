@@ -4,11 +4,11 @@
 
 import { UIPanel } from '../js/libs/ui.js';
 
-
-import { MenubarSharedCanteen } from './Menubar.SharedCanteen.js';
-import { MenubarEcologicalFarm } from './Menubar.EcologicalFarm.js';
-import { MenubarBlockChain } from './Menubar.BlockChain.js';
-import { MenubarLogin } from './Menubar.Login.js';
+import { iTopoMenubarEarthHub } from './iTopoMenubar.EarthHub.js';
+import { iTopoMenubarSharedCanteen } from './iTopoMenubar.SharedCanteen.js';
+import { iTopoMenubarEcologicalFarm } from './iTopoMenubar.EcologicalFarm.js';
+import { iTopoMenubarBlockChain } from './iTopoMenubar.BlockChain.js';
+import { iTopoMenubarLogin } from './iTopoMenubar.Login.js';
 
 
 function iTopoMenubar( editor ) {
@@ -16,14 +16,14 @@ function iTopoMenubar( editor ) {
 	var container = new UIPanel();
 	container.setId( 'menubar' );
 
-	container.add( new MenubarSharedCanteen( editor ) );
-	container.add( new MenubarEcologicalFarm( editor ) );
-	container.add( new MenubarBlockChain( editor ) );
+	container.add( new iTopoMenubarEarthHub( editor ) );
+	container.add( new iTopoMenubarEcologicalFarm( editor ) );
+	container.add( new iTopoMenubarSharedCanteen( editor ) );
+	container.add( new iTopoMenubarBlockChain( editor ) );
 
-	container.add( new MenubarLogin( editor ) );
+	container.add( new iTopoMenubarLogin( editor ) );
 
 	return container;
-
 }
 
 export { iTopoMenubar };

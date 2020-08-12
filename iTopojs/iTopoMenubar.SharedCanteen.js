@@ -6,7 +6,7 @@ import { UIPanel, UIRow, UIButton } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
-function MenubarSharedCanteen( editor ) {
+function iTopoMenubarSharedCanteen( editor ) {
 
 	var strings = editor.strings;
 
@@ -21,6 +21,15 @@ function MenubarSharedCanteen( editor ) {
 	var options = new UIPanel();
 	options.setClass('options');
 	container.add(options);
+	
+	// sharedCookbook
+	var sharedCookbookMenu = new UIRow();
+	sharedCookbookMenu.setClass('option');
+	sharedCookbookMenu.setTextContent(strings.getKey('menubar/SharedCanteen/sharedCookbook'));
+	sharedCookbookMenu.onClick(function() {
+		alert("coming soon!")
+	});
+	options.add(sharedCookbookMenu);
 
 	// yuhuazhai
 	var yuhuazhaiMenu = new UIRow();
@@ -33,17 +42,8 @@ function MenubarSharedCanteen( editor ) {
 	});
 	options.add(yuhuazhaiMenu);
 
-	// sharedCookbook
-	var sharedCookbookMenu = new UIRow();
-	sharedCookbookMenu.setClass('option');
-	sharedCookbookMenu.setTextContent(strings.getKey('menubar/SharedCanteen/sharedCookbook'));
-	sharedCookbookMenu.onClick(function() {
-		alert("coming soon!")
-	});
-	options.add(sharedCookbookMenu);
-
 	return container;
 
 }
 
-export { MenubarSharedCanteen };
+export { iTopoMenubarSharedCanteen };

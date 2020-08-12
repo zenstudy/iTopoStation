@@ -6,7 +6,7 @@ import {UIPanel,UIRow,UIButton} from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
-function MenubarBlockChain(editor) {
+function iTopoMenubarBlockChain(editor) {
 
 	var strings = editor.strings;
 
@@ -48,5 +48,5 @@ function MenubarBlockChain(editor) {
 }
 
 export {
-	MenubarBlockChain
+	iTopoMenubarBlockChain
 };

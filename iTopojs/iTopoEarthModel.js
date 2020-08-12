@@ -8,6 +8,7 @@ import {AddiTopoObjCommand} from './AddiTopoObjCommand.js';
 import {iTopoEarthBuilder} from './iTopoEarthBuilder.js';
 import {iTopoEarthCache} from './iTopoEarthCache.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
+import {iTopoSkyCastle} from './iTopoSkyCastle.js';
 
 export var iTopoEarthModel = iTopoEarthModel || {};
 
@@ -50,10 +51,10 @@ iTopoEarthModel.ReCreate = function() {
 
 	iTopoEarthModel.CreateGlobalModel();
 	iTopoEarthModel.MarkiTopoStars();
+	iTopoEarthModel.CreateiTopoSkyCastle();
 
 	if (iTopoEarthSettings.MAP_KIND == "共创基地") {
 		iTopoEarthModel.MarkiTopoBase(iTopoEarthSettings.ITOPOBASE_FILE);
-//		iTopoEarthModel.MarkCountries();
 	} else if (iTopoEarthSettings.MAP_KIND == "雨花斋") {
 		iTopoEarthModel.MarkCanteen(iTopoEarthSettings.CANTEEN_YUHUAZHAI_FILE);
 	}else if (iTopoEarthSettings.MAP_KIND == "超级节点儿") {
@@ -119,6 +120,34 @@ iTopoEarthModel.RotateToBeijing = function(camera) {
 	iTopoEarthModel.ParticlesMove(seeFrom, camera);
 	camera.position.copy(seeFrom);
 	camera.lookAt(0, 0, 0);
+}
+
+iTopoEarthModel.CreateiTopoSkyCastle = function() {
+
+	var castle = new iTopoSkyCastle();
+	var option = {
+		"objectUUID": castle.castleUUID,
+		"objectType": 'iTopoSkyCastle',
+		"pos": [castle.lng, castle.lat],
+		"starSize": castle.size,
+		"dis2Cloud": castle.dis2Cloud,
+		"textMarked": false,
+		"textValue": editor.strings.getKey('menubar/iTopoEarthHub/iTopoSupportLand'),
+		"fontColor": iTopoEarthSettings.markingTextColor,
+		"fontSize": iTopoEarthSettings.markingFontSize,
+		"average": getAverage(),
+	}
+
+	var star = iTopoEarthBuilder.createSkyCastle(option);
+
+	editor.execute(new AddiTopoObjCommand(editor, star));
+	console.log(star.userData);
+
+	// const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
+	// 	+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );
+	// iTopoEarthModel.ParticlesMove(seeFrom, editor.camera);
+	// editor.camera.position.copy(seeFrom);
+	// editor.camera.lookAt(0, 0, 0);
 }
 
 iTopoEarthModel.lightStars = function(userStarInfo) {
@@ -240,28 +269,42 @@ iTopoEarthModel.ParticlesMove = function(camera2Pos) {
 }
 
 iTopoEarthModel.MarkiTopoStars = function() {
-	for (let i = 0; i < 520; i++) {
-		var plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-		var plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-		var lngx = plusOrMinus_lngx * (Math.random() * 180);
-		var latx = plusOrMinus_latx * (Math.random() * 90);
 
-		var option = {
-			"objectUUID": THREE.MathUtils.generateUUID(),
-			"objectType": 'Star',
-			"pos": [lngx, latx],
-			"starSize": iTopoEarthSettings.starSize * (1 + Math.random()),
-			"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS * 5,
-			"textMarked": false,
-			"textValue": "我的星星" + lngx + "," + latx,
-			"fontColor": iTopoEarthSettings.markingTextColor,
-			"fontSize": iTopoEarthSettings.markingFontSize,
-			"average": getAverage(),
-		}
+	fetch(iTopoEarthSettings.ITOPOUSER_FILE, {
+		method: 'GET',
+		mode: 'cors', // 允许发送跨域请求
+		credentials: 'include'
+	}).then(function(response) {
+		//打印返回的json数据
+		response.json().then(function(json) {
+			var average = getAverage();
+			for (var i = 0; i < json.length; i++) {
+				// var plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
+				// var plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
+				// var lngx = plusOrMinus_lngx * (Math.random() * 180);
+				// var latx = plusOrMinus_latx * (Math.random() * 90);
 
-		var star = iTopoEarthBuilder.createStar(option);
-		layerStars.add(star);
-	}
+				var option = {
+					"objectUUID": json[i].starUUID,
+					"objectType": 'Star',
+					"pos": [json[i].lng, json[i].lat],
+					"starSize": iTopoEarthSettings.starSize * (1 + Math.random())*3,
+					"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS * 2,
+					"textMarked": false,
+					"textValue": json[i].cellPhone,
+					"fontColor": iTopoEarthSettings.markingTextColor,
+					"fontSize": iTopoEarthSettings.markingFontSize,
+					"average": average,
+				}
+
+				var star = iTopoEarthBuilder.createStar(option);
+				editor.execute(new AddiTopoObjCommand(editor, star));
+				console.log(star.userData);
+			}
+		})
+	}).catch(function(e) {
+		console.log('error: ' + e.toString());
+	})
 }
 
 iTopoEarthModel.createStarParticles = function() {
@@ -302,264 +345,6 @@ iTopoEarthModel.createStarParticles = function() {
 	var layerStarParticles = new THREE.Points(geometry, iTopoEarthCache.starShaderMaterial);
 
 	return layerStarParticles;
-}
-
-// 获取average函数
-var getAverage = function() {
-	let container = document.getElementById('viewport');
-	var average = 0;
-	if (container.clientWidth > container.clientHeight) {
-		average = container.clientHeight / 180;
-	} else {
-		average = container.clientWidth / 360;
-	}
-	return average;
-}
-
-// 将shape转换为ExtrudeGeometry
-var drawExtrudeShape = function(pos) {
-	// 计算平均每格占比
-	var average = getAverage();
-
-	var shapeObj = new THREE.Shape();
-	shapeObj.moveTo(pos[0][0] * average / iTopoEarthSettings.mapScaleSize, pos[0][1] * average /
-		iTopoEarthSettings.mapScaleSize);
-
-	pos.forEach(function(item) {
-		shapeObj.lineTo(item[0] * average / iTopoEarthSettings.mapScaleSize, item[1] * average /
-			iTopoEarthSettings.mapScaleSize);
-	})
-
-	var geometry = new THREE.ExtrudeGeometry(shapeObj, iTopoEarthCache.mapExtrudeOptions);
-	var material1 = new THREE.MeshBasicMaterial({
-		color: iTopoEarthSettings.earthLandFillColor
-	});
-	var material2 = new THREE.MeshBasicMaterial({
-		color: iTopoEarthSettings.earthLandBorderColor
-	});
-	// 绘制地图
-	let shapeGeometry = new THREE.Mesh(geometry, [material1, material2]);
-	// 将地图加入场景
-	layerPlanet.add(shapeGeometry);
-}
-
-// 计算绘制地图参数函数
-var drawShapeOptionFun = function(worldGeometry) {
-	worldGeometry.features.forEach(function(worldItem, worldItemIndex) {
-		var length = worldItem.geometry.coordinates.length;
-		var multipleBool = length > 1 ? true : false;
-		worldItem.geometry.coordinates.forEach(function(worldChildItem, worldChildItemIndex) {
-			if (multipleBool) {
-				// 值界可以使用的经纬度信息
-				if (worldChildItem.length && worldChildItem[0].length == 2) {
-					drawExtrudeShape(worldChildItem);
-				}
-				// 需要转换才可以使用的经纬度信息
-				if (worldChildItem.length && worldChildItem[0].length > 2) {
-					worldChildItem.forEach(function(countryItem, countryItenIndex) {
-						drawExtrudeShape(countryItem);
-					})
-				}
-			} else {
-				var countryPos = null;
-				if (worldChildItem.length > 1) {
-					countryPos = worldChildItem;
-				} else {
-					countryPos = worldChildItem[0];
-				}
-				if (countryPos) {
-					drawExtrudeShape(countryPos);
-				}
-			}
-		})
-	})
-}
-
-// 绘制世界地图线条函数
-var drawWorldLine2D = function(pos, identify) {
-	// 计算平均每格占比
-	var average = getAverage();
-	var geometry = new THREE.Geometry();
-	pos.forEach(function(item) {
-		var v = new THREE.Vector3(item[0] * average / iTopoEarthSettings.mapScaleSize,
-			item[1] * average / iTopoEarthSettings.mapScaleSize, iTopoEarthSettings.zHeight);
-		geometry.vertices.push(v);
-	})
-	// 定义线条
-	let line = new MeshLine();
-	line.setGeometry(geometry);
-
-	// 绘制地图
-	layerPlanet.add(new THREE.Mesh(line.geometry, iTopoEarthCache.worldMapMaterial));
-}
-
-// 计算绘制地图参数函数
-var drawWorldLineFun2D = function(worldGeometry) {
-	// 绘制世界地图
-	worldGeometry.features.forEach(function(worldItem, worldItemIndex) {
-		var length = worldItem.geometry.coordinates.length;
-		var multipleBool = length > 1 ? true : false;
-		worldItem.geometry.coordinates.forEach(function(worldChildItem, worldChildItemIndex) {
-			if (multipleBool) {
-				// 值界可以使用的经纬度信息
-				if (worldChildItem.length && worldChildItem[0].length == 2) {
-					drawWorldLine2D(worldChildItem, '' + worldItemIndex + worldChildItemIndex);
-				}
-				// 需要转换才可以使用的经纬度信息
-				if (worldChildItem.length && worldChildItem[0].length > 2) {
-					worldChildItem.forEach(function(countryItem, countryItenIndex) {
-						drawWorldLine2D(countryItem, '' + worldItemIndex + worldChildItemIndex + countryItenIndex);
-					})
-				}
-			} else {
-				var countryPos = null;
-				if (worldChildItem.length > 1) {
-					countryPos = worldChildItem;
-				} else {
-					countryPos = worldChildItem[0];
-				}
-				if (countryPos) {
-					drawWorldLine2D(countryPos, '' + worldItemIndex + worldChildItemIndex);
-				}
-			}
-		})
-	})
-}
-
-// 计算绘制地图参数函数
-var CreateWorldPlaneMap = function() {
-	fetch(iTopoEarthSettings.WORLD_JSON_FILE, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		//打印返回的json数据
-		response.json().then(function(worldGeometry) {
-			drawShapeOptionFun(worldGeometry);
-			drawWorldLineFun2D(worldGeometry);
-		})
-	}).catch(function(e) {
-		console.log('error: ' + e.toString());
-	})
-}
-
-var CreateWorldSphereMap = function() {
-	fetch(iTopoEarthSettings.WORLD_JSON_FILE, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		response.json().then(function(json) {
-
-			var worldGeometry = [];
-			// 绘制世界地图
-			json.features.forEach(function(worldItem) {
-				var length = worldItem.geometry.coordinates.length;
-				var multipleBool = length > 1 ? true : false;
-				worldItem.geometry.coordinates.forEach(function(worldChildItem) {
-					if (multipleBool) {
-						// 值界可以使用的经纬度信息
-						if (worldChildItem.length && worldChildItem[0].length == 2) {
-							worldGeometry.push(worldChildItem);
-						}
-						// 需要转换才可以使用的经纬度信息
-						if (worldChildItem.length && worldChildItem[0].length > 2) {
-							worldChildItem.forEach(function(countryItem, countryItenIndex) {
-								worldGeometry.push(countryItem);
-							})
-						}
-					} else {
-						var countryPos = null;
-						if (worldChildItem.length > 1) {
-							countryPos = worldChildItem;
-						} else {
-							countryPos = worldChildItem[0];
-						}
-						if (countryPos) {
-							worldGeometry.push(countryPos);
-						}
-					}
-				})
-			})
-
-			// 创建地球
-			//var earthPic = new THREE.TextureLoader().load(iTopoEarthSettings.EARTH_PNG_WORLDGEOMETRY);
-			var earthPic = new THREE.CanvasTexture(createCanvas(2048, 1024, worldGeometry));
-			var sphereMesh = new THREE.Mesh(iTopoEarthCache.earthBufferSphere,
-				new THREE.MeshBasicMaterial({
-					map: earthPic,
-					side: THREE.FrontSide
-				}));
-
-			layerPlanet.add(sphereMesh);
-
-			// 绘制世界地图
-			worldGeometry.forEach(function(item, index) {
-				CreateSphereLine(item, index);
-			})
-		})
-	}).catch(function(e) {
-		console.log("Oops, error");
-	});
-}
-
-// 绘制世界地图线条函数
-var CreateSphereLine = function(pos, identify) {
-	var posArray = [];
-	pos.forEach(function(item) {
-		var pointPosition = createPosition(item[0], item[1], iTopoEarthSettings.CITY_RADIUS);
-		posArray.push(pointPosition);
-	})
-	// 绘制的线条需要关闭，第二个参数默认为false，表示不关闭
-	var curve = new THREE.CatmullRomCurve3(posArray, true);
-	var points = curve.getPoints(500);
-	var geometry = new THREE.Geometry().setFromPoints(points);
-	// 定义线条
-	var line = new MeshLine();
-	line.setGeometry(geometry);
-	// 定义线条材质
-	var material = new MeshLineMaterial({
-		color: iTopoEarthSettings.earthLandBorderColor,
-		lineWidth: iTopoEarthSettings.WORLD_LINE_WIDTH
-	})
-	// 将地图加入场景
-	layerPlanet.add(new THREE.Mesh(line.geometry, material));
-}
-
-//随机生成颜色
-iTopoEarthModel.RandomColor = function() {
-	var arrHex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"],
-		strHex = "0x",
-		index;
-	for (var i = 0; i < 6; i++) {
-		index = Math.round(Math.random() * 15);
-		strHex += arrHex[index];
-	}
-	return strHex;
-}
-
-iTopoEarthModel.MarkCountries = function() {
-	// 地标及光锥
-	for (let i = 0, length = COUNTRIES.length; i < length; i++) {
-
-		var option = {
-			"objectUUID": THREE.MathUtils.generateUUID(),
-			"objectType": 'Country',
-			"pos": [COUNTRIES[i].position[0], COUNTRIES[i].position[1]],
-			"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
-			"lightConeHeight": randomLightConeHeight(),
-			"textMarked": false,
-			"textValue": COUNTRIES[i].name,
-			"fontColor": iTopoEarthSettings.markingTextColor,
-			"fontSize": iTopoEarthSettings.markingFontSize,
-			"average": getAverage(),
-		}
-
-		var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-		layerMarks.add(lightConeMark.lightConeGrp);
-		//editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
-		layerMarks.add(lightConeMark.fontMesh);
-	}
 }
 
 iTopoEarthModel.MarkiTopoBase = function(url) {
@@ -863,6 +648,263 @@ iTopoEarthModel.MarkZenNodeParticleOnPlane = function(url) {
 			console.log('error: ' + e.toString());
 		})
 	})
+}
+
+iTopoEarthModel.MarkCountries = function() {
+	// 地标及光锥
+	for (let i = 0, length = COUNTRIES.length; i < length; i++) {
+
+		var option = {
+			"objectUUID": THREE.MathUtils.generateUUID(),
+			"objectType": 'Country',
+			"pos": [COUNTRIES[i].position[0], COUNTRIES[i].position[1]],
+			"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
+			"lightConeHeight": randomLightConeHeight(),
+			"textMarked": false,
+			"textValue": COUNTRIES[i].name,
+			"fontColor": iTopoEarthSettings.markingTextColor,
+			"fontSize": iTopoEarthSettings.markingFontSize,
+			"average": getAverage(),
+		}
+
+		var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
+		layerMarks.add(lightConeMark.lightConeGrp);
+		//editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
+		layerMarks.add(lightConeMark.fontMesh);
+	}
+}
+
+// 计算绘制地图参数函数
+var CreateWorldPlaneMap = function() {
+	fetch(iTopoEarthSettings.WORLD_JSON_FILE, {
+		method: 'GET',
+		mode: 'cors', // 允许发送跨域请求
+		credentials: 'include'
+	}).then(function(response) {
+		//打印返回的json数据
+		response.json().then(function(worldGeometry) {
+			drawShapeOptionFun(worldGeometry);
+			drawWorldLineFun2D(worldGeometry);
+		})
+	}).catch(function(e) {
+		console.log('error: ' + e.toString());
+	})
+}
+
+var CreateWorldSphereMap = function() {
+	fetch(iTopoEarthSettings.WORLD_JSON_FILE, {
+		method: 'GET',
+		mode: 'cors', // 允许发送跨域请求
+		credentials: 'include'
+	}).then(function(response) {
+		response.json().then(function(json) {
+
+			var worldGeometry = [];
+			// 绘制世界地图
+			json.features.forEach(function(worldItem) {
+				var length = worldItem.geometry.coordinates.length;
+				var multipleBool = length > 1 ? true : false;
+				worldItem.geometry.coordinates.forEach(function(worldChildItem) {
+					if (multipleBool) {
+						// 值界可以使用的经纬度信息
+						if (worldChildItem.length && worldChildItem[0].length == 2) {
+							worldGeometry.push(worldChildItem);
+						}
+						// 需要转换才可以使用的经纬度信息
+						if (worldChildItem.length && worldChildItem[0].length > 2) {
+							worldChildItem.forEach(function(countryItem, countryItenIndex) {
+								worldGeometry.push(countryItem);
+							})
+						}
+					} else {
+						var countryPos = null;
+						if (worldChildItem.length > 1) {
+							countryPos = worldChildItem;
+						} else {
+							countryPos = worldChildItem[0];
+						}
+						if (countryPos) {
+							worldGeometry.push(countryPos);
+						}
+					}
+				})
+			})
+
+			// 创建地球
+			//var earthPic = new THREE.TextureLoader().load(iTopoEarthSettings.EARTH_PNG_WORLDGEOMETRY);
+			var earthPic = new THREE.CanvasTexture(createCanvas(2048, 1024, worldGeometry));
+			var sphereMesh = new THREE.Mesh(iTopoEarthCache.earthBufferSphere,
+				new THREE.MeshBasicMaterial({
+					map: earthPic,
+					side: THREE.FrontSide
+				}));
+
+			layerPlanet.add(sphereMesh);
+
+			// 绘制世界地图
+			worldGeometry.forEach(function(item, index) {
+				CreateSphereLine(item, index);
+			})
+		})
+	}).catch(function(e) {
+		console.log("Oops, error");
+	});
+}
+
+// 获取average函数
+var getAverage = function() {
+	let container = document.getElementById('viewport');
+	var average = 0;
+	if (container.clientWidth > container.clientHeight) {
+		average = container.clientHeight / 180;
+	} else {
+		average = container.clientWidth / 360;
+	}
+	return average;
+}
+
+// 将shape转换为ExtrudeGeometry
+var drawExtrudeShape = function(pos) {
+	// 计算平均每格占比
+	var average = getAverage();
+
+	var shapeObj = new THREE.Shape();
+	shapeObj.moveTo(pos[0][0] * average / iTopoEarthSettings.mapScaleSize, pos[0][1] * average /
+		iTopoEarthSettings.mapScaleSize);
+
+	pos.forEach(function(item) {
+		shapeObj.lineTo(item[0] * average / iTopoEarthSettings.mapScaleSize, item[1] * average /
+			iTopoEarthSettings.mapScaleSize);
+	})
+
+	var geometry = new THREE.ExtrudeGeometry(shapeObj, iTopoEarthCache.mapExtrudeOptions);
+	var material1 = new THREE.MeshBasicMaterial({
+		color: iTopoEarthSettings.earthLandFillColor
+	});
+	var material2 = new THREE.MeshBasicMaterial({
+		color: iTopoEarthSettings.earthLandBorderColor
+	});
+	// 绘制地图
+	let shapeGeometry = new THREE.Mesh(geometry, [material1, material2]);
+	// 将地图加入场景
+	layerPlanet.add(shapeGeometry);
+}
+
+// 计算绘制地图参数函数
+var drawShapeOptionFun = function(worldGeometry) {
+	worldGeometry.features.forEach(function(worldItem, worldItemIndex) {
+		var length = worldItem.geometry.coordinates.length;
+		var multipleBool = length > 1 ? true : false;
+		worldItem.geometry.coordinates.forEach(function(worldChildItem, worldChildItemIndex) {
+			if (multipleBool) {
+				// 值界可以使用的经纬度信息
+				if (worldChildItem.length && worldChildItem[0].length == 2) {
+					drawExtrudeShape(worldChildItem);
+				}
+				// 需要转换才可以使用的经纬度信息
+				if (worldChildItem.length && worldChildItem[0].length > 2) {
+					worldChildItem.forEach(function(countryItem, countryItenIndex) {
+						drawExtrudeShape(countryItem);
+					})
+				}
+			} else {
+				var countryPos = null;
+				if (worldChildItem.length > 1) {
+					countryPos = worldChildItem;
+				} else {
+					countryPos = worldChildItem[0];
+				}
+				if (countryPos) {
+					drawExtrudeShape(countryPos);
+				}
+			}
+		})
+	})
+}
+
+// 绘制世界地图线条函数
+var drawWorldLine2D = function(pos, identify) {
+	// 计算平均每格占比
+	var average = getAverage();
+	var geometry = new THREE.Geometry();
+	pos.forEach(function(item) {
+		var v = new THREE.Vector3(item[0] * average / iTopoEarthSettings.mapScaleSize,
+			item[1] * average / iTopoEarthSettings.mapScaleSize, iTopoEarthSettings.zHeight);
+		geometry.vertices.push(v);
+	})
+	// 定义线条
+	let line = new MeshLine();
+	line.setGeometry(geometry);
+
+	// 绘制地图
+	layerPlanet.add(new THREE.Mesh(line.geometry, iTopoEarthCache.worldMapMaterial));
+}
+
+// 计算绘制地图参数函数
+var drawWorldLineFun2D = function(worldGeometry) {
+	// 绘制世界地图
+	worldGeometry.features.forEach(function(worldItem, worldItemIndex) {
+		var length = worldItem.geometry.coordinates.length;
+		var multipleBool = length > 1 ? true : false;
+		worldItem.geometry.coordinates.forEach(function(worldChildItem, worldChildItemIndex) {
+			if (multipleBool) {
+				// 值界可以使用的经纬度信息
+				if (worldChildItem.length && worldChildItem[0].length == 2) {
+					drawWorldLine2D(worldChildItem, '' + worldItemIndex + worldChildItemIndex);
+				}
+				// 需要转换才可以使用的经纬度信息
+				if (worldChildItem.length && worldChildItem[0].length > 2) {
+					worldChildItem.forEach(function(countryItem, countryItenIndex) {
+						drawWorldLine2D(countryItem, '' + worldItemIndex + worldChildItemIndex + countryItenIndex);
+					})
+				}
+			} else {
+				var countryPos = null;
+				if (worldChildItem.length > 1) {
+					countryPos = worldChildItem;
+				} else {
+					countryPos = worldChildItem[0];
+				}
+				if (countryPos) {
+					drawWorldLine2D(countryPos, '' + worldItemIndex + worldChildItemIndex);
+				}
+			}
+		})
+	})
+}
+// 绘制世界地图线条函数
+var CreateSphereLine = function(pos, identify) {
+	var posArray = [];
+	pos.forEach(function(item) {
+		var pointPosition = createPosition(item[0], item[1], iTopoEarthSettings.CITY_RADIUS);
+		posArray.push(pointPosition);
+	})
+	// 绘制的线条需要关闭，第二个参数默认为false，表示不关闭
+	var curve = new THREE.CatmullRomCurve3(posArray, true);
+	var points = curve.getPoints(500);
+	var geometry = new THREE.Geometry().setFromPoints(points);
+	// 定义线条
+	var line = new MeshLine();
+	line.setGeometry(geometry);
+	// 定义线条材质
+	var material = new MeshLineMaterial({
+		color: iTopoEarthSettings.earthLandBorderColor,
+		lineWidth: iTopoEarthSettings.WORLD_LINE_WIDTH
+	})
+	// 将地图加入场景
+	layerPlanet.add(new THREE.Mesh(line.geometry, material));
+}
+
+//随机生成颜色
+iTopoEarthModel.RandomColor = function() {
+	var arrHex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"],
+		strHex = "0x",
+		index;
+	for (var i = 0; i < 6; i++) {
+		index = Math.round(Math.random() * 15);
+		strHex += arrHex[index];
+	}
+	return strHex;
 }
 
 function createPosition(lng, lat, radius) {

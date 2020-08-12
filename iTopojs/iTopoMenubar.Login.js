@@ -8,7 +8,7 @@ import { UIPanel, UIButton } from '../js/libs/ui.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
 import { iTopoEarthLogin } from './iTopoEarthLogin.js';
 
-function MenubarLogin( editor ) {
+function iTopoMenubarLogin( editor ) {
 	var strings = editor.strings;
 
 	var container = new UIPanel();
@@ -36,4 +36,4 @@ function MenubarLogin( editor ) {
 	return container;
 }
 
-export { MenubarLogin };
+export { iTopoMenubarLogin };
