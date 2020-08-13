@@ -5,7 +5,7 @@ import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea,UINumber,
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { ajaxPost } from './ajaxPostHelper.js'
 
-function LightEarthDialog( editor ) {
+function iTopoDialogLightEarth( editor ) {
 	var strings = editor.strings;
 
 	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
@@ -27,7 +27,7 @@ function LightEarthDialog( editor ) {
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
-	dlgTitleRow.add( new UIText( strings.getKey( 'LightToolbar/lightEarth' ) ).setWidth( '120px' ) );
+	dlgTitleRow.add( new UIText( strings.getKey( 'iTopoToolbarLight/lightEarth' ) ).setWidth( '120px' ) );
 	container.add(dlgTitleRow);
 
 	var dlgBody = new UIPanel();
@@ -177,7 +177,7 @@ function LightEarthDialog( editor ) {
 	buttonPanel.setPaddingBottom( '20px' );
 	container.add( buttonPanel );
 	{
-		var lightEarth = new UIButton( strings.getKey( 'LightToolbar/lightEarth' ) );
+		var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/lightEarth' ) );
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
 
@@ -205,7 +205,7 @@ function LightEarthDialog( editor ) {
 	}
 
 	{
-		var cancelBtn = new UIButton( strings.getKey( 'LightToolbar/cancel' ) );
+		var cancelBtn = new UIButton( strings.getKey( 'iTopoToolbarLight/cancel' ) );
 		cancelBtn.onClick( function () {
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
@@ -216,4 +216,4 @@ function LightEarthDialog( editor ) {
 	return container;
 }
 
-export { LightEarthDialog };
+export { iTopoDialogLightEarth };

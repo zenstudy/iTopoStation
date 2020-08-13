@@ -8,13 +8,13 @@ import { UIPanel, UIButton } from '../js/libs/ui.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
 import { iTopoDialogLogin } from './iTopoDialogLogin.js';
 
-function iTopoMenubarLogin( editor , menubar) {
+function iTopoMenubarRegister( editor ) {
 	var strings = editor.strings;
 
 	var container = new UIPanel();
 	container.setClass( 'menu right' );
 
-	var title = new UIButton(strings.getKey( 'menubar/Login' ));
+	var title = new UIButton(strings.getKey( 'menubar/register' ));
 	title.setClass( 'title' );
 	title.onClick( function () {
 
@@ -25,7 +25,7 @@ function iTopoMenubarLogin( editor , menubar) {
 		var dlg = new UIPanel();
 		dlgContainer.add(dlg);
 
-		var loginDlg = new iTopoDialogLogin( editor,menubar );
+		var loginDlg = new iTopoDialogLogin( editor );
 		dlg.add(loginDlg);
 
 		document.body.appendChild(dlgContainer.dom);
@@ -36,4 +36,4 @@ function iTopoMenubarLogin( editor , menubar) {
 	return container;
 }
 
-export { iTopoMenubarLogin };
+export { iTopoMenubarRegister };

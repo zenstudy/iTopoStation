@@ -4,10 +4,10 @@
 
 import { UIPanel, UIButton } from '../js/libs/ui.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
-import { LightStarDialog } from './LightStarDialog.js';
-import { LightEarthDialog } from './LightEarthDialog.js';
+import { iTopoDialogLightStar } from './iTopoDialogLightStar.js';
+import { iTopoDialogLightEarth } from './iTopoDialogLightEarth.js';
 
-var LightToolbar = function ( editor ) {
+var iTopoToolbarLight = function ( editor ) {
 
 	var signals = editor.signals;
 	var strings = editor.strings;
@@ -19,7 +19,7 @@ var LightToolbar = function ( editor ) {
 	var buttons = new UIPanel();
 	container.add( buttons );
 
-	var lightStars = new UIButton( strings.getKey( 'LightToolbar/lightStars' ) );
+	var lightStars = new UIButton( strings.getKey( 'iTopoToolbarLight/lightStars' ) );
 	//lightStars.dom.className = 'Button selected';
 	lightStars.onClick( function () {
 
@@ -30,14 +30,14 @@ var LightToolbar = function ( editor ) {
 		var dlg = new UIPanel();
 		dlgContainer.add(dlg);
 
-		var lightStarDlg = new LightStarDialog( editor );
+		var lightStarDlg = new iTopoDialogLightStar( editor );
 		dlg.add(lightStarDlg);
 
 		document.body.appendChild(dlgContainer.dom);
 	} );
 	buttons.add( lightStars );
 
-	var lightEarth = new UIButton( strings.getKey( 'LightToolbar/lightEarth' ) );
+	var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/lightEarth' ) );
 	lightEarth.onClick( function () {
 
 		var dlgContainer = new UIPanel();
@@ -47,7 +47,7 @@ var LightToolbar = function ( editor ) {
 		var dlg = new UIPanel();
 		dlgContainer.add(dlg);
 
-		var lightEarthDlg = new LightEarthDialog( editor );
+		var lightEarthDlg = new iTopoDialogLightEarth( editor );
 		dlg.add(lightEarthDlg);
 
 		document.body.appendChild(dlgContainer.dom);
@@ -65,4 +65,4 @@ var LightToolbar = function ( editor ) {
 
 };
 
-export { LightToolbar };
+export { iTopoToolbarLight };

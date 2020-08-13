@@ -31,10 +31,12 @@ function iTopoStrings( config ) {
 			'menubar/blockChain/horizenSuperNodesMap'  :'horizen超级节点儿全球分布图',
 
 			'menubar/Login' : '登陆',
+			'menubar/register': '注册',
+			'menubar/StarUser/exit':'退出',
 
-			'LightToolbar/lightStars': '点亮自己',
-			'LightToolbar/lightEarth': '点亮地球',
-			'LightToolbar/cancel' : '取消',
+			'iTopoToolbarLight/lightStars': '点亮自己',
+			'iTopoToolbarLight/lightEarth': '点亮地球',
+			'iTopoToolbarLight/cancel' : '取消',
 
 			'iTopoViewport/info/objects' : '对象数量',
 			'iTopoViewport/info/vertices' : '顶点儿数',

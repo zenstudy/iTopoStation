@@ -5,7 +5,7 @@
 import { UIPanel, UIButton, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 
-function LightStarDialog( editor ) {
+function iTopoDialogLightStar( editor ) {
 
 	//var config = editor.config;
 	var lightStarInfo = {
@@ -18,7 +18,7 @@ function LightStarDialog( editor ) {
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
-	dlgTitleRow.add( new UIText( strings.getKey( 'LightToolbar/lightStars' ) ).setWidth( '120px' ) );
+	dlgTitleRow.add( new UIText( strings.getKey( 'iTopoToolbarLight/lightStars' ) ).setWidth( '120px' ) );
 	container.add(dlgTitleRow);
 //	container.add( new UIBreak() );
 
@@ -83,7 +83,7 @@ function LightStarDialog( editor ) {
 	container.add( buttonPanel );
 
 	{
-		var lightStars = new UIButton( strings.getKey( 'LightToolbar/lightStars' ) );
+		var lightStars = new UIButton( strings.getKey( 'iTopoToolbarLight/lightStars' ) );
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 			editor.scene.rotation.y = 0;
@@ -95,7 +95,7 @@ function LightStarDialog( editor ) {
 	}
 
 	{
-		var cancelBtn = new UIButton( strings.getKey( 'LightToolbar/cancel' ) );
+		var cancelBtn = new UIButton( strings.getKey( 'iTopoToolbarLight/cancel' ) );
 		cancelBtn.onClick( function () {
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
@@ -107,4 +107,4 @@ function LightStarDialog( editor ) {
 
 }
 
-export { LightStarDialog };
+export { iTopoDialogLightStar };

@@ -48,7 +48,7 @@
 
 			import { iTopoEditor } from './itopojs/iTopoEditor.js';
 			import { iTopoViewport } from './itopojs/iTopoViewport.js';
-			import { LightToolbar } from './itopojs/LightToolbar.js'
+			import { iTopoToolbarLight } from './itopojs/iTopoToolbar.Light.js'
 			import { Toolbar } from './js/Toolbar.js';
 			import { Script } from './js/Script.js';
 			import { Player } from './js/Player.js';
@@ -82,7 +82,7 @@
 			var toolbar = new Toolbar( editor );
 			document.body.appendChild( toolbar.dom );
 
-			var lightToolbar = new LightToolbar( editor );
+			var lightToolbar = new iTopoToolbarLight( editor );
 			document.body.appendChild( lightToolbar.dom );
 
 			var script = new Script( editor );

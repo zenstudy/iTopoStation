@@ -5,8 +5,9 @@
 import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../js/libs/ui.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { ajaxPost } from './ajaxPostHelper.js'
+import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 
-function iTopoEarthLogin( editor ) {
+function iTopoDialogLogin( editor, menubar ) {
 
 	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
 	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
@@ -134,6 +135,10 @@ function iTopoEarthLogin( editor ) {
 			ajaxPost('http://127.0.0.1:8081/iTopoEarthLogin', JSON.stringify(userStarInfo),
 			function fnSucceed(jsonData)
 			{
+				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, userStarInfo) );
+				menubar.removeRegisterMenu();
+				menubar.container.remove(menubar.loginMenu);
+
 				console.log(JSON.parse(jsonData));
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
@@ -166,4 +171,4 @@ function iTopoEarthLogin( editor ) {
 
 }
 
-export { iTopoEarthLogin };
+export { iTopoDialogLogin };
