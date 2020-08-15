@@ -4,7 +4,7 @@
 
 import * as THREE from '../../build/three.module.js';
 
-import { UIPanel, UIButton } from '../js/libs/ui.js';
+import { UIPanel, UIButton } from './iTopoUI.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
 import { iTopoDialogLogin } from './iTopoDialogLogin.js';
 

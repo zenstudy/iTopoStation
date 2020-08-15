@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIButton } from '../js/libs/ui.js';
+import { UIPanel, UIButton } from './iTopoUI.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
 import { iTopoDialogLightStar } from './iTopoDialogLightStar.js';
 import { iTopoDialogLightEarth } from './iTopoDialogLightEarth.js';

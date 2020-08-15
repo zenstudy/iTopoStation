@@ -4,7 +4,7 @@
 
 import * as THREE from '../../build/three.module.js';
 
-import { UIPanel, UIRow, UIText, UIInput, UIButton, UISpan } from '../js/libs/ui.js';
+import { UIPanel, UIRow, UIText, UIInput, UIButton, UISpan } from './iTopoUI.js';
 
 import { SetGeometryValueCommand } from '../js/commands/SetGeometryValueCommand.js';
 
@@ -58,7 +58,8 @@ function iTopoTaskChildParticipants( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UIPanel();
+	this.container = new UIPanel();
+	var container = this.container;
 	container.setBorderTop( '0' );
 	container.setDisplay( 'none' );
 	container.setPaddingTop( '20px' );
@@ -283,8 +284,28 @@ function iTopoTaskChildParticipants( editor ) {
 
 	signals.geometryChanged.add( build );
 
-	return container;
+	return this;
 
+}
+
+
+iTopoTaskChildParticipants.prototype = {
+
+	refreshUI: function (taskObject) {
+
+		if (editor.selected !== null) {
+		//	container.setDisplay( 'block' );
+			// geometryUUID.setValue(taskObject.baseUUID);
+			// taskTypeSelect.setOptions(options);
+			// taskTypeSelect.setValue(taskObject.taskType);
+			// titleInput.setValue(taskObject.title);
+			// cityInput.setValue(taskObject.city);
+			// addressInput.setValue(taskObject.address);
+			// longitudeValueUI.setValue(taskObject.lng);
+			// latitudeValueUI.setValue(taskObject.lat);
+			// lightWishValueUI.setValue(taskObject.lightWish);
+		}
+	}
 }
 
 export { iTopoTaskChildParticipants };

@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIBreak, UIText } from '../js/libs/ui.js';
+import { UIPanel, UIBreak, UIText } from './iTopoUI.js';
 
 function iTopoViewportInfo( editor ) {
 

@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UISelect } from '../js/libs/ui.js';
+import { UISelect } from './iTopoUI.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js';
 import {iTopoEarthSettings} from'./iTopoEarthSettings.js';
 

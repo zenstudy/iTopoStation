@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIRow, UIButton } from '../js/libs/ui.js';
+import { UIPanel, UIRow, UIButton } from './iTopoUI.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 

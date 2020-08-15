@@ -63,6 +63,8 @@ function iTopoEditor() {
 		objectChanged: new Signal(),
 		objectRemoved: new Signal(),
 
+		objectArrayAdded: new Signal(),
+
 		cameraAdded: new Signal(),
 		cameraRemoved: new Signal(),
 
@@ -234,6 +236,29 @@ iTopoEditor.prototype = {
 
 	},
 
+	addObjectArray: function ( objectArray, parent) {
+
+		var scope = this;
+
+		if ( parent === undefined ) {
+			objectArray.forEach(function(obj)
+			{
+				scope.scene.add( obj );
+			});
+
+		} else {
+			objectArray.forEach(function(obj)
+			{
+				scope.scene.add( obj );
+				obj.parent = parent;
+			});
+		}
+
+		this.signals.objectArrayAdded.dispatch( objectArray );
+		// this.signals.sceneGraphChanged.dispatch();
+
+	},
+
 	moveObject: function ( object, parent, before ) {
 
 		if ( parent === undefined ) {
@@ -285,6 +310,18 @@ iTopoEditor.prototype = {
 		this.signals.objectRemoved.dispatch( object );
 		this.signals.sceneGraphChanged.dispatch();
 
+	},
+
+	removeObjectArray: function ( objectArray ) {
+
+		var scope = this;
+
+		objectArray.traverse( function ( obj ) {
+			scope.scene.remove( obj );
+		} );
+
+		// this.signals.objectRemoved.dispatch( object );
+		// this.signals.sceneGraphChanged.dispatch();
 	},
 
 	addGeometry: function ( geometry ) {

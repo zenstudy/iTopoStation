@@ -3,7 +3,7 @@
  * Developed as part of a project at University of Applied Sciences and Arts Northwestern Switzerland (www.fhnw.ch)
  */
 
-import { UIPanel, UIBreak, UIText } from '../js/libs/ui.js';
+import { UIPanel, UIBreak, UIText } from './iTopoUI.js';
 import { UIBoolean, UIOutliner } from '../js/libs/ui.three.js';
 
 function iTopoTaskChildDynamic( editor ) {
@@ -16,7 +16,7 @@ function iTopoTaskChildDynamic( editor ) {
 
 	var history = editor.history;
 
-	var container = new UIPanel();
+	this.container = new UIPanel();
 
 	var ignoreObjectSelectedSignal = false;
 
@@ -30,7 +30,7 @@ function iTopoTaskChildDynamic( editor ) {
 		ignoreObjectSelectedSignal = false;
 
 	} );
-	container.add( outliner );
+	this.container.add( outliner );
 
 	//
 
@@ -98,7 +98,26 @@ function iTopoTaskChildDynamic( editor ) {
 
 	} );
 
-	return container;
+	return this;
+}
+
+iTopoTaskChildDynamic.prototype = {
+
+	refreshUI: function (taskObject) {
+
+		if (editor.selected !== null) {
+		//	container.setDisplay( 'block' );
+			// geometryUUID.setValue(taskObject.baseUUID);
+			// taskTypeSelect.setOptions(options);
+			// taskTypeSelect.setValue(taskObject.taskType);
+			// titleInput.setValue(taskObject.title);
+			// cityInput.setValue(taskObject.city);
+			// addressInput.setValue(taskObject.address);
+			// longitudeValueUI.setValue(taskObject.lng);
+			// latitudeValueUI.setValue(taskObject.lat);
+			// lightWishValueUI.setValue(taskObject.lightWish);
+		}
+	}
 }
 
 export { iTopoTaskChildDynamic };

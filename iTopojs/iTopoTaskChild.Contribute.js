@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIBreak, UIText, UIButton, UIRow, UIInput } from '../js/libs/ui.js';
+import { UIPanel, UIBreak, UIText, UIButton, UIRow, UIInput } from './iTopoUI.js';
 
 import { AddScriptCommand } from '../js/commands/AddScriptCommand.js';
 import { SetScriptValueCommand } from '../js/commands/SetScriptValueCommand.js';
@@ -14,17 +14,18 @@ function iTopoTaskChildContribute( editor ) {
 
 	var signals = editor.signals;
 
-	var container = new UIPanel();
-	container.setDisplay( 'none' );
+	this.container = new UIPanel();
+	var container = this.container;
+	this.container.setDisplay( 'none' );
 
-	container.add( new UIText( strings.getKey( 'sidebar/contribute' ) ).setTextTransform( 'uppercase' ) );
-	container.add( new UIBreak() );
-	container.add( new UIBreak() );
+	this.container.add( new UIText( strings.getKey( 'sidebar/contribute' ) ).setTextTransform( 'uppercase' ) );
+	this.container.add( new UIBreak() );
+	this.container.add( new UIBreak() );
 
 	//
 
 	var scriptsContainer = new UIRow();
-	container.add( scriptsContainer );
+	this.container.add( scriptsContainer );
 
 	var newScript = new UIButton( strings.getKey( 'sidebar/contribute/newTask' ) );
 	newScript.onClick( function () {
@@ -33,7 +34,7 @@ function iTopoTaskChildContribute( editor ) {
 		editor.execute( new AddScriptCommand( editor, editor.selected, script ) );
 
 	} );
-	container.add( newScript );
+	this.container.add( newScript );
 
 	/*
 	var loadScript = new UI.Button( 'Load' );
@@ -128,8 +129,27 @@ function iTopoTaskChildContribute( editor ) {
 	signals.scriptRemoved.add( update );
 	signals.scriptChanged.add( update );
 
-	return container;
+	return this;
 
+}
+
+iTopoTaskChildContribute.prototype = {
+
+	refreshUI: function (taskObject) {
+
+		if (editor.selected !== null) {
+		//	container.setDisplay( 'block' );
+			// geometryUUID.setValue(taskObject.baseUUID);
+			// taskTypeSelect.setOptions(options);
+			// taskTypeSelect.setValue(taskObject.taskType);
+			// titleInput.setValue(taskObject.title);
+			// cityInput.setValue(taskObject.city);
+			// addressInput.setValue(taskObject.address);
+			// longitudeValueUI.setValue(taskObject.lng);
+			// latitudeValueUI.setValue(taskObject.lat);
+			// lightWishValueUI.setValue(taskObject.lightWish);
+		}
+	}
 }
 
 export { iTopoTaskChildContribute };

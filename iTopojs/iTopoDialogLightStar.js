@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIButton, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../js/libs/ui.js';
+import { UIPanel, UIButton, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from './iTopoUI.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 
 function iTopoDialogLightStar( editor ) {

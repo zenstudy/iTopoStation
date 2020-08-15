@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel } from '../js/libs/ui.js';
+import { UIPanel } from './iTopoUI.js';
 
 import { iTopoMenubarEarthHub } from './iTopoMenubar.EarthHub.js';
 import { iTopoMenubarSharedCanteen } from './iTopoMenubar.SharedCanteen.js';

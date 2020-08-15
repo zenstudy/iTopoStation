@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../js/libs/ui.js';
+import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from './iTopoUI.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { ajaxPost } from './ajaxPostHelper.js'
 import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';

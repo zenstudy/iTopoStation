@@ -5,6 +5,7 @@ import {COUNTRIES} from './countries.js';
 import {MeshLine,MeshLineMaterial} from './THREE.MeshLine.js';
 import {Editor} from '../js/Editor.js';
 import {AddiTopoObjCommand} from './AddiTopoObjCommand.js';
+import {AddiTopoObjArrayCommand} from './AddiTopoObjArrayCommand.js';
 import {iTopoEarthBuilder} from './iTopoEarthBuilder.js';
 import {iTopoEarthCache} from './iTopoEarthCache.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
@@ -278,6 +279,7 @@ iTopoEarthModel.MarkiTopoStars = function() {
 		//打印返回的json数据
 		response.json().then(function(json) {
 			var average = getAverage();
+			var objArray = [];
 			for (var i = 0; i < json.length; i++) {
 				// var plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
 				// var plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
@@ -298,9 +300,9 @@ iTopoEarthModel.MarkiTopoStars = function() {
 				}
 
 				var star = iTopoEarthBuilder.createStar(option);
-				editor.execute(new AddiTopoObjCommand(editor, star));
-				console.log(star.userData);
+				objArray.push(star);
 			}
+			editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 		})
 	}).catch(function(e) {
 		console.log('error: ' + e.toString());
@@ -357,8 +359,8 @@ iTopoEarthModel.MarkiTopoBase = function(url) {
 		response.json().then(function(json) {
 			var average = getAverage();
 			if (iTopoEarthSettings.markingKind === "lightCone") {
+				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
-
 					var option = {
 						"objectUUID": json[i].baseUUID,
 						"objectType": json[i].taskType,
@@ -374,14 +376,14 @@ iTopoEarthModel.MarkiTopoBase = function(url) {
 
 					// 地标
 					var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-					//layerMarks.add(lightConeMark.lightConeGrp);
-					editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
+					objArray.push(lightConeMark.lightConeGrp);
 					layerMarks.add(lightConeMark.fontMesh);
 				}
+				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			} else if (iTopoEarthSettings.markingKind === "balloon") {
 				const geometries = [];
 				var markedNames = [];
-
+				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
 					var option = {
 						"objectUUID": json[i].baseUUID,
@@ -412,8 +414,9 @@ iTopoEarthModel.MarkiTopoBase = function(url) {
 
 				const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries, false);
 				const mesh = new THREE.Mesh(mergedGeometry, iTopoEarthCache.markingSymbolMaterial);
-				editor.execute(new AddiTopoObjCommand(editor, mesh));
+				objArray.push(mesh);
 			}
+			editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 		})
 	}).catch(function(e) {
 		console.log('error: ' + e.toString());
@@ -430,7 +433,7 @@ iTopoEarthModel.MarkCanteen = function(url) {
 		response.json().then(function(json) {
 			var average = getAverage();
 			if (iTopoEarthSettings.markingKind === "lightCone") {
-
+				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
 					var option = {
 						"objectUUID": THREE.MathUtils.generateUUID(),
@@ -445,14 +448,14 @@ iTopoEarthModel.MarkCanteen = function(url) {
 						"average": average,
 					}
 					var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-					layerMarks.add(lightConeMark.lightConeGrp);
-					//editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
+					objArray.push(lightConeMark.lightConeGrp);
 					layerMarks.add(lightConeMark.fontMesh);
 				}
+				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			} else if (iTopoEarthSettings.markingKind === "balloon") {
 				const geometries = [];
 				var markedNames = [];
-
+				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
 					var option = {
 						"objectUUID": THREE.MathUtils.generateUUID(),
@@ -483,7 +486,8 @@ iTopoEarthModel.MarkCanteen = function(url) {
 
 				const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries, false);
 				const mesh = new THREE.Mesh(mergedGeometry, iTopoEarthCache.markingSymbolMaterial);
-				layerMarks.add(mesh);
+				objArray.push(mesh);
+				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			}
 
 		})
@@ -503,6 +507,7 @@ iTopoEarthModel.MarkZenNodes = function(url) {
 			var average = getAverage();
 			if (iTopoEarthSettings.markingKind === "lightCone") {
 
+				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
 
 					var option = {
@@ -519,16 +524,15 @@ iTopoEarthModel.MarkZenNodes = function(url) {
 					}
 
 					var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-					//editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
-					layerMarks.add(lightConeMark.lightConeGrp);
+					objArray.push(lightConeMark.lightConeGrp);
 					layerMarks.add(lightConeMark.fontMesh);
 				}
-
+				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			} else if (iTopoEarthSettings.markingKind === "balloon") {
 
 				const geometries = [];
 				var markedNames = [];
-
+				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
 
 					var option = {
@@ -560,7 +564,8 @@ iTopoEarthModel.MarkZenNodes = function(url) {
 
 				const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries, false);
 				const mesh = new THREE.Mesh(mergedGeometry, iTopoEarthCache.markingSymbolMaterial);
-				layerMarks.add(mesh);
+				objArray.push(mesh);
+				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			}
 		}).catch(function(e) {
 			console.log('error: ' + e.toString());
@@ -652,6 +657,7 @@ iTopoEarthModel.MarkZenNodeParticleOnPlane = function(url) {
 
 iTopoEarthModel.MarkCountries = function() {
 	// 地标及光锥
+	var objArray = [];
 	for (let i = 0, length = COUNTRIES.length; i < length; i++) {
 
 		var option = {
@@ -668,10 +674,11 @@ iTopoEarthModel.MarkCountries = function() {
 		}
 
 		var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-		layerMarks.add(lightConeMark.lightConeGrp);
-		//editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
+		objArray.push(lightConeMark.lightConeGrp);
 		layerMarks.add(lightConeMark.fontMesh);
 	}
+
+	editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 }
 
 // 计算绘制地图参数函数

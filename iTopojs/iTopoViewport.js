@@ -7,14 +7,14 @@ import * as THREE from '../../build/three.module.js';
 import { TransformControls } from '../../examples/jsm/controls/TransformControls.js';
 import { TrackballControls } from '../../examples/jsm/controls/TrackballControls.js';
 
-import { UIPanel } from '../js/libs/ui.js';
+import { UIPanel } from './iTopoUI.js';
 
 import { EditorControls } from '../js/EditorControls.js';
 
 import { GlobalKindView } from './GlobalKindView.js';
 import { GlobalStyleView } from './GlobalStyleView.js';
 import { iTopoViewportInfo } from './iTopoViewport.Info.js';
-import { ViewHelper } from '../js/Viewport.ViewHelper.js';
+import { ViewHelper } from './iTopoViewport.ViewHelper.js';;
 
 import { SetPositionCommand } from '../js/commands/SetPositionCommand.js';
 import { SetRotationCommand } from '../js/commands/SetRotationCommand.js';
@@ -202,7 +202,7 @@ function iTopoViewport( editor ) {
 		if ( onDownPosition.distanceTo( onUpPosition ) === 0 ) {
 
 			var intersects = getIntersects( onUpPosition, objects );
-
+			console.log(intersects);
 			if ( intersects.length > 0 ) {
 
 				var object = intersects[ 0 ].object;
@@ -490,6 +490,20 @@ function iTopoViewport( editor ) {
 
 		} );
 
+	} );
+
+	signals.objectArrayAdded.add( function ( objArray ) {
+
+		if(objArray[0].name == "layerPlanet" || objArray[0].name == "layerCloud")
+			return;
+
+		console.log( 'added objects = '+ objArray);
+
+		objArray.forEach( function ( obj ) {
+			obj.traverse( function ( child ) {
+				objects.push( child );
+			} );
+		} );
 	} );
 
 	signals.helperAdded.add( function ( object ) {

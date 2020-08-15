@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UITabbedPanel } from '../js/libs/ui.js';
+import { UITabbedPanel } from './iTopoUI.js';
 
 import { iTopoTaskChildDynamic } from './iTopoTaskChild.Dynamic.js';
 import { iTopoTaskChildContribute } from './iTopoTaskChild.Contribute.js';

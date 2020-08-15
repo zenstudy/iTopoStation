@@ -1,7 +1,7 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea,UINumber, UIInteger, UIInput } from '../js/libs/ui.js';
+import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea,UINumber, UIInteger, UIInput } from'./iTopoUI.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { ajaxPost } from './ajaxPostHelper.js'
 
