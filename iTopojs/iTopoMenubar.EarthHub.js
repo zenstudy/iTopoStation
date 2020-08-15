@@ -26,21 +26,17 @@ function iTopoMenubarEarthHub(editor) {
 	horizenSuperMenu.setClass('option');
 	horizenSuperMenu.setTextContent(strings.getKey('menubar/iTopoEarthHub/iTopoSupportLand'));
 	horizenSuperMenu.onClick(function() {
-		// editor.clear();
-		// iTopoEarthSettings.MAP_KIND = '超级节点儿';
-		// iTopoEarthModel.ReCreate();
+
 	});
 	options.add(horizenSuperMenu);
 
-	var dynamicalVallageMenu = new UIRow();
-	dynamicalVallageMenu.setClass('option');
-	dynamicalVallageMenu.setTextContent(strings.getKey('menubar/iTopoEarthHub/dynamicVallage'));
-	dynamicalVallageMenu.onClick(function() {
-		// editor.clear();
-		// iTopoEarthSettings.MAP_KIND = '超级节点儿';
-		// iTopoEarthModel.ReCreate();
-	});
-	options.add(dynamicalVallageMenu);
+	// var dynamicalVallageMenu = new UIRow();
+	// dynamicalVallageMenu.setClass('option');
+	// dynamicalVallageMenu.setTextContent(strings.getKey('menubar/iTopoEarthHub/dynamicVallage'));
+	// dynamicalVallageMenu.onClick(function() {
+
+	// });
+	// options.add(dynamicalVallageMenu);
 
 	return container;
 }

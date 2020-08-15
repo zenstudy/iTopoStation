@@ -4,53 +4,53 @@
 
 import * as THREE from '../../build/three.module.js';
 
-import { UIPanel, UIRow, UIText, UIInput, UIButton, UISpan } from './iTopoUI.js';
+import { UIElement,UIPanel, UIRow, UIText, UIInput, UIButton, UISpan } from './iTopoUI.js';
 
-import { SetGeometryValueCommand } from '../js/commands/SetGeometryValueCommand.js';
+// import { SetGeometryValueCommand } from '../js/commands/SetGeometryValueCommand.js';
 
-import { SidebarGeometryGeometry } from '../js/Sidebar.Geometry.Geometry.js';
-import { SidebarGeometryBufferGeometry } from '../js/Sidebar.Geometry.BufferGeometry.js';
-import { SidebarGeometryModifiers } from '../js/Sidebar.Geometry.Modifiers.js';
+// import { SidebarGeometryGeometry } from '../js/Sidebar.Geometry.Geometry.js';
+// import { SidebarGeometryBufferGeometry } from '../js/Sidebar.Geometry.BufferGeometry.js';
+// import { SidebarGeometryModifiers } from '../js/Sidebar.Geometry.Modifiers.js';
 
-import { SidebarGeometryBoxGeometry } from '../js/Sidebar.Geometry.BoxGeometry.js';
-import { SidebarGeometryCircleGeometry } from '../js/Sidebar.Geometry.CircleGeometry.js';
-import { SidebarGeometryCylinderGeometry } from '../js/Sidebar.Geometry.CylinderGeometry.js';
-import { SidebarGeometryDodecahedronGeometry } from '../js/Sidebar.Geometry.DodecahedronGeometry.js';
-import { SidebarGeometryExtrudeGeometry } from '../js/Sidebar.Geometry.ExtrudeGeometry.js';
-import { SidebarGeometryIcosahedronGeometry } from '../js/Sidebar.Geometry.IcosahedronGeometry.js';
-import { SidebarGeometryLatheGeometry } from '../js/Sidebar.Geometry.LatheGeometry.js';
-import { SidebarGeometryOctahedronGeometry } from '../js/Sidebar.Geometry.OctahedronGeometry.js';
-import { SidebarGeometryPlaneGeometry } from '../js/Sidebar.Geometry.PlaneGeometry.js';
-import { SidebarGeometryRingGeometry } from '../js/Sidebar.Geometry.RingGeometry.js';
-import { SidebarGeometryShapeGeometry } from '../js/Sidebar.Geometry.ShapeGeometry.js';
-import { SidebarGeometrySphereGeometry } from '../js/Sidebar.Geometry.SphereGeometry.js';
-import { SidebarGeometryTeapotBufferGeometry } from '../js/Sidebar.Geometry.TeapotBufferGeometry.js';
-import { SidebarGeometryTetrahedronGeometry } from '../js/Sidebar.Geometry.TetrahedronGeometry.js';
-import { SidebarGeometryTorusGeometry } from '../js/Sidebar.Geometry.TorusGeometry.js';
-import { SidebarGeometryTorusKnotGeometry } from '../js/Sidebar.Geometry.TorusKnotGeometry.js';
-import { SidebarGeometryTubeGeometry } from '../js/Sidebar.Geometry.TubeGeometry.js';
+// import { SidebarGeometryBoxGeometry } from '../js/Sidebar.Geometry.BoxGeometry.js';
+// import { SidebarGeometryCircleGeometry } from '../js/Sidebar.Geometry.CircleGeometry.js';
+// import { SidebarGeometryCylinderGeometry } from '../js/Sidebar.Geometry.CylinderGeometry.js';
+// import { SidebarGeometryDodecahedronGeometry } from '../js/Sidebar.Geometry.DodecahedronGeometry.js';
+// import { SidebarGeometryExtrudeGeometry } from '../js/Sidebar.Geometry.ExtrudeGeometry.js';
+// import { SidebarGeometryIcosahedronGeometry } from '../js/Sidebar.Geometry.IcosahedronGeometry.js';
+// import { SidebarGeometryLatheGeometry } from '../js/Sidebar.Geometry.LatheGeometry.js';
+// import { SidebarGeometryOctahedronGeometry } from '../js/Sidebar.Geometry.OctahedronGeometry.js';
+// import { SidebarGeometryPlaneGeometry } from '../js/Sidebar.Geometry.PlaneGeometry.js';
+// import { SidebarGeometryRingGeometry } from '../js/Sidebar.Geometry.RingGeometry.js';
+// import { SidebarGeometryShapeGeometry } from '../js/Sidebar.Geometry.ShapeGeometry.js';
+// import { SidebarGeometrySphereGeometry } from '../js/Sidebar.Geometry.SphereGeometry.js';
+// import { SidebarGeometryTeapotBufferGeometry } from '../js/Sidebar.Geometry.TeapotBufferGeometry.js';
+// import { SidebarGeometryTetrahedronGeometry } from '../js/Sidebar.Geometry.TetrahedronGeometry.js';
+// import { SidebarGeometryTorusGeometry } from '../js/Sidebar.Geometry.TorusGeometry.js';
+// import { SidebarGeometryTorusKnotGeometry } from '../js/Sidebar.Geometry.TorusKnotGeometry.js';
+// import { SidebarGeometryTubeGeometry } from '../js/Sidebar.Geometry.TubeGeometry.js';
 
-import { VertexNormalsHelper } from '../../examples/jsm/helpers/VertexNormalsHelper.js';
+// import { VertexNormalsHelper } from '../../examples/jsm/helpers/VertexNormalsHelper.js';
 
-var geometryUIClasses = {
-	'BoxBufferGeometry': SidebarGeometryBoxGeometry,
-	'CircleBufferGeometry': SidebarGeometryCircleGeometry,
-	'CylinderBufferGeometry': SidebarGeometryCylinderGeometry,
-	'DodecahedronBufferGeometry': SidebarGeometryDodecahedronGeometry,
-	'ExtrudeBufferGeometry': SidebarGeometryExtrudeGeometry,
-	'IcosahedronBufferGeometry': SidebarGeometryIcosahedronGeometry,
-	'LatheBufferGeometry': SidebarGeometryLatheGeometry,
-	'OctahedronBufferGeometry': SidebarGeometryOctahedronGeometry,
-	'PlaneBufferGeometry': SidebarGeometryPlaneGeometry,
-	'RingBufferGeometry': SidebarGeometryRingGeometry,
-	'ShapeBufferGeometry': SidebarGeometryShapeGeometry,
-	'SphereBufferGeometry': SidebarGeometrySphereGeometry,
-	'TeapotBufferGeometry': SidebarGeometryTeapotBufferGeometry,
-	'TetrahedronBufferGeometry': SidebarGeometryTetrahedronGeometry,
-	'TorusBufferGeometry': SidebarGeometryTorusGeometry,
-	'TorusKnotBufferGeometry': SidebarGeometryTorusKnotGeometry,
-	'TubeBufferGeometry': SidebarGeometryTubeGeometry
-};
+// var geometryUIClasses = {
+// 	'BoxBufferGeometry': SidebarGeometryBoxGeometry,
+// 	'CircleBufferGeometry': SidebarGeometryCircleGeometry,
+// 	'CylinderBufferGeometry': SidebarGeometryCylinderGeometry,
+// 	'DodecahedronBufferGeometry': SidebarGeometryDodecahedronGeometry,
+// 	'ExtrudeBufferGeometry': SidebarGeometryExtrudeGeometry,
+// 	'IcosahedronBufferGeometry': SidebarGeometryIcosahedronGeometry,
+// 	'LatheBufferGeometry': SidebarGeometryLatheGeometry,
+// 	'OctahedronBufferGeometry': SidebarGeometryOctahedronGeometry,
+// 	'PlaneBufferGeometry': SidebarGeometryPlaneGeometry,
+// 	'RingBufferGeometry': SidebarGeometryRingGeometry,
+// 	'ShapeBufferGeometry': SidebarGeometryShapeGeometry,
+// 	'SphereBufferGeometry': SidebarGeometrySphereGeometry,
+// 	'TeapotBufferGeometry': SidebarGeometryTeapotBufferGeometry,
+// 	'TetrahedronBufferGeometry': SidebarGeometryTetrahedronGeometry,
+// 	'TorusBufferGeometry': SidebarGeometryTorusGeometry,
+// 	'TorusKnotBufferGeometry': SidebarGeometryTorusKnotGeometry,
+// 	'TubeBufferGeometry': SidebarGeometryTubeGeometry
+// };
 
 function iTopoTaskChildParticipants( editor ) {
 
@@ -61,10 +61,10 @@ function iTopoTaskChildParticipants( editor ) {
 	this.container = new UIPanel();
 	var container = this.container;
 	container.setBorderTop( '0' );
-	container.setDisplay( 'none' );
 	container.setPaddingTop( '20px' );
+	//container.setDisplay( 'none' );
 
-	var currentGeometryType = null;
+	//var currentGeometryType = null;
 
 	// Actions
 
@@ -141,171 +141,184 @@ function iTopoTaskChildParticipants( editor ) {
 
 	// type
 
-	var geometryTypeRow = new UIRow();
-	var geometryType = new UIText();
+	// var geometryTypeRow = new UIRow();
+	// var geometryType = new UIText();
 
-	geometryTypeRow.add( new UIText( strings.getKey( 'sidebar/geometry/type' ) ).setWidth( '90px' ) );
-	geometryTypeRow.add( geometryType );
+	// geometryTypeRow.add( new UIText( strings.getKey( 'sidebar/geometry/type' ) ).setWidth( '90px' ) );
+	// geometryTypeRow.add( geometryType );
 
-	container.add( geometryTypeRow );
+	// container.add( geometryTypeRow );
 
 	// uuid
 
-	var geometryUUIDRow = new UIRow();
-	var geometryUUID = new UIInput().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
-	var geometryUUIDRenew = new UIButton( strings.getKey( 'sidebar/geometry/new' ) ).setMarginLeft( '7px' ).onClick( function () {
+	// var geometryUUIDRow = new UIRow();
+	// var geometryUUID = new UIInput().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
+	// var geometryUUIDRenew = new UIButton( strings.getKey( 'sidebar/geometry/new' ) ).setMarginLeft( '7px' ).onClick( function () {
 
-		geometryUUID.setValue( THREE.MathUtils.generateUUID() );
+	// 	geometryUUID.setValue( THREE.MathUtils.generateUUID() );
 
-		editor.execute( new SetGeometryValueCommand( editor, editor.selected, 'uuid', geometryUUID.getValue() ) );
+	// 	editor.execute( new SetGeometryValueCommand( editor, editor.selected, 'uuid', geometryUUID.getValue() ) );
 
-	} );
+	// } );
 
-	geometryUUIDRow.add( new UIText( strings.getKey( 'sidebar/geometry/uuid' ) ).setWidth( '90px' ) );
-	geometryUUIDRow.add( geometryUUID );
-	geometryUUIDRow.add( geometryUUIDRenew );
+	// geometryUUIDRow.add( new UIText( strings.getKey( 'sidebar/geometry/uuid' ) ).setWidth( '90px' ) );
+	// geometryUUIDRow.add( geometryUUID );
+	// geometryUUIDRow.add( geometryUUIDRenew );
 
-	container.add( geometryUUIDRow );
+	// container.add( geometryUUIDRow );
 
 	// name
 
-	var geometryNameRow = new UIRow();
-	var geometryName = new UIInput().setWidth( '150px' ).setFontSize( '12px' ).onChange( function () {
+	//var geometryNameRow = new UIRow();
+	//var geometryName = new UIInput().setWidth( '150px' ).setFontSize( '12px' ).onChange( function () {
 
 	//	editor.execute( new SetGeometryValueCommand( editor, editor.selected, 'name', geometryName.getValue() ) );
 
-	} );
+	//} );
 
-	geometryNameRow.add( new UIText( strings.getKey( 'sidebar/geometry/name' ) ).setWidth( '90px' ) );
-	geometryNameRow.add( geometryName );
+	// geometryNameRow.add( new UIText( strings.getKey( 'sidebar/geometry/name' ) ).setWidth( '90px' ) );
+	// geometryNameRow.add( geometryName );
 
-	container.add( geometryNameRow );
+	// container.add( geometryNameRow );
 
 	// parameters
 
-	var parameters = new UISpan();
-	container.add( parameters );
+	// var parameters = new UISpan();
+	// container.add( parameters );
 
 	// geometry
 
-	container.add( new SidebarGeometryGeometry( editor ) );
+	// var aaa = new SidebarGeometryGeometry( editor );
+	// console.log(aaa);
+	// container.add( aaa );
 
 	// buffergeometry
-
-	container.add( new SidebarGeometryBufferGeometry( editor ) );
+	// var bbb = new SidebarGeometryBufferGeometry( editor );
+	// console.log(bbb);
+	// container.add( bbb );
 
 	// size
 
-	var geometryBoundingSphere = new UIText();
+	// var geometryBoundingSphere = new UIText();
 
-	container.add( new UIText( strings.getKey( 'sidebar/geometry/bounds' ) ).setWidth( '90px' ) );
-	container.add( geometryBoundingSphere );
+	// container.add( new UIText( strings.getKey( 'sidebar/geometry/bounds' ) ).setWidth( '90px' ) );
+	// container.add( geometryBoundingSphere );
 
-	// Helpers
+	// // Helpers
 
-	var helpersRow = new UIRow().setMarginTop( '16px' ).setPaddingLeft( '90px' );
-	container.add( helpersRow );
+	// var helpersRow = new UIRow().setMarginTop( '16px' ).setPaddingLeft( '90px' );
+	// container.add( helpersRow );
 
-	var vertexNormalsButton = new UIButton( strings.getKey( 'sidebar/geometry/show_vertex_normals' ) );
-	vertexNormalsButton.onClick( function () {
+	// var vertexNormalsButton = new UIButton( strings.getKey( 'sidebar/geometry/show_vertex_normals' ) );
+	// vertexNormalsButton.onClick( function () {
 
-		var object = editor.selected;
+	// 	var object = editor.selected;
 
-		if ( editor.helpers[ object.id ] === undefined ) {
+	// 	if ( editor.helpers[ object.id ] === undefined ) {
 
-			var helper = new VertexNormalsHelper( object );
-			editor.addHelper( object, helper );
+	// 		var helper = new VertexNormalsHelper( object );
+	// 		editor.addHelper( object, helper );
 
-		} else {
+	// 	} else {
 
-			editor.removeHelper( object );
+	// 		editor.removeHelper( object );
 
-		}
+	// 	}
 
-		signals.sceneGraphChanged.dispatch();
+	// 	signals.sceneGraphChanged.dispatch();
 
-	} );
-	helpersRow.add( vertexNormalsButton );
+	// } );
+	// helpersRow.add( vertexNormalsButton );
 
-	function build() {
+	// function build() {
 
-		var object = editor.selected;
+	// 	var object = editor.selected;
 
-		if ( object && object.geometry ) {
+	// 	if ( object && object.geometry ) {
 
-			var geometry = object.geometry;
+	// 		var geometry = object.geometry;
 
-			container.setDisplay( 'block' );
+	// 		container.setDisplay( 'block' );
 
-			geometryType.setValue( geometry.type );
+	// 		geometryType.setValue( geometry.type );
 
-			geometryUUID.setValue( geometry.uuid );
-			geometryName.setValue( geometry.name );
+	// 		geometryUUID.setValue( geometry.uuid );
+	// 		geometryName.setValue( geometry.name );
 
-			//
+	// 		//
 
-			if ( currentGeometryType !== geometry.type ) {
+	// 		if ( currentGeometryType !== geometry.type ) {
 
-				parameters.clear();
+	// 			parameters.clear();
 
-				if ( geometry.type === 'BufferGeometry' || geometry.type === 'Geometry' ) {
+	// 			if ( geometry.type === 'BufferGeometry' || geometry.type === 'Geometry' ) {
 
-					parameters.add( new SidebarGeometryModifiers( editor, object ) );
+	// 				parameters.add( new SidebarGeometryModifiers( editor, object ) );
 
-				} else if ( geometryUIClasses[ geometry.type ] !== undefined ) {
+	// 			} else if ( geometryUIClasses[ geometry.type ] !== undefined ) {
 
-					parameters.add( new geometryUIClasses[ geometry.type ]( editor, object ) );
+	// 				parameters.add( new geometryUIClasses[ geometry.type ]( editor, object ) );
 
-				}
+	// 			}
 
-				currentGeometryType = geometry.type;
+	// 			currentGeometryType = geometry.type;
 
-			}
+	// 		}
 
-			if ( geometry.boundingSphere === null ) geometry.computeBoundingSphere();
+	// 		if ( geometry.boundingSphere === null ) geometry.computeBoundingSphere();
 
-			geometryBoundingSphere.setValue( Math.floor( geometry.boundingSphere.radius * 1000 ) / 1000 );
+	// 		geometryBoundingSphere.setValue( Math.floor( geometry.boundingSphere.radius * 1000 ) / 1000 );
 
-		} else {
+	// 	} else {
 
-			container.setDisplay( 'none' );
+	// 		container.setDisplay( 'none' );
 
-		}
+	// 	}
 
-	}
+	// }
 
-	signals.objectSelected.add( function () {
+	// signals.objectSelected.add( function () {
 
-		currentGeometryType = null;
+	// 	currentGeometryType = null;
 
-		build();
+	// 	build();
 
-	} );
+	// } );
 
-	signals.geometryChanged.add( build );
+	// signals.geometryChanged.add( build );
 
 	return this;
 
 }
 
+iTopoTaskChildParticipants.prototype = Object.create( UIElement.prototype );
+iTopoTaskChildParticipants.prototype.constructor = iTopoTaskChildParticipants;
 
 iTopoTaskChildParticipants.prototype = {
 
-	refreshUI: function (taskObject) {
+	getValue: function () {
+
+		return this.taskObject;
+
+	},
+
+	setValue: function (taskObject) {
 
 		if (editor.selected !== null) {
 		//	container.setDisplay( 'block' );
-			// geometryUUID.setValue(taskObject.baseUUID);
-			// taskTypeSelect.setOptions(options);
-			// taskTypeSelect.setValue(taskObject.taskType);
-			// titleInput.setValue(taskObject.title);
-			// cityInput.setValue(taskObject.city);
-			// addressInput.setValue(taskObject.address);
-			// longitudeValueUI.setValue(taskObject.lng);
-			// latitudeValueUI.setValue(taskObject.lat);
-			// lightWishValueUI.setValue(taskObject.lightWish);
+			//this.geometryUUID.setValue(taskObject.baseUUID);
+			// this.taskTypeSelect.setValue(taskObject.taskType);
+			// this.titleInput.setValue(taskObject.title);
+			// this.cityInput.setValue(taskObject.city);
+			// this.addressInput.setValue(taskObject.address);
+			// this.longitudeValueUI.setValue(taskObject.lng);
+			// this.latitudeValueUI.setValue(taskObject.lat);
+			// this.lightWishValueUI.setValue(taskObject.lightWish);
 		}
-	}
+
+		this.taskObject = taskObject;
+	},
+
 }
 
 export { iTopoTaskChildParticipants };

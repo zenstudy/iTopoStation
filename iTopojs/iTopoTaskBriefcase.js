@@ -3,10 +3,15 @@
  */
 import { UITabbedPanel, UISpan } from './iTopoUI.js';
 
+import { iTopoTaskChildSkyCastle } from './iTopoTaskChild.SkyCastle.js';
+import { iTopoTaskChildStarUser } from './iTopoTaskChild.StarUser.js';
+
 import { iTopoTaskChildHeader } from './iTopoTaskChild.header.js';
 import { iTopoTaskChildDynamic } from './iTopoTaskChild.Dynamic.js';
 import { iTopoTaskChildContribute } from './iTopoTaskChild.Contribute.js';
 import { iTopoTaskChildParticipants } from './iTopoTaskChild.Participants.js';
+
+
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 import { iTopoSkyCastle} from './iTopoSkyCastle.js';
 
@@ -38,19 +43,19 @@ function iTopoTaskBriefcase(editor) {
 	function createEcologicalFarmTabs() {
 		console.log('createEcologicalFarmTabs');
 		var headerTab = new iTopoTaskChildHeader(editor);
-		// var dynamicTab = new iTopoTaskChildDynamic(editor);
-		// var contributeTab = new iTopoTaskChildContribute(editor);
-		// var participantsTab = new iTopoTaskChildParticipants(editor);
+		var dynamicTab = new iTopoTaskChildDynamic(editor);
+		var contributeTab = new iTopoTaskChildContribute(editor);
+		var participantsTab = new iTopoTaskChildParticipants(editor);
 
 		tabs = [];
 		tabs.push(headerTab);
-		// tabs.push(dynamicTab);
-		// tabs.push(contributeTab);
-		// tabs.push(participantsTab);
+		tabs.push(dynamicTab);
+		tabs.push(contributeTab);
+		tabs.push(participantsTab);
 		container.addTab('iTopoTask', strings.getKey('sidebar/iTopoTask'), headerTab.container);
-		//	container.addTab('dynamic', strings.getKey('sidebar/iTopoTask/dynamic'), dynamicTab.container);
-		//	container.addTab('contribute', strings.getKey('sidebar/iTopoTask/contribute'), contributeTab.container);
-		//	container.addTab('participants', strings.getKey('sidebar/iTopoTask/participants'), participantsTab.container);
+		container.addTab('dynamic', strings.getKey('sidebar/iTopoTask/dynamic'), dynamicTab.container);
+		container.addTab('contribute', strings.getKey('sidebar/iTopoTask/contribute'), contributeTab.container);
+		container.addTab('participants', strings.getKey('sidebar/iTopoTask/participants'), participantsTab.container);
 
 		container.select('iTopoTask');
 	}
@@ -78,25 +83,25 @@ function iTopoTaskBriefcase(editor) {
 
 	function createiTopoSkyCastleFarmTabs() {
 
-		var headerTab = new iTopoTaskChildHeader(editor);
+		var skyCastleTab = new iTopoTaskChildSkyCastle(editor);
 
 		tabs = [];
-		tabs.push(headerTab);
+		tabs.push(skyCastleTab);
 
-		container.addTab('iTopoTask', strings.getKey('sidebar/iTopoTask'), headerTab.container);
+		container.addTab('skyCastle', strings.getKey('sidebar/skyCastle'), skyCastleTab.container);
 
-		container.select('iTopoTask');
+		container.select('skyCastle');
 	}
 
 	function createStarTabs() {
-		var headerTab = new iTopoTaskChildHeader(editor);
+		var starUserTab = new iTopoTaskChildStarUser(editor);
 
 		tabs = [];
-		tabs.push(headerTab);
+		tabs.push(starUserTab);
 
-		container.addTab('iTopoTask', strings.getKey('sidebar/iTopoTask'), headerTab.container);
+		container.addTab('StarUser', strings.getKey('sidebar/StarUser'), starUserTab.container);
 
-		container.select('iTopoTask');
+		container.select('StarUser');
 	}
 
 	function refreshEcologicalFarmTabs() {
@@ -136,7 +141,7 @@ function iTopoTaskBriefcase(editor) {
 					if (json[i].baseUUID === editor.selected.userData.objectUUID) {
 
 						tabs.forEach(function(tab) {
-							//   tab.setValue(json[i]);
+							tab.setValue(json[i]);
 						});
 
 						return;
@@ -154,7 +159,7 @@ function iTopoTaskBriefcase(editor) {
 		if (castle.castleUUID === editor.selected.userData.objectUUID) {
 			//geometryUUID.setValue(castle.castleUUID);
 			tabs.forEach(function(tab) {
-				// tab.setValue(castle);
+				tab.setValue(castle);
 			});
 
 			return;
@@ -173,7 +178,7 @@ function iTopoTaskBriefcase(editor) {
 					if (json[i].starUUID === editor.selected.userData.objectUUID) {
 
 						tabs.forEach(function(tab) {
-							//   tab.setValue(json[i]);
+							tab.setValue(json[i]);
 						});
 
 						return;

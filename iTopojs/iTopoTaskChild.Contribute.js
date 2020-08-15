@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIBreak, UIText, UIButton, UIRow, UIInput } from './iTopoUI.js';
+import { UIElement, UIPanel, UIBreak, UIText, UIButton, UIRow, UIInput } from './iTopoUI.js';
 
 import { AddScriptCommand } from '../js/commands/AddScriptCommand.js';
 import { SetScriptValueCommand } from '../js/commands/SetScriptValueCommand.js';
@@ -14,18 +14,18 @@ function iTopoTaskChildContribute( editor ) {
 
 	var signals = editor.signals;
 
-	this.container = new UIPanel();
-	var container = this.container;
-	this.container.setDisplay( 'none' );
+	var container = new UIPanel();
+	//container.setDisplay( 'none' );
+	this.container = container;
 
-	this.container.add( new UIText( strings.getKey( 'sidebar/contribute' ) ).setTextTransform( 'uppercase' ) );
-	this.container.add( new UIBreak() );
-	this.container.add( new UIBreak() );
+	container.add( new UIText( strings.getKey( 'sidebar/contribute' ) ).setTextTransform( 'uppercase' ) );
+	container.add( new UIBreak() );
+	container.add( new UIBreak() );
 
 	//
 
 	var scriptsContainer = new UIRow();
-	this.container.add( scriptsContainer );
+	container.add( scriptsContainer );
 
 	var newScript = new UIButton( strings.getKey( 'sidebar/contribute/newTask' ) );
 	newScript.onClick( function () {
@@ -34,7 +34,7 @@ function iTopoTaskChildContribute( editor ) {
 		editor.execute( new AddScriptCommand( editor, editor.selected, script ) );
 
 	} );
-	this.container.add( newScript );
+	container.add( newScript );
 
 	/*
 	var loadScript = new UI.Button( 'Load' );
@@ -75,7 +75,7 @@ function iTopoTaskChildContribute( editor ) {
 					} );
 					scriptsContainer.add( name );
 
-					var edit = new UIButton( strings.getKey( 'sidebar/script/edit' ) );
+					var edit = new UIButton( strings.getKey( 'sidebar/contribute/editTask' ) );
 					edit.setMarginLeft( '4px' );
 					edit.onClick( function () {
 
@@ -84,7 +84,7 @@ function iTopoTaskChildContribute( editor ) {
 					} );
 					scriptsContainer.add( edit );
 
-					var remove = new UIButton( strings.getKey( 'sidebar/script/remove' ) );
+					var remove = new UIButton( strings.getKey( 'sidebar/contribute/removeTask' ) );
 					remove.setMarginLeft( '4px' );
 					remove.onClick( function () {
 
@@ -133,23 +133,35 @@ function iTopoTaskChildContribute( editor ) {
 
 }
 
+iTopoTaskChildContribute.prototype = Object.create( UIElement.prototype );
+iTopoTaskChildContribute.prototype.constructor = iTopoTaskChildContribute;
+
 iTopoTaskChildContribute.prototype = {
 
-	refreshUI: function (taskObject) {
+	getValue: function () {
+
+		return this.taskObject;
+
+	},
+
+	setValue: function (taskObject) {
 
 		if (editor.selected !== null) {
-		//	container.setDisplay( 'block' );
-			// geometryUUID.setValue(taskObject.baseUUID);
-			// taskTypeSelect.setOptions(options);
-			// taskTypeSelect.setValue(taskObject.taskType);
-			// titleInput.setValue(taskObject.title);
-			// cityInput.setValue(taskObject.city);
-			// addressInput.setValue(taskObject.address);
-			// longitudeValueUI.setValue(taskObject.lng);
-			// latitudeValueUI.setValue(taskObject.lat);
-			// lightWishValueUI.setValue(taskObject.lightWish);
+
+			//this.container.setDisplay( 'block' );
+			// this.geometryUUID.setValue(taskObject.baseUUID);
+			// this.taskTypeSelect.setValue(taskObject.taskType);
+			// this.titleInput.setValue(taskObject.title);
+			// this.cityInput.setValue(taskObject.city);
+			// this.addressInput.setValue(taskObject.address);
+			// this.longitudeValueUI.setValue(taskObject.lng);
+			// this.latitudeValueUI.setValue(taskObject.lat);
+			// this.lightWishValueUI.setValue(taskObject.lightWish);
 		}
-	}
+
+		this.taskObject = taskObject;
+	},
+
 }
 
 export { iTopoTaskChildContribute };

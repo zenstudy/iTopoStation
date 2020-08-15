@@ -43,6 +43,10 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/triangles' : '三角面片数',
 			'iTopoViewport/info/frametime' : '帧数',
 
+			'sidebar/skyCastle' : '服务中心',
+			'sidebar/SkyCastle/castleUUID': '服务中心UUID',
+			'sidebar/SkyCastle/Title': '名称',
+
 			'sidebar/iTopoTask' : '拓扑任务',
 			'sidebar/iTopoTask/dynamic': '动态',
 			'sidebar/iTopoTask/contribute':'贡献',
@@ -50,6 +54,15 @@ function iTopoStrings( config ) {
 
 			'sidebar/contribute': '贡献',
 			'sidebar/contribute/newTask' : '新任务',
+			'sidebar/contribute/editTask' :'查看',
+			'sidebar/contribute/removeTask': '删除',
+
+			'sidebar/StarUser': '星民信息',
+			'sidebar/starUser/starUUID':'starUUID',
+			'sidebar/starUser/cellPhone':'手机',
+			'sidebar/starUser/longitude':'经度',
+			'sidebar/starUser/latitude':'纬度',
+			'sidebar/starUser/starWish':'星语星愿',
 
 			'iTopoDialog/login/login' : '登陆',
 			'iTopoDialog/login/cellPhone':'手机',

@@ -3,8 +3,8 @@
  * Developed as part of a project at University of Applied Sciences and Arts Northwestern Switzerland (www.fhnw.ch)
  */
 
-import { UIPanel, UIBreak, UIText } from './iTopoUI.js';
-import { UIBoolean, UIOutliner } from '../js/libs/ui.three.js';
+import { UIElement,UIPanel, UIBreak, UIText } from './iTopoUI.js';
+import { UIBoolean, UIOutliner } from './iTopoUI.three.js';
 
 function iTopoTaskChildDynamic( editor ) {
 
@@ -101,23 +101,34 @@ function iTopoTaskChildDynamic( editor ) {
 	return this;
 }
 
+iTopoTaskChildDynamic.prototype = Object.create( UIElement.prototype );
+iTopoTaskChildDynamic.prototype.constructor = iTopoTaskChildDynamic;
+
 iTopoTaskChildDynamic.prototype = {
 
-	refreshUI: function (taskObject) {
+	getValue: function () {
+
+		return this.taskObject;
+
+	},
+
+	setValue: function (taskObject) {
 
 		if (editor.selected !== null) {
 		//	container.setDisplay( 'block' );
-			// geometryUUID.setValue(taskObject.baseUUID);
-			// taskTypeSelect.setOptions(options);
-			// taskTypeSelect.setValue(taskObject.taskType);
-			// titleInput.setValue(taskObject.title);
-			// cityInput.setValue(taskObject.city);
-			// addressInput.setValue(taskObject.address);
-			// longitudeValueUI.setValue(taskObject.lng);
-			// latitudeValueUI.setValue(taskObject.lat);
-			// lightWishValueUI.setValue(taskObject.lightWish);
+			// this.geometryUUID.setValue(taskObject.baseUUID);
+			// this.taskTypeSelect.setValue(taskObject.taskType);
+			// this.titleInput.setValue(taskObject.title);
+			// this.cityInput.setValue(taskObject.city);
+			// this.addressInput.setValue(taskObject.address);
+			// this.longitudeValueUI.setValue(taskObject.lng);
+			// this.latitudeValueUI.setValue(taskObject.lat);
+			// this.lightWishValueUI.setValue(taskObject.lightWish);
 		}
-	}
+
+		this.taskObject = taskObject;
+	},
+
 }
 
 export { iTopoTaskChildDynamic };

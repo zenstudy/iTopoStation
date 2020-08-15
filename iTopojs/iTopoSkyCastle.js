@@ -5,10 +5,11 @@ class iTopoSkyCastle {
   constructor() {
     //this.resources = new Set();
 	this.castleUUID = '3861590E-CB58-48BA-977C-9F9F107B61AD';
+	this.title = '共享地球服务中心';
 	this.lng = 0;
-	this.lat = 0;
+	this.lat = 90;
 	this.size = 100;
-	this.dis2Cloud = -50;
+	this.dis2Cloud = -220;
   }
 
   // track(resource) {

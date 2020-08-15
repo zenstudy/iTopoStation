@@ -15,6 +15,8 @@ export var iTopoEarthModel = iTopoEarthModel || {};
 
 let layerPlanet, layerMarks, layerCloud, layerStars;
 
+iTopoEarthModel.SkyCastle = new iTopoSkyCastle();
+
 iTopoEarthModel.GetModelTopic = function() {
 
 	var topic = "未定义";
@@ -125,13 +127,12 @@ iTopoEarthModel.RotateToBeijing = function(camera) {
 
 iTopoEarthModel.CreateiTopoSkyCastle = function() {
 
-	var castle = new iTopoSkyCastle();
 	var option = {
-		"objectUUID": castle.castleUUID,
+		"objectUUID": iTopoEarthModel.SkyCastle.castleUUID,
 		"objectType": "iTopoType/TaskObject/iTopoSkyCastle",
-		"pos": [castle.lng, castle.lat],
-		"starSize": castle.size,
-		"dis2Cloud": castle.dis2Cloud,
+		"pos": [iTopoEarthModel.SkyCastle.lng, iTopoEarthModel.SkyCastle.lat],
+		"starSize": iTopoEarthModel.SkyCastle.size,
+		"dis2Cloud": iTopoEarthModel.SkyCastle.dis2Cloud,
 		"textMarked": false,
 		"textValue": editor.strings.getKey('menubar/iTopoEarthHub/iTopoSupportLand'),
 		"fontColor": iTopoEarthSettings.markingTextColor,
