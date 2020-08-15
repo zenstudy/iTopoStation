@@ -20,15 +20,15 @@ iTopoEarthModel.SkyCastle = new iTopoSkyCastle();
 iTopoEarthModel.GetModelTopic = function() {
 
 	var topic = "未定义";
-	if (iTopoEarthSettings.MAP_KIND == "共创基地") {
+	if (iTopoEarthSettings.MAP_KIND === "共创基地") {
 		topic = "共同创造基地";
-	} else if (iTopoEarthSettings.MAP_KIND == "雨花斋") {
+	} else if (iTopoEarthSettings.MAP_KIND === "雨花斋") {
 		topic = "雨花斋全国分布图";
-	} else if(iTopoEarthSettings.MAP_KIND == "超级节点儿") {
+	} else if(iTopoEarthSettings.MAP_KIND === "超级节点儿") {
 		topic = "Horizen Super Nodes Distribution Map";
-	} else if (iTopoEarthSettings.MAP_KIND == "普通节点儿") {
+	} else if (iTopoEarthSettings.MAP_KIND === "普通节点儿") {
 		topic = "Horizen Secure Nodes Distribution Map";
-	} else if (iTopoEarthSettings.MAP_KIND == "国家分布") {
+	} else if (iTopoEarthSettings.MAP_KIND === "国家分布") {
 		topic = "全球国家分布图";
 	}
 
@@ -50,7 +50,10 @@ iTopoEarthModel.ReCreate = function() {
 		titlePos = new THREE.Vector3(0, iTopoEarthSettings.CITY_RADIUS + 50, iTopoEarthSettings.CITY_RADIUS);
 	}
 
-	layerMarks.add(iTopoEarthBuilder.createModelTitle(iTopoEarthModel.GetModelTopic(), titlePos, iTopoEarthSettings.topicFontSize));
+	if (iTopoEarthSettings.MAP_KIND !== "共创基地") {
+		layerMarks.add(iTopoEarthBuilder.createModelTitle(iTopoEarthModel.GetModelTopic(), titlePos, iTopoEarthSettings.topicFontSize));
+	}
+
 
 	iTopoEarthModel.CreateGlobalModel();
 	iTopoEarthModel.MarkiTopoStars();
@@ -134,16 +137,16 @@ iTopoEarthModel.CreateiTopoSkyCastle = function() {
 		"starSize": iTopoEarthModel.SkyCastle.size,
 		"dis2Cloud": iTopoEarthModel.SkyCastle.dis2Cloud,
 		"textMarked": false,
-		"textValue": editor.strings.getKey('menubar/iTopoEarthHub/iTopoSupportLand'),
+		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoSkyCastle'),
 		"fontColor": iTopoEarthSettings.markingTextColor,
-		"fontSize": iTopoEarthSettings.markingFontSize,
+		"fontSize": iTopoEarthSettings.markingFontSize*60,
 		"average": getAverage(),
 	}
 
 	var star = iTopoEarthBuilder.createSkyCastle(option);
 
-	editor.execute(new AddiTopoObjCommand(editor, star));
-	console.log(star.userData);
+	editor.execute(new AddiTopoObjCommand(editor, star.starMesh));
+	editor.execute(new AddiTopoObjCommand(editor, star.fontMesh));
 
 	// const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
 	// 	+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );

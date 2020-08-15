@@ -1188,24 +1188,6 @@ UITabbedPanel.prototype.removeAllTab = function ( ) {
 
 	this.tabs.length = 0;
 	this.panels.length = 0;
-
-	console.log(this);
-
-
-	// var tab = new UITabbedPanel.Tab( label, this );
-	// tab.setId( id );
-	// this.tabs.push( tab );
-	// this.tabsDiv.add( tab );
-
-	// var panel = new UIDiv();
-	// panel.setId( id );
-	// panel.add( items );
-	// panel.setDisplay( 'none' );
-	// this.panels.push( panel );
-	// this.panelsDiv.add( panel );
-
-	// this.select( id );
-
 };
 
 UITabbedPanel.Tab = function ( text, parent ) {

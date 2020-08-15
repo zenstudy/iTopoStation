@@ -252,7 +252,7 @@ iTopoEarthBuilder.createBalloonMark = function(option) {
 
 	{
 		// 球体
-		let ball = new THREE.SphereBufferGeometry(iTopoEarthSettings.circularRadio);
+		let ball = new THREE.SphereBufferGeometry(iTopoEarthSettings.COLUD_RADIUS_RATIO);
 
 		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
 			var	ptOnSphere = createPosition(option.pos[0], option.pos[1], iTopoEarthSettings.CITY_RADIUS + iTopoEarthSettings.circularHeight);
@@ -284,7 +284,7 @@ iTopoEarthBuilder.createBalloonMark = function(option) {
 
 	{
 		// 圆锥体
-		let cylinder = new THREE.CylinderBufferGeometry(iTopoEarthSettings.circularRadio, 0, iTopoEarthSettings.circularHeight);
+		let cylinder = new THREE.CylinderBufferGeometry(iTopoEarthSettings.COLUD_RADIUS_RATIO, 0, iTopoEarthSettings.circularHeight);
 		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
 			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],iTopoEarthSettings.CITY_RADIUS + iTopoEarthSettings.circularHeight/2);
 			originHelper.position.copy(ptOnSphere);
@@ -332,14 +332,14 @@ iTopoEarthBuilder.createBalloonMark = function(option) {
 			fontMesh.scale.x = option.fontSize / option.average * textLength;
 			fontMesh.scale.y = option.fontSize / option.average;
 			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],
-				iTopoEarthSettings.CITY_RADIUS + iTopoEarthSettings.circularHeight+iTopoEarthSettings.circularRadio+0.5);
+				iTopoEarthSettings.CITY_RADIUS + iTopoEarthSettings.circularHeight+iTopoEarthSettings.COLUD_RADIUS_RATIO+0.5);
 			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
 			fontMesh.lookAt(0, 0, 0);
 		} else {
 			fontMesh.scale.x = option.fontSize / option.average * textLength;
 			fontMesh.scale.y = option.fontSize / option.average;
 			var cityZfont = iTopoEarthSettings.zHeight + iTopoEarthSettings.circularHeight
-				+ iTopoEarthSettings.circularRadio + option.fontSize / option.average + 0.5;
+				+ iTopoEarthSettings.COLUD_RADIUS_RATIO + option.fontSize / option.average + 0.5;
 			fontMesh.position.set(cityX, cityY, cityZfont); // 定义提示文字显示位置
 		}
 
@@ -383,6 +383,8 @@ iTopoEarthBuilder.createStar = function(option) {
 
 iTopoEarthBuilder.createSkyCastle = function(option) {
 
+	var skyCastleBuid = {};
+
 	let starPoint;
 	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D")
 	{
@@ -406,8 +408,38 @@ iTopoEarthBuilder.createSkyCastle = function(option) {
 	starMesh.position.copy(starPoint);
 	starMesh.name = option.textValue;
 	starMesh.userData = userData;
+	skyCastleBuid.starMesh = starMesh;
 
-	return starMesh;
+	if (!option.textMarked) {
+
+		// 添加文字说明
+		let textLength = option.textValue.length;
+		let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLength * option.fontSize * option.average,
+			option.fontSize * option.average, option.textValue, option.fontColor));
+		let fontMesh = new THREE.Sprite(new THREE.SpriteMaterial({map: texture}));
+
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],dis2zero);
+					console.log(ptOnSphere);
+			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
+			fontMesh.lookAt(0, 0, 0);
+
+		} else {
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			fontMesh.position.set(cityX, cityY, dis2zero); // 定义提示文字显示位置
+		}
+
+		skyCastleBuid.fontMesh = fontMesh;
+
+	}
+
+	return skyCastleBuid;
 }
 
 // canvas实现文字函数

@@ -13,10 +13,10 @@ function iTopoStrings( config ) {
 			'iTopoType/TaskObject/Star':'星体',
 			'iTopoType/TaskObject/EcologicalFarm':'生态基地',
 			'iTopoType/TaskObject/Canteen':'共享食堂',
-			'iTopoType/TaskObject/iTopoSkyCastle':'联络协调中心',
+			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球服务中心',
 
 			'menubar/iTopoEarthHub': '共享地球',
-			'menubar/iTopoEarthHub/iTopoSupportLand' : '天空之城',
+			'menubar/iTopoEarthHub/iTopoSupportLand' : '共享地球服务中心',
 			'menubar/iTopoEarthHub/dynamicVallage' : '动力谷',
 
 			'menubar/EcologicalFarm':'生态基地',
@@ -44,8 +44,8 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/frametime' : '帧数',
 
 			'sidebar/skyCastle' : '服务中心',
-			'sidebar/SkyCastle/castleUUID': '服务中心UUID',
 			'sidebar/SkyCastle/Title': '名称',
+			'sidebar/SkyCastle/castleUUID': '服务中心UUID',
 
 			'sidebar/iTopoTask' : '拓扑任务',
 			'sidebar/iTopoTask/dynamic': '动态',

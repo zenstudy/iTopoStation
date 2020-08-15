@@ -33,15 +33,10 @@ function iTopoTaskBriefcase(editor) {
 	// events
 
 	function removeAllTabs() {
-		// tabs.forEach(function(tab){
-		//    container.remove(tab);
-		// });
-		console.log('removeAllTabs');
 		container.removeAllTab();
 	}
 
 	function createEcologicalFarmTabs() {
-		console.log('createEcologicalFarmTabs');
 		var headerTab = new iTopoTaskChildHeader(editor);
 		var dynamicTab = new iTopoTaskChildDynamic(editor);
 		var contributeTab = new iTopoTaskChildContribute(editor);
@@ -61,7 +56,6 @@ function iTopoTaskBriefcase(editor) {
 	}
 
 	function createCanteenTabs() {
-		console.log('createCanteenTabs');
 		var headerTab = new iTopoTaskChildHeader(editor);
 		// var dynamicTab = new iTopoTaskChildDynamic(editor);
 		// var contributeTab = new iTopoTaskChildContribute(editor);
@@ -82,7 +76,6 @@ function iTopoTaskBriefcase(editor) {
 	}
 
 	function createiTopoSkyCastleFarmTabs() {
-
 		var skyCastleTab = new iTopoTaskChildSkyCastle(editor);
 
 		tabs = [];

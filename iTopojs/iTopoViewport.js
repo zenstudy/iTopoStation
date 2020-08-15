@@ -496,9 +496,7 @@ function iTopoViewport( editor ) {
 
 		if(objArray[0].name == "layerPlanet" || objArray[0].name == "layerCloud")
 			return;
-
-		console.log( 'added objects = '+ objArray);
-
+			
 		objArray.forEach( function ( obj ) {
 			obj.traverse( function ( child ) {
 				objects.push( child );
