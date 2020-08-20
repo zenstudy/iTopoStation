@@ -10,6 +10,7 @@ import { History as _History } from '../js/History.js';
 import { Storage as _Storage } from '../js/Storage.js';
 import { iTopoStrings } from './iTopoStrings.js';
 import { iTopoConfig } from './iTopoConfig.js';
+import { iTopoThumbnailManager } from './iTopoThumbnailManager.js';
 
 var _DEFAULT_CAMERA = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );
 _DEFAULT_CAMERA.name = 'Camera';
@@ -102,6 +103,7 @@ function iTopoEditor() {
 	this.scene = new THREE.Scene();
 	this.scene.name = 'Scene';
 
+	this.thumbnailManager = new iTopoThumbnailManager();
 	this.sceneHelpers = new THREE.Scene();
 
 	{

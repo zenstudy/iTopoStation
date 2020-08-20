@@ -496,7 +496,7 @@ function iTopoViewport( editor ) {
 
 		if(objArray[0].name == "layerPlanet" || objArray[0].name == "layerCloud")
 			return;
-			
+
 		objArray.forEach( function ( obj ) {
 			obj.traverse( function ( child ) {
 				objects.push( child );
@@ -781,6 +781,8 @@ function iTopoViewport( editor ) {
 			viewHelper.render( renderer );
 			renderer.autoClear = true;
 		}
+
+		editor.thumbnailManager.render();
 
 		endTime = performance.now();
 		editor.signals.sceneRendered.dispatch( endTime - startTime );

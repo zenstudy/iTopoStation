@@ -7,7 +7,7 @@ import { UIElement, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 
 
-function iTopoTaskChildSkyCastle(editor) {
+function iTopoTaskChildSkyCastleHeader(editor) {
 
 	var strings = editor.strings;
 
@@ -21,7 +21,7 @@ function iTopoTaskChildSkyCastle(editor) {
 		var geometryUUIDRow = new UIRow();
 		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
 		this.geometryUUID.setValue(iTopoEarthModel.SkyCastle.castleUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SkyCastle/castleUUID')).setWidth('90px'));
+		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/castleUUID')).setWidth('90px'));
 		geometryUUIDRow.add(this.geometryUUID);
 
 		container.add(geometryUUIDRow);
@@ -30,7 +30,7 @@ function iTopoTaskChildSkyCastle(editor) {
 	{
 		// title
 		var titleRow = new UIRow();
-		titleRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Title')).setWidth('90px'));
+		titleRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/Title')).setWidth('90px'));
 
 		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.titleInput.setValue(iTopoEarthModel.SkyCastle.title);
@@ -45,10 +45,10 @@ function iTopoTaskChildSkyCastle(editor) {
 	return this;
 }
 
-iTopoTaskChildSkyCastle.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildSkyCastle.prototype.constructor = iTopoTaskChildSkyCastle;
+iTopoTaskChildSkyCastleHeader.prototype = Object.create( UIElement.prototype );
+iTopoTaskChildSkyCastleHeader.prototype.constructor = iTopoTaskChildSkyCastleHeader;
 
-iTopoTaskChildSkyCastle.prototype = {
+iTopoTaskChildSkyCastleHeader.prototype = {
 
 	getValue: function () {
 
@@ -69,4 +69,4 @@ iTopoTaskChildSkyCastle.prototype = {
 
 }
 
-export { iTopoTaskChildSkyCastle };
+export { iTopoTaskChildSkyCastleHeader };

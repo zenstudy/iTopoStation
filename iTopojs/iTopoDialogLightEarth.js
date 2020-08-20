@@ -60,7 +60,7 @@ function iTopoDialogLightEarth( editor ) {
 
 	{
 		var options = {
-			'iTopoType/TaskObject/Canteen': strings.getKey( 'iTopoType/TaskObject/Canteen' ),
+			'iTopoType/TaskObject/SharedCanteen': strings.getKey( 'iTopoType/TaskObject/SharedCanteen' ),
 			'iTopoType/TaskObject/EcologicalFarm': strings.getKey( 'iTopoType/TaskObject/EcologicalFarm' ),
 		};
 		var taskTypeRow = new UIRow();

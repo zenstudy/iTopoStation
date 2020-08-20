@@ -10,6 +10,7 @@
 	</head>
 	<body>
 		<link rel="stylesheet" href="css/main.css">
+		<link type="text/css" rel="stylesheet" href="css/thumbnail.css" />
 		<script src="../examples/js/libs/draco/draco_encoder.js"></script>
 
 		<link rel="stylesheet" href="js/libs/codemirror/codemirror.css">
@@ -41,7 +42,6 @@
 		<script src="js/libs/ternjs/doc_comment.js"></script>
 		<script src="js/libs/tern-threejs/threejs.js"></script>
 		<script src="js/libs/signals.min.js"></script>
-
 		<script type="module">
 
 			import * as THREE from '../build/three.module.js';
@@ -49,15 +49,14 @@
 			import { iTopoEditor } from './itopojs/iTopoEditor.js';
 			import { iTopoViewport } from './itopojs/iTopoViewport.js';
 			import { iTopoToolbarLight } from './itopojs/iTopoToolbar.Light.js'
-			import { Toolbar } from './js/Toolbar.js';
-			import { Script } from './js/Script.js';
-			import { Player } from './js/Player.js';
+			import { iTopoToolbar } from './itopojs/iTopoToolbar.js';
 			import { iTopoTaskBriefcase } from './itopojs/iTopoTaskBriefcase.js';
-			import { Menubar } from './js/Menubar.js';
-			import { VRButton } from '../examples/jsm/webxr/VRButton.js';
 			import { iTopoMenubar} from './itopojs/iTopoMenubar.js'
-
 			import { iTopoEarthModel } from './iTopojs/iTopoEarthModel.js';
+			
+			import { VRButton } from '../examples/jsm/webxr/VRButton.js';
+			//import { Script } from './js/Script.js';
+			//import { Player } from './js/Player.js';
 
 			window.URL = window.URL || window.webkitURL;
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -79,24 +78,21 @@
 			var viewport = new iTopoViewport( editor );
 			document.body.appendChild( viewport.dom );
 
-			var toolbar = new Toolbar( editor );
+			var toolbar = new iTopoToolbar( editor );
 			document.body.appendChild( toolbar.dom );
 
 			var lightToolbar = new iTopoToolbarLight( editor );
 			document.body.appendChild( lightToolbar.dom );
 
-			var script = new Script( editor );
-			document.body.appendChild( script.dom );
+			// var script = new Script( editor );
+			// document.body.appendChild( script.dom );
 
-			var player = new Player( editor );
-			document.body.appendChild( player.dom );
+			// var player = new Player( editor );
+			// document.body.appendChild( player.dom );
 
 			var sidebar = new iTopoTaskBriefcase( editor );
 			document.body.appendChild( sidebar.dom );
 
-			// var menubar = new Menubar( editor );
-			// document.body.appendChild( menubar.dom );
-			
 			var menubar = new iTopoMenubar( editor );
 			document.body.appendChild( menubar.dom );
 			

@@ -373,7 +373,7 @@ iTopoEarthBuilder.createStar = function(option) {
 	}
 
 	var starGeo = new THREE.SphereBufferGeometry(option.starSize, 50, 50);
-	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.waveShaderMaterial);
+	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.waveShaderMaterial);//
 	starMesh.position.copy(starPoint);
 	starMesh.name = option.textValue;
 	starMesh.userData = userData;
@@ -404,7 +404,7 @@ iTopoEarthBuilder.createSkyCastle = function(option) {
 	}
 
 	var starGeo = new THREE.SphereBufferGeometry(option.starSize, 50, 50);
-	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.sphereShaderMaterial);
+	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.sphereShaderMaterial);//starsTwinkleMaterial
 	starMesh.position.copy(starPoint);
 	starMesh.name = option.textValue;
 	starMesh.userData = userData;

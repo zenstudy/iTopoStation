@@ -1050,7 +1050,6 @@ function UIButton( value ) {
 	this.dom.textContent = value;
 
 	return this;
-
 }
 
 UIButton.prototype = Object.create( UIElement.prototype );
@@ -1061,7 +1060,6 @@ UIButton.prototype.setLabel = function ( value ) {
 	this.dom.textContent = value;
 
 	return this;
-
 };
 
 
@@ -1206,7 +1204,6 @@ UITabbedPanel.Tab = function ( text, parent ) {
 	} );
 
 	return this;
-
 };
 
 UITabbedPanel.Tab.prototype = Object.create( UIText.prototype );

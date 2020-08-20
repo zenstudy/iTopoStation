@@ -7,7 +7,7 @@ import { UIElement, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber
 import { iTopoEarthModel } from './iTopoEarthModel.js'
 
 
-function iTopoTaskChildStarUser(editor) {
+function iTopoTaskChildStarUserHeader(editor) {
 
 	var strings = editor.strings;
 
@@ -31,7 +31,7 @@ function iTopoTaskChildStarUser(editor) {
 		var starUUIDRow = new UIRow();
 		this.starUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
 		this.starUUID.setValue(starUser.starUUID);
-		starUUIDRow.add(new UIText(strings.getKey('sidebar/starUser/starUUID')).setWidth('90px'));
+		starUUIDRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starUUID')).setWidth('90px'));
 		starUUIDRow.add(this.starUUID);
 
 		container.add(starUUIDRow);
@@ -40,7 +40,7 @@ function iTopoTaskChildStarUser(editor) {
 	{
 		// cellPhone
 		var cellPhoneRow = new UIRow();
-		cellPhoneRow.add(new UIText(strings.getKey('sidebar/starUser/cellPhone')).setWidth('90px'));
+		cellPhoneRow.add(new UIText(strings.getKey('sidebar/starUser/Header/cellPhone')).setWidth('90px'));
 
 		this.cellPhoneInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.cellPhoneInput.setValue(starUser.cellPhone);
@@ -55,7 +55,7 @@ function iTopoTaskChildStarUser(editor) {
 	{
 		var longitudeRow = new UIRow();
 
-		longitudeRow.add(new UIText(strings.getKey('sidebar/starUser/longitude')).setWidth('120px'));
+		longitudeRow.add(new UIText(strings.getKey('sidebar/starUser/Header/longitude')).setWidth('120px'));
 
 		this.longitudeValueUI = new UINumber(starUser.longitude).setRange(2, Infinity);
 		this.longitudeValueUI.onChange(function() {
@@ -70,7 +70,7 @@ function iTopoTaskChildStarUser(editor) {
 	{
 		var latitudeRow = new UIRow();
 
-		latitudeRow.add(new UIText(strings.getKey('sidebar/starUser/latitude')).setWidth('120px'));
+		latitudeRow.add(new UIText(strings.getKey('sidebar/starUser/Header/latitude')).setWidth('120px'));
 
 		this.latitudeValueUI = new UINumber(starUser.latitude).setRange(2, Infinity);
 		this.latitudeValueUI.onChange(function() {
@@ -84,7 +84,7 @@ function iTopoTaskChildStarUser(editor) {
 
 	{
 		var starWishTitleRow = new UIRow();
-		starWishTitleRow.add(new UIText(strings.getKey('sidebar/starUser/starWish')).setWidth('120px'));
+		starWishTitleRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starWish')).setWidth('120px'));
 		container.add(starWishTitleRow);
 
 		var starWishTextAreaRow = new UIRow();
@@ -102,10 +102,10 @@ function iTopoTaskChildStarUser(editor) {
 	return this;
 }
 
-iTopoTaskChildStarUser.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildStarUser.prototype.constructor = iTopoTaskChildStarUser;
+iTopoTaskChildStarUserHeader.prototype = Object.create( UIElement.prototype );
+iTopoTaskChildStarUserHeader.prototype.constructor = iTopoTaskChildStarUserHeader;
 
-iTopoTaskChildStarUser.prototype = {
+iTopoTaskChildStarUserHeader.prototype = {
 
 	getValue: function () {
 
@@ -129,4 +129,4 @@ iTopoTaskChildStarUser.prototype = {
 
 }
 
-export { iTopoTaskChildStarUser };
+export { iTopoTaskChildStarUserHeader };
