@@ -1,6 +1,6 @@
-import * as THREE from '../../build/three.module.js';
-import { OrbitControls } from '../../examples/jsm/controls/OrbitControls.js';
-import { UIPanel } from './iTopoUI.js';
+import * as THREE from '../../../build/three.module.js';
+import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
+import { UIPanel } from '../iTopoUI.js';
 
 function iTopoThumbnailManager() {
 
@@ -29,24 +29,24 @@ iTopoThumbnailManager.prototype = {
 		renderer.setClearColor( 0xcccccc, 1 );
 		renderer.setPixelRatio( window.devicePixelRatio );
 		this.panelDom.append(renderer.domElement);
+		renderer.domElement.style.position = 'absolute';
 //		renderer.domElement.className = 'thumbnail';
 		this.renderer = renderer;
 		console.log(renderer.domElement);
 
-		var itemsPanel = new UIPanel();
-		itemsPanel.setPosition( 'absolute' );
-		this.itemsDom = itemsPanel.dom;
+		this.itemsDom = document.createElement('div');
+		this.itemsDom.style.position = 'absolute';
+		this.panelDom.style.zIndex = 1;
 		panelDom.appendChild(this.itemsDom);
 	},
 
 	updateCanvasSize: function() {
 		//this.itemsDom.style.transform = `translateY(${window.scrollY}px)`;
+
 		var width = this.itemsDom.clientWidth;
 		var height = this.itemsDom.clientHeight;
 
-		//if ( dom.width !== width || dom.height !== height ) {
-			this.renderer.setSize( width, height, false );
-		//}
+		this.renderer.setSize( width, height, false );
 	},
 
 	render : function () {

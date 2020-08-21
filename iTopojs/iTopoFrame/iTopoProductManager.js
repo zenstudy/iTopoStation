@@ -1,6 +1,6 @@
-import * as THREE from '../../build/three.module.js';
-import { OrbitControls } from '../../examples/jsm/controls/OrbitControls.js';
-import { UIPanel } from './iTopoUI.js';
+import * as THREE from '../../../build/three.module.js';
+import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
+import { UIPanel } from '../iTopoUI.js';
 
 function iTopoProductManager() {
 
@@ -18,9 +18,10 @@ iTopoProductManager.prototype = {
 		var scope = this;
 		this.panelDom = panelDom;
 
-		var itemsPanel = new UIPanel();
-		itemsPanel.setPosition( 'absolute' );
-		this.itemsDom = itemsPanel.dom;
+		// var itemsPanel = new UIPanel();
+		// itemsPanel.setPosition( 'absolute' );
+		this.itemsDom = document.createElement('div');
+		//this.itemsDom.id = 'ProductPanel';
 		panelDom.appendChild(this.itemsDom);
 	},
 
@@ -28,7 +29,7 @@ iTopoProductManager.prototype = {
 
 		// make a list item
 		var elementListItem = document.createElement('div');
-		elementListItem.className = 'list-item';
+		elementListItem.className = 'product-item';
 
 		var sceneElement = document.createElement('div');
 		elementListItem.appendChild(sceneElement);

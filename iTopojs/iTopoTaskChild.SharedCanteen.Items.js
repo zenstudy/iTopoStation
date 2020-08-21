@@ -5,7 +5,7 @@
 
 import { UIElement,UIPanel, UIBreak, UIText } from './iTopoUI.js';
 
-import { iTopoThumbnailManager } from './iTopoThumbnailManager.js';
+import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 
 function iTopoTaskChildSharedCanteenItems( editor ) {
 	var scope = this;

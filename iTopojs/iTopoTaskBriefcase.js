@@ -10,7 +10,9 @@ import { iTopoTaskChildStarUserHeader } from './iTopoTaskChild.StarUser.Header.j
 import { iTopoTaskChildStarUserItems } from './iTopoTaskChild.StarUser.Items.js';
 
 import { iTopoTaskChildEcologicalFarmHeader } from './iTopoTaskChild.EcologicalFarm.Header.js';
-import { iTopoTaskChildEcologicalFarmItems } from './iTopoTaskChild.EcologicalFarm.Items.js';
+import { iTopoTaskChildEcologicalFarmProduct } from './iTopoTaskChild.EcologicalFarm.Product.js';
+import { iTopoTaskChildEcologicalFarmLife } from './iTopoTaskChild.EcologicalFarm.Life.js';
+
 import { iTopoTaskChildDynamic } from './iTopoTaskChild.Dynamic.js';
 import { iTopoTaskChildContribute } from './iTopoTaskChild.Contribute.js';
 import { iTopoTaskChildParticipants } from './iTopoTaskChild.Participants.js';
@@ -34,10 +36,15 @@ function iTopoTaskBriefcase(editor) {
 
 	container.tabsDiv.dom.addEventListener('click', function() {
 
-		if(container.selected === 'iTopoItems'){
-			editor.thumbnailManager.updateCanvasSize();
-		}
-
+		tabs.forEach(function(tab) {
+			if(tab.name === container.selected){
+				console.log('updateCanvasSize');
+				
+				if(tab.panel.updateCanvasSize !== undefined){
+					tab.panel.updateCanvasSize();					
+				}
+			}
+		});
 	});
 
 	// var sharedCanteen = new UISpan().add(
@@ -56,11 +63,14 @@ function iTopoTaskBriefcase(editor) {
 		var iTopoItemsTab = new iTopoTaskChildSkyCastleItems(editor);
 
 		tabs = [];
-		tabs.push(skyCastleTab);
-		tabs.push(iTopoItemsTab);
+		tabs.push( {name:'skyCastle', title:strings.getKey('sidebar/skyCastle/Header')  ,panel: skyCastleTab} );
+		tabs.push( {name:'iTopoItems', title: strings.getKey('sidebar/skyCastle/iTopoItems'),panel: iTopoItemsTab} );
 
-		container.addTab('skyCastle', strings.getKey('sidebar/skyCastle/Header'), skyCastleTab.container);
-		container.addTab('iTopoItems',strings.getKey('sidebar/skyCastle/iTopoItems'), iTopoItemsTab.container);
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+	//	container.addTab('iTopoItems',strings.getKey('sidebar/skyCastle/iTopoItems'), iTopoItemsTab.container);
 
 		container.select('skyCastle');
 	}
@@ -70,33 +80,44 @@ function iTopoTaskBriefcase(editor) {
 		var iTopoItemsTab = new iTopoTaskChildStarUserItems(editor);
 
 		tabs = [];
-		tabs.push(starUserTab);
-		tabs.push(iTopoItemsTab);
+		tabs.push( {name:'StarUser', title:strings.getKey('sidebar/StarUser/Header')  ,panel: starUserTab} );
+		tabs.push( {name:'iTopoItems', title: strings.getKey('sidebar/StarUser/iTopoItems'),panel: iTopoItemsTab} );
 
-		container.addTab('StarUser', strings.getKey('sidebar/StarUser/Header'), starUserTab.container);
-		container.addTab('iTopoItems', strings.getKey('sidebar/StarUser/iTopoItems'), iTopoItemsTab.container);
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+	//	container.addTab('StarUser', strings.getKey('sidebar/StarUser/Header'), starUserTab.container);
+	//	container.addTab('iTopoItems', strings.getKey('sidebar/StarUser/iTopoItems'), iTopoItemsTab.container);
 
 		container.select('StarUser');
 	}
 
 	function createEcologicalFarmTabs() {
 		var headerTab = new iTopoTaskChildEcologicalFarmHeader(editor);
-		var iTopoItemsTab = new iTopoTaskChildEcologicalFarmItems(editor);
-		var dynamicTab = new iTopoTaskChildDynamic(editor);
-		var contributeTab = new iTopoTaskChildContribute(editor);
+		var productItemsTab = new iTopoTaskChildEcologicalFarmProduct(editor);
+		var lifeItemsTab = new iTopoTaskChildEcologicalFarmLife(editor);
+		// var dynamicTab = new iTopoTaskChildDynamic(editor);
+		// var contributeTab = new iTopoTaskChildContribute(editor);
 		var participantsTab = new iTopoTaskChildParticipants(editor);
 
 		tabs = [];
-		tabs.push(headerTab);
-		tabs.push(iTopoItemsTab);
-		tabs.push(dynamicTab);
-		tabs.push(contributeTab);
-		tabs.push(participantsTab);
-		container.addTab('iTopoTaskHeader', strings.getKey('sidebar/EcologicalFarm/Header'), headerTab.container);
-		container.addTab('iTopoItems', strings.getKey('sidebar/EcologicalFarm/iTopoItems'), iTopoItemsTab.container);
-		container.addTab('dynamic', strings.getKey('sidebar/iTopoTask/dynamic'), dynamicTab.container);
-		container.addTab('contribute', strings.getKey('sidebar/iTopoTask/contribute'), contributeTab.container);
-		container.addTab('participants', strings.getKey('sidebar/iTopoTask/participants'), participantsTab.container);
+		tabs.push( {name:'iTopoTaskHeader', title:strings.getKey('sidebar/EcologicalFarm/Header')  ,panel: headerTab} );
+		tabs.push( {name:'product', title: strings.getKey('sidebar/EcologicalFarm/product'),panel: productItemsTab} );
+		tabs.push( {name:'life', title: strings.getKey('sidebar/EcologicalFarm/life'),panel: lifeItemsTab} );
+		// tabs.push( {name:'dynamic', title:strings.getKey('sidebar/iTopoTask/dynamic')  ,panel: dynamicTab} );
+		// tabs.push( {name:'contribute', title: strings.getKey('sidebar/iTopoTask/contribute'),panel: contributeTab} );
+		tabs.push( {name:'participants', title: strings.getKey('sidebar/iTopoTask/participants'),panel: participantsTab} );
+
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+		// container.addTab('iTopoTaskHeader', strings.getKey('sidebar/EcologicalFarm/Header'), headerTab.container);
+		// container.addTab('iTopoItems', strings.getKey('sidebar/EcologicalFarm/iTopoItems'), iTopoItemsTab.container);
+		// container.addTab('dynamic', strings.getKey('sidebar/iTopoTask/dynamic'), dynamicTab.container);
+		// container.addTab('contribute', strings.getKey('sidebar/iTopoTask/contribute'), contributeTab.container);
+		// container.addTab('participants', strings.getKey('sidebar/iTopoTask/participants'), participantsTab.container);
 
 		container.select('iTopoTaskHeader');
 	}
@@ -104,21 +125,16 @@ function iTopoTaskBriefcase(editor) {
 	function createSharedCanteenTabs() {
 		var headerTab = new iTopoTaskChildSharedCanteenHeader(editor);
 		var iTopoItemsTab = new iTopoTaskChildSharedCanteenItems(editor);
-		// var contributeTab = new iTopoTaskChildContribute(editor);
-		// var participantsTab = new iTopoTaskChildParticipants(editor);
 
 		tabs = [];
-		tabs.push(headerTab);
-		tabs.push(iTopoItemsTab);
-		// tabs.push(dynamicTab);
-		// tabs.push(contributeTab);
-		// tabs.push(participantsTab);
+		tabs.push( {name:'iTopoTaskHeader', title:strings.getKey('sidebar/EcologicalFarm/Header')  ,panel: headerTab} );
+		tabs.push( {name:'iTopoItems', title: strings.getKey('sidebar/EcologicalFarm/iTopoItems'),panel: iTopoItemsTab} );
 
-		container.addTab('iTopoTaskHeader', strings.getKey('sidebar/SharedCanteen/Header'), headerTab.container);
-		container.addTab('iTopoItems', strings.getKey('sidebar/SharedCanteen/iTopoItems'), iTopoItemsTab.container);
-		//	container.addTab('dynamic', strings.getKey('sidebar/iTopoTask/dynamic'), dynamicTab.container);
-		//	container.addTab('contribute', strings.getKey('sidebar/iTopoTask/contribute'), contributeTab.container);
-		//	container.addTab('participants', strings.getKey('sidebar/iTopoTask/participants'), participantsTab.container);
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+		// container.addTab('iTopoTaskHeader', strings.getKey('sidebar/SharedCanteen/Header'), headerTab.container);
+		// container.addTab('iTopoItems', strings.getKey('sidebar/SharedCanteen/iTopoItems'), iTopoItemsTab.container);
 
 		container.select('iTopoTaskHeader');
 	}
@@ -135,7 +151,7 @@ function iTopoTaskBriefcase(editor) {
 					if (json[i].baseUUID === editor.selected.userData.objectUUID) {
 
 						tabs.forEach(function(tab) {
-							tab.setValue(json[i]);
+							tab.panel.setValue(json[i]);
 						});
 
 						return;
@@ -160,7 +176,7 @@ function iTopoTaskBriefcase(editor) {
 					if (json[i].baseUUID === editor.selected.userData.objectUUID) {
 
 						tabs.forEach(function(tab) {
-							tab.setValue(json[i]);
+							tab.panel.setValue(json[i]);
 						});
 
 						return;
@@ -178,7 +194,7 @@ function iTopoTaskBriefcase(editor) {
 		if (castle.castleUUID === editor.selected.userData.objectUUID) {
 			//geometryUUID.setValue(castle.castleUUID);
 			tabs.forEach(function(tab) {
-				tab.setValue(castle);
+				tab.panel.setValue(castle);
 			});
 
 			return;
@@ -197,7 +213,7 @@ function iTopoTaskBriefcase(editor) {
 					if (json[i].starUUID === editor.selected.userData.objectUUID) {
 
 						tabs.forEach(function(tab) {
-							tab.setValue(json[i]);
+							tab.panel.setValue(json[i]);
 						});
 
 						return;

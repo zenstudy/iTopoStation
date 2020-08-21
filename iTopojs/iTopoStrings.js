@@ -63,6 +63,7 @@ function iTopoStrings( config ) {
 			'sidebar/StarUser/iTopoItems': '详情',
 
 			'sidebar/EcologicalFarm/Header' : '生态基地',
+			'sidebar/EcologicalFarm/Header/siteOutook': '农场概貌',
 			'sidebar/EcologicalFarm/Header/newUUID':'换UUID',
 			'sidebar/EcologicalFarm/Header/baseUUID':'基地UUID',
 			'sidebar/EcologicalFarm/Header/taskType' : '任务类型',
@@ -72,10 +73,10 @@ function iTopoStrings( config ) {
 			'sidebar/EcologicalFarm/Header/title' : '名称',
 			'sidebar/EcologicalFarm/Header/city' :'城市',
 			'sidebar/EcologicalFarm/Header/address' :'地址',
-			'sidebar/EcologicalFarm/iTopoItems': '详情',
-			'sidebar/EcologicalFarm/iTopoItems/siteOutook': '农场概貌',
-			'sidebar/EcologicalFarm/iTopoItems/siteLife': '农场生活',
-			'sidebar/EcologicalFarm/iTopoItems/siteProduct': '农场特产',
+
+			'sidebar/EcologicalFarm/product': '特产',
+
+			'sidebar/EcologicalFarm/life': '生活',
 
 			'sidebar/SharedCanteen/Header':'共享食堂',
 			'sidebar/SharedCanteen/Header/newUUID':'换UUID',

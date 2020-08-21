@@ -5,7 +5,7 @@
 
 import { UIElement,UIPanel, UIBreak, UIText } from './iTopoUI.js';
 
-import { iTopoThumbnailManager } from './iTopoThumbnailManager.js';
+import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 
 function iTopoTaskChildSkyCastleItems( editor ) {
 	var scope = this;
@@ -30,11 +30,11 @@ iTopoTaskChildSkyCastleItems.prototype = {
 		var scope = this;
 		if (editor.selected !== null) {
 
-			editor.thumbnailManager.create(scope.container.dom);
+			// editor.thumbnailManager.create(scope.container.dom);
 
-			editor.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/iTopoItems/workplace' ) );
+			// editor.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/iTopoItems/workplace' ) );
 
-			editor.thumbnailManager.updateCanvasSize();
+			// editor.thumbnailManager.updateCanvasSize();
 		}
 
 		this.taskObject = taskObject;

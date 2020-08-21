@@ -345,6 +345,4 @@ iTopoBaseHelper.prototype.copy = function(source) {
 
 // };
 
-export {
-	iTopoBaseHelper
-};
+export { iTopoBaseHelper };

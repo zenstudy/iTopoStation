@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .sidebar{background: #333645;width: 200px; position: absolute; left: 0; top: 0; height: 100%; overflow: auto; transition: all 0.2s ease 0s;}
+        .main{overflow: hidden; position: absolute; left: 200px; right: 0; height: 100%; transition: all 0.2s ease 0s;}
+        .big-page .sidebar{left: -160px;}
+        .big-page .main{left:40px;}
+    </style>
+</head>
+<body>
+<div class="sidebar">侧边栏
+    <input type="button" value="切换" id="toggleclick" style="float: right">
+</div>
+<div class="main">主体部分</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    // 切换侧边栏
+    $(function(){
+        // 切换侧边栏
+        $("#toggleclick").click(toggleSidebar);
+    });
+
+
+    //切换侧边栏显示隐藏
+    function toggleSidebar(){
+        $("body").toggleClass("big-page");
+        return false;
+    }
+</script>
+</html>

@@ -782,8 +782,6 @@ function iTopoViewport( editor ) {
 			renderer.autoClear = true;
 		}
 
-		editor.thumbnailManager.render();
-
 		endTime = performance.now();
 		editor.signals.sceneRendered.dispatch( endTime - startTime );
 

@@ -2,29 +2,29 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIElement, UIPanel, UIText } from './iTopoUI.js';
+import { UIElement, UIPanel, UIText } from '../iTopoUI.js';
 
-import { SetScriptValueCommand } from '../js/commands/SetScriptValueCommand.js';
-import { SetMaterialValueCommand } from '../js/commands/SetMaterialValueCommand.js';
+import { SetScriptValueCommand } from '../../js/commands/SetScriptValueCommand.js';
+import { SetMaterialValueCommand } from '../../js/commands/SetMaterialValueCommand.js';
 
-function iTopoDisplayStand( ) {
+function iTopoDisplayStand( dispalyContext ) {
 	var scope = this;
 
 	var container = new UIPanel();
-	container.setId( 'player' );//DisplayStand
+	container.setId( 'DisplayStand' );
 	container.setPosition( 'absolute' );
-	container.setBackgroundColor( '#272822' );
+	container.setBackgroundColor( '#fffae8' );
 	container.setDisplay( 'none' );
 	this.container = container;
 
 	var header = new UIPanel();
+	header.setBackgroundColor( '#cccccc' );
 	header.setPadding( '10px' );
-	container.add( header );
+	this.container.dom.appendChild( header.dom );
 
 	var title = new UIText().setColor( '#fff' );
-	title.setValue('DisplayStand');
+	title.setValue(dispalyContext);
 	header.add( title );
-
 
 	var buttonSVG = ( function () {
 
