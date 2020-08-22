@@ -1,5 +1,6 @@
 [{
 	"starUUID": "88F48BD-823C-42F1-857A-124E495B351B",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": 100,
@@ -8,6 +9,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "9A0067F9-0E8E-4A66-8814-68BB161F4756",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": 31.401359101860766,
@@ -16,6 +18,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "A90EFB8D-5F10-4FBF-BF09-46D24A3557C8",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": -138.81607601489867,
@@ -24,6 +27,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "A105BE33-F991-4290-A246-25B206AB4BA1",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": -132.2106646320209,
@@ -32,6 +36,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "0A412591-879E-45AF-90C4-8B76264FD04A",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": 77.84880724877291,
@@ -40,6 +45,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "4C792E93-EC71-425A-A83A-FBBD230063F5",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": 7.255734940401064,
@@ -48,6 +54,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "EAD4F8DF-A4AF-4506-8F67-AC3EF2A4CF41",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": -113.49122815131054,
@@ -56,6 +63,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "3B7171EE-59DF-4CF4-9DC3-BFF5E56D0DF2",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": 137.96626404262102,
@@ -64,6 +72,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "FFA453CF-3049-4466-82F3-3B288905BF8A",
+	"gender" : "male", 
 	"cellPhone": 13688888888,
 	"password": "lightstar",
 	"lng": -88.79212151633476,
@@ -72,6 +81,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "5EF5DCF1-9379-49B2-9C04-E60D626E0A8E",
+	"gender" : "male", 
 	"starType": "star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -81,6 +91,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "EFBABD78-97F5-4575-A8C8-F91958D573C0",
+	"gender" : "male", 
 	"starType": "star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -90,6 +101,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "16117AF9-C5E5-486A-BA88-A5EE8B2ABFC2",
+	"gender" : "male", 
 	"starType": "star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -99,6 +111,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "FD700840-5B80-407A-8912-4A7F6A883430",
+	"gender" : "male", 
 	"starType": "star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -108,6 +121,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "0A0F76D2-CDA7-4C2A-AF58-A58F9427236F",
+	"gender" : "male", 
 	"starType": "star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -117,6 +131,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "AB352F92-47F5-4D10-B609-3459ECA2C93F",
+	"gender" : "female", 
 	"starType": "star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -126,6 +141,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "2CF4FB57-43B3-43BC-A8D7-C51FA8CFC277",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -135,6 +151,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "F6EAD979-0D34-47C2-AC2F-5B2D5EC5B040",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -144,6 +161,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "BDE1125C-10CB-4FBB-9BC9-D94A7760CDCD",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -153,6 +171,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "C41E8377-0590-4D5B-956D-40A7BD3852A2",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -162,6 +181,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "B991B2CF-0139-4D65-8832-66EE0FD3C40C",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -171,6 +191,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "F9B096C4-B5D9-4BE9-BE7D-DFB270563963",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -180,6 +201,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "C7A8A70C-1207-421B-9DD3-ADD8047EA7C1",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -189,6 +211,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "1A130E1C-042C-4E6E-98FB-9EBEA8B1F604",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -198,6 +221,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "D37EEFBD-D0E5-4C7F-A25E-9FB3C9ED8A28",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -207,6 +231,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "6A72CC70-3A3F-491D-971C-B3669ED82534",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -216,6 +241,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "C4FE127E-D347-462E-9D7E-668E5D892825",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -225,6 +251,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "ED082811-C26C-4A6A-9540-9A70102A5112",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -234,6 +261,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "95CC385F-CE16-44D3-AF95-6F3B38599A74",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -243,6 +271,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "B924052D-3CF4-4DA2-B484-1CB5CCDD0BF1",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -252,6 +281,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "3EB1FDDC-621A-47F6-9DC2-D104BB764FAC",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -261,6 +291,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "5769EF4D-5BC7-45D5-B202-4EE1B6DA2F6F",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -270,6 +301,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "9052B11A-3446-4FB4-8043-680EFA465DC7",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",
@@ -279,6 +311,7 @@
 	"wxQRcode": ""
 }, {
 	"starUUID": "3847199B-7C08-4598-AF0E-C974CF7B6A0B",
+	"gender" : "female", 
 	"starType": "iTopoType/TaskObject/Star",
 	"cellPhone": 13688888888,
 	"password": "lightstar",

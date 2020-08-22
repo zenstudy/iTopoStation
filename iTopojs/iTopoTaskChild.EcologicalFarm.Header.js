@@ -8,6 +8,7 @@ import { iTopoEarthModel } from './iTopoEarthModel.js'
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
+import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 
 function iTopoTaskChildEcologicalFarmHeader(editor) {
 
@@ -33,15 +34,33 @@ function iTopoTaskChildEcologicalFarmHeader(editor) {
 		containerBaseModel.setPaddingTop('10px');
 		container.add(containerBaseModel);
 
-		var thumbnailManager = new iTopoThumbnailManager();
-		thumbnailManager.create(containerBaseModel.dom);
-		thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) , this.onClickBaseModel);
-		thumbnailManager.updateCanvasSize();
+		const glftloader = new GLTFLoader();
+		glftloader.load('./iTopojs/baseModelFiles/mountain_landscape/scene.gltf', (gltf) => {
 
-		editor.signals.sceneRendered.add( function ( ) {
+			var baseModel = gltf.scene;
+			baseModel.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+			console.log(baseModel);
+
+			var box = new THREE.Box3().setFromObject(baseModel);
+			var scale =0.618/ Math.max(box.max.x,box.max.y, box.max.z );
+
+			baseModel.scale.set(scale,scale,scale);
+
+			var thumbnailManager = new iTopoThumbnailManager();
+			thumbnailManager.create(containerBaseModel.dom);
+			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ), baseModel , this.onClickThumbnail);
 			thumbnailManager.updateCanvasSize();
-			thumbnailManager.render();
-		} );
+
+			editor.signals.sceneRendered.add( function ( ) {
+				thumbnailManager.updateCanvasSize();
+				thumbnailManager.render();
+			} );
+		});
 	}
 
 	var containerParameter = new UIPanel();
@@ -185,7 +204,7 @@ iTopoTaskChildEcologicalFarmHeader.prototype.constructor = iTopoTaskChildEcologi
 
 iTopoTaskChildEcologicalFarmHeader.prototype = {
 
-	onClickBaseModel: function() {// this对应一个item
+	onClickThumbnail: function() {// this对应一个item
 		var scope = this;
 	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
 		var displayStand = new iTopoDisplayStand(title);
@@ -196,30 +215,57 @@ iTopoTaskChildEcologicalFarmHeader.prototype = {
 	//	var dom = document.createElement( 'div' );
 	//	displayStand.container.dom.appendChild( dom );
 
-		// var items = [
-		// 	{ title: 'menubar/examples/Arkanoid', file: 'arkanoid.app.json' },
-		// 	{ title: 'menubar/examples/Camera', file: 'camera.app.json' },
-		// 	{ title: 'menubar/examples/Particles', file: 'particles.app.json' },
-		// 	{ title: 'menubar/examples/Pong', file: 'pong.app.json' },
-		// 	{ title: 'menubar/examples/Shaders', file: 'shaders.app.json' }
-		// ];
+	// var items = [
+	// 	{ title: 'menubar/examples/Arkanoid', file: 'arkanoid.app.json' },
+	// 	{ title: 'menubar/examples/Camera', file: 'camera.app.json' },
+	// 	{ title: 'menubar/examples/Particles', file: 'particles.app.json' },
+	// 	{ title: 'menubar/examples/Pong', file: 'pong.app.json' },
+	// 	{ title: 'menubar/examples/Shaders', file: 'shaders.app.json' }
+	// ];
 
-		var loader = new THREE.FileLoader();// 以Index.html为根路径
-		loader.load( 'examples/camera.app.json', function ( text ) {
+		// var loader = new THREE.FileLoader();// 以Index.html为根路径
+		// loader.load( 'examples/camera.app.json', function ( text ) {
+		// 	var player = new iTopo3dExplore.Player();
+		// 	player.load( JSON.parse( text ) );
+		// 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight  );
+		// 	player.play();
+		// 	displayStand.container.dom.appendChild( player.dom );
+		// 	displayStand.container.dom.addEventListener( 'resize', function () {
+		// 	 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight );
+		// 	} );
+		// } );
 
-			var player = new iTopo3dExplore.Player();
-			player.load( JSON.parse( text ) );
-			player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight  );
-			player.play();
+		{
+		var sphereGeometry = new THREE.SphereGeometry(2, 20, 20);
+		var sphereMateial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: true});
+		var sphere = new THREE.Mesh(sphereGeometry, sphereMateial);
+		}
 
-			displayStand.container.dom.appendChild( player.dom );
+		function random(min, max) {
+		  return Math.floor(Math.random() * (max - min)) + min;
+		}
 
-			 displayStand.container.dom.addEventListener( 'resize', function () {
+		const loader = new THREE.CubeTextureLoader(); //载入顺序为[right,left,up,down,front,back]
 
-			 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight );
+		var texturePaths = ['images/computer-history-museum/','images/FishPond/','images/Footballfield/','images/Park/'];
+		var index = random(0,3);
+		const texture = loader.load([
+		  texturePaths[index] + 'posx.jpg',
+		  texturePaths[index] + 'negx.jpg',
+		  texturePaths[index] + 'posy.jpg',
+		  texturePaths[index] + 'negy.jpg',
+		  texturePaths[index] + 'posz.jpg',
+		  texturePaths[index] + 'negz.jpg',
+		]);
 
-			 } );
+		var explore = new iTopo3dExplore.Explore();
+		explore.show3D(texture , sphere);
+		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
+		explore.play();
 
+		displayStand.container.dom.appendChild( explore.dom );
+		displayStand.container.dom.addEventListener( 'resize', function () {
+		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
 		} );
 
 	},

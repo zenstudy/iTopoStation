@@ -2,10 +2,12 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIElement, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from './iTopoUI.js';
-//import { UIOutliner, UITexture } from '../js/libs/ui.three.js';
+import { UIElement, UISpan, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from './iTopoUI.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
-
+import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
+import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
+import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
+import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
 
 function iTopoTaskChildSharedCanteenHeader(editor) {
 
@@ -22,11 +24,48 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		lightWish: "light wish",
 	};
 
-	var container = new UIPanel();
+	var container = new UISpan();
 	this.container = container;
-	container.setBorderTop('0');
-	container.setPaddingTop('20px');
 
+	{
+		var containerBaseModel = new UIPanel();
+		containerBaseModel.setBorderTop('0');
+		containerBaseModel.setPaddingTop('10px');
+		container.add(containerBaseModel);
+
+		const glftloader = new GLTFLoader();
+		glftloader.load('./iTopojs/baseModelFiles/simple_house_scene/scene.gltf', (gltf) => {
+
+			var baseModel = gltf.scene;
+			baseModel.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+			console.log(baseModel);
+
+			var box = new THREE.Box3().setFromObject(baseModel);
+			var scale =0.81 / Math.max(box.max.x,box.max.y, box.max.z );
+
+			baseModel.scale.set(scale,scale,scale);
+
+			var thumbnailManager = new iTopoThumbnailManager();
+			thumbnailManager.create(containerBaseModel.dom);
+			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/SharedCanteen/Header/outook' ), baseModel , this.onClickThumbnail);
+			thumbnailManager.updateCanvasSize();
+
+			editor.signals.sceneRendered.add( function ( ) {
+				thumbnailManager.updateCanvasSize();
+				thumbnailManager.render();
+			} );
+		});
+	}
+
+	var containerParameter = new UIPanel();
+	containerParameter.setBorderTop('0');
+	containerParameter.setPaddingTop('310px');
+	container.add(containerParameter);
 	{
 		// baseUUID
 		var geometryUUIDRow = new UIRow();
@@ -35,7 +74,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/baseUUID')).setWidth('90px'));
 		geometryUUIDRow.add(this.geometryUUID);
 
-		container.add(geometryUUIDRow);
+		containerParameter.add(geometryUUIDRow);
 	}
 
 	{
@@ -57,7 +96,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 
 		taskTypeRow.add(this.taskTypeSelect);
 
-		container.add(taskTypeRow);
+		containerParameter.add(taskTypeRow);
 	}
 
 	{
@@ -72,7 +111,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		});
 		titleRow.add(this.titleInput);
 
-		container.add(titleRow);
+		containerParameter.add(titleRow);
 	}
 
 	{
@@ -87,7 +126,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		});
 		cityRow.add(this.cityInput);
 
-		container.add(cityRow);
+		containerParameter.add(cityRow);
 	}
 
 	{
@@ -102,7 +141,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		});
 		addressRow.add(this.addressInput);
 
-		container.add(addressRow);
+		containerParameter.add(addressRow);
 	}
 
 
@@ -118,7 +157,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		});
 		longitudeRow.add(this.longitudeValueUI);
 
-		container.add(longitudeRow);
+		containerParameter.add(longitudeRow);
 	}
 
 	{
@@ -133,13 +172,13 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		});
 		latitudeRow.add(this.latitudeValueUI);
 
-		container.add(latitudeRow);
+		containerParameter.add(latitudeRow);
 	}
 
 	{
 		var lightWishTitleRow = new UIRow();
 		lightWishTitleRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/lightWish')).setWidth('120px'));
-		container.add(lightWishTitleRow);
+		containerParameter.add(lightWishTitleRow);
 
 		var lightWishTextAreaRow = new UIRow();
 		this.lightWishValueUI = new UITextArea().setWidth('250px').setFontSize('12px') /*.onChange( update )*/ ;
@@ -150,7 +189,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		});
 		lightWishTextAreaRow.add(this.lightWishValueUI);
 
-		container.add(lightWishTextAreaRow);
+		containerParameter.add(lightWishTextAreaRow);
 	}
 
 	return this;
@@ -161,6 +200,72 @@ iTopoTaskChildSharedCanteenHeader.prototype.constructor = iTopoTaskChildSharedCa
 
 iTopoTaskChildSharedCanteenHeader.prototype = {
 
+onClickThumbnail: function() {// this对应一个item
+		var scope = this;
+	    var title = editor.strings.getKey( 'sidebar/SharedCanteen/Header/outook' ) ;
+		var displayStand = new iTopoDisplayStand(title);
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay( 'block' );
+		displayStand.container.setPosition('absolate');
+
+	//	var dom = document.createElement( 'div' );
+	//	displayStand.container.dom.appendChild( dom );
+
+	// var items = [
+	// 	{ title: 'menubar/examples/Arkanoid', file: 'arkanoid.app.json' },
+	// 	{ title: 'menubar/examples/Camera', file: 'camera.app.json' },
+	// 	{ title: 'menubar/examples/Particles', file: 'particles.app.json' },
+	// 	{ title: 'menubar/examples/Pong', file: 'pong.app.json' },
+	// 	{ title: 'menubar/examples/Shaders', file: 'shaders.app.json' }
+	// ];
+
+		// var loader = new THREE.FileLoader();// 以Index.html为根路径
+		// loader.load( 'examples/camera.app.json', function ( text ) {
+		// 	var player = new iTopo3dExplore.Player();
+		// 	player.load( JSON.parse( text ) );
+		// 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight  );
+		// 	player.play();
+		// 	displayStand.container.dom.appendChild( player.dom );
+		// 	displayStand.container.dom.addEventListener( 'resize', function () {
+		// 	 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight );
+		// 	} );
+		// } );
+
+		{
+		var sphereGeometry = new THREE.SphereGeometry(2, 20, 20);
+		var sphereMateial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: true});
+		var sphere = new THREE.Mesh(sphereGeometry, sphereMateial);
+		}
+
+		function random(min, max) {
+		  return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+		const loader = new THREE.CubeTextureLoader(); //载入顺序为[right,left,up,down,front,back]
+
+		var texturePaths = ['images/computer-history-museum/','images/FishPond/','images/Footballfield/','images/Park/'];
+		var index = random(0,3);
+		const texture = loader.load([
+		  texturePaths[index] + 'posx.jpg',
+		  texturePaths[index] + 'negx.jpg',
+		  texturePaths[index] + 'posy.jpg',
+		  texturePaths[index] + 'negy.jpg',
+		  texturePaths[index] + 'posz.jpg',
+		  texturePaths[index] + 'negz.jpg',
+		]);
+
+		var explore = new iTopo3dExplore.Explore();
+		explore.show3D(texture , sphere);
+		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
+		explore.play();
+
+		displayStand.container.dom.appendChild( explore.dom );
+		displayStand.container.dom.addEventListener( 'resize', function () {
+		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
+		} );
+
+	},
+
 	getValue: function () {
 
 		return this.taskObject;
@@ -170,7 +275,7 @@ iTopoTaskChildSharedCanteenHeader.prototype = {
 	setValue: function (taskObject) {
 
 		if (editor.selected !== null) {
-		//	container.setDisplay( 'block' );
+		//	containerParameter.setDisplay( 'block' );
 			this.geometryUUID.setValue(taskObject.baseUUID);
 			this.taskTypeSelect.setValue(taskObject.taskType);
 			this.titleInput.setValue(taskObject.title);
@@ -182,8 +287,7 @@ iTopoTaskChildSharedCanteenHeader.prototype = {
 		}
 
 		this.taskObject = taskObject;
-	},
-
+	}
 }
 
 export { iTopoTaskChildSharedCanteenHeader };

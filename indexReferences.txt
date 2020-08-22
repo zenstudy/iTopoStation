@@ -3,10 +3,11 @@ https://www.artstation.com/artwork/6qVmO
 https://sketchfab.com/store/3d-models/furniture-home?ref=header
 https://sketchfab.com/store/3d-models/nature-plants?ref=header 里面有天空之城的素材
 
+天空盒子的图片素材
+http://www.humus.name/index.php?page=Textures&start=8
 
 星辰球
 https://blog.csdn.net/weixin_45544796/article/details/107860626
-
 
 快速加载的地球，地图全，可单选, 线条+PNG
 resources/data/world/country-index-texture.png
@@ -74,6 +75,45 @@ http://127.0.0.1:8848/three.js/examples/webgl_postprocessing_unreal_bloom_select
 选择
 http://127.0.0.1:8848/three.js/examples/webgl_raycast_texture.html
 
+http://127.0.0.1:8848/threejsfundamentals/threejs/background-v01.html
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-background-cubemap.html
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-background-equirectangularmap.html
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-cleanup-loaded-files.html
+
+可以用来精细化商品
+mpvue-xbyjShop
+
+星星的随机移动
+http://127.0.0.1:8848/three.js/examples/webgl_gpgpu_protoplanet.html
+
+可拖动的侧栏
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-responsive-editor.html
+
+有一个进度条
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-game-check-animations.html
+
+艺术字
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-primitives-text.html
+
+在文章中插入3d 对象
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-responsive-paragraph.html
+
+3d实体对象
+http://127.0.0.1:8848/three.js/examples/webgl_loader_3ds.html
+推土机
+http://127.0.0.1:8848/three.js/examples/webgl_loader_3mf_materials.html
+
+前景插入文字
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-tips-html-background.html
+
+3d人物
+http://127.0.0.1:8848/three.js/examples/webgl_loader_collada.html
+
+3d头盔+背景
+http://127.0.0.1:8848/three.js/examples/webgl_tonemapping.html
+
+list 单选后变化
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-tips-tabindex.html
 
 Shader风格系列
 webgl_shader

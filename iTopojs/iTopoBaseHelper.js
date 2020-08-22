@@ -222,30 +222,30 @@ iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
 		}
 	}
 
-	iTopoBaseHelper.prototype.loadiTopoObjModel = function() {
-		baseModel = {};
-		const mtlLoader = new MTLLoader();
-		mtlLoader.load('./iTopojs/baseModelFiles/windmill/windmill-fixed.mtl', (mtlParseResult) => {
-			console.log(mtlParseResult);
-			const objLoader = new OBJLoader2();
-			const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-			materials.Material.side = THREE.DoubleSide;
-			objLoader.addMaterials(materials);
-			objLoader.load('./iTopojs/baseModelFiles/windmill/windmill.obj', (root) => {
-				let matrix2 = new THREE.Matrix4;
-				matrix2.makeRotationX(-Math.PI / 2);
-				let matrix3 = new THREE.Matrix4;
-				matrix3.makeRotationY(Math.PI);
-				matrix2.multiply(matrix3);
-				matrix2.setPosition(new THREE.Vector3(0, 0, 0));
-				root.applyMatrix4(matrix2);
-				console.log(root);
-				root.scale.set(5, 5, 5);
-				baseModel = root;
-				this.add(baseModel);
-			});
-		});
-	}
+	// iTopoBaseHelper.prototype.loadiTopoObjModel = function() {
+	// 	baseModel = {};
+	// 	const mtlLoader = new MTLLoader();
+	// 	mtlLoader.load('./iTopojs/baseModelFiles/windmill/windmill-fixed.mtl', (mtlParseResult) => {
+	// 		console.log(mtlParseResult);
+	// 		const objLoader = new OBJLoader2();
+	// 		const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+	// 		materials.Material.side = THREE.DoubleSide;
+	// 		objLoader.addMaterials(materials);
+	// 		objLoader.load('./iTopojs/baseModelFiles/windmill/windmill.obj', (root) => {
+	// 			let matrix2 = new THREE.Matrix4;
+	// 			matrix2.makeRotationX(-Math.PI / 2);
+	// 			let matrix3 = new THREE.Matrix4;
+	// 			matrix3.makeRotationY(Math.PI);
+	// 			matrix2.multiply(matrix3);
+	// 			matrix2.setPosition(new THREE.Vector3(0, 0, 0));
+	// 			root.applyMatrix4(matrix2);
+	// 			console.log(root);
+	// 			root.scale.set(5, 5, 5);
+	// 			baseModel = root;
+	// 			this.add(baseModel);
+	// 		});
+	// 	});
+	// }
 
 iTopoBaseHelper.prototype.getBaseModelURL = function() {
 	if (this.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm')

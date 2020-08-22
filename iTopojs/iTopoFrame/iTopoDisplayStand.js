@@ -49,8 +49,22 @@ function iTopoDisplayStand( dispalyContext ) {
 		document.body.removeChild(container.dom);
 	} );
 	header.add( close );
+	this.header = header;
 
 	return scope;
+}
+
+iTopoDisplayStand.prototype.constructor = iTopoDisplayStand;
+
+iTopoDisplayStand.prototype = {
+	titleHeight: function() {
+		return this.header.dom.offsetHeight;
+	},
+	contexHeight: function() {
+		var height = this.container.dom.offsetHeight - this.header.dom.offsetHeight;
+		console.log(height);
+		return height;
+	}
 }
 
 export { iTopoDisplayStand };

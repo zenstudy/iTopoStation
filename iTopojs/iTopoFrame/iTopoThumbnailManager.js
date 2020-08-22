@@ -5,14 +5,6 @@ import { UIPanel } from '../iTopoUI.js';
 function iTopoThumbnailManager() {
 
 	this.thumbnailItemScenes = [];
-
-	this.geometries = [
-		new THREE.BoxBufferGeometry(1, 1, 1),
-		new THREE.SphereBufferGeometry(0.5, 12, 8),
-		new THREE.DodecahedronBufferGeometry(0.5),
-		new THREE.CylinderBufferGeometry(0.5, 0.5, 1, 12)
-	];
-
 	return this;
 }
 
@@ -30,9 +22,8 @@ iTopoThumbnailManager.prototype = {
 		renderer.setPixelRatio( window.devicePixelRatio );
 		this.panelDom.append(renderer.domElement);
 		renderer.domElement.style.position = 'absolute';
-//		renderer.domElement.className = 'thumbnail';
 		this.renderer = renderer;
-		console.log(renderer.domElement);
+//		console.log(renderer.domElement);
 
 		this.itemsDom = document.createElement('div');
 		this.itemsDom.style.position = 'absolute';
@@ -76,7 +67,7 @@ iTopoThumbnailManager.prototype = {
 		this.thumbnailItemScenes.forEach(function(scene) {
 			//var scene = this.thumbnailItemScenes[0];
 			// so something moves
-			scene.children[0].rotation.y = Date.now() * 0.001;
+			scene.children[0].rotation.y = Date.now() * 0.0001;
 
 			// get the element that is a place holder for where we want to
 			// draw the scene
@@ -123,7 +114,7 @@ iTopoThumbnailManager.prototype = {
 		});
 	},
 
-	createThumbnailItem : function (itemTitle, itemfn) {
+	createThumbnailItem : function (itemTitle, objectThreejs , itemfn) {
 		var scene = new THREE.Scene();
 
 		// make a list item
@@ -132,7 +123,7 @@ iTopoThumbnailManager.prototype = {
 
 		var sceneElement = document.createElement('div');
 		elementListItem.appendChild(sceneElement);
-		sceneElement.addEventListener('click', itemfn );
+		//sceneElement.addEventListener('click', itemfn );
 
 		var descriptionElement = document.createElement('div');
 		descriptionElement.innerText = itemTitle;
@@ -141,45 +132,50 @@ iTopoThumbnailManager.prototype = {
 
 		// the element that represents the area we want to render the scene
 		scene.userData.element = sceneElement;
+		scene.name = itemTitle;
 
 		this.itemsDom.appendChild(elementListItem);
 
 		console.log(elementListItem.style.zIndex);
 		console.log('elementListItem: w = ' + elementListItem.offsetWidth + ',h=' + elementListItem.offsetHeight);
 
-		var camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
+		var camera = new THREE.PerspectiveCamera(61.8, 1.0, 1, 10);
 		camera.position.z = 2;
 		scene.userData.camera = camera;
 
 		var controls = new OrbitControls(scene.userData.camera, scene.userData.element);
-		controls.minDistance = 2;
-		controls.maxDistance = 5;
-		controls.enablePan = false;
-		controls.enableZoom = false;
+		controls.minDistance = 1;
+		controls.maxDistance = 10;
+		controls.enablePan = true;
+		controls.enableZoom = true;
 		scene.userData.controls = controls;
 
-		var material = new THREE.MeshStandardMaterial({
+		scene.add(objectThreejs);
 
-			color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
-			roughness: 0.5,
-			metalness: 0,
-			flatShading: true
-
-		});
-
-		var geometry = this.geometries[this.geometries.length * Math.random() | 0];
-
-		scene.add(new THREE.Mesh(geometry, material));
-
-		scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
-
-		var light = new THREE.DirectionalLight(0xffffff, 0.5);
-		light.position.set(1, 1, 1);
-		scene.add(light);
+		this.addLights(scene);
 
 		this.thumbnailItemScenes.push(scene);
-	}
+	},
 
+	addLights: function(scene) {
+		scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+
+		var light = new THREE.DirectionalLight(0xffffff, 0.8);
+		light.position.set(0.5, 0.5, 1);
+		scene.add(light);
+	},
+
+	replaceThumbnailItemObject3d: function(itemTitle, objectThreejs)
+	{
+		var scope = this;
+		this.thumbnailItemScenes.forEach( function (scene){
+			if(scene.name === itemTitle){
+				scene.children.length = 0;
+				scene.add(objectThreejs);
+				scope.addLights(scene);
+			}
+		});
+	}
 }
 
 export { iTopoThumbnailManager };

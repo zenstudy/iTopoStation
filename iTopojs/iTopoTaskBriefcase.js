@@ -18,7 +18,8 @@ import { iTopoTaskChildContribute } from './iTopoTaskChild.Contribute.js';
 import { iTopoTaskChildParticipants } from './iTopoTaskChild.Participants.js';
 
 import { iTopoTaskChildSharedCanteenHeader } from './iTopoTaskChild.SharedCanteen.Header.js';
-import { iTopoTaskChildSharedCanteenItems } from './iTopoTaskChild.SharedCanteen.Items.js';
+import { iTopoTaskChildSharedCanteenMenu } from './iTopoTaskChild.SharedCanteen.Menu.js';
+import { iTopoTaskChildSharedCanteenLife } from './iTopoTaskChild.SharedCanteen.Life.js';
 
 
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
@@ -39,9 +40,9 @@ function iTopoTaskBriefcase(editor) {
 		tabs.forEach(function(tab) {
 			if(tab.name === container.selected){
 				console.log('updateCanvasSize');
-				
+
 				if(tab.panel.updateCanvasSize !== undefined){
-					tab.panel.updateCanvasSize();					
+					tab.panel.updateCanvasSize();
 				}
 			}
 		});
@@ -113,28 +114,22 @@ function iTopoTaskBriefcase(editor) {
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		// container.addTab('iTopoTaskHeader', strings.getKey('sidebar/EcologicalFarm/Header'), headerTab.container);
-		// container.addTab('iTopoItems', strings.getKey('sidebar/EcologicalFarm/iTopoItems'), iTopoItemsTab.container);
-		// container.addTab('dynamic', strings.getKey('sidebar/iTopoTask/dynamic'), dynamicTab.container);
-		// container.addTab('contribute', strings.getKey('sidebar/iTopoTask/contribute'), contributeTab.container);
-		// container.addTab('participants', strings.getKey('sidebar/iTopoTask/participants'), participantsTab.container);
-
 		container.select('iTopoTaskHeader');
 	}
 
 	function createSharedCanteenTabs() {
 		var headerTab = new iTopoTaskChildSharedCanteenHeader(editor);
-		var iTopoItemsTab = new iTopoTaskChildSharedCanteenItems(editor);
+		var menuTab = new iTopoTaskChildSharedCanteenMenu(editor);
+		var lifeItemsTab = new iTopoTaskChildSharedCanteenLife(editor);
 
 		tabs = [];
-		tabs.push( {name:'iTopoTaskHeader', title:strings.getKey('sidebar/EcologicalFarm/Header')  ,panel: headerTab} );
-		tabs.push( {name:'iTopoItems', title: strings.getKey('sidebar/EcologicalFarm/iTopoItems'),panel: iTopoItemsTab} );
+		tabs.push( {name:'iTopoTaskHeader', title:strings.getKey('sidebar/SharedCanteen/Header')  ,panel: headerTab} );
+		tabs.push( {name:'menu', title: strings.getKey('sidebar/SharedCanteen/menu'),panel: menuTab} );
+		tabs.push( {name:'life', title: strings.getKey('sidebar/SharedCanteen/life'),panel: lifeItemsTab} );
 
 		tabs.forEach(function(tab){
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
-		// container.addTab('iTopoTaskHeader', strings.getKey('sidebar/SharedCanteen/Header'), headerTab.container);
-		// container.addTab('iTopoItems', strings.getKey('sidebar/SharedCanteen/iTopoItems'), iTopoItemsTab.container);
 
 		container.select('iTopoTaskHeader');
 	}

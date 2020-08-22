@@ -1,16 +1,9 @@
-/**
- * @author dforrer / https://github.com/dforrer
- * Developed as part of a project at University of Applied Sciences and Arts Northwestern Switzerland (www.fhnw.ch)
- */
-
 import { UIElement,UIPanel, UIBreak, UIText } from './iTopoUI.js';
-import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
+import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
-import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 
-function iTopoTaskChildEcologicalFarmProduct( editor ) {
-	this.editor = editor;
+function iTopoTaskChildSharedCanteenMenu( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
@@ -24,10 +17,10 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoTaskChildEcologicalFarmProduct.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildEcologicalFarmProduct.prototype.constructor = iTopoTaskChildEcologicalFarmProduct;
+iTopoTaskChildSharedCanteenMenu.prototype = Object.create( UIElement.prototype );
+iTopoTaskChildSharedCanteenMenu.prototype.constructor = iTopoTaskChildSharedCanteenMenu;
 
-iTopoTaskChildEcologicalFarmProduct.prototype = {
+iTopoTaskChildSharedCanteenMenu.prototype = {
 
 	updateCanvasSize: function(){
 		this.thumbnailManager.updateCanvasSize();
@@ -42,10 +35,8 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 		if (editor.selected !== null) {
 
 			scope.thumbnailManager = new iTopoThumbnailManager();
-
 			scope.thumbnailManager.create(scope.container.dom);
-
-			var title = scope.strings.getKey( 'sidebar/EcologicalFarm/product' );
+			var title = editor.strings.getKey( 'sidebar/SharedCanteen/menu' );
 
 			var material = new THREE.MeshStandardMaterial({
 						color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
@@ -54,7 +45,6 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 						flatShading: true
 					});
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
-
 
 			scope.thumbnailManager.createThumbnailItem( title + '品种3D区' , mesh, scope.onSiteProductClass3D);
 			scope.thumbnailManager.createThumbnailItem( title + '品种2D区' , mesh.clone(), scope.onSiteProductClass2D);
@@ -66,12 +56,12 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 			} );
 		}
 
-		scope.taskObject = taskObject;
+		this.taskObject = taskObject;
 	},
 
 	onSiteProductClass3D: function() {// this对应一个item
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/product' ) ;
+	    var title = editor.strings.getKey( 'sidebar/SharedCanteen/menu' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -103,7 +93,7 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 
 	onSiteProductClass2D: function() {
 		var scope = this;
-		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/product' ) ;
+		var title = editor.strings.getKey( 'sidebar/SharedCanteen/menu' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -121,4 +111,4 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 	}
 }
 
-export { iTopoTaskChildEcologicalFarmProduct };
+export { iTopoTaskChildSharedCanteenMenu };

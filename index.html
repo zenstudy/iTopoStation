@@ -55,8 +55,6 @@
 			import { iTopoEarthModel } from './iTopojs/iTopoEarthModel.js';
 			
 			import { VRButton } from '../examples/jsm/webxr/VRButton.js';
-			//import { Script } from './js/Script.js';
-			//import { Player } from './js/Player.js';
 
 			window.URL = window.URL || window.webkitURL;
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -84,12 +82,6 @@
 			var lightToolbar = new iTopoToolbarLight( editor );
 			document.body.appendChild( lightToolbar.dom );
 
-			// var script = new Script( editor );
-			// document.body.appendChild( script.dom );
-
-			// var player = new Player( editor );
-			// document.body.appendChild( player.dom );
-
 			var sidebar = new iTopoTaskBriefcase( editor );
 			document.body.appendChild( sidebar.dom );
 
@@ -103,7 +95,6 @@
 			//
 			
 			function createRenderer() {
-			
 				var currentRenderer = new THREE.WebGLRenderer( { antialias: true } );
 				//currentRenderer.outputEncoding = THREE.sRGBEncoding;
 				//currentRenderer.physicallyCorrectLights =true;
@@ -113,7 +104,6 @@
 				//currentRenderer.toneMappingExposure = toneMappingExposure.getValue();
 			
 				editor.signals.rendererChanged.dispatch( currentRenderer );
-			
 			}
 
 			editor.storage.init( function () {

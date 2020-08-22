@@ -49,13 +49,16 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/frametime' : '帧数',
 
 			'sidebar/skyCastle/Header' : '服务中心',
+			'sidebar/skyCastle/Header/Outlook' : '服务大厅',
 			'sidebar/SkyCastle/Header/Title': '名称',
 			'sidebar/SkyCastle/Header/castleUUID': '服务中心UUID',
 			'sidebar/skyCastle/iTopoItems' : '详情',
 			'sidebar/skyCastle/iTopoItems/workplace' : '工作空间',
 
 			'sidebar/StarUser/Header': '星民信息',
+			'sidebar/StarUser/Header/Outlook': '头像',
 			'sidebar/starUser/Header/starUUID':'starUUID',
+			'sidebar/starUser/Header/gender':'性别',
 			'sidebar/starUser/Header/cellPhone':'手机',
 			'sidebar/starUser/Header/longitude':'经度',
 			'sidebar/starUser/Header/latitude':'纬度',
@@ -79,6 +82,7 @@ function iTopoStrings( config ) {
 			'sidebar/EcologicalFarm/life': '生活',
 
 			'sidebar/SharedCanteen/Header':'共享食堂',
+			'sidebar/SharedCanteen/Header/outook': '食堂外观',
 			'sidebar/SharedCanteen/Header/newUUID':'换UUID',
 			'sidebar/SharedCanteen/Header/baseUUID':'基地UUID',
 			'sidebar/SharedCanteen/Header/taskType' : '任务类型',
@@ -88,8 +92,10 @@ function iTopoStrings( config ) {
 			'sidebar/SharedCanteen/Header/title' : '名称',
 			'sidebar/SharedCanteen/Header/city' :'城市',
 			'sidebar/SharedCanteen/Header/address' :'地址',
-			'sidebar/SharedCanteen/iTopoItems': '详情',
 
+			'sidebar/SharedCanteen/menu': '菜谱',
+
+			'sidebar/SharedCanteen/life': '生活',
 
 			'sidebar/iTopoTask/dynamic': '动态',
 			'sidebar/iTopoTask/contribute':'贡献',
