@@ -394,7 +394,7 @@ onClickThumbnail1: function() {// this对应一个item
 
 		const mtlLoader = new MTLLoader();
 		mtlLoader.load(being.mtl, (mtlParseResult) => {
-			console.log(mtlParseResult);
+
 			const objLoader = new OBJLoader2();
 			const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
 			//materials.Material.side = THREE.DoubleSide;

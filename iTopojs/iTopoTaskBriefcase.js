@@ -4,10 +4,12 @@
 import { UITabbedPanel, UISpan } from './iTopoUI.js';
 
 import { iTopoTaskChildSkyCastleHeader } from './iTopoTaskChild.SkyCastle.Header.js';
-import { iTopoTaskChildSkyCastleItems } from './iTopoTaskChild.SkyCastle.Items.js';
+import { iTopoTaskChildSkyCastleParts } from './iTopoTaskChild.SkyCastle.Parts.js';
+import { iTopoTaskChildSkyCastleLife } from './iTopoTaskChild.SkyCastle.Life.js';
 
 import { iTopoTaskChildStarUserHeader } from './iTopoTaskChild.StarUser.Header.js';
-import { iTopoTaskChildStarUserItems } from './iTopoTaskChild.StarUser.Items.js';
+import { iTopoTaskChildStarUserDiyCreations } from './iTopoTaskChild.StarUser.DiyCreations.js';
+import { iTopoTaskChildStarUserLife } from './iTopoTaskChild.StarUser.Life.js';
 
 import { iTopoTaskChildEcologicalFarmHeader } from './iTopoTaskChild.EcologicalFarm.Header.js';
 import { iTopoTaskChildEcologicalFarmProduct } from './iTopoTaskChild.EcologicalFarm.Product.js';
@@ -20,7 +22,6 @@ import { iTopoTaskChildParticipants } from './iTopoTaskChild.Participants.js';
 import { iTopoTaskChildSharedCanteenHeader } from './iTopoTaskChild.SharedCanteen.Header.js';
 import { iTopoTaskChildSharedCanteenMenu } from './iTopoTaskChild.SharedCanteen.Menu.js';
 import { iTopoTaskChildSharedCanteenLife } from './iTopoTaskChild.SharedCanteen.Life.js';
-
 
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 import { iTopoSkyCastle} from './iTopoSkyCastle.js';
@@ -61,35 +62,34 @@ function iTopoTaskBriefcase(editor) {
 
 	function createiTopoSkyCastleFarmTabs() {
 		var skyCastleTab = new iTopoTaskChildSkyCastleHeader(editor);
-		var iTopoItemsTab = new iTopoTaskChildSkyCastleItems(editor);
+		var partsTab = new iTopoTaskChildSkyCastleParts(editor);
+		var lifeTab = new iTopoTaskChildSkyCastleLife(editor);
 
 		tabs = [];
 		tabs.push( {name:'skyCastle', title:strings.getKey('sidebar/skyCastle/Header')  ,panel: skyCastleTab} );
-		tabs.push( {name:'iTopoItems', title: strings.getKey('sidebar/skyCastle/iTopoItems'),panel: iTopoItemsTab} );
+		tabs.push( {name:'parts', title: strings.getKey('sidebar/skyCastle/Parts'),panel: partsTab} );
+		tabs.push( {name:'life', title: strings.getKey('sidebar/skyCastle/Life'),panel: lifeTab} );
 
 		tabs.forEach(function(tab){
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
-
-	//	container.addTab('iTopoItems',strings.getKey('sidebar/skyCastle/iTopoItems'), iTopoItemsTab.container);
 
 		container.select('skyCastle');
 	}
 
 	function createStarTabs() {
 		var starUserTab = new iTopoTaskChildStarUserHeader(editor);
-		var iTopoItemsTab = new iTopoTaskChildStarUserItems(editor);
+		var diyCreationsTab = new iTopoTaskChildStarUserDiyCreations(editor);
+		var lifeTab = new iTopoTaskChildStarUserLife(editor);
 
 		tabs = [];
-		tabs.push( {name:'StarUser', title:strings.getKey('sidebar/StarUser/Header')  ,panel: starUserTab} );
-		tabs.push( {name:'iTopoItems', title: strings.getKey('sidebar/StarUser/iTopoItems'),panel: iTopoItemsTab} );
+		tabs.push( {name:'StarUser', title:strings.getKey('sidebar/StarUser/Header'), panel: starUserTab} );
+		tabs.push( {name:'DiyCreations', title: strings.getKey('sidebar/StarUser/DiyCreations'), panel: diyCreationsTab} );
+		tabs.push( {name:'lifeTab', title: strings.getKey('sidebar/StarUser/life'), panel: lifeTab} );
 
 		tabs.forEach(function(tab){
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
-
-	//	container.addTab('StarUser', strings.getKey('sidebar/StarUser/Header'), starUserTab.container);
-	//	container.addTab('iTopoItems', strings.getKey('sidebar/StarUser/iTopoItems'), iTopoItemsTab.container);
 
 		container.select('StarUser');
 	}

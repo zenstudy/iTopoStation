@@ -55,6 +55,18 @@ function iTopoStrings( config ) {
 			'sidebar/skyCastle/iTopoItems' : '详情',
 			'sidebar/skyCastle/iTopoItems/workplace' : '工作空间',
 
+			'sidebar/skyCastle/Parts' : '服务小组',
+			'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' : 'iTopo系统研究小组',
+			'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' : '生活饮食文化研究小组',
+			'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' : '人类科学研究小组',
+			'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' : '生态恢复研究小组',
+			'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' : '绿色新能源研究小组',
+			'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' : '星际文明研究小组',
+			'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' : '挂号组织和成员',
+			'sidebar/skyCastle/Parts/ReservedGroupX' : '预留小组x',
+
+			'sidebar/skyCastle/Life' : '公告',
+
 			'sidebar/StarUser/Header': '星民信息',
 			'sidebar/StarUser/Header/Outlook': '头像',
 			'sidebar/starUser/Header/starUUID':'starUUID',
@@ -63,7 +75,9 @@ function iTopoStrings( config ) {
 			'sidebar/starUser/Header/longitude':'经度',
 			'sidebar/starUser/Header/latitude':'纬度',
 			'sidebar/starUser/Header/starWish':'星语星愿',
-			'sidebar/StarUser/iTopoItems': '详情',
+
+			'sidebar/StarUser/DiyCreations':'发明创造',
+			'sidebar/StarUser/life':'生活',
 
 			'sidebar/EcologicalFarm/Header' : '生态基地',
 			'sidebar/EcologicalFarm/Header/siteOutook': '农场概貌',
