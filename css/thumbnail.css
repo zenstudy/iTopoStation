@@ -5,6 +5,7 @@
 	right: 300px;
 	bottom: 0;
 	opacity: 0.99;
+	overflow-y:auto;
 }
 
 .list-item {
@@ -39,7 +40,7 @@
 	box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.product-item>div:nth-child(1) {
+.product-item>img:nth-child(1) {
 	background: #888;
 	width: 200px;
 	height: 200px;
@@ -63,7 +64,7 @@
 }
 
 #ArticleItem ul {
-	padding-inline-start:2px;
+	padding-inline-start: 2px;
 	list-style-type: none;
 }
 
@@ -92,4 +93,74 @@
 #ArticleItem li:hover {
 	background: #00ffff;
 	cursor: pointer;
+}
+
+
+#CSS3DMenu {
+	position: absolute;
+	bottom: 20px;
+	width: 100%;
+	text-align: center;
+}
+
+#CSS3DMenu input {
+	color: rgba(127, 255, 255, 0.75);
+	background: transparent;
+	outline: 1px solid rgba(127, 255, 255, 0.75);
+	border: 0px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+#CSS3DMenu input:hover {
+	background-color: rgba(0, 255, 255, 0.5);
+}
+
+#CSS3DMenu input:active {
+	color: #000000;
+	background-color: rgba(0, 255, 255, 0.75);
+}
+
+.CSS3DElement {
+	width: 120px;
+	height: 160px;
+	box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
+	border: 1px solid rgba(127, 255, 255, 0.25);
+	font-family: Helvetica, sans-serif;
+	text-align: center;
+	line-height: normal;
+	cursor: default;
+}
+
+.CSS3DElement:hover {
+	box-shadow: 0px 0px 12px 12px rgba(0, 255, 255, 0.75);
+	border: 2px solid rgba(127, 255, 255, 0.75);
+}
+
+.CSS3DElement .number {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	font-size: 12px;
+	color: rgba(127, 255, 255, 0.75);
+}
+
+.CSS3DElement .symbol {
+	position: absolute;
+	top: 40px;
+	left: 0px;
+	right: 0px;
+	font-size: 60px;
+	font-weight: bold;
+	color: rgba(255, 255, 255, 0.75);
+	text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
+}
+
+.CSS3DElement .details {
+	position: absolute;
+	bottom: 15px;
+	left: 0px;
+	right: 0px;
+	font-size: 12px;
+	color: rgba(127, 255, 255, 0.75);
 }

@@ -40,7 +40,7 @@ function iTopoTaskChildSkyCastleHeader(editor) {
 			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
 			thumbnailManager.updateCanvasSize();
 
-			editor.signals.sceneRendered.add( function ( ) {
+			editor.signals.sceneRendering.add( function ( ) {
 				thumbnailManager.updateCanvasSize();
 				thumbnailManager.render();
 			} );
@@ -125,6 +125,11 @@ onClickThumbnail1: function() {// this对应一个item
 		function random(min, max) {
 		  return Math.floor(Math.random() * (max - min)) + min;
 		}
+
+			//webaudio_orientation.html
+			// var reflectionCube = new THREE.CubeTextureLoader()
+			// 	.setPath( 'textures/cube/SwedishRoyalCastle/' )
+			// 	.load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] );
 
 		const loader = new THREE.CubeTextureLoader(); //载入顺序为[right,left,up,down,front,back]
 

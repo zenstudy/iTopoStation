@@ -16,9 +16,9 @@ import { GlobalStyleView } from './GlobalStyleView.js';
 import { iTopoViewportInfo } from './iTopoViewport.Info.js';
 import { ViewHelper } from './iTopoViewport.ViewHelper.js';;
 
-import { SetPositionCommand } from '../js/commands/SetPositionCommand.js';
-import { SetRotationCommand } from '../js/commands/SetRotationCommand.js';
-import { SetScaleCommand } from '../js/commands/SetScaleCommand.js';
+import { SetPositionCommand } from './commands/SetPositionCommand.js';
+import { SetRotationCommand } from './commands/SetRotationCommand.js';
+import { SetScaleCommand } from './commands/SetScaleCommand.js';
 
 import { TWEEN } from '../../examples/jsm/libs/tween.module.min.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js';
@@ -49,6 +49,7 @@ function iTopoViewport( editor ) {
 	var sceneHelpers = editor.sceneHelpers;
 	var showSceneHelpers = true;
 
+	var needsUpdate = true;
 	var objects = [];
 
 	// helpers
@@ -95,9 +96,6 @@ function iTopoViewport( editor ) {
 				helper.update();
 
 			}
-
-			signals.refreshSidebarObject3D.dispatch( object );
-
 		}
 
 		render();
@@ -200,9 +198,7 @@ function iTopoViewport( editor ) {
 	function handleClick() {
 
 		if ( onDownPosition.distanceTo( onUpPosition ) === 0 ) {
-
 			var intersects = getIntersects( onUpPosition, objects );
-			console.log(intersects);
 			if ( intersects.length > 0 ) {
 
 				var object = intersects[ 0 ].object;
@@ -296,7 +292,6 @@ function iTopoViewport( editor ) {
 	controls.addEventListener( 'change', function () {
 
 		signals.cameraChanged.dispatch( camera );
-		signals.refreshSidebarObject3D.dispatch( camera );
 
 	} );
 	viewHelper.controls = controls;
@@ -411,13 +406,15 @@ function iTopoViewport( editor ) {
 				selectionBox.setFromObject( object );
 				selectionBox.visible = true;
 			}
-
+			render();
 			transformControls.attach( object );
+			needsUpdate = false;
 
+		} else {
+			selectionBox.resMgr.clearResources();
+			needsUpdate = true;
+			render();
 		}
-
-		render();
-
 	} );
 
 	signals.objectFocused.add( function ( object ) {
@@ -528,11 +525,6 @@ function iTopoViewport( editor ) {
 
 	} );
 
-	signals.materialChanged.add( function () {
-
-		render();
-
-	} );
 
 	// background
 
@@ -713,36 +705,25 @@ function iTopoViewport( editor ) {
 	function animate() {
 
 		requestAnimationFrame( animate );
+		editor.signals.sceneRendering.dispatch();
 
-		var mixer = editor.mixer;
-		var delta = clock.getDelta();
+		console.log('needsUpdate = ' + needsUpdate);
+		if(needsUpdate === true) {
 
-		var needsUpdate = false;
+			var mixer = editor.mixer;
+			var delta = clock.getDelta();
 
-		if ( mixer.stats.actions.inUse > 0 ) {
+			if ( mixer.stats.actions.inUse > 0 ) {
+				mixer.update( delta );
+			}
 
-			mixer.update( delta );
-			needsUpdate = true;
+			if ( viewHelper.animating === true ) {
+				viewHelper.update( delta );
+			}
 
-		}
-
-		if ( viewHelper.animating === true ) {
-
-			viewHelper.update( delta );
-			needsUpdate = true;
-
-		}
-
-		render();
-
-		TWEEN.update();
-
-		//if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D')	{
 			render();
-		//}
-		//else if ( needsUpdate === true ){
-		//	render();
-		//}
+			TWEEN.update();
+		}
 	}
 
 	requestAnimationFrame( animate );
@@ -769,26 +750,32 @@ function iTopoViewport( editor ) {
 		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
 			 scene.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
 			 sceneHelpers.rotation.y += iTopoEarthSettings.EARTH_ROTATE_SPEED;
-			 //iTopoEarthModel.RotateToBeijing(editor.camera);
 		 }  else {
 			scene.rotation.y = 0;
 			sceneHelpers.rotation.y = 0;
 		 }
 
 		if ( camera === editor.viewportCamera ) {
+
+			//---BEGIN---
 			renderer.autoClear = false;
-			if ( showSceneHelpers === true ) renderer.render( sceneHelpers, camera );
+
+			if ( showSceneHelpers === true )
+				renderer.render( sceneHelpers, camera );
+
+			//屏幕左下角文字提示区
 			viewHelper.render( renderer );
+
+			//---END---
 			renderer.autoClear = true;
+
 		}
 
 		endTime = performance.now();
 		editor.signals.sceneRendered.dispatch( endTime - startTime );
-
 	}
 
 	return container;
-
 }
 
 export { iTopoViewport };

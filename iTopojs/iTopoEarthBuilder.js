@@ -442,6 +442,128 @@ iTopoEarthBuilder.createSkyCastle = function(option) {
 	return skyCastleBuid;
 }
 
+iTopoEarthBuilder.createInnerEarth = function(option) {
+
+	var innerEarthBuid = {};
+
+	let starPoint;
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D")
+	{
+		starPoint = createPosition(option.pos[0], option.pos[1],
+			iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud );
+	}  else {
+		//console.log(option);
+		var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
+		var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
+		starPoint = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight + option.starSize/2
+			+ iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud);
+	}
+
+	var userData = {
+		objectUUID: option.objectUUID,
+		objectType: option.objectType,
+	}
+
+	var starGeo = new THREE.SphereBufferGeometry(option.starSize, 50, 50);
+	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.sphereShaderMaterial);//starsTwinkleMaterial
+	starMesh.position.copy(starPoint);
+	starMesh.name = option.textValue;
+	starMesh.userData = userData;
+	innerEarthBuid.starMesh = starMesh;
+
+	if (!option.textMarked) {
+
+		// 添加文字说明
+		let textLength = option.textValue.length;
+		let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLength * option.fontSize * option.average,
+			option.fontSize * option.average, option.textValue, option.fontColor));
+		let fontMesh = new THREE.Sprite(new THREE.SpriteMaterial({map: texture}));
+
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],dis2zero);
+					console.log(ptOnSphere);
+			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
+			fontMesh.lookAt(0, 0, 0);
+
+		} else {
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			fontMesh.position.set(cityX, cityY, dis2zero); // 定义提示文字显示位置
+		}
+
+		innerEarthBuid.fontMesh = fontMesh;
+
+	}
+
+	return innerEarthBuid;
+}
+
+iTopoEarthBuilder.createLunarMoon = function(option) {
+
+	var lunarMoonBuid = {};
+
+	let starPoint;
+	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D")
+	{
+		starPoint = createPosition(option.pos[0], option.pos[1],
+			iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud );
+	}  else {
+		//console.log(option);
+		var cityX = option.pos[0] * option.average / iTopoEarthSettings.mapScaleSize;
+		var cityY = option.pos[1] * option.average / iTopoEarthSettings.mapScaleSize;
+		starPoint = new THREE.Vector3(cityX, cityY,iTopoEarthSettings.zHeight + option.starSize/2
+			+ iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO + option.dis2Cloud);
+	}
+
+	var userData = {
+		objectUUID: option.objectUUID,
+		objectType: option.objectType,
+	}
+
+	var starGeo = new THREE.SphereBufferGeometry(option.starSize, 50, 50);
+	var starMesh = new THREE.Mesh(starGeo, iTopoEarthCache.sphereShaderMaterial);//starsTwinkleMaterial
+	starMesh.position.copy(starPoint);
+	starMesh.name = option.textValue;
+	starMesh.userData = userData;
+	lunarMoonBuid.starMesh = starMesh;
+
+	if (!option.textMarked) {
+
+		// 添加文字说明
+		let textLength = option.textValue.length;
+		let texture = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLength * option.fontSize * option.average,
+			option.fontSize * option.average, option.textValue, option.fontColor));
+		let fontMesh = new THREE.Sprite(new THREE.SpriteMaterial({map: texture}));
+
+		if(iTopoEarthSettings.GLOBAL_KIND === "Global3D"){
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],dis2zero);
+					console.log(ptOnSphere);
+			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
+			fontMesh.lookAt(0, 0, 0);
+
+		} else {
+			fontMesh.scale.x = option.fontSize / option.average * textLength;
+			fontMesh.scale.y = option.fontSize / option.average;
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			fontMesh.position.set(cityX, cityY, dis2zero); // 定义提示文字显示位置
+		}
+
+		lunarMoonBuid.fontMesh = fontMesh;
+
+	}
+
+	return lunarMoonBuid;
+}
+
 // canvas实现文字函数
 iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
 	var canvas = document.createElement('canvas');
@@ -455,7 +577,6 @@ iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
 	ctx.textBaseline = 'middle';
 	ctx.fillStyle = fontColor;
 	ctx.fillText(textValue, w / 2, h / 2);
-	document.body.append(canvas)
 	return canvas;
 }
 
@@ -474,7 +595,6 @@ iTopoEarthBuilder.createVerCanvasFont = function(fontSize, dpi, textValue, fontC
     for (let i = 0; i < textValue.length; i++) {
          ctx.fillText(textValue[i], 0, i * (canvas.height / (textValue.length)));
      }
-	document.body.append(canvas)
 	return canvas;
 }
 

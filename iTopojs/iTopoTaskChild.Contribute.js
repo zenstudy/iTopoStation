@@ -79,7 +79,7 @@ function iTopoTaskChildContribute( editor ) {
 					edit.setMarginLeft( '4px' );
 					edit.onClick( function () {
 
-						signals.editScript.dispatch( object, script );
+						//signals.editScript.dispatch( object, script );
 
 					} );
 					scriptsContainer.add( edit );

@@ -55,7 +55,7 @@ iTopoTaskChildStarUserDiyCreations.prototype = {
 
 			scope.thumbnailManager.updateCanvasSize();
 
-			editor.signals.sceneRendered.add( function ( ) {
+			editor.signals.sceneRendering.add( function ( ) {
 				scope.thumbnailManager.render();
 			} );
 		}
@@ -90,7 +90,7 @@ iTopoTaskChildStarUserDiyCreations.prototype = {
 		}
 		scope.outlookManager.updateCanvasSize();
 
-		editor.signals.sceneRendered.add( function ( ) {
+		editor.signals.sceneRendering.add( function ( ) {
 			scope.outlookManager.render();
 		} );
 	},

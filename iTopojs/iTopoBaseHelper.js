@@ -9,7 +9,7 @@ import {iTopoEarthModel} from './iTopoEarthModel.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
 import {iTopoResourceTracker} from './iTopoResourceTracker.js';
 import {ajaxGet,_fetch} from './ajaxPostHelper.js'
-
+import {DRACOLoader} from '../../examples/jsm/loaders/DRACOLoader.js';
 import {GLTFLoader} from '../../examples/jsm/loaders/GLTFLoader.js';
 import {OBJLoader2} from '../../examples/jsm/loaders/OBJLoader2.js';
 import {MTLLoader} from '../../examples/jsm/loaders/MTLLoader.js';
@@ -58,6 +58,7 @@ iTopoBaseHelper.prototype.constructor = iTopoBaseHelper;
 iTopoBaseHelper.prototype.dispose = function() {
 	this.children[0].geometry.dispose();
 	this.children[0].material.dispose();
+	TWEEN.removeAll();
 };
 
 
@@ -98,10 +99,10 @@ iTopoBaseHelper.prototype.setFromObject = function(object) {
 	this.userData = object.userData;
 	this.object = object;
 	this.children = [];
-
+	TWEEN.removeAll();
 	this.resMgr.clearResources();
 	this.updateBase();
-
+	
 	//this.UpdateWithFetch();
 
 	return this;
@@ -172,16 +173,13 @@ iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
 		var maxBoxZ = 0;
 		if(this.box !== undefined)	maxBoxZ = this.box.max.z;
 
-		const modelScale = this.getBaseModelScale(this.modelURL);
-		console.log('boxz=' + maxBoxZ + ", modelscale=" + modelScale);
-
 		if (iTopoEarthSettings.GLOBAL_KIND === "Global3D") {
 			let matrix2 = new THREE.Matrix4;
 			matrix2.makeRotationX(-Math.PI / 2);
 			let matrix3 = new THREE.Matrix4;
 			matrix3.makeRotationY(Math.PI);
 			matrix2.multiply(matrix3);
-			matrix2.setPosition(new THREE.Vector3(0, 0, - maxBoxZ * modelScale - height / 2));
+			matrix2.setPosition(new THREE.Vector3(0, 0, - maxBoxZ - height / 2));
 			let textPanel = new THREE.PlaneGeometry(width, height);
 			textPanel.applyMatrix4(matrix2);
 
@@ -201,7 +199,7 @@ iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
 		} else {
 			let matrix2 = new THREE.Matrix4;
 			matrix2.makeRotationX(Math.PI / 2);
-			matrix2.setPosition(new THREE.Vector3(0, 0, maxBoxZ * modelScale * iTopoEarthSettings.mapScaleSize + height /
+			matrix2.setPosition(new THREE.Vector3(0, 0, maxBoxZ * iTopoEarthSettings.mapScaleSize + height /
 				2));
 			let textPanel = new THREE.PlaneGeometry(width, height);
 			textPanel.applyMatrix4(matrix2);
@@ -251,19 +249,9 @@ iTopoBaseHelper.prototype.getBaseModelURL = function() {
 	if (this.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm')
 		return './iTopojs/baseModelFiles/mountain_landscape/scene.gltf';
 	else if (this.userData.objectType === 'iTopoType/TaskObject/SharedCanteen')
-		return './iTopojs/baseModelFiles/simple_house_scene/scene.gltf';
+		return './iTopojs/baseModelFiles/LittlestTokyo/LittlestTokyo.glb';
 	console.log(this.userData.objectUUID + ':' + this.userData.objectType + ' did not find gltf file.');
 	return '';
-}
-
-iTopoBaseHelper.prototype.getBaseModelScale = function() {
-
-	if (this.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm')
-		return 1;
-	else if (this.userData.objectType === 'iTopoType/TaskObject/SharedCanteen')
-		return 30;
-
-	return 1;
 }
 
 iTopoBaseHelper.prototype.loadiTopoGLTFModel = function() {
@@ -271,10 +259,14 @@ iTopoBaseHelper.prototype.loadiTopoGLTFModel = function() {
 	this.modelURL = this.getBaseModelURL();
 	if (this.modelURL === '')
 		return;
-	const modelScale = this.getBaseModelScale();
+
 	const track = this.resMgr.track.bind(this.resMgr);
 
+	var dracoLoader = new DRACOLoader();
+	dracoLoader.setDecoderPath( '../examples/js/libs/draco/gltf/' );
+
 	const loader = new GLTFLoader();
+	loader.setDRACOLoader( dracoLoader );
 	loader.load(this.modelURL, (gltf) => {
 
 		var baseModel = track(gltf.scene);
@@ -286,6 +278,9 @@ iTopoBaseHelper.prototype.loadiTopoGLTFModel = function() {
 			}
 		});
 
+		var box = new THREE.Box3().setFromObject(baseModel);
+		var scale =100 / Math.max(box.max.x,box.max.y, box.max.z );
+
 		if (iTopoEarthSettings.GLOBAL_KIND === "Global3D") {
 			let matrix2 = new THREE.Matrix4;
 			matrix2.makeRotationX(-Math.PI / 2);
@@ -294,13 +289,13 @@ iTopoBaseHelper.prototype.loadiTopoGLTFModel = function() {
 			matrix2.multiply(matrix3);
 			matrix2.setPosition(new THREE.Vector3(0, 0, 0));
 			baseModel.applyMatrix4(matrix2);
-			baseModel.scale.set(modelScale, modelScale, modelScale);
+			baseModel.scale.set(scale, scale, scale);
 		} else {
 			let matrix2 = new THREE.Matrix4;
 			matrix2.makeRotationX(Math.PI / 2);
 			//matrix2.setPosition(new THREE.Vector3(0, 0, iTopoEarthSettings.zHeight));
 			baseModel.applyMatrix4(matrix2);
-			let tmpScale = modelScale * iTopoEarthSettings.mapScaleSize;
+			let tmpScale = scale * iTopoEarthSettings.mapScaleSize;
 			baseModel.scale.set(tmpScale, tmpScale, tmpScale);
 		}
 		this.add(baseModel);

@@ -60,7 +60,7 @@ function iTopoTaskChildStarUserHeader(editor) {
 		// 	thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ), baseModel , this.onClickBaseModel);
 		// 	thumbnailManager.updateCanvasSize();
 
-		// 	editor.signals.sceneRendered.add( function ( ) {
+		// 	editor.signals.sceneRendering.add( function ( ) {
 		// 		thumbnailManager.updateCanvasSize();
 		// 		thumbnailManager.render();
 		// 	} );
@@ -86,7 +86,7 @@ function iTopoTaskChildStarUserHeader(editor) {
 					scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ), baseModel , this.onClickThumbnail);
 					scope.thumbnailManager.updateCanvasSize();
 
-					editor.signals.sceneRendered.add( function ( ) {
+					editor.signals.sceneRendering.add( function ( ) {
 						scope.thumbnailManager.updateCanvasSize();
 						scope.thumbnailManager.render();
 					} );
@@ -303,7 +303,7 @@ onClickThumbnail1: function() {// this对应一个item
 			// thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ), baseModel , this.onClickThumbnail);
 			// thumbnailManager.updateCanvasSize();
 
-			// editor.signals.sceneRendered.add( function ( ) {
+			// editor.signals.sceneRendering.add( function ( ) {
 			// 	thumbnailManager.updateCanvasSize();
 			// 	thumbnailManager.render();
 			// } );

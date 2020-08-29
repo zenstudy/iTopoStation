@@ -21,10 +21,6 @@ function iTopoTaskChildSkyCastleLife( editor ) {
 	return scope;
 }
 
-function onSelect() {
-		console.log(this);
-	}
-
 iTopoTaskChildSkyCastleLife.prototype = Object.create( UIElement.prototype );
 iTopoTaskChildSkyCastleLife.prototype.constructor = iTopoTaskChildSkyCastleLife;
 
@@ -49,7 +45,7 @@ iTopoTaskChildSkyCastleLife.prototype = {
 			for(var i=0; i < 8; ++i)
 			{
 				var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
-				productPanel.addArticleItem(qrcodeURL , title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSiteProduct);
+				productPanel.addArticleItem(qrcodeURL , title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSelect);
 			}
 
 		}
@@ -57,24 +53,20 @@ iTopoTaskChildSkyCastleLife.prototype = {
 		scope.taskObject = taskObject;
 	},
 
-	onSiteProduct: function() {
-		var scope = this;
-		var title = editor.strings.getKey( 'sidebar/skyCastle/Life' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
+	onSelect: function () {
 
-		var dom = document.createElement( 'div' );
-		displayStand.container.dom.appendChild( dom );
+			var displayStand = new iTopoDisplayStand('test');
+			document.body.appendChild(displayStand.container.dom);
+			displayStand.container.setDisplay( 'block' );
 
-		var productPanel = new iTopoProductManager();
-		productPanel.createDisplayStand(dom);
+			var iframe = document.createElement('iframe');
 
-		for(var i=0; i < 8; ++i)
-		{
-			productPanel.addProductItem( title + (i+1), onSelect);
+			iframe.src = "./iTopoObjects/3861590E-CB58-48BA-977C-9F9F107B61AD/threejs-primitives.html";
+			iframe.style.width = '100%';
+			iframe.style.height = '100%';
+
+			displayStand.container.dom.appendChild( iframe );
 		}
-	}
 }
 
 export { iTopoTaskChildSkyCastleLife };

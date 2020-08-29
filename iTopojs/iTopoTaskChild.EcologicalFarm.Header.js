@@ -25,6 +25,7 @@ function iTopoTaskChildEcologicalFarmHeader(editor) {
 		lightWish: "light wish",
 	};
 
+	var scope = this;
 	var container = new UISpan();
 	this.container = container;
 
@@ -51,15 +52,14 @@ function iTopoTaskChildEcologicalFarmHeader(editor) {
 
 			baseModel.scale.set(scale,scale,scale);
 
-			var thumbnailManager = new iTopoThumbnailManager();
-			thumbnailManager.create(containerBaseModel.dom);
-			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ), baseModel , this.onClickThumbnail);
-			thumbnailManager.updateCanvasSize();
+			scope.thumbnailManager = new iTopoThumbnailManager();
+			scope.thumbnailManager.create(containerBaseModel.dom);
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ), baseModel , this.onClickThumbnail);
+			scope.thumbnailManager.updateCanvasSize();
 
-			editor.signals.sceneRendered.add( function ( ) {
-				thumbnailManager.updateCanvasSize();
-				thumbnailManager.render();
-			} );
+			editor.signals.sceneRendering.add(function() {
+				scope.thumbnailManager.render();
+			});
 		});
 	}
 
@@ -203,6 +203,10 @@ iTopoTaskChildEcologicalFarmHeader.prototype = Object.create( UIElement.prototyp
 iTopoTaskChildEcologicalFarmHeader.prototype.constructor = iTopoTaskChildEcologicalFarmHeader;
 
 iTopoTaskChildEcologicalFarmHeader.prototype = {
+	updateCanvasSize: function() {
+		this.thumbnailManager.render();
+		this.thumbnailManager.updateCanvasSize();
+	},
 
 	onClickThumbnail: function() {// this对应一个item
 		var scope = this;

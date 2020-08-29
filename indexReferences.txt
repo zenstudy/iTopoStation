@@ -1,3 +1,56 @@
+//1.增加地球内维度入口。
+//2.增加月球飞船入口。
+//3.点击光锥时，地球停止旋转，光锥失去焦点时，重新开始旋转。
+
+4.用户登陆的功能。
+5.页面前进后退功能的实现。
+6.考虑是否增加文件夹管理。
+7.考虑是否为每个uuid增加一个uuid.iTopo.json 文件, 将每一个对象当成一个project来做。
+8.录入产品。
+9.提供用户自动添加产品和文章的功能。
+10.增加多种展示方式页面的功能。
+11.内存泄露问题的处理。
+12.在页面上添加logo。
+13.用户列表的展示。
+
+
+three.js平时常用的链接
+https://blog.csdn.net/weixin_45544796/article/details/103593115
+
+耀眼星星的例子
+https://www.youtube.com/watch?v=x68rZ_UEQPE&t=462s
+
+threejs的一个登陆案例
+https://redstapler.co/cool-nebula-background-effect-three-js/
+
+Displacement Map,可以呈现出真实地面的例子
+https://sbcode.net/threejs/displacmentmap/
+
+关于blender的一些信息
+https://www.youtube.com/watch?v=ckcuQw2fDT4&list=PLOGomoq5sDLutXOHLlESKG2j9CCnCwVqg&index=20
+
+threejs产品信息展示
+https://blog.csdn.net/weixin_45544796/article/details/100742898
+https://blog.csdn.net/weixin_45544796/article/details/100742424
+https://blog.csdn.net/weixin_45544796/article/details/100741439
+
+火箭且两侧有操作面板展示
+http://127.0.0.1:8848/three.js/examples/webgl_loader_lwo.html
+
+3D 展示html+3D 对话框
+http://stemkoski.github.io/Three.js/CSS3D.html
+
+前景插入文字展示法
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-tips-html-background.html
+
+在文章中插入3d 对象
+http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-responsive-paragraph.html
+
+相册
+http://127.0.0.1:8848/three.js/examples/webgl_multiple_elements.html
+博客内带threejs
+http://127.0.0.1:8848/three.js/examples/webgl_multiple_elements_text.html
+
 一些模型素材
 https://www.artstation.com/artwork/6qVmO
 https://sketchfab.com/store/3d-models/furniture-home?ref=header
@@ -43,8 +96,7 @@ webgl_animation_keyframes
 webgl_buffergeometry_custom_attributes_particles
 https://sketchfab.com/yellow09
 webgl_loader_collada
-火箭且两侧有操作面板
-http://127.0.0.1:8848/three.js/examples/webgl_loader_lwo.html
+
 初音未来的小女孩儿
 http://127.0.0.1:8848/three.js/examples/webgl_loader_mmd.html
 http://127.0.0.1:8848/three.js/examples/webgl_loader_mmd_audio.html
@@ -61,10 +113,7 @@ http://127.0.0.1:8848/three.js/examples/webgl_loader_vrml.html
 http://127.0.0.1:8848/three.js/examples/webgl_materials_car.html
 闪烁的茶杯
 http://127.0.0.1:8848/three.js/examples/webgl_materials_compile.html
-相册
-http://127.0.0.1:8848/three.js/examples/webgl_multiple_elements.html
-博客内带threejs
-http://127.0.0.1:8848/three.js/examples/webgl_multiple_elements_text.html
+
 雪花动画
 http://127.0.0.1:8848/three.js/examples/webgl_points_sprites.html
 
@@ -95,16 +144,14 @@ http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-game-check-animations.
 艺术字
 http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-primitives-text.html
 
-在文章中插入3d 对象
-http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-responsive-paragraph.html
+
 
 3d实体对象
 http://127.0.0.1:8848/three.js/examples/webgl_loader_3ds.html
 推土机
 http://127.0.0.1:8848/three.js/examples/webgl_loader_3mf_materials.html
 
-前景插入文字
-http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-tips-html-background.html
+
 
 3d人物
 http://127.0.0.1:8848/three.js/examples/webgl_loader_collada.html
@@ -134,3 +181,72 @@ threejsfundamentals
 
 loading UI
 http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-game-player-input.html
+
+时光涟漪
+https://blog.csdn.net/weixin_45544796/article/details/107483941
+
+native HTML expand（本机HTML拓展）抽屉菜单
+https://blog.csdn.net/weixin_45544796/article/details/104634055
+
+switch button
+https://blog.csdn.net/weixin_45544796/article/details/104633764
+
+等距图标导航栏(isometric icon Nav Bar) 立体导航
+https://blog.csdn.net/weixin_45544796/article/details/104633511
+
+左下角有一个logo
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_loader_ldraw
+
+底下一排按钮
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_loader_pdb
+
+阵列展示1
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_loader_texture_dds
+阵列展示2
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_blending
+阵列展示3
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_blending_custom
+阵列展示之将对象全部放置在一个面上
+http://127.0.0.1:8848/three.js/examples/index.html#misc_exporter_gltf
+车辆展示，可以切换颜色
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_car
+有很多自由移动的球，可以考虑星星的移动的素材
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_cubemap_balls_refraction
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_shaders_fresnel
+
+中间有个球，可以充当实景影射时的球
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_envmaps
+
+
+有一个小房子，可以充当食堂
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_loader_vrml
+
+通过一个下拉列表展示多种姿态的样式
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_loader_x
+
+非常透亮的材质
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_physical_transmission
+
+油画，且左右两侧有浮动的信息展示项
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_materials_texture_filters
+
+考虑充当展示box
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_mirror
+
+双曲环面展示法
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_multiple_canvases_circle
+
+虚拟人物，缘生缘灭
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_points_dynamic
+
+神秘古老的机械操作装置
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_postprocessing_unreal_bloom
+
+使用GPU渲染的鸟群
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_gpgpu_birds_gltf
+
+闪电特效
+http://127.0.0.1:8848/three.js/examples/index.html#webgl_lightningstrike
+
+被拉伸的二维码
+http://127.0.0.1:8848/three.js/examples/index.html#svg_sandbox

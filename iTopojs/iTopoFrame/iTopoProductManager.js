@@ -3,9 +3,6 @@ import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
 import { UIPanel } from '../iTopoUI.js';
 
 function iTopoProductManager() {
-
-//	this.productItems = [];
-
 	return this;
 }
 
@@ -25,27 +22,22 @@ iTopoProductManager.prototype = {
 		panelDom.appendChild(this.itemsDom);
 	},
 
-	addProductItem : function (itemTitle, itemfn) {
+	addProductItem : function (itemTitle, imgURL, itemfn) {
 
 		// make a list item
 		var elementListItem = document.createElement('div');
 		elementListItem.className = 'product-item';
+		elementListItem.addEventListener('click', itemfn );
 
-		var sceneElement = document.createElement('div');
+		var sceneElement=document.createElement("img");
+		sceneElement.src = imgURL;
 		elementListItem.appendChild(sceneElement);
-		sceneElement.addEventListener('click', itemfn );
 
 		var descriptionElement = document.createElement('div');
 		descriptionElement.innerText = itemTitle;
 		elementListItem.appendChild(descriptionElement);
-		descriptionElement.addEventListener('click', itemfn );
 
 		this.itemsDom.appendChild(elementListItem);
-
-		console.log(elementListItem.style.zIndex);
-		console.log('elementListItem: w = ' + elementListItem.offsetWidth + ',h=' + elementListItem.offsetHeight);
-
-//		this.productItems.push(elementListItem);
 	}
 
 }

@@ -14,10 +14,13 @@ function iTopoStrings( config ) {
 			'iTopoType/TaskObject/EcologicalFarm':'生态基地',
 			'iTopoType/TaskObject/SharedCanteen':'共享食堂',
 			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球服务中心',
+			'iTopoType/TaskObject/iTopoInnerEarth':'地心世界',
+			'iTopoType/TaskObject/iTopoLunarMoon': '月球',
 
 			'menubar/iTopoEarthHub': '共享地球',
-			'menubar/iTopoEarthHub/iTopoSupportLand' : '共享地球服务中心',
-			'menubar/iTopoEarthHub/dynamicVallage' : '动力谷',
+			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球服务中心',
+			'menubar/iTopoEarthHub/iTopoInnerEarth' : '地心世界',
+			'menubar/iTopoEarthHub/iTopoLunarMoon' : '月球',
 
 			'menubar/EcologicalFarm':'生态基地',
 			'menubar/EcologicalFarm/itopoBase': '生态农场',
@@ -66,6 +69,20 @@ function iTopoStrings( config ) {
 			'sidebar/skyCastle/Parts/ReservedGroupX' : '预留小组x',
 
 			'sidebar/skyCastle/Life' : '公告',
+
+			'sidebar/LunarMoon/Header':'月球',
+			'sidebar/LunarMoon/Header/lunarMoonUUID': '月球UUID',
+			'sidebar/LunarMoon/Header/Title': '名称',
+			'sidebar/LunarMoon/Parts': '组成',
+			'sidebar/LunarMoon/Life':'生活',
+
+
+			'sidebar/InnerEarth/Header':'地心世界',
+			'sidebar/InnerEarth/Header/innerEarthUUID':'地心UUID',
+			'sidebar/InnerEarth/Header/Title':'名称',
+
+			'sidebar/InnerEarth/Parts':'组成',
+			'sidebar/InnerEarth/Life':'生活',
 
 			'sidebar/StarUser/Header': '星民信息',
 			'sidebar/StarUser/Header/Outlook': '头像',

@@ -4,10 +4,9 @@
 
 import * as THREE from '../../build/three.module.js';
 
-
-import { Loader } from '../js/Loader.js';
-import { History as _History } from '../js/History.js';
-import { Storage as _Storage } from '../js/Storage.js';
+import { iTopoLoader as _Loader } from './iTopoLoader.js';
+import { iTopoHistory as _History } from './iTopoHistory.js';
+import { iTopoStorage as _Storage } from './iTopoStorage.js';
 import { iTopoStrings } from './iTopoStrings.js';
 import { iTopoConfig } from './iTopoConfig.js';
 
@@ -21,16 +20,6 @@ function iTopoEditor() {
 	var Signal = signals.Signal;
 
 	this.signals = {
-
-		// script
-
-		editScript: new Signal(),
-
-		// player
-
-		startPlayer: new Signal(),
-		stopPlayer: new Signal(),
-
 		// notifications
 
 		editorCleared: new Signal(),
@@ -49,6 +38,7 @@ function iTopoEditor() {
 		sceneFogChanged: new Signal(),
 		sceneFogSettingsChanged: new Signal(),
 		sceneGraphChanged: new Signal(),
+		sceneRendering: new Signal(),
 		sceneRendered: new Signal(),
 
 		cameraChanged: new Signal(),
@@ -56,13 +46,11 @@ function iTopoEditor() {
 
 		geometryChanged: new Signal(),
 
-		objectSelected: new Signal(),
+		objectSelected: new Signal(),//important
 		objectFocused: new Signal(),
-
 		objectAdded: new Signal(),
 		objectChanged: new Signal(),
 		objectRemoved: new Signal(),
-
 		objectArrayAdded: new Signal(),
 
 		cameraAdded: new Signal(),
@@ -70,10 +58,6 @@ function iTopoEditor() {
 
 		helperAdded: new Signal(),
 		helperRemoved: new Signal(),
-
-		materialAdded: new Signal(),
-		materialChanged: new Signal(),
-		materialRemoved: new Signal(),
 
 		scriptAdded: new Signal(),
 		scriptChanged: new Signal(),
@@ -83,27 +67,22 @@ function iTopoEditor() {
 
 		showGridChanged: new Signal(),
 		showHelpersChanged: new Signal(),
-		refreshSidebarObject3D: new Signal(),
 		historyChanged: new Signal(),
 
 		viewportCameraChanged: new Signal()
-
 	};
 
 	this.config = new iTopoConfig();
 	this.history = new _History( this );
 	this.storage = new _Storage();
 	this.strings = new iTopoStrings( this.config );
-
-	this.loader = new Loader( this );
-
+	this.loader = new _Loader( this );
 	this.camera = _DEFAULT_CAMERA.clone();
 
 	this.scene = new THREE.Scene();
 	this.scene.name = 'Scene';
 
 	this.sceneHelpers = new THREE.Scene();
-
 	{
 	  const skyColor = 0xB1E1FF;  // light blue
 	  const groundColor = 0xB97A20;  // brownish orange
@@ -148,15 +127,12 @@ function iTopoEditor() {
 	//	this.sceneHelpers.add(lightHelper);
 	}
 
-
-
 	this.object = {};
 	this.geometries = {};
 	this.materials = {};
 	this.textures = {};
-	this.scripts = {};
-
 	this.materialsRefCounter = new Map(); // tracks how often is a material used by a 3D object
+	this.scripts = {};
 
 	this.animations = {};
 	this.mixer = new THREE.AnimationMixer( this.scene );
@@ -166,14 +142,12 @@ function iTopoEditor() {
 
 	this.cameras = {};
 	this.viewportCamera = this.camera;
+	this.addCamera( this.camera );
 
 	// {
 	// 	this.cameraHelper = new THREE.CameraHelper(this.viewportCamera);
 	// 	this.scene.add(this.cameraHelper);
 	// }
-
-	this.addCamera( this.camera );
-
 }
 
 iTopoEditor.prototype = {
@@ -336,8 +310,7 @@ iTopoEditor.prototype = {
 		this.signals.sceneGraphChanged.dispatch();
 
 	},
-
-	addMaterial: function ( material ) {
+addMaterial: function ( material ) {
 
 		if ( Array.isArray( material ) ) {
 
@@ -392,9 +365,6 @@ iTopoEditor.prototype = {
 			this.removeMaterialFromRefCounter( material );
 
 		}
-
-		this.signals.materialRemoved.dispatch();
-
 	},
 
 	removeMaterialFromRefCounter: function ( material ) {
@@ -724,8 +694,6 @@ iTopoEditor.prototype = {
 		this.materials = {};
 		this.textures = {};
 		this.scripts = {};
-
-		this.materialsRefCounter.clear();
 
 		this.animations = {};
 		this.mixer.stopAllAction();

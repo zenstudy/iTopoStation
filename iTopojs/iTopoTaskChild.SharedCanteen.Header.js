@@ -1,9 +1,6 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIElement, UISpan, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from './iTopoUI.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
+import { DRACOLoader } from '../../examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
@@ -33,8 +30,12 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		containerBaseModel.setPaddingTop('10px');
 		container.add(containerBaseModel);
 
+		var dracoLoader = new DRACOLoader();
+		dracoLoader.setDecoderPath( '../examples/js/libs/draco/gltf/' );
+
 		const glftloader = new GLTFLoader();
-		glftloader.load('./iTopojs/baseModelFiles/simple_house_scene/scene.gltf', (gltf) => {
+		glftloader.setDRACOLoader( dracoLoader );
+		glftloader.load('./iTopojs/baseModelFiles/LittlestTokyo/LittlestTokyo.glb', (gltf) => {
 
 			var baseModel = gltf.scene;
 			baseModel.traverse((child) => {
@@ -55,7 +56,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/SharedCanteen/Header/outook' ), baseModel , this.onClickThumbnail);
 			thumbnailManager.updateCanvasSize();
 
-			editor.signals.sceneRendered.add( function ( ) {
+			editor.signals.sceneRendering.add( function ( ) {
 				thumbnailManager.updateCanvasSize();
 				thumbnailManager.render();
 			} );
@@ -148,7 +149,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	{
 		var longitudeRow = new UIRow();
 
-		longitudeRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/longitude')).setWidth('120px'));
+		longitudeRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/longitude')).setWidth('90px'));
 
 		this.longitudeValueUI = new UINumber(lightTask.longitude).setRange(2, Infinity);
 		this.longitudeValueUI.onChange(function() {
@@ -163,7 +164,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	{
 		var latitudeRow = new UIRow();
 
-		latitudeRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/latitude')).setWidth('120px'));
+		latitudeRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/latitude')).setWidth('90px'));
 
 		this.latitudeValueUI = new UINumber(lightTask.latitude).setRange(2, Infinity);
 		this.latitudeValueUI.onChange(function() {
@@ -177,7 +178,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 
 	{
 		var lightWishTitleRow = new UIRow();
-		lightWishTitleRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/lightWish')).setWidth('120px'));
+		lightWishTitleRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/lightWish')).setWidth('90px'));
 		containerParameter.add(lightWishTitleRow);
 
 		var lightWishTextAreaRow = new UIRow();

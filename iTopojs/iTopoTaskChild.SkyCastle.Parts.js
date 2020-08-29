@@ -3,6 +3,7 @@ import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
+import { iTopoCSS3DBriefcase } from './iTopoFrame/iTopoCSS3DBriefcase.js';
 
 function iTopoTaskChildSkyCastleParts( editor ) {
 	var scope = this;
@@ -47,20 +48,20 @@ iTopoTaskChildSkyCastleParts.prototype = {
 					});
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' ) , mesh, scope.onSiteProductClass3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClass3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClass3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClass3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClass3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' ) , mesh.clone(), scope.onSiteProductClass3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' ) , mesh.clone(), scope.onSiteProductClass3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/ReservedGroupX' ) , mesh.clone(), scope.onSiteProductClass3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' ) , mesh, scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/ReservedGroupX' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
 
 			//scope.thumbnailManager.createThumbnailItem( title + '品种2D区' , mesh.clone(), scope.onSiteProductClass2D);
 
 			scope.thumbnailManager.updateCanvasSize();
 
-			editor.signals.sceneRendered.add( function ( ) {
+			editor.signals.sceneRendering.add( function ( ) {
 				scope.thumbnailManager.render();
 			} );
 		}
@@ -95,29 +96,30 @@ iTopoTaskChildSkyCastleParts.prototype = {
 		}
 		scope.outlookManager.updateCanvasSize();
 
-		editor.signals.sceneRendered.add( function ( ) {
+		editor.signals.sceneRendering.add( function ( ) {
 			scope.outlookManager.render();
 		} );
 	},
 
-	// onSiteProductClass2D: function() {
-	// 	var scope = this;
-	// 	var title = editor.strings.getKey( 'sidebar/skyCastle/Parts' ) ;
-	// 	var displayStand = new iTopoDisplayStand(title);
-	// 	document.body.appendChild(displayStand.container.dom);
-	// 	displayStand.container.setDisplay( 'block' );
+	onSiteProductClassCSS3D: function() {
+	var scope = this;
+	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
+		var displayStand = new iTopoDisplayStand(title);
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay( 'block' );
+		displayStand.container.setPosition('absolate');
 
-	// 	var dom = document.createElement( 'div' );
-	// 	displayStand.container.dom.appendChild( dom );
+		var explore = new iTopoCSS3DBriefcase.Explore();
+		explore.show3D();
+		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
+		explore.play();
 
-	// 	var productPanel = new iTopoProductManager();
-	// 	productPanel.createDisplayStand(dom);
+		displayStand.container.dom.appendChild( explore.dom );
+		displayStand.container.dom.addEventListener( 'resize', function () {
+		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
+		} );
 
-	// 	for(var i=0; i < 8; ++i)
-	// 	{
-	// 		productPanel.addProductItem( title + (i+1), onSelect);
-	// 	}
-	// }
+	}
 }
 
 export { iTopoTaskChildSkyCastleParts };
