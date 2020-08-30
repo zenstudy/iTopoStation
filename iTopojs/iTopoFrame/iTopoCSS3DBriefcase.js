@@ -15,7 +15,6 @@ var iTopoCSS3DBriefcase = {
 		//var renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true } );
 		// renderer.setPixelRatio( window.devicePixelRatio );
 		// //renderer.outputEncoding = THREE.sRGBEncoding;
-		//renderer.setClearColor( '#86c9c9' );
 
 		// var project = json.project;
 		// if ( project.vr !== undefined ) renderer.xr.enabled = project.vr;
@@ -25,11 +24,13 @@ var iTopoCSS3DBriefcase = {
 		// if ( project.toneMappingExposure !== undefined ) renderer.toneMappingExposure = project.toneMappingExposure;
 		// if ( project.physicallyCorrectLights !== undefined ) renderer.physicallyCorrectLights = project.physicallyCorrectLights;
 
+		var requestAnimate = true;
 		var camera, scene, controls;
 		var vrButton = VRButton.createButton( renderer );
 		var events = {};
 
 		var dom = document.createElement( 'div' );
+		dom.style.background = '#86c9c9';
 		dom.appendChild( renderer.domElement );
 		this.dom = dom;
 
@@ -40,7 +41,6 @@ var iTopoCSS3DBriefcase = {
 
 			var scene = new THREE.Scene();
 			this.setScene(scene);
-
 
 			this.createCSS3DObjects();
 			this.createCSS3DMenu();
@@ -460,6 +460,9 @@ var iTopoCSS3DBriefcase = {
 			}
 			console.log('animate..........');
 
+			if(requestAnimate !== true)
+				return;
+
 			controls.update();
 	//		TWEEN.update();
 
@@ -484,14 +487,14 @@ var iTopoCSS3DBriefcase = {
 			document.addEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.start, arguments );
-			//renderer.setAnimationLoop( animate );
+			//renderer.setAnimationLoop( animate ); //CSS3DRenderer没有setAnimationLoop功能
 
-
+			requestAnimate = true;
 			animate ();
 		};
 
 		this.stop = function () {
-			if ( renderer.xr.enabled ) vrButton.remove();
+			//if ( renderer.xr.enabled ) vrButton.remove();
 
 			document.removeEventListener( 'keydown', onDocumentKeyDown );
 			document.removeEventListener( 'keyup', onDocumentKeyUp );
@@ -503,11 +506,15 @@ var iTopoCSS3DBriefcase = {
 			document.removeEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.stop, arguments );
-			renderer.setAnimationLoop( null );
+			requestAnimate = false;
+			//renderer.setAnimationLoop( null );
 		};
 
 		this.dispose = function () {
-			renderer.dispose();
+			console.log(renderer);
+			//renderer.dispose();
+			requestAnimate = false;
+			renderer = null;
 			camera = undefined;
 			scene = undefined;
 		};

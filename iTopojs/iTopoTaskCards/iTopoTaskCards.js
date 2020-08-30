@@ -1,41 +1,42 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-import { UITabbedPanel, UISpan } from './iTopoUI.js';
+import { UITabbedPanel, UISpan } from '../iTopoUI.js';
 
-import { iTopoTaskChildSkyCastleHeader } from './iTopoTaskChild.SkyCastle.Header.js';
-import { iTopoTaskChildSkyCastleParts } from './iTopoTaskChild.SkyCastle.Parts.js';
-import { iTopoTaskChildSkyCastleLife } from './iTopoTaskChild.SkyCastle.Life.js';
+import { iTopoObjectSkyCastleHeader } from '../iTopoObject.SkyCastle.Header.js';
+import { iTopoObjectSkyCastleParts } from '../iTopoObject.SkyCastle.Parts.js';
+import { iTopoObjectSkyCastleLife } from '../iTopoObject.SkyCastle.Life.js';
 
-import { iTopoTaskChildInnerEarthHeader } from './iTopoTaskChild.InnerEarth.Header.js';
-import { iTopoTaskChildInnerEarthParts } from './iTopoTaskChild.InnerEarth.Parts.js';
-import { iTopoTaskChildInnerEarthLife } from './iTopoTaskChild.InnerEarth.Life.js';
+import { iTopoObjectInnerEarthHeader } from '../iTopoObject.InnerEarth.Header.js';
+import { iTopoObjectInnerEarthParts } from '../iTopoObject.InnerEarth.Parts.js';
+import { iTopoObjectInnerEarthLife } from '../iTopoObject.InnerEarth.Life.js';
 
-import { iTopoTaskChildLunarMoonHeader } from './iTopoTaskChild.LunarMoon.Header.js';
-import { iTopoTaskChildLunarMoonParts } from './iTopoTaskChild.LunarMoon.Parts.js';
-import { iTopoTaskChildLunarMoonLife } from './iTopoTaskChild.LunarMoon.Life.js';
+import { iTopoObjectLunarMoonHeader } from '../iTopoObject.LunarMoon.Header.js';
+import { iTopoObjectLunarMoonParts } from '../iTopoObject.LunarMoon.Parts.js';
+import { iTopoObjectLunarMoonLife } from '../iTopoObject.LunarMoon.Life.js';
 
-import { iTopoTaskChildStarUserHeader } from './iTopoTaskChild.StarUser.Header.js';
-import { iTopoTaskChildStarUserDiyCreations } from './iTopoTaskChild.StarUser.DiyCreations.js';
-import { iTopoTaskChildStarUserLife } from './iTopoTaskChild.StarUser.Life.js';
+import { iTopoObjectStarUserHeader } from '../iTopoObject.StarUser.Header.js';
+import { iTopoObjectStarUserDiyCreations } from '../iTopoObject.StarUser.DiyCreations.js';
+import { iTopoObjectStarUserLife } from '../iTopoObject.StarUser.Life.js';
 
-import { iTopoTaskChildEcologicalFarmHeader } from './iTopoTaskChild.EcologicalFarm.Header.js';
-import { iTopoTaskChildEcologicalFarmProduct } from './iTopoTaskChild.EcologicalFarm.Product.js';
-import { iTopoTaskChildEcologicalFarmLife } from './iTopoTaskChild.EcologicalFarm.Life.js';
+import { iTopoObjectEcologicalFarmHeader } from '../iTopoObject.EcologicalFarm.Header.js';
+import { iTopoObjectEcologicalFarmProduct } from '../iTopoObject.EcologicalFarm.Product.js';
+import { iTopoObjectEcologicalFarmLife } from '../iTopoObject.EcologicalFarm.Life.js';
 
-import { iTopoTaskChildDynamic } from './iTopoTaskChild.Dynamic.js';
-import { iTopoTaskChildContribute } from './iTopoTaskChild.Contribute.js';
-import { iTopoTaskChildParticipants } from './iTopoTaskChild.Participants.js';
+import { iTopoObjectDynamic } from '../iTopoObject.Dynamic.js';
+import { iTopoObjectContribute } from '../iTopoObject.Contribute.js';
+import { iTopoObjectParticipants } from '../iTopoObject.Participants.js';
 
-import { iTopoTaskChildSharedCanteenHeader } from './iTopoTaskChild.SharedCanteen.Header.js';
-import { iTopoTaskChildSharedCanteenMenu } from './iTopoTaskChild.SharedCanteen.Menu.js';
-import { iTopoTaskChildSharedCanteenLife } from './iTopoTaskChild.SharedCanteen.Life.js';
+import { iTopoObjectSharedCanteenHeader } from '../iTopoObject.SharedCanteen.Header.js';
+import { iTopoObjectSharedCanteenMenu } from '../iTopoObject.SharedCanteen.Menu.js';
+import { iTopoObjectSharedCanteenLife } from '../iTopoObject.SharedCanteen.Life.js';
 
-import { iTopoEarthSettings } from './iTopoEarthSettings.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js'
+import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js'
 
 
-function iTopoTaskBriefcase(editor) {
+function iTopoTaskCards(editor) {
+	var scope = this;
 	var signals = editor.signals;
 	var strings = editor.strings;
 	var ActivedObjectType = '';
@@ -44,38 +45,56 @@ function iTopoTaskBriefcase(editor) {
 	var container = new UITabbedPanel();
 	//container.setId( 'properties' );
 	container.setId('sidebar');
-	container.setDisplay( 'none' );
+//	container.setDisplay( 'none' );
+
+	// var sharedCanteen = new UISpan().add(
+	// 	new iTopoObjectHeader( editor ),
+	// 	new iTopoTaskBriefcaseBody( editor )
+	// );
 
 	container.tabsDiv.dom.addEventListener('click', function() {
 
 		tabs.forEach(function(tab) {
 			if(tab.name === container.selected){
-				console.log( tab.name + ',updateCanvasSize');
-
-				if(tab.panel.updateCanvasSize !== undefined){
-					tab.panel.updateCanvasSize();
+				if(tab.panel.activeTabPanel!== undefined){
+					tab.panel.activeTabPanel();
+				}
+				scope.lastSelectTabName=tab.name;
+			} else {
+				if(tab.name === scope.lastSelectTabName){
+					if(tab.panel.deactiveTabPanel!== undefined){
+						tab.panel.deactiveTabPanel();
+					}
 				}
 			}
 		});
 	});
 
-	// var sharedCanteen = new UISpan().add(
-	// 	new iTopoTaskChildHeader( editor ),
-	// 	new iTopoTaskBriefcaseBody( editor )
-	// );
-
 	// events
 
 	function removeAllTabs() {
+		tabs.forEach(function(tab){
+			console.log(tab);
+			tab.panel.dispose();
+		}) ;
+
+		tabs = [];
+
 		container.removeAllTab();
 	}
 
-	function createiTopoSkyCastleTabs() {
-		var headerTab = new iTopoTaskChildSkyCastleHeader(editor);
-		var partsTab = new iTopoTaskChildSkyCastleParts(editor);
-		var lifeTab = new iTopoTaskChildSkyCastleLife(editor);
+	function activeTab( tab ){
+		container.select(tab.name);
+		scope.lastSelectTabName = tab.name;
+		console.log(tab.name);
+		tab.panel.activeTabPanel();
+	}
 
-		tabs = [];
+	function createiTopoSkyCastleTabs() {
+		var headerTab = new iTopoObjectSkyCastleHeader(editor);
+		var partsTab = new iTopoObjectSkyCastleParts(editor);
+		var lifeTab = new iTopoObjectSkyCastleLife(editor);
+
 		tabs.push( {name:'skyCastle', title:strings.getKey('sidebar/skyCastle/Header')  ,panel: headerTab} );
 		tabs.push( {name:'parts', title: strings.getKey('sidebar/skyCastle/Parts'),panel: partsTab} );
 		tabs.push( {name:'life', title: strings.getKey('sidebar/skyCastle/Life'),panel: lifeTab} );
@@ -84,15 +103,14 @@ function iTopoTaskBriefcase(editor) {
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		container.select('skyCastle');
+		activeTab( tabs[0] );
 	}
 
 	function createiTopoInnerEarthTabs() {
-		var headerTab = new iTopoTaskChildInnerEarthHeader(editor);
-		var partsTab = new iTopoTaskChildInnerEarthParts(editor);
-		var lifeTab = new iTopoTaskChildInnerEarthLife(editor);
+		var headerTab = new iTopoObjectInnerEarthHeader(editor);
+		var partsTab = new iTopoObjectInnerEarthParts(editor);
+		var lifeTab = new iTopoObjectInnerEarthLife(editor);
 
-		tabs = [];
 		tabs.push( {name:'InnerEarth', title:strings.getKey('sidebar/InnerEarth/Header')  ,panel: headerTab} );
 		tabs.push( {name:'parts', title: strings.getKey('sidebar/InnerEarth/Parts'),panel: partsTab} );
 		tabs.push( {name:'life', title: strings.getKey('sidebar/InnerEarth/Life'),panel: lifeTab} );
@@ -101,15 +119,14 @@ function iTopoTaskBriefcase(editor) {
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		container.select('InnerEarth');
+		activeTab( tabs[0] );
 	}
 
 	function createiTopoLunarMoonTabs() {
-		var headerTab = new iTopoTaskChildLunarMoonHeader(editor);
-		var partsTab = new iTopoTaskChildLunarMoonParts(editor);
-		var lifeTab = new iTopoTaskChildLunarMoonLife(editor);
+		var headerTab = new iTopoObjectLunarMoonHeader(editor);
+		var partsTab = new iTopoObjectLunarMoonParts(editor);
+		var lifeTab = new iTopoObjectLunarMoonLife(editor);
 
-		tabs = [];
 		tabs.push( {name:'LunarMoon', title:strings.getKey('sidebar/LunarMoon/Header')  ,panel: headerTab} );
 		tabs.push( {name:'parts', title: strings.getKey('sidebar/LunarMoon/Parts'),panel: partsTab} );
 		tabs.push( {name:'life', title: strings.getKey('sidebar/LunarMoon/Life'),panel: lifeTab} );
@@ -118,15 +135,14 @@ function iTopoTaskBriefcase(editor) {
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		container.select('LunarMoon');
+		activeTab( tabs[0] );
 	}
 
 	function createStarTabs() {
-		var starUserTab = new iTopoTaskChildStarUserHeader(editor);
-		var diyCreationsTab = new iTopoTaskChildStarUserDiyCreations(editor);
-		var lifeTab = new iTopoTaskChildStarUserLife(editor);
+		var starUserTab = new iTopoObjectStarUserHeader(editor);
+		var diyCreationsTab = new iTopoObjectStarUserDiyCreations(editor);
+		var lifeTab = new iTopoObjectStarUserLife(editor);
 
-		tabs = [];
 		tabs.push( {name:'StarUser', title:strings.getKey('sidebar/StarUser/Header'), panel: starUserTab} );
 		tabs.push( {name:'DiyCreations', title: strings.getKey('sidebar/StarUser/DiyCreations'), panel: diyCreationsTab} );
 		tabs.push( {name:'lifeTab', title: strings.getKey('sidebar/StarUser/life'), panel: lifeTab} );
@@ -135,19 +151,18 @@ function iTopoTaskBriefcase(editor) {
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		container.select('StarUser');
+		activeTab( tabs[0] );
 	}
 
 	function createEcologicalFarmTabs() {
-		var headerTab = new iTopoTaskChildEcologicalFarmHeader(editor);
-		var productItemsTab = new iTopoTaskChildEcologicalFarmProduct(editor);
-		var lifeItemsTab = new iTopoTaskChildEcologicalFarmLife(editor);
-		// var dynamicTab = new iTopoTaskChildDynamic(editor);
-		// var contributeTab = new iTopoTaskChildContribute(editor);
-		var participantsTab = new iTopoTaskChildParticipants(editor);
+		var headerTab = new iTopoObjectEcologicalFarmHeader(editor);
+		var productItemsTab = new iTopoObjectEcologicalFarmProduct(editor);
+		var lifeItemsTab = new iTopoObjectEcologicalFarmLife(editor);
+		// var dynamicTab = new iTopoObjectDynamic(editor);
+		// var contributeTab = new iTopoObjectContribute(editor);
+		var participantsTab = new iTopoObjectParticipants(editor);
 
-		tabs = [];
-		tabs.push( {name:'iTopoTaskHeader', title:strings.getKey('sidebar/EcologicalFarm/Header')  ,panel: headerTab} );
+		tabs.push( {name:'farmHeader', title:strings.getKey('sidebar/EcologicalFarm/Header')  ,panel: headerTab} );
 		tabs.push( {name:'product', title: strings.getKey('sidebar/EcologicalFarm/product'),panel: productItemsTab} );
 		tabs.push( {name:'life', title: strings.getKey('sidebar/EcologicalFarm/life'),panel: lifeItemsTab} );
 		// tabs.push( {name:'dynamic', title:strings.getKey('sidebar/iTopoTask/dynamic')  ,panel: dynamicTab} );
@@ -158,16 +173,15 @@ function iTopoTaskBriefcase(editor) {
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		container.select('iTopoTaskHeader');
+		activeTab( tabs[0] );
 	}
 
 	function createSharedCanteenTabs() {
-		var headerTab = new iTopoTaskChildSharedCanteenHeader(editor);
-		var menuTab = new iTopoTaskChildSharedCanteenMenu(editor);
-		var lifeItemsTab = new iTopoTaskChildSharedCanteenLife(editor);
+		var headerTab = new iTopoObjectSharedCanteenHeader(editor);
+		var menuTab = new iTopoObjectSharedCanteenMenu(editor);
+		var lifeItemsTab = new iTopoObjectSharedCanteenLife(editor);
 
-		tabs = [];
-		tabs.push( {name:'iTopoTaskHeader', title:strings.getKey('sidebar/SharedCanteen/Header')  ,panel: headerTab} );
+		tabs.push( {name:'canteenHeader', title:strings.getKey('sidebar/SharedCanteen/Header')  ,panel: headerTab} );
 		tabs.push( {name:'menu', title: strings.getKey('sidebar/SharedCanteen/menu'),panel: menuTab} );
 		tabs.push( {name:'life', title: strings.getKey('sidebar/SharedCanteen/life'),panel: lifeItemsTab} );
 
@@ -175,7 +189,7 @@ function iTopoTaskBriefcase(editor) {
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		container.select('iTopoTaskHeader');
+		activeTab( tabs[0] );
 	}
 
 	function refreshEcologicalFarmTabs() {
@@ -231,7 +245,7 @@ function iTopoTaskBriefcase(editor) {
 	function refreshiTopoSkyCastleTabs() {
 
 		if (iTopoEarthModel.SkyCastle.castleUUID === editor.selected.userData.objectUUID) {
-			//geometryUUID.setValue(castle.castleUUID);
+
 			tabs.forEach(function(tab) {
 				tab.panel.setValue(iTopoEarthModel.SkyCastle);
 			});
@@ -243,7 +257,7 @@ function iTopoTaskBriefcase(editor) {
 	function refreshiTopoInnerEarthTabs() {
 
 		if (iTopoEarthModel.InnerEarth.innerEarthUUID === editor.selected.userData.objectUUID) {
-			//geometryUUID.setValue(castle.castleUUID);
+
 			tabs.forEach(function(tab) {
 				tab.panel.setValue(iTopoEarthModel.InnerEarth);
 			});
@@ -255,7 +269,7 @@ function iTopoTaskBriefcase(editor) {
 	function refreshiTopoLunarMoonTabs() {
 
 		if (iTopoEarthModel.LunarMoon.lunarMoonUUID === editor.selected.userData.objectUUID) {
-			//geometryUUID.setValue(castle.castleUUID);
+
 			tabs.forEach(function(tab) {
 				tab.panel.setValue(iTopoEarthModel.LunarMoon);
 			});
@@ -364,4 +378,4 @@ function iTopoTaskBriefcase(editor) {
 	return container;
 }
 
-export { iTopoTaskBriefcase };
+export { iTopoTaskCards };

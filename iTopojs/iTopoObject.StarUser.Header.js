@@ -14,7 +14,7 @@ import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
 
 var __tmp_scope;
-function iTopoTaskChildStarUserHeader(editor) {
+function iTopoObjectStarUserHeader(editor) {
 	var scope = this;
 	__tmp_scope = this;
 	var strings = editor.strings;
@@ -67,6 +67,9 @@ function iTopoTaskChildStarUserHeader(editor) {
 		// });
 
 		{
+			scope.thumbnailManager = new iTopoThumbnailManager();
+			scope.thumbnailManager.create(containerBaseModel.dom);
+
 			const mtlLoader = new MTLLoader();
 			mtlLoader.load('./iTopojs/baseModelFiles/female02/female02.mtl', (mtlParseResult) => {
 				console.log(mtlParseResult);
@@ -81,16 +84,8 @@ function iTopoTaskChildStarUserHeader(editor) {
 					baseModel.scale.set(scale,scale,scale);
 					baseModel.position.set(0,-1.0,0);
 
-					scope.thumbnailManager = new iTopoThumbnailManager();
-					scope.thumbnailManager.create(containerBaseModel.dom);
 					scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ), baseModel , this.onClickThumbnail);
 					scope.thumbnailManager.updateCanvasSize();
-
-					editor.signals.sceneRendering.add( function ( ) {
-						scope.thumbnailManager.updateCanvasSize();
-						scope.thumbnailManager.render();
-					} );
-
 				});
 			});
 		}
@@ -191,12 +186,32 @@ function iTopoTaskChildStarUserHeader(editor) {
 	return this;
 }
 
-iTopoTaskChildStarUserHeader.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildStarUserHeader.prototype.constructor = iTopoTaskChildStarUserHeader;
+iTopoObjectStarUserHeader.prototype = Object.create( UIElement.prototype );
+iTopoObjectStarUserHeader.prototype.constructor = iTopoObjectStarUserHeader;
 
-iTopoTaskChildStarUserHeader.prototype = {
+iTopoObjectStarUserHeader.prototype = {
 
-onClickThumbnail1: function() {// this对应一个item
+	activeTabPanel: function() {
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
+
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
+	},
+
+	onClickThumbnail1: function() {// this对应一个item
 		var scope = this;
 	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
 		var displayStand = new iTopoDisplayStand(title);
@@ -413,4 +428,4 @@ onClickThumbnail1: function() {// this对应一个item
 	}
 }
 
-export { iTopoTaskChildStarUserHeader };
+export { iTopoObjectStarUserHeader };

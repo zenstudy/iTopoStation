@@ -9,7 +9,7 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 
-function iTopoTaskChildEcologicalFarmLife( editor ) {
+function iTopoObjectSharedCanteenLife( editor ) {
 	this.editor = editor;
 	var scope = this;
 	scope.strings = editor.strings;
@@ -25,15 +25,19 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoTaskChildEcologicalFarmLife.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildEcologicalFarmLife.prototype.constructor = iTopoTaskChildEcologicalFarmLife;
+iTopoObjectSharedCanteenLife.prototype = Object.create( UIElement.prototype );
+iTopoObjectSharedCanteenLife.prototype.constructor = iTopoObjectSharedCanteenLife;
 
-iTopoTaskChildEcologicalFarmLife.prototype = {
+iTopoObjectSharedCanteenLife.prototype = {
 
-	updateCanvasSize: function(){
+	activeTabPanel: function(){
 		//this.thumbnailManager.updateCanvasSize();
 	},
 
+	dispose: function() {
+		//this.thumbnailManager.dispose();
+	},
+	
 	getValue: function () {
 		return this.taskObject;
 	},
@@ -42,14 +46,14 @@ iTopoTaskChildEcologicalFarmLife.prototype = {
 		var scope = this;
 		if (editor.selected !== null) {
 
-			var title = editor.strings.getKey( 'sidebar/EcologicalFarm/life' ) ;
+			var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
 			var productPanel = new iTopoArticleManager();
 			productPanel.createDisplayStand(scope.container.dom);
 
 			for(var i=0; i < 8; ++i)
 			{
 				var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
-				productPanel.addArticleItem(qrcodeURL , '农场' + title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSiteProduct);
+				productPanel.addArticleItem(qrcodeURL , '共享食堂' + title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSiteProduct);
 			}
 
 		}
@@ -59,7 +63,7 @@ iTopoTaskChildEcologicalFarmLife.prototype = {
 
 	onSiteProduct: function() {
 		var scope = this;
-		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/product' ) ;
+		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -75,6 +79,7 @@ iTopoTaskChildEcologicalFarmLife.prototype = {
 			productPanel.addProductItem( title + (i+1), onSelect);
 		}
 	}
+
 }
 
-export { iTopoTaskChildEcologicalFarmLife };
+export { iTopoObjectSharedCanteenLife };

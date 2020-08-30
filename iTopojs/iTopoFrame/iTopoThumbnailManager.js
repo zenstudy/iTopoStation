@@ -13,12 +13,22 @@ iTopoThumbnailManager.prototype.constructor = iTopoThumbnailManager;
 
 iTopoThumbnailManager.prototype = {
 
+	active: function(){
+		var scope = this;
+		scope.renderer.setAnimationLoop(function() {scope.render();});
+	},
+
+	deactive: function(){
+		var scope = this;
+		scope.renderer.setAnimationLoop(null);
+	},
+
 	create :function (panelDom){
 		var scope = this;
 		this.panelDom = panelDom;
 
 		var renderer = new THREE.WebGLRenderer( { antialias: true } );
-		renderer.setClearColor( 0xcccccc, 1 );
+		renderer.setClearColor( 0x86c9c9, 1 );
 		renderer.setPixelRatio( window.devicePixelRatio );
 		this.panelDom.append(renderer.domElement);
 		renderer.domElement.style.position = 'absolute';
@@ -41,6 +51,7 @@ iTopoThumbnailManager.prototype = {
 	},
 
 	render : function () {
+	//console.log('rendering length:' + this.thumbnailItemScenes.length);
 
 	//var canvas = document.getElementById('c');
 	//canvas.style.transform = `translateY(${window.scrollY}px)`;
@@ -54,14 +65,15 @@ iTopoThumbnailManager.prototype = {
 		if(this.thumbnailItemScenes.length ===0 )
 			return;
 
-	//	this.updateCanvasSize();
+		this.updateCanvasSize();
+
 		var renderer = this.renderer;
 
 		renderer.setClearColor( 0xffffff );
 		renderer.setScissorTest( false );
 		renderer.clear();
 
-		renderer.setClearColor( 0xe0e0e0 );
+		renderer.setClearColor( 0x86c9c9 );
 		renderer.setScissorTest( true );
 
 		this.thumbnailItemScenes.forEach(function(scene) {
@@ -136,8 +148,8 @@ iTopoThumbnailManager.prototype = {
 
 		this.itemsDom.appendChild(elementListItem);
 
-		console.log(elementListItem.style.zIndex);
-		console.log('elementListItem: w = ' + elementListItem.offsetWidth + ',h=' + elementListItem.offsetHeight);
+//		console.log(elementListItem.style.zIndex);
+//		console.log('elementListItem: w = ' + elementListItem.offsetWidth + ',h=' + elementListItem.offsetHeight);
 
 		var camera = new THREE.PerspectiveCamera(61.8, 1.0, 1, 10);
 		camera.position.z = 2;
@@ -175,6 +187,37 @@ iTopoThumbnailManager.prototype = {
 				scope.addLights(scene);
 			}
 		});
+	},
+
+	clearScene: function ( scene ) {
+		var scope = this;
+		if (!scene) return;
+		// 删除掉所有的模型组内的mesh
+		scene.traverse(function(item) {
+			if (item instanceof THREE.Mesh) {
+				item.geometry.dispose(); // 删除几何体
+				if (Array.isArray(item.material))
+					item.material.length = 0;
+				else
+					item.material.dispose(); // 删除材质
+			}
+		});
+	},
+
+	dispose: function() {
+		var scope = this;
+		scope.deactive();
+		scope.thumbnailItemScenes.forEach( function (scene){
+			scope.clearScene(scene);
+			scene.children.length = 0;
+		});
+		scope.thumbnailItemScenes = [];
+		scope.renderer.dispose();
+		scope.renderer.forceContextLoss();
+		scope.renderer = null;
+
+		console.log('===disposed:iTopoThumbnailManager=========== ');
+		console.log(scope);
 	}
 }
 

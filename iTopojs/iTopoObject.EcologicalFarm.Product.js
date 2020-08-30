@@ -5,9 +5,9 @@ import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 
-function iTopoTaskChildEcologicalFarmProduct(editor) {
-	this.editor = editor;
+function iTopoObjectEcologicalFarmProduct(editor) {
 	var scope = this;
+	this.editor = editor;
 	scope.strings = editor.strings;
 
 	var container = new UIPanel();
@@ -16,14 +16,30 @@ function iTopoTaskChildEcologicalFarmProduct(editor) {
 	return scope;
 }
 
-iTopoTaskChildEcologicalFarmProduct.prototype = Object.create(UIElement.prototype);
-iTopoTaskChildEcologicalFarmProduct.prototype.constructor = iTopoTaskChildEcologicalFarmProduct;
+iTopoObjectEcologicalFarmProduct.prototype = Object.create(UIElement.prototype);
+iTopoObjectEcologicalFarmProduct.prototype.constructor = iTopoObjectEcologicalFarmProduct;
 
 
-iTopoTaskChildEcologicalFarmProduct.prototype = {
+iTopoObjectEcologicalFarmProduct.prototype = {
 
-	updateCanvasSize: function() {
-		this.thumbnailManager.updateCanvasSize();
+	activeTabPanel: function() {
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
+
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
 	},
 
 	getValue: function() {
@@ -57,10 +73,6 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 			});
 
 			scope.thumbnailManager.updateCanvasSize();
-
-			editor.signals.sceneRendering.add(function() {
-				scope.thumbnailManager.render();
-			});
 		}
 
 		scope.taskObject = taskObject;
@@ -196,6 +208,7 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 
 		scope.outlookManager = new iTopoThumbnailManager();
 		scope.outlookManager.create(dom);
+
 		for (var i = 0; i < products.length; ++i) {
 			var modelURL = "./iTopoObjects/" + baseUUID + "/Product3d/" + products[i].productUUID +"/" + "glTF-Binary/BoomBox.glb";
 			var productName = products[i].productName;
@@ -234,15 +247,16 @@ iTopoTaskChildEcologicalFarmProduct.prototype = {
 			});
 		}
 
-		scope.outlookManager.updateCanvasSize();
+		scope.outlookManager.active();
 
-		editor.signals.sceneRendering.add(function() {
-			scope.outlookManager.updateCanvasSize();
-			scope.outlookManager.render();
+		displayStand.closeBtn.dom.addEventListener('click', function(){
+			scope.outlookManager.deactive();
+			scope.outlookManager.dispose();
+			scope.outlookManager = null;
 		});
 	}
 }
 
 export {
-	iTopoTaskChildEcologicalFarmProduct
+	iTopoObjectEcologicalFarmProduct
 };

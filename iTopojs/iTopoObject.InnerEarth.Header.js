@@ -5,8 +5,8 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
 
-function iTopoTaskChildInnerEarthHeader(editor) {
-
+function iTopoObjectInnerEarthHeader(editor) {
+	var scope = this;
 	var strings = editor.strings;
 
 	var container = new UISpan();
@@ -18,6 +18,8 @@ function iTopoTaskChildInnerEarthHeader(editor) {
 		containerBaseModel.setPaddingTop('10px');
 		container.add(containerBaseModel);
 
+		scope.thumbnailManager = new iTopoThumbnailManager();
+		scope.thumbnailManager.create(containerBaseModel.dom);
 		const glftloader = new GLTFLoader();
 		glftloader.load('./iTopojs/baseModelFiles/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
 
@@ -35,15 +37,9 @@ function iTopoTaskChildInnerEarthHeader(editor) {
 
 			baseModel.scale.set(scale,scale,scale);
 
-			var thumbnailManager = new iTopoThumbnailManager();
-			thumbnailManager.create(containerBaseModel.dom);
-			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
-			thumbnailManager.updateCanvasSize();
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
+			scope.thumbnailManager.updateCanvasSize();
 
-			editor.signals.sceneRendering.add( function ( ) {
-				thumbnailManager.updateCanvasSize();
-				thumbnailManager.render();
-			} );
 		});
 	}
 
@@ -81,11 +77,32 @@ function iTopoTaskChildInnerEarthHeader(editor) {
 	return this;
 }
 
-iTopoTaskChildInnerEarthHeader.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildInnerEarthHeader.prototype.constructor = iTopoTaskChildInnerEarthHeader;
+iTopoObjectInnerEarthHeader.prototype = Object.create( UIElement.prototype );
+iTopoObjectInnerEarthHeader.prototype.constructor = iTopoObjectInnerEarthHeader;
 
-iTopoTaskChildInnerEarthHeader.prototype = {
-onClickThumbnail1: function() {// this对应一个item
+iTopoObjectInnerEarthHeader.prototype = {
+
+	activeTabPanel: function() {
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
+
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
+	},
+
+	onClickThumbnail1: function() {// this对应一个item
 		var scope = this;
 	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
 		var displayStand = new iTopoDisplayStand(title);
@@ -192,9 +209,7 @@ onClickThumbnail1: function() {// this对应一个item
 	},
 
 	getValue: function () {
-
 		return this.taskObject;
-
 	},
 
 	setValue: function (taskObject) {
@@ -206,8 +221,8 @@ onClickThumbnail1: function() {// this对应一个item
 		}
 
 		this.taskObject = taskObject;
-	},
+	}
 
 }
 
-export { iTopoTaskChildInnerEarthHeader };
+export { iTopoObjectInnerEarthHeader };

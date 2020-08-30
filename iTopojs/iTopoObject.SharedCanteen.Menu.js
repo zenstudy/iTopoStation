@@ -1,10 +1,9 @@
 import { UIElement,UIPanel, UIBreak, UIText } from './iTopoUI.js';
-import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
+import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
-import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 
-function iTopoTaskChildStarUserDiyCreations( editor ) {
+function iTopoObjectSharedCanteenMenu( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
@@ -18,13 +17,28 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoTaskChildStarUserDiyCreations.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildStarUserDiyCreations.prototype.constructor = iTopoTaskChildStarUserDiyCreations;
+iTopoObjectSharedCanteenMenu.prototype = Object.create( UIElement.prototype );
+iTopoObjectSharedCanteenMenu.prototype.constructor = iTopoObjectSharedCanteenMenu;
 
-iTopoTaskChildStarUserDiyCreations.prototype = {
+iTopoObjectSharedCanteenMenu.prototype = {
+	activeTabPanel: function() {
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
 
-	updateCanvasSize: function(){
-		this.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
 	},
 
 	getValue: function () {
@@ -36,10 +50,8 @@ iTopoTaskChildStarUserDiyCreations.prototype = {
 		if (editor.selected !== null) {
 
 			scope.thumbnailManager = new iTopoThumbnailManager();
-
 			scope.thumbnailManager.create(scope.container.dom);
-
-			var title = scope.strings.getKey( 'sidebar/StarUser/DiyCreations' );
+			var title = editor.strings.getKey( 'sidebar/SharedCanteen/menu' );
 
 			var material = new THREE.MeshStandardMaterial({
 						color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
@@ -49,23 +61,17 @@ iTopoTaskChildStarUserDiyCreations.prototype = {
 					});
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 
-
 			scope.thumbnailManager.createThumbnailItem( title + '品种3D区' , mesh, scope.onSiteProductClass3D);
 			scope.thumbnailManager.createThumbnailItem( title + '品种2D区' , mesh.clone(), scope.onSiteProductClass2D);
-
 			scope.thumbnailManager.updateCanvasSize();
-
-			editor.signals.sceneRendering.add( function ( ) {
-				scope.thumbnailManager.render();
-			} );
 		}
 
-		scope.taskObject = taskObject;
+		this.taskObject = taskObject;
 	},
 
 	onSiteProductClass3D: function() {// this对应一个item
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/StarUser/DiyCreations' ) ;
+	    var title = editor.strings.getKey( 'sidebar/SharedCanteen/menu' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -88,16 +94,18 @@ iTopoTaskChildStarUserDiyCreations.prototype = {
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 			scope.outlookManager.createThumbnailItem( title + (i+1), mesh, onSelect);
 		}
-		scope.outlookManager.updateCanvasSize();
+		scope.outlookManager.active();
 
-		editor.signals.sceneRendering.add( function ( ) {
-			scope.outlookManager.render();
-		} );
+		displayStand.closeBtn.dom.addEventListener('click', function(){
+			scope.outlookManager.deactive();
+			scope.outlookManager.dispose();
+			scope.outlookManager = null;
+		});
 	},
 
 	onSiteProductClass2D: function() {
 		var scope = this;
-		var title = editor.strings.getKey( 'sidebar/StarUser/DiyCreations' ) ;
+		var title = editor.strings.getKey( 'sidebar/SharedCanteen/menu' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -115,4 +123,4 @@ iTopoTaskChildStarUserDiyCreations.prototype = {
 	}
 }
 
-export { iTopoTaskChildStarUserDiyCreations };
+export { iTopoObjectSharedCanteenMenu };

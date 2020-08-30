@@ -5,7 +5,7 @@ import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 import { iTopoCSS3DBriefcase } from './iTopoFrame/iTopoCSS3DBriefcase.js';
 
-function iTopoTaskChildInnerEarthParts( editor ) {
+function iTopoObjectInnerEarthParts( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
@@ -19,13 +19,29 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoTaskChildInnerEarthParts.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildInnerEarthParts.prototype.constructor = iTopoTaskChildInnerEarthParts;
+iTopoObjectInnerEarthParts.prototype = Object.create( UIElement.prototype );
+iTopoObjectInnerEarthParts.prototype.constructor = iTopoObjectInnerEarthParts;
 
-iTopoTaskChildInnerEarthParts.prototype = {
+iTopoObjectInnerEarthParts.prototype = {
 
-	updateCanvasSize: function(){
-		this.thumbnailManager.updateCanvasSize();
+	activeTabPanel: function() {
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
+	
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+	
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+	
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
 	},
 
 	getValue: function () {
@@ -60,10 +76,6 @@ iTopoTaskChildInnerEarthParts.prototype = {
 			//scope.thumbnailManager.createThumbnailItem( title + '品种2D区' , mesh.clone(), scope.onSiteProductClass2D);
 
 			scope.thumbnailManager.updateCanvasSize();
-
-			editor.signals.sceneRendering.add( function ( ) {
-				scope.thumbnailManager.render();
-			} );
 		}
 
 		scope.taskObject = taskObject;
@@ -94,11 +106,13 @@ iTopoTaskChildInnerEarthParts.prototype = {
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 			scope.outlookManager.createThumbnailItem( title + (i+1), mesh, onSelect);
 		}
-		scope.outlookManager.updateCanvasSize();
-
-		editor.signals.sceneRendering.add( function ( ) {
-			scope.outlookManager.render();
-		} );
+		scope.outlookManager.active();
+		
+		displayStand.closeBtn.dom.addEventListener('click', function(){
+			scope.outlookManager.deactive();
+			scope.outlookManager.dispose();
+			scope.outlookManager = null;
+		});
 	},
 
 	onSiteProductClassCSS3D: function() {
@@ -118,8 +132,7 @@ iTopoTaskChildInnerEarthParts.prototype = {
 		displayStand.container.dom.addEventListener( 'resize', function () {
 		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
 		} );
-
 	}
 }
 
-export { iTopoTaskChildInnerEarthParts };
+export { iTopoObjectInnerEarthParts };

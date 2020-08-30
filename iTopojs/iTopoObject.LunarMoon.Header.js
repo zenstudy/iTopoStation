@@ -5,8 +5,8 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
 
-function iTopoTaskChildSkyCastleHeader(editor) {
-
+function iTopoObjectLunarMoonHeader(editor) {
+	var scope = this;
 	var strings = editor.strings;
 
 	var container = new UISpan();
@@ -18,6 +18,8 @@ function iTopoTaskChildSkyCastleHeader(editor) {
 		containerBaseModel.setPaddingTop('10px');
 		container.add(containerBaseModel);
 
+		scope.thumbnailManager = new iTopoThumbnailManager();
+		scope.thumbnailManager.create(containerBaseModel.dom);
 		const glftloader = new GLTFLoader();
 		glftloader.load('./iTopojs/baseModelFiles/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
 
@@ -35,15 +37,8 @@ function iTopoTaskChildSkyCastleHeader(editor) {
 
 			baseModel.scale.set(scale,scale,scale);
 
-			var thumbnailManager = new iTopoThumbnailManager();
-			thumbnailManager.create(containerBaseModel.dom);
-			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
-			thumbnailManager.updateCanvasSize();
-
-			editor.signals.sceneRendering.add( function ( ) {
-				thumbnailManager.updateCanvasSize();
-				thumbnailManager.render();
-			} );
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
+			scope.thumbnailManager.updateCanvasSize();
 		});
 	}
 
@@ -56,8 +51,8 @@ function iTopoTaskChildSkyCastleHeader(editor) {
 		// baseUUID
 		var geometryUUIDRow = new UIRow();
 		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(iTopoEarthModel.SkyCastle.castleUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/castleUUID')).setWidth('90px'));
+		this.geometryUUID.setValue(iTopoEarthModel.LunarMoon.lunarMoonUUID);
+		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/LunarMoon/Header/lunarMoonUUID')).setWidth('90px'));
 		geometryUUIDRow.add(this.geometryUUID);
 
 		containerParameter.add(geometryUUIDRow);
@@ -66,10 +61,10 @@ function iTopoTaskChildSkyCastleHeader(editor) {
 	{
 		// title
 		var titleRow = new UIRow();
-		titleRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/Title')).setWidth('90px'));
+		titleRow.add(new UIText(strings.getKey('sidebar/LunarMoon/Header/Title')).setWidth('90px'));
 
 		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
-		this.titleInput.setValue(iTopoEarthModel.SkyCastle.title);
+		this.titleInput.setValue(iTopoEarthModel.LunarMoon.title);
 		this.titleInput.onChange(function() {
 			//lightTask.title = this.getValue();
 		});
@@ -81,11 +76,32 @@ function iTopoTaskChildSkyCastleHeader(editor) {
 	return this;
 }
 
-iTopoTaskChildSkyCastleHeader.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildSkyCastleHeader.prototype.constructor = iTopoTaskChildSkyCastleHeader;
+iTopoObjectLunarMoonHeader.prototype = Object.create( UIElement.prototype );
+iTopoObjectLunarMoonHeader.prototype.constructor = iTopoObjectLunarMoonHeader;
 
-iTopoTaskChildSkyCastleHeader.prototype = {
-onClickThumbnail1: function() {// this对应一个item
+iTopoObjectLunarMoonHeader.prototype = {
+
+	activeTabPanel: function() {
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
+
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
+	},
+
+	onClickThumbnail1: function() {// this对应一个item
 		var scope = this;
 	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
 		var displayStand = new iTopoDisplayStand(title);
@@ -206,8 +222,7 @@ onClickThumbnail1: function() {// this对应一个item
 		}
 
 		this.taskObject = taskObject;
-	},
-
+	}
 }
 
-export { iTopoTaskChildSkyCastleHeader };
+export { iTopoObjectLunarMoonHeader };

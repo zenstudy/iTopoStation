@@ -5,7 +5,7 @@
 import * as THREE from '../../build/three.module.js';
 
 import { TransformControls } from '../../examples/jsm/controls/TransformControls.js';
-import { TrackballControls } from '../../examples/jsm/controls/TrackballControls.js';
+//import { TrackballControls } from '../../examples/jsm/controls/TrackballControls.js';
 
 import { UIPanel } from './iTopoUI.js';
 
@@ -705,7 +705,6 @@ function iTopoViewport( editor ) {
 	function animate() {
 
 		requestAnimationFrame( animate );
-		editor.signals.sceneRendering.dispatch();
 
 		console.log('needsUpdate = ' + needsUpdate);
 		if(needsUpdate === true) {

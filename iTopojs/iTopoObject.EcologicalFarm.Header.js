@@ -1,19 +1,23 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 import { UIElement, UISpan, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from './iTopoUI.js';
+//import { UIOutliner, UITexture } from '../js/libs/ui.three.js';
 import { iTopoEarthModel } from './iTopoEarthModel.js'
-import { DRACOLoader } from '../../examples/jsm/loaders/DRACOLoader.js';
-import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
+import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 
-function iTopoTaskChildSharedCanteenHeader(editor) {
-
+function iTopoObjectEcologicalFarmHeader(editor) {
+	var scope = this;
 	var strings = editor.strings;
 
 	var lightTask = {
 		baseUUID: THREE.MathUtils.generateUUID(),
 		taskType: "iTopoType/TaskObject/EcologicalFarm",
-		title: "湖北恩施宣恩县:松果家园",
+		title: "湖北恩施宣恩县:松果祖传家园",
 		city: "恩施",
 		address: "湖北恩施宣恩县",
 		longitude: 0,
@@ -30,12 +34,10 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		containerBaseModel.setPaddingTop('10px');
 		container.add(containerBaseModel);
 
-		var dracoLoader = new DRACOLoader();
-		dracoLoader.setDecoderPath( '../examples/js/libs/draco/gltf/' );
-
+		scope.thumbnailManager = new iTopoThumbnailManager();
+		scope.thumbnailManager.create(containerBaseModel.dom);
 		const glftloader = new GLTFLoader();
-		glftloader.setDRACOLoader( dracoLoader );
-		glftloader.load('./iTopojs/baseModelFiles/LittlestTokyo/LittlestTokyo.glb', (gltf) => {
+		glftloader.load('./iTopojs/baseModelFiles/mountain_landscape/scene.gltf', (gltf) => {
 
 			var baseModel = gltf.scene;
 			baseModel.traverse((child) => {
@@ -47,19 +49,12 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 			console.log(baseModel);
 
 			var box = new THREE.Box3().setFromObject(baseModel);
-			var scale =0.81 / Math.max(box.max.x,box.max.y, box.max.z );
+			var scale =0.618/ Math.max(box.max.x,box.max.y, box.max.z );
 
 			baseModel.scale.set(scale,scale,scale);
 
-			var thumbnailManager = new iTopoThumbnailManager();
-			thumbnailManager.create(containerBaseModel.dom);
-			thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/SharedCanteen/Header/outook' ), baseModel , this.onClickThumbnail);
-			thumbnailManager.updateCanvasSize();
-
-			editor.signals.sceneRendering.add( function ( ) {
-				thumbnailManager.updateCanvasSize();
-				thumbnailManager.render();
-			} );
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ), baseModel , this.onClickThumbnail);
+			scope.thumbnailManager.updateCanvasSize();
 		});
 	}
 
@@ -67,12 +62,13 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	containerParameter.setBorderTop('0');
 	containerParameter.setPaddingTop('310px');
 	container.add(containerParameter);
+
 	{
 		// baseUUID
 		var geometryUUIDRow = new UIRow();
 		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
 		this.geometryUUID.setValue(lightTask.baseUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/baseUUID')).setWidth('90px'));
+		geometryUUIDRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/baseUUID')).setWidth('90px'));
 		geometryUUIDRow.add(this.geometryUUID);
 
 		containerParameter.add(geometryUUIDRow);
@@ -85,7 +81,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		};
 
 		var taskTypeRow = new UIRow();
-		taskTypeRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/taskType')).setWidth('90px'));
+		taskTypeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/taskType')).setWidth('90px'));
 		this.taskTypeSelect = new UISelect().setWidth('150px');
 		this.taskTypeSelect.setOptions(options);
 		this.taskTypeSelect.setValue(strings.getKey(lightTask.taskType));
@@ -103,7 +99,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	{
 		// title
 		var titleRow = new UIRow();
-		titleRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/title')).setWidth('90px'));
+		titleRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/title')).setWidth('90px'));
 
 		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.titleInput.setValue(lightTask.title);
@@ -118,7 +114,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	{
 		// city
 		var cityRow = new UIRow();
-		cityRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/city')).setWidth('90px'));
+		cityRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/city')).setWidth('90px'));
 
 		this.cityInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.cityInput.setValue(lightTask.city);
@@ -133,7 +129,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	{
 		// address
 		var addressRow = new UIRow();
-		addressRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/address')).setWidth('90px'));
+		addressRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/address')).setWidth('90px'));
 
 		this.addressInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.addressInput.setValue(lightTask.address);
@@ -149,7 +145,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	{
 		var longitudeRow = new UIRow();
 
-		longitudeRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/longitude')).setWidth('90px'));
+		longitudeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/longitude')).setWidth('90px'));
 
 		this.longitudeValueUI = new UINumber(lightTask.longitude).setRange(2, Infinity);
 		this.longitudeValueUI.onChange(function() {
@@ -164,7 +160,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 	{
 		var latitudeRow = new UIRow();
 
-		latitudeRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/latitude')).setWidth('90px'));
+		latitudeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/latitude')).setWidth('90px'));
 
 		this.latitudeValueUI = new UINumber(lightTask.latitude).setRange(2, Infinity);
 		this.latitudeValueUI.onChange(function() {
@@ -178,7 +174,7 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 
 	{
 		var lightWishTitleRow = new UIRow();
-		lightWishTitleRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/lightWish')).setWidth('90px'));
+		lightWishTitleRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/lightWish')).setWidth('120px'));
 		containerParameter.add(lightWishTitleRow);
 
 		var lightWishTextAreaRow = new UIRow();
@@ -193,17 +189,38 @@ function iTopoTaskChildSharedCanteenHeader(editor) {
 		containerParameter.add(lightWishTextAreaRow);
 	}
 
+
+
 	return this;
 }
 
-iTopoTaskChildSharedCanteenHeader.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildSharedCanteenHeader.prototype.constructor = iTopoTaskChildSharedCanteenHeader;
+iTopoObjectEcologicalFarmHeader.prototype = Object.create( UIElement.prototype );
+iTopoObjectEcologicalFarmHeader.prototype.constructor = iTopoObjectEcologicalFarmHeader;
 
-iTopoTaskChildSharedCanteenHeader.prototype = {
-
-onClickThumbnail: function() {// this对应一个item
+iTopoObjectEcologicalFarmHeader.prototype = {
+	activeTabPanel: function() {
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/SharedCanteen/Header/outook' ) ;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
+
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
+	},
+
+	onClickThumbnail: function() {// this对应一个item
+		var scope = this;
+	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -291,4 +308,4 @@ onClickThumbnail: function() {// this对应一个item
 	}
 }
 
-export { iTopoTaskChildSharedCanteenHeader };
+export { iTopoObjectEcologicalFarmHeader };

@@ -5,7 +5,7 @@ import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 import { iTopoCSS3DBriefcase } from './iTopoFrame/iTopoCSS3DBriefcase.js';
 
-function iTopoTaskChildLunarMoonParts( editor ) {
+function iTopoObjectLunarMoonParts( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
@@ -19,13 +19,29 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoTaskChildLunarMoonParts.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildLunarMoonParts.prototype.constructor = iTopoTaskChildLunarMoonParts;
+iTopoObjectLunarMoonParts.prototype = Object.create( UIElement.prototype );
+iTopoObjectLunarMoonParts.prototype.constructor = iTopoObjectLunarMoonParts;
 
-iTopoTaskChildLunarMoonParts.prototype = {
+iTopoObjectLunarMoonParts.prototype = {
 
-	updateCanvasSize: function(){
-		this.thumbnailManager.updateCanvasSize();
+	activeTabPanel: function() {
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		if(scope.thumbnailManager === undefined) return;
+
+		scope.thumbnailManager.updateCanvasSize();
+		scope.thumbnailManager.active();
+	},
+
+	deactiveTabPanel: function(){
+		var scope = this;
+		if(scope.thumbnailManager === null) return;
+		scope.thumbnailManager.deactive();
+	},
+
+	dispose: function() {
+		this.thumbnailManager.dispose();
+		this.thumbnailManager = null;
 	},
 
 	getValue: function () {
@@ -60,10 +76,6 @@ iTopoTaskChildLunarMoonParts.prototype = {
 			//scope.thumbnailManager.createThumbnailItem( title + '品种2D区' , mesh.clone(), scope.onSiteProductClass2D);
 
 			scope.thumbnailManager.updateCanvasSize();
-
-			editor.signals.sceneRendering.add( function ( ) {
-				scope.thumbnailManager.render();
-			} );
 		}
 
 		scope.taskObject = taskObject;
@@ -122,4 +134,4 @@ iTopoTaskChildLunarMoonParts.prototype = {
 	}
 }
 
-export { iTopoTaskChildLunarMoonParts };
+export { iTopoObjectLunarMoonParts };

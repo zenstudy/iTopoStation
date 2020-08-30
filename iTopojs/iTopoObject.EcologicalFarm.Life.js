@@ -9,7 +9,7 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 
-function iTopoTaskChildStarUserLife( editor ) {
+function iTopoObjectEcologicalFarmLife( editor ) {
 	this.editor = editor;
 	var scope = this;
 	scope.strings = editor.strings;
@@ -25,13 +25,17 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoTaskChildStarUserLife.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildStarUserLife.prototype.constructor = iTopoTaskChildStarUserLife;
+iTopoObjectEcologicalFarmLife.prototype = Object.create( UIElement.prototype );
+iTopoObjectEcologicalFarmLife.prototype.constructor = iTopoObjectEcologicalFarmLife;
 
-iTopoTaskChildStarUserLife.prototype = {
+iTopoObjectEcologicalFarmLife.prototype = {
 
-	updateCanvasSize: function(){
+	activeTabPanel: function(){
 		//this.thumbnailManager.updateCanvasSize();
+	},
+
+	dispose: function() {
+
 	},
 
 	getValue: function () {
@@ -42,14 +46,14 @@ iTopoTaskChildStarUserLife.prototype = {
 		var scope = this;
 		if (editor.selected !== null) {
 
-			var title = editor.strings.getKey( 'sidebar/StarUser/life' ) ;
+			var title = editor.strings.getKey( 'sidebar/EcologicalFarm/life' ) ;
 			var productPanel = new iTopoArticleManager();
 			productPanel.createDisplayStand(scope.container.dom);
 
 			for(var i=0; i < 8; ++i)
 			{
 				var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
-				productPanel.addArticleItem(qrcodeURL , '共享食堂' + title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSiteProduct);
+				productPanel.addArticleItem(qrcodeURL , '农场' + title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSiteProduct);
 			}
 
 		}
@@ -59,7 +63,7 @@ iTopoTaskChildStarUserLife.prototype = {
 
 	onSiteProduct: function() {
 		var scope = this;
-		var title = editor.strings.getKey( 'sidebar/StarUser/life' ) ;
+		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/product' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -77,4 +81,4 @@ iTopoTaskChildStarUserLife.prototype = {
 	}
 }
 
-export { iTopoTaskChildStarUserLife };
+export { iTopoObjectEcologicalFarmLife };

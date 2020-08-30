@@ -30,6 +30,7 @@ function iTopoEditor() {
 		transformModeChanged: new Signal(),
 		snapChanged: new Signal(),
 		spaceChanged: new Signal(),
+
 		rendererChanged: new Signal(),
 		rendererUpdated: new Signal(),
 
@@ -38,7 +39,6 @@ function iTopoEditor() {
 		sceneFogChanged: new Signal(),
 		sceneFogSettingsChanged: new Signal(),
 		sceneGraphChanged: new Signal(),
-		sceneRendering: new Signal(),
 		sceneRendered: new Signal(),
 
 		cameraChanged: new Signal(),
@@ -310,7 +310,8 @@ iTopoEditor.prototype = {
 		this.signals.sceneGraphChanged.dispatch();
 
 	},
-addMaterial: function ( material ) {
+
+	addMaterial: function ( material ) {
 
 		if ( Array.isArray( material ) ) {
 

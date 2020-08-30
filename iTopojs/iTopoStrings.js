@@ -13,13 +13,14 @@ function iTopoStrings( config ) {
 			'iTopoType/TaskObject/Star':'星体',
 			'iTopoType/TaskObject/EcologicalFarm':'生态基地',
 			'iTopoType/TaskObject/SharedCanteen':'共享食堂',
-			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球服务中心',
-			'iTopoType/TaskObject/iTopoInnerEarth':'地心世界',
+			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球事务大厅',
+			'iTopoType/TaskObject/iTopoInnerEarth':'地心门户',
 			'iTopoType/TaskObject/iTopoLunarMoon': '月球',
 
 			'menubar/iTopoEarthHub': '共享地球',
-			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球服务中心',
-			'menubar/iTopoEarthHub/iTopoInnerEarth' : '地心世界',
+			'menubar/iTopoEarthHub/iTopoBluePrint' : '共享地球蓝图',
+			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球事务大厅',
+			'menubar/iTopoEarthHub/iTopoInnerEarth' : '地心门户',
 			'menubar/iTopoEarthHub/iTopoLunarMoon' : '月球',
 
 			'menubar/EcologicalFarm':'生态基地',
@@ -51,10 +52,11 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/triangles' : '三角面片数',
 			'iTopoViewport/info/frametime' : '帧数',
 
-			'sidebar/skyCastle/Header' : '服务中心',
-			'sidebar/skyCastle/Header/Outlook' : '服务大厅',
+			'sidebar/skyCastle/Header' : '事务大厅',
+			'sidebar/skyCastle/Header/Outlook' : '事务大厅概貌',
+			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务卡',
 			'sidebar/SkyCastle/Header/Title': '名称',
-			'sidebar/SkyCastle/Header/castleUUID': '服务中心UUID',
+			'sidebar/SkyCastle/Header/castleUUID': '事务大厅UUID',
 			'sidebar/skyCastle/iTopoItems' : '详情',
 			'sidebar/skyCastle/iTopoItems/workplace' : '工作空间',
 
@@ -77,7 +79,7 @@ function iTopoStrings( config ) {
 			'sidebar/LunarMoon/Life':'生活',
 
 
-			'sidebar/InnerEarth/Header':'地心世界',
+			'sidebar/InnerEarth/Header':'地心门户',
 			'sidebar/InnerEarth/Header/innerEarthUUID':'地心UUID',
 			'sidebar/InnerEarth/Header/Title':'名称',
 

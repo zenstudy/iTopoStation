@@ -9,7 +9,7 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 
-function iTopoTaskChildInnerEarthLife( editor ) {
+function iTopoObjectInnerEarthLife( editor ) {
 	this.editor = editor;
 	var scope = this;
 	scope.strings = editor.strings;
@@ -21,15 +21,19 @@ function iTopoTaskChildInnerEarthLife( editor ) {
 	return scope;
 }
 
-iTopoTaskChildInnerEarthLife.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildInnerEarthLife.prototype.constructor = iTopoTaskChildInnerEarthLife;
+iTopoObjectInnerEarthLife.prototype = Object.create( UIElement.prototype );
+iTopoObjectInnerEarthLife.prototype.constructor = iTopoObjectInnerEarthLife;
 
-iTopoTaskChildInnerEarthLife.prototype = {
+iTopoObjectInnerEarthLife.prototype = {
 
-	updateCanvasSize: function(){
+	activeTabPanel: function(){
 		//this.thumbnailManager.updateCanvasSize();
 	},
-
+	
+	dispose: function() {
+		//this.thumbnailManager.dispose();
+	},
+	
 	getValue: function () {
 		return this.taskObject;
 	},
@@ -67,6 +71,7 @@ iTopoTaskChildInnerEarthLife.prototype = {
 
 			displayStand.container.dom.appendChild( iframe );
 		}
+
 }
 
-export { iTopoTaskChildInnerEarthLife };
+export { iTopoObjectInnerEarthLife };

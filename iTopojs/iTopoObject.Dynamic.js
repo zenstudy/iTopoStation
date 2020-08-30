@@ -6,7 +6,7 @@
 import { UIElement,UIPanel, UIBreak, UIText } from './iTopoUI.js';
 import { UIBoolean, UIOutliner } from './iTopoUI.three.js';
 
-function iTopoTaskChildDynamic( editor ) {
+function iTopoObjectDynamic( editor ) {
 
 	var strings = editor.strings;
 
@@ -101,10 +101,10 @@ function iTopoTaskChildDynamic( editor ) {
 	return this;
 }
 
-iTopoTaskChildDynamic.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildDynamic.prototype.constructor = iTopoTaskChildDynamic;
+iTopoObjectDynamic.prototype = Object.create( UIElement.prototype );
+iTopoObjectDynamic.prototype.constructor = iTopoObjectDynamic;
 
-iTopoTaskChildDynamic.prototype = {
+iTopoObjectDynamic.prototype = {
 
 	getValue: function () {
 
@@ -129,6 +129,10 @@ iTopoTaskChildDynamic.prototype = {
 		this.taskObject = taskObject;
 	},
 
+	dispose: function() {
+		//this.thumbnailManager.dispose();
+	}
+
 }
 
-export { iTopoTaskChildDynamic };
+export { iTopoObjectDynamic };

@@ -39,16 +39,17 @@ function iTopoDisplayStand( dispalyContext ) {
 
 	} )();
 
-	var close = new UIElement( buttonSVG );
-	close.setPosition( 'absolute' );
-	close.setTop( '3px' );
-	close.setRight( '1px' );
-	close.setCursor( 'pointer' );
-	close.onClick( function () {
+	var closeBtn = new UIElement( buttonSVG );
+	closeBtn.setPosition( 'absolute' );
+	closeBtn.setTop( '3px' );
+	closeBtn.setRight( '1px' );
+	closeBtn.setCursor( 'pointer' );
+	closeBtn.dom.addEventListener( 'click', function () {
 		//container.setDisplay( 'none' );
-		document.body.removeChild(container.dom);
+		document.body.removeChild(scope.container.dom);
 	} );
-	header.add( close );
+	header.add( closeBtn );
+	this.closeBtn = closeBtn;
 	this.header = header;
 
 	return scope;
@@ -57,9 +58,11 @@ function iTopoDisplayStand( dispalyContext ) {
 iTopoDisplayStand.prototype.constructor = iTopoDisplayStand;
 
 iTopoDisplayStand.prototype = {
+
 	titleHeight: function() {
 		return this.header.dom.offsetHeight;
 	},
+
 	contexHeight: function() {
 		var height = this.container.dom.offsetHeight - this.header.dom.offsetHeight;
 		console.log(height);

@@ -8,7 +8,7 @@ import { AddScriptCommand } from '../js/commands/AddScriptCommand.js';
 import { SetScriptValueCommand } from '../js/commands/SetScriptValueCommand.js';
 import { RemoveScriptCommand } from '../js/commands/RemoveScriptCommand.js';
 
-function iTopoTaskChildContribute( editor ) {
+function iTopoObjectContribute( editor ) {
 
 	var strings = editor.strings;
 
@@ -133,10 +133,10 @@ function iTopoTaskChildContribute( editor ) {
 
 }
 
-iTopoTaskChildContribute.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildContribute.prototype.constructor = iTopoTaskChildContribute;
+iTopoObjectContribute.prototype = Object.create( UIElement.prototype );
+iTopoObjectContribute.prototype.constructor = iTopoObjectContribute;
 
-iTopoTaskChildContribute.prototype = {
+iTopoObjectContribute.prototype = {
 
 	getValue: function () {
 
@@ -162,6 +162,9 @@ iTopoTaskChildContribute.prototype = {
 		this.taskObject = taskObject;
 	},
 
+	dispose: function() {
+	//	this.thumbnailManager.dispose();
+	}
 }
 
-export { iTopoTaskChildContribute };
+export { iTopoObjectContribute };

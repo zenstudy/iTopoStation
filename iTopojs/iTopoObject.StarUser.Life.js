@@ -9,7 +9,7 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 
-function iTopoTaskChildSharedCanteenLife( editor ) {
+function iTopoObjectStarUserLife( editor ) {
 	this.editor = editor;
 	var scope = this;
 	scope.strings = editor.strings;
@@ -25,15 +25,19 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoTaskChildSharedCanteenLife.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildSharedCanteenLife.prototype.constructor = iTopoTaskChildSharedCanteenLife;
+iTopoObjectStarUserLife.prototype = Object.create( UIElement.prototype );
+iTopoObjectStarUserLife.prototype.constructor = iTopoObjectStarUserLife;
 
-iTopoTaskChildSharedCanteenLife.prototype = {
+iTopoObjectStarUserLife.prototype = {
 
-	updateCanvasSize: function(){
+	activeTabPanel: function(){
 		//this.thumbnailManager.updateCanvasSize();
 	},
-
+	
+	dispose: function() {
+	//	this.thumbnailManager.dispose();
+	},
+	
 	getValue: function () {
 		return this.taskObject;
 	},
@@ -42,7 +46,7 @@ iTopoTaskChildSharedCanteenLife.prototype = {
 		var scope = this;
 		if (editor.selected !== null) {
 
-			var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
+			var title = editor.strings.getKey( 'sidebar/StarUser/life' ) ;
 			var productPanel = new iTopoArticleManager();
 			productPanel.createDisplayStand(scope.container.dom);
 
@@ -59,7 +63,7 @@ iTopoTaskChildSharedCanteenLife.prototype = {
 
 	onSiteProduct: function() {
 		var scope = this;
-		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
+		var title = editor.strings.getKey( 'sidebar/StarUser/life' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -77,4 +81,4 @@ iTopoTaskChildSharedCanteenLife.prototype = {
 	}
 }
 
-export { iTopoTaskChildSharedCanteenLife };
+export { iTopoObjectStarUserLife };

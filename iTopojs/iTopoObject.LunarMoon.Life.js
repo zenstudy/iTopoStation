@@ -9,7 +9,7 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from './iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from './iTopoFrame/iTopoArticleManager.js';
 
-function iTopoTaskChildSkyCastleLife( editor ) {
+function iTopoObjectLunarMoonLife( editor ) {
 	this.editor = editor;
 	var scope = this;
 	scope.strings = editor.strings;
@@ -21,13 +21,17 @@ function iTopoTaskChildSkyCastleLife( editor ) {
 	return scope;
 }
 
-iTopoTaskChildSkyCastleLife.prototype = Object.create( UIElement.prototype );
-iTopoTaskChildSkyCastleLife.prototype.constructor = iTopoTaskChildSkyCastleLife;
+iTopoObjectLunarMoonLife.prototype = Object.create( UIElement.prototype );
+iTopoObjectLunarMoonLife.prototype.constructor = iTopoObjectLunarMoonLife;
 
-iTopoTaskChildSkyCastleLife.prototype = {
+iTopoObjectLunarMoonLife.prototype = {
 
-	updateCanvasSize: function(){
+	activeTabPanel: function(){
 		//this.thumbnailManager.updateCanvasSize();
+	},
+
+	dispose: function() {
+
 	},
 
 	getValue: function () {
@@ -66,7 +70,7 @@ iTopoTaskChildSkyCastleLife.prototype = {
 			iframe.style.height = '100%';
 
 			displayStand.container.dom.appendChild( iframe );
-		}
+	}
 }
 
-export { iTopoTaskChildSkyCastleLife };
+export { iTopoObjectLunarMoonLife };

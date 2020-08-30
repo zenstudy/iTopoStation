@@ -5,7 +5,7 @@ class iTopoInnerEarth {
   constructor() {
     //this.resources = new Set();
 	this.innerEarthUUID = 'CDFA1BCB-2003-4E20-851F-2C0919825025';
-	this.title = '地心世界入口';
+	this.title = '地心门户';
 	this.lng = 0;
 	this.lat = -90;
 	this.size = 100;

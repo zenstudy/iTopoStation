@@ -5,7 +5,7 @@ class iTopoLunarMoon {
   constructor() {
     //this.resources = new Set();
 	this.lunarMoonUUID = '8C38386A-886D-4B8B-92B8-05E8CB6BCB85';
-	this.title = '月亮船';
+	this.title = '月球';
 	this.lng = 0;
 	this.lat = 0;
 	this.size = 100;
