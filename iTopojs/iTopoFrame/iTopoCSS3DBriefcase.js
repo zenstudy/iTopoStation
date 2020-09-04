@@ -6,14 +6,17 @@ import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
 
 var iTopoCSS3DBriefcase = {
 
-	Explore: function () {
-
+	Explore: function (displayStand) {
+		var scope = this;
 		this.objects = [];
 		this.targets = { table: [], sphere: [], helix: [], grid: [] };
+	//	var exploreContainerDom = parentContainerDom;
+	//	console.log(parentContainerDom);
 
 		var renderer = new CSS3DRenderer();
-		//var renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true } );
-		// renderer.setPixelRatio( window.devicePixelRatio );
+		var glRenderer = new THREE.WebGLRenderer( { antialias: true } );
+		glRenderer.setPixelRatio( window.devicePixelRatio );
+		glRenderer.setClearColor( '#86c9c9' );
 		// //renderer.outputEncoding = THREE.sRGBEncoding;
 
 		// var project = json.project;
@@ -25,27 +28,31 @@ var iTopoCSS3DBriefcase = {
 		// if ( project.physicallyCorrectLights !== undefined ) renderer.physicallyCorrectLights = project.physicallyCorrectLights;
 
 		var requestAnimate = true;
-		var camera, scene, controls;
+		var camera, scene, glScene, controls, glControls;
 		var vrButton = VRButton.createButton( renderer );
 		var events = {};
+		var onDownPosition = new THREE.Vector2();
+		var onUpPosition = new THREE.Vector2();
 
 		var dom = document.createElement( 'div' );
-		dom.style.background = '#86c9c9';
+		//dom.style.background = '#86c9c9';
+		//dom.style.position = 'absolate';
+
+		//glRenderer.domElement.style.top = '0px';
+		dom.appendChild( glRenderer.domElement );
+		glRenderer.domElement.id = 'taskView';
+		// renderer.domElement.style.position = 'absolate';
 		dom.appendChild( renderer.domElement );
-		this.dom = dom;
+
+		scope.dom = dom;
 
 		this.width = 500;
 		this.height = 500;
 
-		this.show3D = function ( ) {
-
-			var scene = new THREE.Scene();
-			this.setScene(scene);
-
-			this.createCSS3DObjects();
-			this.createCSS3DMenu();
-
-			this.transformWithOutAnimate( this.targets.sphere, 2000 );
+		this.initialize = function ( ) {
+			scene = new THREE.Scene();
+			//this.setScene(scene);
+			glScene = new THREE.Scene();
 
 			scene.add(new THREE.AmbientLight(0x0c0c0c));
 
@@ -60,7 +67,7 @@ var iTopoCSS3DBriefcase = {
 
 			var camera = new THREE.PerspectiveCamera(75, renderer.domElement.innerWidth/renderer.domElement.innerHeight, 1, 10000);
 			camera.name = 'Camera';
-			camera.position.set( 0, 0, 3000 );
+			camera.position.set( 0, 0, 2000 );
 			camera.lookAt(0,0,0);
 			this.setCamera(camera);
 
@@ -81,10 +88,17 @@ var iTopoCSS3DBriefcase = {
 			//controls.dynamicDampingFactor = 0.2;// 阻尼系数 越小 则滑动越大
 
 			controls = new OrbitControls(camera, renderer.domElement);
-			controls.minDistance = 500;
+			controls.minDistance = 10;
 			controls.maxDistance = 6000;
 			controls.enablePan = true;
 			controls.enableZoom = true;
+
+
+			glControls = new OrbitControls(camera, glRenderer.domElement);
+			glControls.minDistance = 10;
+			glControls.maxDistance = 6000;
+			glControls.enablePan = true;
+			glControls.enableZoom = true;
 
 			var axes = new THREE.AxesHelper(2.72);
 			scene.add(axes);
@@ -107,8 +121,14 @@ var iTopoCSS3DBriefcase = {
 			dispatch( events.init, arguments );
 		};
 
+		this.show3D = function ( ) {
+			this.generateTaskLayouts();
+			this.createCSS3DMenu();
+			this.transformWithOutAnimate( this.targets.sphere, 2000 );
+		};
+
 		this.transformWithOutAnimate = function( targets ) {
-			console.log('transformWithOutAnimate');
+
 			for ( var i = 0; i < this.objects.length; i ++ ) {
 
 				var object = this.objects[ i ];
@@ -117,9 +137,31 @@ var iTopoCSS3DBriefcase = {
 				object.position.copy(target.position);
 				object.rotation.copy(target.rotation);
 			}
+
+			glScene.children.length = 0;
+			this.objects.forEach(function(object){
+
+				let geometry = new THREE.PlaneGeometry(120,160);
+
+				let material = new THREE.MeshBasicMaterial({
+					color:0x00ff00,
+					side: THREE.DoubleSide,
+					opacity: 0.01,
+					blending: THREE.AdditiveBlending,
+					transparent: true,
+					depthTest: false
+				});
+
+
+				let box = new THREE.Mesh(geometry,material);
+				box.position.copy(object.position);
+				box.rotation.copy(object.rotation);
+				box.userData = object.userData;
+				glScene.add(box);
+			});
 		};
 
-		this.transform = function( targets, duration ) {
+		this.transformWithAnimate = function( targets, duration ) {
 
 			TWEEN.removeAll();
 
@@ -156,197 +198,72 @@ var iTopoCSS3DBriefcase = {
 			var tableButton = document.createElement( 'input' );
 			tableButton.type="button";
 			tableButton.value = 'Table';
-			tableButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.table ); } );
+			tableButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.table,2000 ); } );
 			css3dMenu.appendChild( tableButton );
 
 			var sphereButton = document.createElement( 'input' );
 			sphereButton.type="button";
 			sphereButton.value = 'Sphere';
-			sphereButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.sphere ); } );
+			sphereButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.sphere,2000 ); } );
 			css3dMenu.appendChild( sphereButton );
 
 			var helixButton = document.createElement( 'input' );
 			helixButton.type="button";
 			helixButton.value = 'Helix';
-			helixButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.helix ); } );
+			helixButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.helix,2000 ); } );
 			css3dMenu.appendChild( helixButton );
 
 			var gridButton = document.createElement( 'input' );
 			gridButton.type="button";
 			gridButton.value = 'Grid';
-			gridButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.grid ); } );
+			gridButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.grid,2000 ); } );
 			css3dMenu.appendChild( gridButton );
 
 			scope.dom.appendChild(css3dMenu);
 		};
 
-		this.createCSS3DObjects = function(){
-
-			var table = [
-				"H", "Hydrogen", "1.00794", 1, 1,
-				"He", "Helium", "4.002602", 18, 1,
-				"Li", "Lithium", "6.941", 1, 2,
-				"Be", "Beryllium", "9.012182", 2, 2,
-				"B", "Boron", "10.811", 13, 2,
-				"C", "Carbon", "12.0107", 14, 2,
-				"N", "Nitrogen", "14.0067", 15, 2,
-				"O", "Oxygen", "15.9994", 16, 2,
-				"F", "Fluorine", "18.9984032", 17, 2,
-				"Ne", "Neon", "20.1797", 18, 2,
-				"Na", "Sodium", "22.98976...", 1, 3,
-				"Mg", "Magnesium", "24.305", 2, 3,
-				"Al", "Aluminium", "26.9815386", 13, 3,
-				"Si", "Silicon", "28.0855", 14, 3,
-				"P", "Phosphorus", "30.973762", 15, 3,
-				"S", "Sulfur", "32.065", 16, 3,
-				"Cl", "Chlorine", "35.453", 17, 3,
-				"Ar", "Argon", "39.948", 18, 3,
-				"K", "Potassium", "39.948", 1, 4,
-				"Ca", "Calcium", "40.078", 2, 4,
-				"Sc", "Scandium", "44.955912", 3, 4,
-				"Ti", "Titanium", "47.867", 4, 4,
-				"V", "Vanadium", "50.9415", 5, 4,
-				"Cr", "Chromium", "51.9961", 6, 4,
-				"Mn", "Manganese", "54.938045", 7, 4,
-				"Fe", "Iron", "55.845", 8, 4,
-				"Co", "Cobalt", "58.933195", 9, 4,
-				"Ni", "Nickel", "58.6934", 10, 4,
-				"Cu", "Copper", "63.546", 11, 4,
-				"Zn", "Zinc", "65.38", 12, 4,
-				"Ga", "Gallium", "69.723", 13, 4,
-				"Ge", "Germanium", "72.63", 14, 4,
-				"As", "Arsenic", "74.9216", 15, 4,
-				"Se", "Selenium", "78.96", 16, 4,
-				"Br", "Bromine", "79.904", 17, 4,
-				"Kr", "Krypton", "83.798", 18, 4,
-				"Rb", "Rubidium", "85.4678", 1, 5,
-				"Sr", "Strontium", "87.62", 2, 5,
-				"Y", "Yttrium", "88.90585", 3, 5,
-				"Zr", "Zirconium", "91.224", 4, 5,
-				"Nb", "Niobium", "92.90628", 5, 5,
-				"Mo", "Molybdenum", "95.96", 6, 5,
-				"Tc", "Technetium", "(98)", 7, 5,
-				"Ru", "Ruthenium", "101.07", 8, 5,
-				"Rh", "Rhodium", "102.9055", 9, 5,
-				"Pd", "Palladium", "106.42", 10, 5,
-				"Ag", "Silver", "107.8682", 11, 5,
-				"Cd", "Cadmium", "112.411", 12, 5,
-				"In", "Indium", "114.818", 13, 5,
-				"Sn", "Tin", "118.71", 14, 5,
-				"Sb", "Antimony", "121.76", 15, 5,
-				"Te", "Tellurium", "127.6", 16, 5,
-				"I", "Iodine", "126.90447", 17, 5,
-				"Xe", "Xenon", "131.293", 18, 5,
-				"Cs", "Caesium", "132.9054", 1, 6,
-				"Ba", "Barium", "132.9054", 2, 6,
-				"La", "Lanthanum", "138.90547", 4, 9,
-				"Ce", "Cerium", "140.116", 5, 9,
-				"Pr", "Praseodymium", "140.90765", 6, 9,
-				"Nd", "Neodymium", "144.242", 7, 9,
-				"Pm", "Promethium", "(145)", 8, 9,
-				"Sm", "Samarium", "150.36", 9, 9,
-				"Eu", "Europium", "151.964", 10, 9,
-				"Gd", "Gadolinium", "157.25", 11, 9,
-				"Tb", "Terbium", "158.92535", 12, 9,
-				"Dy", "Dysprosium", "162.5", 13, 9,
-				"Ho", "Holmium", "164.93032", 14, 9,
-				"Er", "Erbium", "167.259", 15, 9,
-				"Tm", "Thulium", "168.93421", 16, 9,
-				"Yb", "Ytterbium", "173.054", 17, 9,
-				"Lu", "Lutetium", "174.9668", 18, 9,
-				"Hf", "Hafnium", "178.49", 4, 6,
-				"Ta", "Tantalum", "180.94788", 5, 6,
-				"W", "Tungsten", "183.84", 6, 6,
-				"Re", "Rhenium", "186.207", 7, 6,
-				"Os", "Osmium", "190.23", 8, 6,
-				"Ir", "Iridium", "192.217", 9, 6,
-				"Pt", "Platinum", "195.084", 10, 6,
-				"Au", "Gold", "196.966569", 11, 6,
-				"Hg", "Mercury", "200.59", 12, 6,
-				"Tl", "Thallium", "204.3833", 13, 6,
-				"Pb", "Lead", "207.2", 14, 6,
-				"Bi", "Bismuth", "208.9804", 15, 6,
-				"Po", "Polonium", "(209)", 16, 6,
-				"At", "Astatine", "(210)", 17, 6,
-				"Rn", "Radon", "(222)", 18, 6,
-				"Fr", "Francium", "(223)", 1, 7,
-				"Ra", "Radium", "(226)", 2, 7,
-				"Ac", "Actinium", "(227)", 4, 10,
-				"Th", "Thorium", "232.03806", 5, 10,
-				"Pa", "Protactinium", "231.0588", 6, 10,
-				"U", "Uranium", "238.02891", 7, 10,
-				"Np", "Neptunium", "(237)", 8, 10,
-				"Pu", "Plutonium", "(244)", 9, 10,
-				"Am", "Americium", "(243)", 10, 10,
-				"Cm", "Curium", "(247)", 11, 10,
-				"Bk", "Berkelium", "(247)", 12, 10,
-				"Cf", "Californium", "(251)", 13, 10,
-				"Es", "Einstenium", "(252)", 14, 10,
-				"Fm", "Fermium", "(257)", 15, 10,
-				"Md", "Mendelevium", "(258)", 16, 10,
-				"No", "Nobelium", "(259)", 17, 10,
-				"Lr", "Lawrencium", "(262)", 18, 10,
-				"Rf", "Rutherfordium", "(267)", 4, 7,
-				"Db", "Dubnium", "(268)", 5, 7,
-				"Sg", "Seaborgium", "(271)", 6, 7,
-				"Bh", "Bohrium", "(272)", 7, 7,
-				"Hs", "Hassium", "(270)", 8, 7,
-				"Mt", "Meitnerium", "(276)", 9, 7,
-				"Ds", "Darmstadium", "(281)", 10, 7,
-				"Rg", "Roentgenium", "(280)", 11, 7,
-				"Cn", "Copernicium", "(285)", 12, 7,
-				"Nh", "Nihonium", "(286)", 13, 7,
-				"Fl", "Flerovium", "(289)", 14, 7,
-				"Mc", "Moscovium", "(290)", 15, 7,
-				"Lv", "Livermorium", "(293)", 16, 7,
-				"Ts", "Tennessine", "(294)", 17, 7,
-				"Og", "Oganesson", "(294)", 18, 7
-			];
-
-			// table
-			for ( var i = 0; i < table.length; i += 5 ) {
-
-				var element = document.createElement( 'div' );
-				element.className = 'CSS3DElement';
-				element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
-				element.addEventListener('click', function(){alert('clicked');});
-
-				var number = document.createElement( 'div' );
-				number.className = 'number';
-				number.textContent = ( i / 5 ) + 1;
-				element.appendChild( number );
-
-				var symbol = document.createElement( 'div' );
-				symbol.className = 'symbol';
-				symbol.textContent = table[ i ];
-				element.appendChild( symbol );
-
-				var details = document.createElement( 'div' );
-				details.className = 'details';
-				details.innerHTML = table[ i + 1 ] + '<br>' + table[ i + 2 ];
-				element.appendChild( details );
-
-				var object = new CSS3DObject( element );
-				object.position.x = Math.random() * 4000 - 2000;
-				object.position.y = Math.random() * 4000 - 2000;
-				object.position.z = Math.random() * 4000 - 2000;
-				scene.add( object );
-
-				this.objects.push( object );
-
-				//
-
-				var object = new THREE.Object3D();
-				object.position.x = ( table[ i + 3 ] * 140 ) - 1330;
-				object.position.y = - ( table[ i + 4 ] * 180 ) + 990;
-
-				this.targets.table.push( object );
-			}
-
+		this.generateTaskLayouts = function(){
 			this.createSphereFormation();
 			this.createHelixFormation();
 			this.createGridFormation();
+		};
 
+		this.createTaskCardItem = function (taskObject){
+
+			var element = document.createElement( 'div' );
+			element.className = 'CSS3DElement';
+			element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+
+			var number = document.createElement( 'div' );
+			number.className = 'number';
+			number.textContent = taskObject.taskStatus;
+			element.appendChild( number );
+
+			var symbol = document.createElement( 'div' );
+			symbol.className = 'symbol';
+			symbol.textContent = taskObject.taskDetail;
+			element.appendChild( symbol );
+
+			var details = document.createElement( 'div' );
+			details.className = 'details';
+			details.innerHTML =  taskObject.taskCreateBy;
+			element.appendChild( details );
+
+			var object = new CSS3DObject( element );
+			object.position.x = Math.random() * 4000 - 2000;
+			object.position.y = Math.random() * 4000 - 2000;
+			object.position.z = Math.random() * 4000 - 2000;
+			object.userData = { TaskType : symbol.textContent, TaskUUID: details.innerHTML };
+			scene.add( object );
+
+			this.objects.push( object );
+			//
+			var columnCount = 10;
+			var object = new THREE.Object3D();
+			object.position.x = ( (this.objects.length % columnCount) * 140 ) - 1330;
+			object.position.y = - ( parseInt( this.objects.length / columnCount) * 180 ) + 990;
+
+			this.targets.table.push( object );
 		};
 
 		this.createSphereFormation = function(){
@@ -424,7 +341,6 @@ var iTopoCSS3DBriefcase = {
 		}
 
 		this.setSize = function ( width, height ) {
-
 			this.width = width;
 			this.height = height;
 
@@ -435,38 +351,37 @@ var iTopoCSS3DBriefcase = {
 
 			if ( renderer ) {
 				renderer.setSize( width, height );
+				glRenderer.setSize( width, height );
 			}
-
 		};
 
 		function dispatch( array, event ) {
-
 			for ( var i = 0, l = array.length; i < l; i ++ ) {
 				array[ i ]( event );
 			}
-
 		}
 
 		var time, prevTime;
 
 		function animate() {
-
 			time = performance.now();
-
 			try {
 				dispatch( events.update, { time: time, delta: time - prevTime } );
 			} catch ( e ) {
 				console.error( ( e.message || e ), ( e.stack || "" ) );
 			}
-			console.log('animate..........');
+
+	//		console.log('iTopoCSS3DBriefcase animate..........');
 
 			if(requestAnimate !== true)
 				return;
 
 			controls.update();
-	//		TWEEN.update();
+			glControls.update();
+			//TWEEN.update();
 
 			renderer.render( scene, camera );
+			glRenderer.render( glScene, camera );
 
 			prevTime = time;
 
@@ -511,7 +426,7 @@ var iTopoCSS3DBriefcase = {
 		};
 
 		this.dispose = function () {
-			console.log(renderer);
+			//console.log(renderer);
 			//renderer.dispose();
 			requestAnimate = false;
 			renderer = null;
@@ -520,6 +435,39 @@ var iTopoCSS3DBriefcase = {
 		};
 
 		//
+		function getMousePosition( dom, x, y ) {
+			var rect = dom.getBoundingClientRect();
+			return [ ( x - rect.left ) / rect.width, ( y - rect.top ) / rect.height ];
+		}
+
+		var raycaster = new THREE.Raycaster();
+		var mouse = new THREE.Vector2();
+
+		function getIntersects( point, objects ) {
+
+			mouse.set( ( point.x * 2 ) - 1, - ( point.y * 2 ) + 1 );
+			raycaster.setFromCamera( mouse, camera );
+			var interObjs = raycaster.intersectObjects( glScene.children );
+
+			return interObjs;
+		}
+
+		function handleClick() {
+			if( onUpPosition.x > 1.0 || onUpPosition.y > 1.0)
+				return;
+
+			if ( onDownPosition.distanceTo( onUpPosition ) === 0 ) {
+				var intersects = getIntersects( onUpPosition, scope.objects /*scope.targets.sphere*/ );
+				if ( intersects.length > 0 ) {
+					var object = intersects[ 0 ].object;
+					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
+					editor.signals.taskCardSelected.dispatch(object);
+				} else {
+					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					editor.signals.taskCardSelected.dispatch(null);
+				}
+			}
+		}
 
 		function onDocumentKeyDown( event ) {
 			dispatch( events.keydown, event );
@@ -530,11 +478,18 @@ var iTopoCSS3DBriefcase = {
 		}
 
 		function onDocumentMouseDown( event ) {
+			var array = getMousePosition( glRenderer.domElement, event.clientX, event.clientY );
+			onDownPosition.fromArray( array );
 
 			dispatch( events.mousedown, event );
 		}
 
 		function onDocumentMouseUp( event ) {
+			var array = getMousePosition( glRenderer.domElement, event.clientX, event.clientY );
+			onUpPosition.fromArray( array );
+
+			handleClick();
+			//document.removeEventListener( 'mouseup', onMouseUp, false );
 			dispatch( events.mouseup, event );
 		}
 

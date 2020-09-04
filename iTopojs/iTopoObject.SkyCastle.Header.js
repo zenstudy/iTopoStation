@@ -5,7 +5,7 @@ import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
 import { iTopoCSS3DBriefcase } from './iTopoFrame/iTopoCSS3DBriefcase.js';
-import { iTopoTaskCards } from './iTopoTaskCards/iTopoTaskCards.js';
+import { iTopoTaskBriefcase } from './iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoObjectSkyCastleHeader(editor) {
 	var scope = this;
@@ -41,7 +41,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 			baseModel.scale.set(scale,scale,scale);
 
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
-			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ), baseModel.clone() , this.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ), baseModel.clone() , this.onTaskCardsClassCSS3D);
 			scope.thumbnailManager.updateCanvasSize();
 		});
 	}
@@ -212,7 +212,7 @@ iTopoObjectSkyCastleHeader.prototype = {
 		});
 	},
 
-	onSiteProductClassCSS3D: function() {
+	onTaskCardsClassCSS3D: function() {
 		var scope = this;
 	    var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
 		var displayStand = new iTopoDisplayStand(title);
@@ -220,14 +220,27 @@ iTopoObjectSkyCastleHeader.prototype = {
 		displayStand.container.setDisplay( 'block' );
 		displayStand.container.setPosition('absolate');
 
-		var explore = new iTopoCSS3DBriefcase.Explore();
+		var explore = new iTopoCSS3DBriefcase.Explore(displayStand);
+		explore.initialize();
+
+		for( var i=0; i < 100; i ++)
+		{
+			var taskObject = {
+				taskStatus:"待办",
+				taskDetail:"共享地球任务书" + (i+1),
+				taskCreateBy:"任务创建者:事务中心"
+			};
+			explore.createTaskCardItem(taskObject);
+		}
+
+		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+
 		explore.show3D();
-		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
 		explore.play();
 
 		displayStand.container.dom.appendChild( explore.dom );
 		displayStand.container.dom.addEventListener( 'resize', function () {
-		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
+		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 		});
 
 		displayStand.closeBtn.dom.addEventListener('click', function() {
@@ -236,8 +249,8 @@ iTopoObjectSkyCastleHeader.prototype = {
 			explore = null;
 		});
 
-		var taskCards = new iTopoTaskCards( editor );
-		displayStand.container.dom.appendChild( taskCards.dom );
+		var taskBriefcase = new iTopoTaskBriefcase( editor );
+		displayStand.container.dom.appendChild( taskBriefcase.dom );
 	},
 
 	getValue: function () {

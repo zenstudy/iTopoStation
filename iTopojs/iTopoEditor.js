@@ -53,6 +53,8 @@ function iTopoEditor() {
 		objectRemoved: new Signal(),
 		objectArrayAdded: new Signal(),
 
+		taskCardSelected: new Signal(),//important
+
 		cameraAdded: new Signal(),
 		cameraRemoved: new Signal(),
 

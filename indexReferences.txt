@@ -30,6 +30,47 @@ texture.dispose();
 11.在页面上添加logo。
 12.用户列表的展示。
 
+
+Mixing HTML Pages Inside Your WebGL
+http://learningthreejs.com/blog/2013/04/30/closing-the-gap-between-html-and-webgl/
+
+CSS3D and WebGl playing together - Initial Experiments via a Cylindrical Family Tree (threejs+d3)
+https://www.nowherenearithaca.com/2015/08/css3d-and-webgl-playing-together.html
+
+Summary of Interactive Visualizations
+https://www.nowherenearithaca.com/2014/02/a-summary-of-some-of-my-visualizations.html
+
+https://www.programmersought.com/search
+
+考虑将任务变成行星。围绕目标中心进行旋转
+https://www.programmersought.com/article/8350355823/
+
+也是css3d的例子，css3d对象与对象对齐
+https://threejsfundamentals.org/threejs/lessons/threejs-align-html-elements-to-3d.html
+
+表格 css可参考
+https://www.php5000.com/index/source/index/id/899
+
+研究一侧代码一侧文字的布局
+https://threejsfundamentals.org/threejs/lessons/threejs-align-html-elements-to-3d.html
+
+box添加title的功能
+https://subscription.packtpub.com/book/web_development/9781783980864/6/ch06lvl1sec39/creating-an-interactive-3d-google-maps-cube
+
+一个有深度的threejs博客
+http://learningthreejs.com/
+
+PPT展示考虑使用这个
+http://slidedeck.io/leefsmp/forge-connected-data
+
+三维展示法
+https://www.bypeople.com/pure-css-3d-box/
+
+https://stackoverflow.com/questions/44241837/three-js-curved-bend-css3dobject
+
+//正方体嵌入div
+https://stackoverflow.com/questions/63575607/mix-webgl-and-css3d-renderers-when-using-percentage
+
 HT图形组件设计之道（三）
 https://v.youku.com/v_show/id_XNzU2MzYzODA4.html
 

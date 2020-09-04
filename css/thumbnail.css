@@ -12,13 +12,44 @@
 
 #DisplayStand {
 	position: absolute;
-	top: 32px;
+	top: 35px;
 	left: 0;
 	right: 300px;
 	bottom: 0;
 	opacity: 0.99;
 	overflow-y:auto;
 }
+
+#taskView {
+	position: absolute;
+	top: 35px;
+}
+
+#taskBar {
+	position: absolute;
+	right: 0;
+	
+	bottom: 0;
+	height: 500px;
+	background: #eee;
+	overflow: auto;
+}
+
+	#taskBar .Panel {
+		position: absolute;
+		color: #888;
+		padding: 10px;
+		border-top: 1px solid #ccc;
+	}
+
+	#taskBar .Panel.collapsed {
+		margin-bottom: 0;
+	}
+
+	#taskBar .Row {
+		min-height: 20px;
+		margin-bottom: 10px;
+	}
 
 .list-item {
 	display: inline-block;
@@ -153,7 +184,7 @@
 	position: absolute;
 	top: 20px;
 	right: 20px;
-	font-size: 12px;
+	font-size: 15px;
 	color: rgba(127, 255, 255, 0.75);
 }
 
@@ -162,7 +193,7 @@
 	top: 40px;
 	left: 0px;
 	right: 0px;
-	font-size: 60px;
+	font-size: 15px;
 	font-weight: bold;
 	color: rgba(255, 255, 255, 0.75);
 	text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);

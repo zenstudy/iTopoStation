@@ -4,6 +4,8 @@ import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
+import { iTopoCSS3DBriefcase } from './iTopoFrame/iTopoCSS3DBriefcase.js';
+import { iTopoTaskBriefcase } from './iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoObjectLunarMoonHeader(editor) {
 	var scope = this;
@@ -38,13 +40,14 @@ function iTopoObjectLunarMoonHeader(editor) {
 			baseModel.scale.set(scale,scale,scale);
 
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ), baseModel.clone() , this.onTaskCardsClassCSS3D);
 			scope.thumbnailManager.updateCanvasSize();
 		});
 	}
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setPaddingTop('310px');
+	containerParameter.setPaddingTop('610px');
 	container.add(containerParameter);
 
 	{
@@ -205,6 +208,47 @@ iTopoObjectLunarMoonHeader.prototype = {
 			 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
 			} );
 		});
+	},
+
+	onTaskCardsClassCSS3D: function() {
+		var scope = this;
+	    var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
+		var displayStand = new iTopoDisplayStand(title);
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay( 'block' );
+		displayStand.container.setPosition('absolate');
+
+		var explore = new iTopoCSS3DBriefcase.Explore(displayStand);
+		explore.initialize();
+
+		for( var i=0; i < 100; i ++)
+		{
+			var taskObject = {
+				taskStatus:"待办",
+				taskDetail:"共享地球任务书" + (i+1),
+				taskCreateBy:"任务创建者:事务中心"
+			};
+			explore.createTaskCardItem(taskObject);
+		}
+
+		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+
+		explore.show3D();
+		explore.play();
+
+		displayStand.container.dom.appendChild( explore.dom );
+		displayStand.container.dom.addEventListener( 'resize', function () {
+		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+		});
+
+		displayStand.closeBtn.dom.addEventListener('click', function() {
+			explore.stop();
+			explore.dispose();
+			explore = null;
+		});
+
+		var taskBriefcase = new iTopoTaskBriefcase( editor );
+		displayStand.container.dom.appendChild( taskBriefcase.dom );
 	},
 
 	getValue: function () {

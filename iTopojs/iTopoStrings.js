@@ -53,8 +53,8 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/frametime' : '帧数',
 
 			'sidebar/skyCastle/Header' : '事务大厅',
-			'sidebar/skyCastle/Header/Outlook' : '事务大厅概貌',
-			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务卡',
+			'sidebar/skyCastle/Header/Outlook' : '事务大厅模型空间',
+			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务空间',
 			'sidebar/SkyCastle/Header/Title': '名称',
 			'sidebar/SkyCastle/Header/castleUUID': '事务大厅UUID',
 			'sidebar/skyCastle/iTopoItems' : '详情',
@@ -80,6 +80,8 @@ function iTopoStrings( config ) {
 
 
 			'sidebar/InnerEarth/Header':'地心门户',
+			'sidebar/InnerEarth/Header/Outlook':'地心概貌',
+			'sidebar/InnerEarth/Header/iTopoTaskCards':'任务空间',
 			'sidebar/InnerEarth/Header/innerEarthUUID':'地心UUID',
 			'sidebar/InnerEarth/Header/Title':'名称',
 
@@ -88,6 +90,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/StarUser/Header': '星民信息',
 			'sidebar/StarUser/Header/Outlook': '头像',
+			'sidebar/StarUser/Header/iTopoTaskCards': '任务空间',
 			'sidebar/starUser/Header/starUUID':'starUUID',
 			'sidebar/starUser/Header/gender':'性别',
 			'sidebar/starUser/Header/cellPhone':'手机',
@@ -100,6 +103,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/EcologicalFarm/Header' : '生态基地',
 			'sidebar/EcologicalFarm/Header/siteOutook': '农场概貌',
+			'sidebar/EcologicalFarm/Header/iTopoTaskCards': '任务空间',
 			'sidebar/EcologicalFarm/Header/newUUID':'换UUID',
 			'sidebar/EcologicalFarm/Header/baseUUID':'基地UUID',
 			'sidebar/EcologicalFarm/Header/taskType' : '任务类型',
@@ -116,6 +120,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/SharedCanteen/Header':'共享食堂',
 			'sidebar/SharedCanteen/Header/outook': '食堂外观',
+			'sidebar/SharedCanteen/Header/iTopoTaskCards': '任务空间',
 			'sidebar/SharedCanteen/Header/newUUID':'换UUID',
 			'sidebar/SharedCanteen/Header/baseUUID':'基地UUID',
 			'sidebar/SharedCanteen/Header/taskType' : '任务类型',
@@ -160,6 +165,15 @@ function iTopoStrings( config ) {
 			'iTopoDialog/lightEarth/title' : '名称',
 			'iTopoDialog/lightEarth/city' :'城市',
 			'iTopoDialog/lightEarth/address' :'地址',
+
+			'taskbar/Header': '任务描述',
+			'taskbar/Header/taskUUID': '任务UUID',
+			'taskbar/Header/taskTitle': '任务标题',
+			'taskbar/Header/taskCreatedby': '任务创建者',
+			'taskbar/Header/taskDescription': '任务描述',
+
+			'taskbar/History': '任务历史',
+			'taskbar/link': '相关链接',
 		},
 
 		en: {
