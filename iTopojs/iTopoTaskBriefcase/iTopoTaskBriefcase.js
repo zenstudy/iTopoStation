@@ -85,16 +85,8 @@ function iTopoTaskBriefcase(editor) {
 	}
 
 
-	function refreshTaskbar() {
-
-		if (iTopoEarthModel.SkyCastle.castleUUID === editor.selected.userData.objectUUID) {
-
-			tabs.forEach(function(tab) {
-				tab.panel.setValue(iTopoEarthModel.SkyCastle);
-			});
-
-			return;
-		}
+	function refreshTaskbar(object) {
+		tabs.forEach(function(tab) {tab.panel.setValue(object);	});
 	}
 
 	var ignoreObjectSelectedSignal = false;
@@ -105,27 +97,45 @@ function iTopoTaskBriefcase(editor) {
 			return;
 
 		if (object === null) {
-			//ActivedObjectType = '';
-			// removeAllTabs();
-			// console.log('ActivedObjectType:' + ActivedObjectType);
 			container.setDisplay( 'none' );
 			return;
 		}
 
 		container.setDisplay( 'inline-block' );
-		// if (object.userData.objectType !== ActivedObjectType) {
-		// 	ActivedObjectType = object.userData.objectType;
-		// 	removeAllTabs();
-		// 	console.log('ActivedObjectType:' + ActivedObjectType);
-		// 	createiTopoSkyCastleTabs();
-		// }
 
 		//to refresh
-		refreshTaskbar();
+		refreshTaskbar(object);
 	}
 
 	signals.taskCardSelected.add(function(object) {
-		refreshObjectUI(object);
+		if(object === null || object === undefined){
+			refreshObjectUI(null);
+			return;
+		}
+
+		if(object.userData === null || object.userData === undefined){
+			refreshObjectUI(null);
+			return;
+		}
+
+		var taskFile = './iTopoObjects/' + object.userData.objectUUID + '/tasks.json';
+		fetch( taskFile, {
+			method: 'GET',
+			mode: 'cors', // 允许发送跨域请求
+			credentials: 'include'
+		}).then(function(response) {
+			//打印返回的json数据
+			response.json().then(function(json) {
+				for (var i = 0; i < json.length; i++) {
+					if (json[i].taskUUID === object.userData.taskUUID) {
+						refreshObjectUI(json[i]);
+						return;
+					}
+				}
+			})
+		}).catch(function(e) {
+			console.log('error: ' + e.toString());
+		})
 	});
 
 	return container;

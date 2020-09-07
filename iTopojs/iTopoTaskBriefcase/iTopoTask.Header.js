@@ -4,7 +4,7 @@ import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
-import { iTopoCSS3DBriefcase } from '../iTopoFrame/iTopoCSS3DBriefcase.js';
+import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoTaskHeader(editor) {
@@ -14,6 +14,7 @@ function iTopoTaskHeader(editor) {
 	var taskInfo = {
 		taskUUID:THREE.MathUtils.generateUUID(),
 		taskTitle:'任务标题',
+		taskStatus:'待办',
 		taskCreatedby:'任务创建者',
 		taskDescription:'关于此任务的详细描述',
 	};
@@ -28,13 +29,13 @@ function iTopoTaskHeader(editor) {
 
 	{
 		// baseUUID
-		var geometryUUIDRow = new UIRow();
-		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(taskInfo.taskUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('taskbar/Header/taskUUID')).setWidth('90px'));
-		geometryUUIDRow.add(this.geometryUUID);
+		var taskUUIDRow = new UIRow();
+		this.taskUUIDInput = new UIInput().setWidth('320px').setFontSize('12px').setDisabled(true);
+		this.taskUUIDInput.setValue(taskInfo.taskUUID);
+		taskUUIDRow.add(new UIText(strings.getKey('taskbar/Header/taskUUID')).setWidth('90px'));
+		taskUUIDRow.add(this.taskUUIDInput);
 
-		containerParameter.add(geometryUUIDRow);
+		containerParameter.add(taskUUIDRow);
 	}
 
 	{
@@ -53,6 +54,21 @@ function iTopoTaskHeader(editor) {
 	}
 
 	{
+		// status
+		var statusRow = new UIRow();
+		statusRow.add(new UIText(strings.getKey('taskbar/Header/taskTitle')).setWidth('90px'));
+
+		this.statusInput = new UIInput().setWidth('160px').setFontSize('12px');
+		this.statusInput.setValue(taskInfo.taskTitle);
+		this.statusInput.onChange(function() {
+			//lightTask.title = this.getValue();
+		});
+		statusRow.add(this.statusInput);
+
+		containerParameter.add(statusRow);
+	}
+
+	{
 		// task created by
 		var taskCreatedbyRow = new UIRow();
 		taskCreatedbyRow.add(new UIText(strings.getKey('taskbar/Header/taskCreatedby')).setWidth('90px'));
@@ -68,21 +84,21 @@ function iTopoTaskHeader(editor) {
 	}
 
 	{
-		var starWishTitleRow = new UIRow();
-		starWishTitleRow.add(new UIText(strings.getKey('taskbar/Header/taskDescription')).setWidth('90px'));
-		containerParameter.add(starWishTitleRow);
+		var taskDescTitleRow = new UIRow();
+		taskDescTitleRow.add(new UIText(strings.getKey('taskbar/Header/taskDescription')).setWidth('90px'));
+		containerParameter.add(taskDescTitleRow);
 
-		var starWishTextAreaRow = new UIRow();
-		this.starWishValueUI = new UITextArea().setWidth('520px').setFontSize('12px') /*.onChange( update )*/ ;
-		this.starWishValueUI.dom.style.height = '300px';
-		this.starWishValueUI.setValue(taskInfo.taskDescription);
-		this.starWishValueUI.onKeyUp(function() {
+		var taskDescTextAreaRow = new UIRow();
+		this.taskDescTextArea = new UITextArea().setWidth('520px').setFontSize('12px') /*.onChange( update )*/ ;
+		this.taskDescTextArea.dom.style.height = '300px';
+		this.taskDescTextArea.setValue(taskInfo.taskDescription);
+		this.taskDescTextArea.onKeyUp(function() {
 			//starUser.starWish = this.getValue();
 
 		});
-		starWishTextAreaRow.add(this.starWishValueUI);
+		taskDescTitleRow.add(this.taskDescTextArea);
 
-		containerParameter.add(starWishTextAreaRow);
+		containerParameter.add(taskDescTitleRow);
 	}
 
 	return this;
@@ -114,10 +130,13 @@ iTopoTaskHeader.prototype = {
 
 	setValue: function (taskObject) {
 
-		if (editor.selected !== null) {
+		if (taskObject !== null) {
 		//	container.setDisplay( 'block' );
-			this.geometryUUID.setValue(taskObject.castleUUID);
-			this.titleInput.setValue(taskObject.title);
+			this.taskUUIDInput.setValue(taskObject.taskUUID);
+			this.titleInput.setValue(taskObject.taskTitle);
+			this.statusInput.setValue(taskObject.taskStatus);
+			this.taskCreatedbyInput.setValue(taskObject.taskCreatedby);
+			this.taskDescTextArea.setValue(taskObject.taskDescription);
 		}
 
 		this.taskObject = taskObject;

@@ -10,25 +10,25 @@ iTopoEarthSettings = {
 
 	EARTH_STYLE: "标准地图", //'粒子地壳'/线框地壳;
 
-	EARTH_PNG_WORLDGEOMETRY:"./iTopojs/img/earth_worldGeometry.PNG",
+	EARTH_PNG_WORLDGEOMETRY:"./iTopoObjects/00_iTopoEarth/earth_worldGeometry.PNG",
 	EARTH_PNG_COUNTRY_INDEX_TEXTURE:"./iTopojs/BASEmODELfILES/WORLD/country-index-texture.PNG",
 	EARTH_PNG_COUNTRY_OUTLINES:"./iTopojs/BASEmODELfILES/WORLD/country-outlines-4k.PNG",
-	EARTH_IMG_BLACKANDWIHTE: "./iTopojs/img/earth.jpg",
-	EARTH_IMG_BLUE: "./iTopojs/img/earth_atmos_4096.jpg",
+	EARTH_IMG_BLACKANDWIHTE: "./iTopoObjects/00_iTopoEarth/earth.jpg",
+	EARTH_IMG_BLUE: "./iTopoObjects/00_iTopoEarth/earth_atmos_4096.jpg",
 
-	coludImg: "./iTopojs/img/clouds.jpg",
-	DOT_PNG_PATH: "./iTopojs/img/dot.png",
-	LAND_MARK_LIGHTRAY_JPG: "./iTopojs/img/lightray.jpg",
-	LAND_MARK_LIGHTRAYYELLOW_JPG: "./iTopojs/img/lightray_yellow.jpg",
-	LAND_MARK_01: "./iTopojs/img/LAND_MARK_01.jpg",
+	coludImg: "./iTopoObjects/00_iTopoEarth/clouds.jpg",
+	DOT_PNG_PATH: "./iTopoObjects/00_iTopoEarth/dot.png",
+	LAND_MARK_LIGHTRAY_JPG: "./iTopoObjects/00_iTopoEarth/lightray.jpg",
+	LAND_MARK_LIGHTRAYYELLOW_JPG: "./iTopoObjects/00_iTopoEarth/lightray_yellow.jpg",
+	LAND_MARK_01: "./iTopoObjects/00_iTopoEarth/LAND_MARK_01.jpg",
 
-	WORLD_JSON_FILE: "./iTopojs/json/world.json",
-	HORIZEN_SUPERNODES_FILE: "./iTopojs/json/ZenSuperNodes.json",
-	HORIZEN_SECURENODES_FILE: "./iTopojs/json/ZenSecureNodes.json",
+	WORLD_JSON_FILE: "./iTopoObjects/00_iTopoEarth/Json/world.json",
+	HORIZEN_SUPERNODES_FILE: "./iTopoObjects/00_iTopoEarth/Json/ZenSuperNodes.json",
+	HORIZEN_SECURENODES_FILE: "./iTopoObjects/00_iTopoEarth/Json/ZenSecureNodes.json",
 
-	CANTEEN_YUHUAZHAI_FILE: "./iTopojs/json/iTopoCanteen.json",
-	ITOPOBASE_FILE: "./iTopojs/json/iTopobase.json",
-	ITOPOUSER_FILE: "./iTopojs/json/iTopoUser.json",
+	CANTEEN_YUHUAZHAI_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopoCanteen.json",
+	ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopobase.json",
+	ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopoUser.json",
 	// 地图z轴厚度
 	zHeight: 33,
 

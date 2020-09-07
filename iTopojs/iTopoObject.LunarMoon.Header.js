@@ -4,7 +4,7 @@ import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from './iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from './iTopoFrame/iTopo3dExplore.js';
-import { iTopoCSS3DBriefcase } from './iTopoFrame/iTopoCSS3DBriefcase.js';
+import { iTopoTask3dExplore } from './iTopoFrame/iTopoTask3dExplore.js';
 import { iTopoTaskBriefcase } from './iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoObjectLunarMoonHeader(editor) {
@@ -218,7 +218,7 @@ iTopoObjectLunarMoonHeader.prototype = {
 		displayStand.container.setDisplay( 'block' );
 		displayStand.container.setPosition('absolate');
 
-		var explore = new iTopoCSS3DBriefcase.Explore(displayStand);
+		var explore = new iTopoTask3dExplore.Explore(displayStand);
 		explore.initialize();
 
 		for( var i=0; i < 100; i ++)

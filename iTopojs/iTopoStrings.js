@@ -166,6 +166,15 @@ function iTopoStrings( config ) {
 			'iTopoDialog/lightEarth/city' :'城市',
 			'iTopoDialog/lightEarth/address' :'地址',
 
+			'iTopoTask3dExplore/TaskViewTopMenu/AddTask' :'添加任务',
+			'iTopoTask3dExplore/TaskViewTopMenu/DeleteTask' :'删除任务',
+
+			'iTopoTask3dExplore/TaskViewBottomMenu/Table' :'表格样式',
+			'iTopoTask3dExplore/TaskViewBottomMenu/Sphere' :'球形样式',
+			'iTopoTask3dExplore/TaskViewBottomMenu/Helix' :'螺旋样式',
+			'iTopoTask3dExplore/TaskViewBottomMenu/Grid' :'阵列样式',
+			'iTopoTask3dExplore/TaskViewBottomMenu/random' :'随机样式',
+
 			'taskbar/Header': '任务描述',
 			'taskbar/Header/taskUUID': '任务UUID',
 			'taskbar/Header/taskTitle': '任务标题',

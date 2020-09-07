@@ -292,41 +292,25 @@ var iTopo3dExplore = {
 			var scriptWrapResult = JSON.stringify( scriptWrapResultObj ).replace( /\"/g, '' );
 
 			for ( var uuid in json.scripts ) {
-
 				var object = scene.getObjectByProperty( 'uuid', uuid, true );
-
 				if ( object === undefined ) {
-
 					console.warn( 'APP.Player: Script without object.', uuid );
 					continue;
-
 				}
 
 				var scripts = json.scripts[ uuid ];
-
 				for ( var i = 0; i < scripts.length; i ++ ) {
-
 					var script = scripts[ i ];
-
 					var functions = ( new Function( scriptWrapParams, script.source + '\nreturn ' + scriptWrapResult + ';' ).bind( object ) )( this, renderer, scene, camera );
-
 					for ( var name in functions ) {
-
 						if ( functions[ name ] === undefined ) continue;
-
 						if ( events[ name ] === undefined ) {
-
 							console.warn( 'APP.Player: Event type not supported (', name, ')' );
 							continue;
-
 						}
-
 						events[ name ].push( functions[ name ].bind( object ) );
-
 					}
-
 				}
-
 			}
 
 			dispatch( events.init, arguments );
