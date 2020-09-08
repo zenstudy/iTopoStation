@@ -102,7 +102,7 @@ iTopoBaseHelper.prototype.setFromObject = function(object) {
 	TWEEN.removeAll();
 	this.resMgr.clearResources();
 	this.updateBase();
-	
+
 	//this.UpdateWithFetch();
 
 	return this;
@@ -136,8 +136,7 @@ iTopoBaseHelper.prototype.updateBase = function() {
 	}
 
 	if(this.userData.objectType ==='iTopoType/TaskObject/Star'){
-		console.log(this.position);
-		var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
+		var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
 		this.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
 	}
 };
@@ -145,7 +144,7 @@ iTopoBaseHelper.prototype.updateBase = function() {
 iTopoBaseHelper.prototype.showQRCode = function() {
 	var __this = this;
 	let P1 = new Promise( resolve => {
-		var qrcodeURL = "./iTopojs/QRcode/" + this.userData.objectUUID + ".png";
+		var qrcodeURL = "./iTopoObjects/" + this.userData.objectUUID + "/WXqrcode.png";
 		var fLoader = new THREE.FileLoader();
 		fLoader.load(qrcodeURL,
 			function ( data ) {// onLoad回调
@@ -155,7 +154,7 @@ iTopoBaseHelper.prototype.showQRCode = function() {
 	});
 
 	let P2 = new Promise( resolve => {
-		var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
+		var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
 		__this.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
 	});
 
@@ -223,13 +222,13 @@ iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
 	// iTopoBaseHelper.prototype.loadiTopoObjModel = function() {
 	// 	baseModel = {};
 	// 	const mtlLoader = new MTLLoader();
-	// 	mtlLoader.load('./iTopojs/baseModelFiles/windmill/windmill-fixed.mtl', (mtlParseResult) => {
+	// 	mtlLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill-fixed.mtl', (mtlParseResult) => {
 	// 		console.log(mtlParseResult);
 	// 		const objLoader = new OBJLoader2();
 	// 		const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
 	// 		materials.Material.side = THREE.DoubleSide;
 	// 		objLoader.addMaterials(materials);
-	// 		objLoader.load('./iTopojs/baseModelFiles/windmill/windmill.obj', (root) => {
+	// 		objLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill.obj', (root) => {
 	// 			let matrix2 = new THREE.Matrix4;
 	// 			matrix2.makeRotationX(-Math.PI / 2);
 	// 			let matrix3 = new THREE.Matrix4;
@@ -247,9 +246,9 @@ iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
 
 iTopoBaseHelper.prototype.getBaseModelURL = function() {
 	if (this.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm')
-		return './iTopojs/baseModelFiles/mountain_landscape/scene.gltf';
+		return './iTopoObjects/00_Default_Resource/mountain_landscape/scene.gltf';
 	else if (this.userData.objectType === 'iTopoType/TaskObject/SharedCanteen')
-		return './iTopojs/baseModelFiles/LittlestTokyo/LittlestTokyo.glb';
+		return './iTopoObjects/00_Default_Resource/LittlestTokyo/LittlestTokyo.glb';
 	console.log(this.userData.objectUUID + ':' + this.userData.objectType + ' did not find gltf file.');
 	return '';
 }

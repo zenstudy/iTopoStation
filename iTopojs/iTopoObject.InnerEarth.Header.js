@@ -23,7 +23,7 @@ function iTopoObjectInnerEarthHeader(editor) {
 		scope.thumbnailManager = new iTopoThumbnailManager();
 		scope.thumbnailManager.create(containerBaseModel.dom);
 		const glftloader = new GLTFLoader();
-		glftloader.load('./iTopojs/baseModelFiles/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
+		glftloader.load('./iTopoObjects/00_Default_Resource/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
 
 			var baseModel = gltf.scene;
 			baseModel.traverse((child) => {
@@ -153,7 +153,10 @@ iTopoObjectInnerEarthHeader.prototype = {
 
 		const loader = new THREE.CubeTextureLoader(); //载入顺序为[right,left,up,down,front,back]
 
-		var texturePaths = ['images/computer-history-museum/','images/FishPond/','images/Footballfield/','images/Park/'];
+		var texturePaths = ['iTopoObjects/00_Default_Resource/computer-history-museum/',
+		'iTopoObjects/00_Default_Resource/FishPond/',
+		'iTopoObjects/00_Default_Resource/Footballfield/',
+		'iTopoObjects/00_Default_Resource/Park/'];
 		var index = random(0,3);
 		const texture = loader.load([
 		  texturePaths[index] + 'posx.jpg',
@@ -185,7 +188,7 @@ iTopoObjectInnerEarthHeader.prototype = {
 		displayStand.container.setPosition('absolate');
 
 		const glftloader = new GLTFLoader();
-		glftloader.load('./iTopojs/baseModelFiles/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
+		glftloader.load('./iTopoObjects/00_Default_Resource/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
 
 			var baseModel = gltf.scene;
 			baseModel.traverse((child) => {

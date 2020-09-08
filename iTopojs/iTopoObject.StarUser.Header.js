@@ -42,7 +42,7 @@ function iTopoObjectStarUserHeader(editor) {
 		container.add(containerBaseModel);
 
 		// const glftloader = new GLTFLoader();
-		// glftloader.load('./iTopojs/baseModelFiles/simple_house_scene/scene.gltf', (gltf) => {
+		// glftloader.load('./iTopoObjects/00_Default_Resource/simple_house_scene/scene.gltf', (gltf) => {
 
 		// 	var baseModel = gltf.scene;
 		// 	baseModel.traverse((child) => {
@@ -73,13 +73,13 @@ function iTopoObjectStarUserHeader(editor) {
 			scope.thumbnailManager.create(containerBaseModel.dom);
 
 			const mtlLoader = new MTLLoader();
-			mtlLoader.load('./iTopojs/baseModelFiles/female02/female02.mtl', (mtlParseResult) => {
+			mtlLoader.load('./iTopoObjects/00_Default_Resource/female02/female02.mtl', (mtlParseResult) => {
 				console.log(mtlParseResult);
 				const objLoader = new OBJLoader2();
 				const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
 				//materials.Material.side = THREE.DoubleSide;
 				objLoader.addMaterials(materials);
-				objLoader.load('./iTopojs/baseModelFiles/female02/female02.obj', (baseModel) => {
+				objLoader.load('./iTopoObjects/00_Default_Resource/female02/female02.obj', (baseModel) => {
 
 					var box = new THREE.Box3().setFromObject(baseModel);
 					var scale =2.0 / Math.max(box.max.x,box.max.y, box.max.z );
@@ -257,7 +257,8 @@ iTopoObjectStarUserHeader.prototype = {
 
 		const loader = new THREE.CubeTextureLoader(); //载入顺序为[right,left,up,down,front,back]
 
-		var texturePaths = ['images/computer-history-museum/','images/FishPond/','images/Footballfield/','images/Park/'];
+		var texturePaths = ['iTopoObjects/00_Default_Resource/computer-history-museum/',
+		'iTopoObjects/00_Default_Resource/FishPond/','iTopoObjects/00_Default_Resource/Footballfield/','iTopoObjects/00_Default_Resource/Park/'];
 		var index = random(0,3);
 		const texture = loader.load([
 		  texturePaths[index] + 'posx.jpg',
@@ -289,7 +290,7 @@ iTopoObjectStarUserHeader.prototype = {
 		displayStand.container.setPosition('absolate');
 
 		const glftloader = new GLTFLoader();
-		glftloader.load('./iTopojs/baseModelFiles/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
+		glftloader.load('./iTopoObjects/00_Default_Resource/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
 
 			var baseModel = gltf.scene;
 			baseModel.traverse((child) => {
@@ -337,12 +338,12 @@ iTopoObjectStarUserHeader.prototype = {
 		displayStand.container.setPosition('absolate');
 
 		var female = {
-			mtl:'./iTopojs/baseModelFiles/female02/female02.mtl',
-			obj:'./iTopojs/baseModelFiles/female02/female02.obj'
+			mtl:'./iTopoObjects/00_Default_Resource/female02/female02.mtl',
+			obj:'./iTopoObjects/00_Default_Resource/female02/female02.obj'
 		};
 		var male = {
-			mtl:'./iTopojs/baseModelFiles/male02/male02.mtl',
-			obj:'./iTopojs/baseModelFiles/male02/male02.obj'
+			mtl:'./iTopoObjects/00_Default_Resource/male02/male02.mtl',
+			obj:'./iTopoObjects/00_Default_Resource/male02/male02.obj'
 		};
 
 		var being = (__tmp_scope.genderInput.getValue() === "female") ? female : male;
@@ -400,12 +401,12 @@ iTopoObjectStarUserHeader.prototype = {
 	updateOutlook: function( gender) {
 		var scope = this;
 		var female = {
-			mtl:'./iTopojs/baseModelFiles/female02/female02.mtl',
-			obj:'./iTopojs/baseModelFiles/female02/female02.obj'
+			mtl:'./iTopoObjects/00_Default_Resource/female02/female02.mtl',
+			obj:'./iTopoObjects/00_Default_Resource/female02/female02.obj'
 		};
 		var male = {
-			mtl:'./iTopojs/baseModelFiles/male02/male02.mtl',
-			obj:'./iTopojs/baseModelFiles/male02/male02.obj'
+			mtl:'./iTopoObjects/00_Default_Resource/male02/male02.mtl',
+			obj:'./iTopoObjects/00_Default_Resource/male02/male02.obj'
 		};
 
 		var being = (gender === "female") ? female : male;

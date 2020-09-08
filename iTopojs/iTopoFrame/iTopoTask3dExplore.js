@@ -3,6 +3,7 @@
 import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
 import { CSS3DRenderer, CSS3DObject } from '../../../examples/jsm/renderers/CSS3DRenderer.js';
 import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
+import { ajaxPost } from '../ajaxPostHelper.js'
 
 var iTopoTask3dExplore = {
 
@@ -71,17 +72,27 @@ var iTopoTask3dExplore = {
 			camera.lookAt(0,0,0);
 			this.setCamera(camera);
 
+			// var controls = new OrbitControls( camera, renderer.domElement );
+			// controls.maxPolarAngle = Math.PI * 0.5;
+			// controls.minDistance = 10;
+			// controls.maxDistance = 75;
+			// controls.target.set( 0, 2.5, 0 );
+			// controls.update();
+
 			controls = new OrbitControls(camera, renderer.domElement);
+			controls.maxPolarAngle = Math.PI * 0.5;
 			controls.minDistance = 10;
 			controls.maxDistance = 6000;
 			controls.enablePan = true;
 			controls.enableZoom = true;
+			controls.update();
 
 			glControls = new OrbitControls(camera, glRenderer.domElement);
 			glControls.minDistance = 10;
 			glControls.maxDistance = 6000;
 			glControls.enablePan = true;
 			glControls.enableZoom = true;
+			glControls.update();
 
 			var axes = new THREE.AxesHelper(2072);
 			scene.add(axes);
@@ -178,6 +189,7 @@ var iTopoTask3dExplore = {
 			tableButton.value = editor.strings.getKey( 'iTopoTask3dExplore/TaskViewTopMenu/AddTask' );
 			tableButton.addEventListener('click', function(){
 					var taskObject = {
+						objectUUID : editor.selected.userData.objectUUID,
 						taskUUID:THREE.MathUtils.generateUUID(),
 						taskTitle:'任务标题',
 						taskCreatedby:'任务创建者',
@@ -189,8 +201,21 @@ var iTopoTask3dExplore = {
 					scope.transformWithOutAnimate( scope.targets.helix, 2000 );
 
 					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
-					console.log(scope.objects[0]);
-					editor.signals.taskCardSelected.dispatch(scope.objects[0]);
+
+					ajaxPost('http://127.0.0.1:8081/addTask', JSON.stringify(taskObject),
+					function fnSucceed(jsonData)
+					{
+						editor.signals.taskCardSelected.dispatch(scope.objects[0]);
+					},
+					function fnFail()
+					{
+						console.log("post failed.");
+					},
+					function fnLoading()
+					{
+
+					});
+
 				} );
 			css3dMenu.appendChild( tableButton );
 
@@ -265,7 +290,7 @@ var iTopoTask3dExplore = {
 			object.position.x = 0;
 			object.position.y = 0;
 			object.position.z = 0;
-			object.userData = { objectUUID : editor.selected.userData.objectUUID , taskUUID: taskObject.taskUUID };
+			object.userData = { objectUUID : taskObject.objectUUID , taskUUID: taskObject.taskUUID };
 
 			return object;
 		};

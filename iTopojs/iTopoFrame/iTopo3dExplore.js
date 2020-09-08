@@ -56,10 +56,16 @@ var iTopo3dExplore = {
 			camera.lookAt(0,0,0);
 			this.setCamera(camera);
 
-			controls = new TrackballControls( camera, renderer.domElement );
-			controls.minDistance = 3;
-			controls.maxDistance = 500;
+			// var controls = new OrbitControls( camera, renderer.domElement );
+			// controls.maxPolarAngle = Math.PI * 0.5;
+			// controls.minDistance = 10;
+			// controls.maxDistance = 75;
+			// controls.target.set( 0, 2.5, 0 );
+			// controls.update();
 
+			// controls = new TrackballControls( camera, renderer.domElement );
+			// controls.minDistance = 2;
+			// controls.maxDistance = 500;
 			// controls.noRotate = false;
 			// controls.noZoom = false;
 			// controls.noPan = false;

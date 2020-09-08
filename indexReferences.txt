@@ -25,6 +25,10 @@
 14.酒店入驻的功能，实现类似贝壳那样的在线看房功能。
 15.地球地理信息录入功能，分公共数据和私有数据两部分。
 16.共享地球系统开发资金问题的解决方法，开源钱包，开源帐户。
+===================
+//controls.update() must be called after any manual changes to the camera's transform
+camera.position.set( 0, 20, 100 );
+controls.update();
 
 //WARNING: Too many active WebGL contexts. Oldest context will be lost. 一个页面画了超过16个webgl，最先绘制的将会丢失掉
 geometry.dispose();

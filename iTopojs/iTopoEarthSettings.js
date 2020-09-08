@@ -11,8 +11,8 @@ iTopoEarthSettings = {
 	EARTH_STYLE: "标准地图", //'粒子地壳'/线框地壳;
 
 	EARTH_PNG_WORLDGEOMETRY:"./iTopoObjects/00_iTopoEarth/earth_worldGeometry.PNG",
-	EARTH_PNG_COUNTRY_INDEX_TEXTURE:"./iTopojs/BASEmODELfILES/WORLD/country-index-texture.PNG",
-	EARTH_PNG_COUNTRY_OUTLINES:"./iTopojs/BASEmODELfILES/WORLD/country-outlines-4k.PNG",
+	EARTH_PNG_COUNTRY_INDEX_TEXTURE:"./iTopoObjects/00_Default_Resource/WORLD/country-index-texture.PNG",
+	EARTH_PNG_COUNTRY_OUTLINES:"./iTopoObjects/00_Default_Resource/WORLD/country-outlines-4k.PNG",
 	EARTH_IMG_BLACKANDWIHTE: "./iTopoObjects/00_iTopoEarth/earth.jpg",
 	EARTH_IMG_BLUE: "./iTopoObjects/00_iTopoEarth/earth_atmos_4096.jpg",
 
