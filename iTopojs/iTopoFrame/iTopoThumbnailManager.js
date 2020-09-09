@@ -216,8 +216,8 @@ iTopoThumbnailManager.prototype = {
 		scope.renderer.forceContextLoss();
 		scope.renderer = null;
 
-		console.log('===disposed:iTopoThumbnailManager=========== ');
-		console.log(scope);
+//		console.log('===disposed:iTopoThumbnailManager=========== ');
+//		console.log(scope);
 	}
 }
 

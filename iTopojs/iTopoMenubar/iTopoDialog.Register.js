@@ -2,35 +2,19 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from './iTopoUI.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js'
-import { ajaxPost } from './ajaxPostHelper.js'
-import { iTopoMenubarStarUser } from './iTopoMenubar/iTopoMenubar.StarUser.js';
+import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js'
+import { ajaxPost } from '../ajaxPostHelper.js'
+import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
+import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 
 function iTopoDialogRegister( editor, menubar ) {
-
-	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-	const lng = plusOrMinus_lngx * (Math.random() * 180);
-	const lat = plusOrMinus_latx * (Math.random() * 90);
-
-	//var config = editor.config;
-	var userStarInfo = {
-		starUUID: THREE.MathUtils.generateUUID(),
-		starType: 'iTopoType/TaskObject/Star',
-		cellPhone:13688888888,
-		password:'lightstar',
-		lng:lng,
-		lat:lat,
-		starWish:"star wish",
-		wxQRcode:'',
-	};
-
 	var strings = editor.strings;
+	var userStarInfo = new iTopoStarUser();
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
-	dlgTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/login/login' ) ).setWidth( '80px' ) );
+	dlgTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/register/register' ) ).setWidth( '80px' ) );
 	container.add(dlgTitleRow);
 //	container.add( new UIBreak() );
 
@@ -45,7 +29,7 @@ function iTopoDialogRegister( editor, menubar ) {
 	{
 		var cellPhoneRow = new UIRow();
 
-		cellPhoneRow.add( new UIText( strings.getKey( 'iTopoDialog/login/cellPhone' ) ).setWidth( '80px' ) );
+		cellPhoneRow.add( new UIText( strings.getKey( 'iTopoDialog/register/cellPhone' ) ).setWidth( '80px' ) );
 
 		var inputCellPhone = new UIInput( userStarInfo.cellPhone );
 		inputCellPhone.onChange( function () {
@@ -60,7 +44,7 @@ function iTopoDialogRegister( editor, menubar ) {
 	{
 		var passwordRow = new UIRow();
 
-		passwordRow.add( new UIText( strings.getKey( 'iTopoDialog/login/password' ) ).setWidth( '80px' ) );
+		passwordRow.add( new UIText( strings.getKey( 'iTopoDialog/register/password' ) ).setWidth( '80px' ) );
 
 		var inputPassword = new UIInput();
 		inputPassword.setValue( userStarInfo.password );
@@ -76,7 +60,7 @@ function iTopoDialogRegister( editor, menubar ) {
 	{
 		var longitudeRow = new UIRow();
 
-		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/login/longitude' ) ).setWidth( '80px' ) );
+		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/register/longitude' ) ).setWidth( '80px' ) );
 
 		var longitudeValueUI = new UIInput();
 		longitudeValueUI.setValue( userStarInfo.lng );
@@ -92,7 +76,7 @@ function iTopoDialogRegister( editor, menubar ) {
 	{
 		var latitudeRow = new UIRow();
 
-		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/login/latitude' ) ).setWidth( '80px' ) );
+		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/register/latitude' ) ).setWidth( '80px' ) );
 
 		var latitudeValueUI = new UIInput();
 		latitudeValueUI.setValue( userStarInfo.lat );
@@ -107,7 +91,7 @@ function iTopoDialogRegister( editor, menubar ) {
 
 	// {
 	// 	var starWishTitleRow = new UIRow();
-	// 	starWishTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/login/starWish' ) ).setWidth( '80px' ) );
+	// 	starWishTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/register/starWish' ) ).setWidth( '80px' ) );
 	// 	dlgBody.add( starWishTitleRow );
 
 	// 	var starWishTextAreaRow = new UIRow();
@@ -128,21 +112,24 @@ function iTopoDialogRegister( editor, menubar ) {
 	container.add( buttonPanel );
 
 	{
-		var lightStars = new UIButton( strings.getKey( 'iTopoDialog/login/login' ) );
+		var lightStars = new UIButton( strings.getKey( 'iTopoDialog/register/register' ) );
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 
-			ajaxPost('http://127.0.0.1:8081/iTopoEarthLogin', JSON.stringify(userStarInfo),
+			ajaxPost(editor.config.getKey( 'url/api/iTopoEarthRegister' ), JSON.stringify(userStarInfo),
 			function fnSucceed(jsonData)
 			{
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, userStarInfo) );
 				menubar.removeRegisterMenu();
-				menubar.container.remove(menubar.loginMenu);
+				menubar.removeLoginMenu();
 
-				console.log(JSON.parse(jsonData));
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
-				iTopoEarthModel.lightStars(userStarInfo);
+
+				var star = iTopoEarthModel.lightStars(userStarInfo);
+				editor.select(star); // this function will call editor.signals.objectSelected.dispatch(star);
+				editor.config.setKey( 'activedStarUserUUID', star.userData.objectUUID);
+				console.log(star.userData.objectUUID);
 			},
 			function fnFail()
 			{
@@ -159,7 +146,7 @@ function iTopoDialogRegister( editor, menubar ) {
 	}
 
 	{
-		var cancelBtn = new UIButton( strings.getKey( 'iTopoDialog/login/cancel' ) );
+		var cancelBtn = new UIButton( strings.getKey( 'iTopoDialog/register/cancel' ) );
 		cancelBtn.onClick( function () {
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );

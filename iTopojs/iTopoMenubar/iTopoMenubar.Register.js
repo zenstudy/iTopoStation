@@ -6,9 +6,9 @@ import * as THREE from '../../../build/three.module.js';
 
 import { UIPanel, UIButton } from '../iTopoUI.js';
 import { UIBoolean } from '../../js/libs/ui.three.js';
-import { iTopoDialogRegister } from '../iTopoDialog.Register.js';
+import { iTopoDialogRegister } from './iTopoDialog.Register.js';
 
-function iTopoMenubarRegister( editor ) {
+function iTopoMenubarRegister( editor, menubar ) {
 	var strings = editor.strings;
 
 	var container = new UIPanel();
@@ -25,7 +25,7 @@ function iTopoMenubarRegister( editor ) {
 		var dlg = new UIPanel();
 		dlgContainer.add(dlg);
 
-		var loginDlg = new iTopoDialogRegister( editor );
+		var loginDlg = new iTopoDialogRegister( editor, menubar );
 		dlg.add(loginDlg);
 
 		document.body.appendChild(dlgContainer.dom);

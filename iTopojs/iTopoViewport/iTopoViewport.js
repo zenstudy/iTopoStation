@@ -439,7 +439,7 @@ function iTopoViewport( editor ) {
 		if(object.name == "layerPlanet" || object.name == "layerCloud")
 			return;
 
-		console.log( 'added object = '+ object.name);
+//		console.log( 'added object = '+ object.name);
 
 		object.traverse( function ( child ) {
 			objects.push( child );
@@ -489,6 +489,8 @@ function iTopoViewport( editor ) {
 	} );
 
 	signals.objectArrayAdded.add( function ( objArray ) {
+		if(objArray.length === 0)
+			return;
 
 		if(objArray[0].name == "layerPlanet" || objArray[0].name == "layerCloud")
 			return;

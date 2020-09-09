@@ -9,9 +9,9 @@ import {AddiTopoObjArrayCommand} from './commands/AddiTopoObjArrayCommand.js';
 import {iTopoEarthBuilder} from './iTopoEarthBuilder.js';
 import {iTopoEarthCache} from './iTopoEarthCache.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
-import {iTopoSkyCastle} from './iTopoCulture/iTopoSkyCastle.js';
-import {iTopoLunarMoon} from './iTopoCulture/iTopoLunarMoon.js';
-import {iTopoInnerEarth} from './iTopoCulture/iTopoInnerEarth.js';
+import {iTopoSkyCastle} from './iTopoElement/iTopoSkyCastle.js';
+import {iTopoLunarMoon} from './iTopoElement/iTopoLunarMoon.js';
+import {iTopoInnerEarth} from './iTopoElement/iTopoInnerEarth.js';
 
 export var iTopoEarthModel = iTopoEarthModel || {};
 
@@ -217,7 +217,6 @@ iTopoEarthModel.CreateiTopoLunarMoon = function() {
 }
 
 iTopoEarthModel.lightStars = function(userStarInfo) {
-
 	var option = {
 		"objectUUID": userStarInfo.starUUID,
 		"objectType": userStarInfo.starType,
@@ -234,13 +233,14 @@ iTopoEarthModel.lightStars = function(userStarInfo) {
 	var star = iTopoEarthBuilder.createStar(option);
 
 	editor.execute(new AddiTopoObjCommand(editor, star));
-	console.log(star.userData);
 
 	const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
 		+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );
 	iTopoEarthModel.ParticlesMove(seeFrom, editor.camera);
 	editor.camera.position.copy(seeFrom);
 	editor.camera.lookAt(0, 0, 0);
+
+	return star;
 }
 
 // iTopoEarthModel.lightEarth = function(objUUID, camera) {

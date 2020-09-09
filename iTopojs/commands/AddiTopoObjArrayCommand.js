@@ -13,7 +13,7 @@ function AddiTopoObjArrayCommand( editor, objectArray, toSelectObj) {
 	this.type = 'AddiTopoObjArrayCommand';
 
 	this.objectArray = objectArray;
-	if ( objectArray !== undefined ) {
+	if ( objectArray !== undefined && objectArray.length !== 0) {
 		this.name = 'Add objectArray: ' + objectArray[0].name;
 	}
 

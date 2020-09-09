@@ -4,24 +4,27 @@
 
 function iTopoConfig() {
 
-	var name = 'threejs-editor';
+	var name = 'iTopoEarth';
 
 	var storage = {
+		'url/api/iTopoEarthRegister':'http://127.0.0.1:8081/iTopoEarthRegister',
+
 		'language': 'zh',
-		'exportPrecision': 6,
+		'activedStarUserUUID' :'',
+		//'exportPrecision': 6,
 
-		'autosave': false,
+		//'autosave': false,
 
-		'project/title': '',
-		'project/editable': false,
-		'project/vr': false,
+		// 'project/title': '',
+		// 'project/editable': false,
+		// 'project/vr': false,
 
-		'project/renderer/antialias': true,
-		'project/renderer/shadows': true,
-		'project/renderer/shadowType': 1, // PCF
-		'project/renderer/physicallyCorrectLights': false,
-		'project/renderer/toneMapping': 0, // NoToneMapping
-		'project/renderer/toneMappingExposure': 1,
+		// 'project/renderer/antialias': true,
+		// 'project/renderer/shadows': true,
+		// 'project/renderer/shadowType': 1, // PCF
+		// 'project/renderer/physicallyCorrectLights': false,
+		// 'project/renderer/toneMapping': 0, // NoToneMapping
+		// 'project/renderer/toneMappingExposure': 1,
 
 		'settings/history': false,
 

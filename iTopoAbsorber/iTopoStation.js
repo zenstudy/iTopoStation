@@ -145,6 +145,47 @@ app.post('/lightEarth', function(req, res) {
 	});
 });
 
+app.post('/iTopoEarthRegister', function(req, res) {
+
+	var postData = "";
+
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
+
+	//res.setHeader("application/json; charset=utf-8");
+	//JSON.parse()
+	//
+	//res.send(JSON.stringify(lightTask));
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+		console.log("Received POST data :") + postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		res.write(postData);
+		var newUserStarInfo = JSON.parse(postData);
+		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var userStarInfos = JSON.parse(data);
+				console.log(userStarInfos);
+				userStarInfos.push(newUserStarInfo);
+
+				fs.writeFile(iTopoJsonFName, JSON.stringify(userStarInfos), function(err) {
+					if (err) console.error(err);
+					console.log('数据已经写入' + iTopoJsonFName);
+				});
+			}
+		});
+
+		res.end();
+	});
+});
+
 app.post('/iTopoEarthLogin', function(req, res) {
 
 	var postData = "";

@@ -2,10 +2,10 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from './iTopoUI.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js'
-import { ajaxPost } from './ajaxPostHelper.js'
-import { iTopoMenubarStarUser } from './iTopoMenubar/iTopoMenubar.StarUser.js';
+import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js'
+import { ajaxPost } from '../ajaxPostHelper.js'
+import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 
 function iTopoDialogLogin( editor, menubar ) {
 
@@ -18,6 +18,8 @@ function iTopoDialogLogin( editor, menubar ) {
 	var userStarInfo = {
 		starUUID: THREE.MathUtils.generateUUID(),
 		starType: 'iTopoType/TaskObject/Star',
+		userNickname: 'skystar',
+		gender: "female", //"male", "female"
 		cellPhone:13688888888,
 		password:'lightstar',
 		lng:lng,
@@ -137,7 +139,7 @@ function iTopoDialogLogin( editor, menubar ) {
 			{
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, userStarInfo) );
 				menubar.removeRegisterMenu();
-				menubar.container.remove(menubar.loginMenu);
+				menubar.removeLoginMenu();
 
 				console.log(JSON.parse(jsonData));
 				editor.scene.rotation.y = 0;

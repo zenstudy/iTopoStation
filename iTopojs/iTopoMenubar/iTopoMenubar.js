@@ -22,9 +22,10 @@ function iTopoMenubar( editor ) {
 	this.container.add( new iTopoMenubarSharedCanteen( editor ) );
 	this.container.add( new iTopoMenubarBlockChain( editor ) );
 
-	this.registerMenu = new iTopoMenubarRegister( editor );
-	this.loginMenu = new iTopoMenubarLogin( editor, this );
+	this.registerMenu = new iTopoMenubarRegister( editor, this );
 	this.container.add( this.registerMenu );
+
+	this.loginMenu = new iTopoMenubarLogin( editor, this );
 	this.container.add( this.loginMenu );
 
 	return this.container;
@@ -44,7 +45,7 @@ iTopoMenubar.prototype = {
 	removeRegisterMenu: function ( ) {
 		this.container.remove(this.registerMenu);
 	},
-	
+
 	removeLoginMenu: function ( ) {
 		this.container.remove(this.loginMenu);
 	}

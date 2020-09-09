@@ -777,6 +777,17 @@ iTopoEditor.prototype = {
 
 	},
 
+	objectByiTopoUUID: function ( uuid ) {
+		var scope = this;
+		for ( let i = 0, l = scope.scene.children.length; i < l; i ++ ) {
+			const child = scope.scene.children[ i ];
+			if ( child.userData.objectUUID !== undefined && child.userData.objectUUID === uuid ) {
+				return child;
+			}
+		}
+		return undefined;
+	},
+
 	execute: function ( cmd, optionalName ) {
 
 		this.history.execute( cmd, optionalName );

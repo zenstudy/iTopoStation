@@ -73,7 +73,7 @@ function iTopoObjectBriefcase(editor) {
 
 	function removeAllTabs() {
 		tabs.forEach(function(tab){
-			console.log(tab);
+			//console.log(tab);
 			tab.panel.dispose();
 		}) ;
 

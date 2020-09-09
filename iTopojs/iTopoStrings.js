@@ -37,6 +37,7 @@ function iTopoStrings( config ) {
 			'menubar/Login' : '登陆',
 			'menubar/register': '注册',
 			'menubar/StarUser/exit':'退出',
+			'menubar/StarUser/mineStar':'我的信息',
 
 			'iTopoToolbar/translate':'平移',
 			'iTopoToolbar/rotate':'旋转',
@@ -151,6 +152,14 @@ function iTopoStrings( config ) {
 			'iTopoDialog/login/starWish': '星语星愿',
 			'iTopoDialog/login/password':'密码',
 			'iTopoDialog/login/cancel': '取消',
+
+			'iTopoDialog/register/register' : '注册',
+			'iTopoDialog/register/cellPhone':'手机',
+			'iTopoDialog/register/longitude': '经度',
+			'iTopoDialog/register/latitude': '纬度',
+			'iTopoDialog/register/starWish': '星语星愿',
+			'iTopoDialog/register/password':'密码',
+			'iTopoDialog/register/cancel': '取消',
 
 			'iTopoDialog/lightStars/longitude' : '经度',
 			'iTopoDialog/lightStars/latitude' : '纬度',

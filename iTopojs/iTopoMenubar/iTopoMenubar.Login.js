@@ -6,7 +6,7 @@ import * as THREE from '../../../build/three.module.js';
 
 import { UIPanel, UIButton } from '../iTopoUI.js';
 import { UIBoolean } from '../../js/libs/ui.three.js';
-import { iTopoDialogLogin } from '../iTopoDialog.Login.js';
+import { iTopoDialogLogin } from './iTopoDialog.Login.js';
 
 function iTopoMenubarLogin( editor , menubar) {
 	var strings = editor.strings;
