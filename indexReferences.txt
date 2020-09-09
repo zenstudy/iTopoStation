@@ -39,6 +39,27 @@ texture.dispose();
 11.在页面上添加logo。
 12.用户列表的展示。
 
+学习codepen的UI布局
+webglstudy学习网，有很多案例
+https://www.webglstudy.com/product/threejs-casesource
+
+threejs实现的无限小镇的WEBGL示例程序
+https://www.webglstudy.com/product/200070.html
+
+3d map base on threejs
+https://github.com/SmokingRabbit/map-3d
+
+20 Impressive Examples for Learning WebGL with Three.js
+https://tutorialzine.com/2013/09/20-impressive-examples-for-learning-webgl-with-three-js
+
+planetmaker
+http://planetmaker.wthr.us/#
+
+https://milliondollarmetropolis.com/
+借鉴它的展示模型的思维
+
+https://www.reddit.com/r/threejs/
+里面有很多threejs的案例
 
 Mixing HTML Pages Inside Your WebGL
 http://learningthreejs.com/blog/2013/04/30/closing-the-gap-between-html-and-webgl/

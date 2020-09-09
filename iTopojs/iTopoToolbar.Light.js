@@ -4,8 +4,8 @@
 
 import { UIPanel, UIButton } from './iTopoUI.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
-import { iTopoDialogLightStar } from './iTopoDialogLightStar.js';
-import { iTopoDialogLightEarth } from './iTopoDialogLightEarth.js';
+import { iTopoDialogLightStar } from './iTopoDialog.LightStar.js';
+import { iTopoDialogLightEarth } from './iTopoDialog.LightEarth.js';
 
 var iTopoToolbarLight = function ( editor ) {
 
@@ -19,9 +19,9 @@ var iTopoToolbarLight = function ( editor ) {
 	var buttons = new UIPanel();
 	container.add( buttons );
 
-	var lightStars = new UIButton( strings.getKey( 'iTopoToolbarLight/lightStars' ) );
-	//lightStars.dom.className = 'Button selected';
-	lightStars.onClick( function () {
+	var mineStar = new UIButton( strings.getKey( 'iTopoToolbarLight/mineStar' ) );
+	//mineStar.dom.className = 'Button selected';
+	mineStar.onClick( function () {
 
 		var dlgContainer = new UIPanel();
 		dlgContainer.setId( 'iTopoDialog' );
@@ -35,7 +35,7 @@ var iTopoToolbarLight = function ( editor ) {
 
 		document.body.appendChild(dlgContainer.dom);
 	} );
-	buttons.add( lightStars );
+	buttons.add( mineStar );
 
 	var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/lightEarth' ) );
 	lightEarth.onClick( function () {

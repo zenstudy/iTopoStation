@@ -43,7 +43,7 @@ function iTopoStrings( config ) {
 			'iTopoToolbar/scale':'缩放',
 			'iTopoToolbar/local':'本地',
 
-			'iTopoToolbarLight/lightStars': '点亮自己',
+			'iTopoToolbarLight/mineStar': '我的星星',
 			'iTopoToolbarLight/lightEarth': '点亮地球',
 			'iTopoToolbarLight/cancel' : '取消',
 
