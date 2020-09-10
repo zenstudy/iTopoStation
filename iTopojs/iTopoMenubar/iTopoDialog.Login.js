@@ -4,7 +4,7 @@
 
 import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
-import { ajaxPost } from '../ajaxPostHelper.js'
+import { ajaxGet } from '../ajaxPostHelper.js'
 import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 
 function iTopoDialogLogin( editor, menubar ) {
@@ -75,54 +75,6 @@ function iTopoDialogLogin( editor, menubar ) {
 		dlgBody.add( passwordRow );
 	}
 
-	{
-		var longitudeRow = new UIRow();
-
-		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/login/longitude' ) ).setWidth( '80px' ) );
-
-		var longitudeValueUI = new UIInput();
-		longitudeValueUI.setValue( userStarInfo.lng );
-		longitudeValueUI.onChange( function () {
-			// var value = this.getValue();
-			// editor.config.setKey( 'exportPrecision', value );
-		} );
-		longitudeRow.add( longitudeValueUI );
-
-		dlgBody.add( longitudeRow );
-	}
-
-	{
-		var latitudeRow = new UIRow();
-
-		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/login/latitude' ) ).setWidth( '80px' ) );
-
-		var latitudeValueUI = new UIInput();
-		latitudeValueUI.setValue( userStarInfo.lat );
-		latitudeValueUI.onChange( function () {
-			// var value = this.getValue();
-			// editor.config.setKey( 'exportPrecision', value );
-		} );
-		latitudeRow.add( latitudeValueUI );
-
-		dlgBody.add( latitudeRow );
-	}
-
-	// {
-	// 	var starWishTitleRow = new UIRow();
-	// 	starWishTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/login/starWish' ) ).setWidth( '80px' ) );
-	// 	dlgBody.add( starWishTitleRow );
-
-	// 	var starWishTextAreaRow = new UIRow();
-	// 	var starWishValueUI = new UITextArea().setWidth( '250px' ).setHeight( '80px' ).setFontSize( '12px' )/*.onChange( update )*/;
-	// 	starWishValueUI.onKeyUp( function () {
-	// 		userStarInfo.starWish = this.getValue();
-
-	// 	} );
-	// 	starWishTextAreaRow.add( starWishValueUI );
-
-	// 	dlgBody.add( starWishTextAreaRow );
-	// }
-
 	var buttonPanel = new UIPanel();
 	buttonPanel.setPaddingLeft( '20px' );
 	buttonPanel.setPaddingRight( '20px' );
@@ -134,7 +86,7 @@ function iTopoDialogLogin( editor, menubar ) {
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 
-			ajaxPost('http://127.0.0.1:8081/iTopoEarthLogin', JSON.stringify(userStarInfo),
+			ajaxGet('http://127.0.0.1:8081/iTopoEarthLogin',
 			function fnSucceed(jsonData)
 			{
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, userStarInfo) );
@@ -144,7 +96,7 @@ function iTopoDialogLogin( editor, menubar ) {
 				console.log(JSON.parse(jsonData));
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
-				iTopoEarthModel.lightStars(userStarInfo);
+				//iTopoEarthModel.lightStars(userStarInfo);
 			},
 			function fnFail()
 			{
@@ -153,9 +105,11 @@ function iTopoDialogLogin( editor, menubar ) {
 			function fnLoading()
 			{
 
-			}
-		);
-		document.body.removeChild(document.getElementById("iTopoDialog"));
+			},
+			'zeping.zhang',
+			'password for zeping');
+			document.body.removeChild(document.getElementById("iTopoDialog"));
+
 		} );
 		buttonPanel.add( lightStars );
 	}

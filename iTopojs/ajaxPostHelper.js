@@ -39,9 +39,9 @@ export function ajaxPost(url, data, fnSucceed, fnFail, fnLoading) {
 	ajax.send(data);
 }
 
-export function ajaxGet(url,fnSucceed, fnFail, fnLoading){
+export function ajaxGet(url,fnSucceed, fnFail, fnLoading, username,password){
 	var ajax = ajaxObject();
-	ajax.open("GET",url,true);
+	ajax.open("GET",url,true,username,password);
 	if(ajax.readyState==4){
 	    if(ajax.status==200){
 			fnSucceed(ajax.responseText);
