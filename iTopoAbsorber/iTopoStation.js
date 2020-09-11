@@ -186,7 +186,7 @@ app.post('/iTopoEarthRegister', function(req, res) {
 	});
 });
 
-app.get('/iTopoEarthLogin', function(req, res) {
+app.post('/iTopoEarthLogin', function(req, res) {
 
 	var postData = "";
 
@@ -197,29 +197,70 @@ app.get('/iTopoEarthLogin', function(req, res) {
 	//res.setHeader("application/json; charset=utf-8");
 	//JSON.parse()
 	//
+	//res.send(JSON.stringify(lightTask));
 
-	console.log(res);
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+		console.log("Received POST data :") + postDataChunk;
+	});
+
 	req.addListener("end", function() {
-
-		var cellPhone;
-
+		var loginUser = JSON.parse(postData);
 		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
 			} else {
-				var userStarInfos = JSON.parse(data);
-				userStarInfos.forEach(function(userInfo){
-					if(cellPhone === userInfo.cellPhone){
-						res.send(userInfo);
+				var allUserInfos = JSON.parse(data);
+
+				for (let i = 0; i < allUserInfos.length; i++) {
+						if(loginUser.cellPhone === allUserInfos[i].cellPhone){
+						res.write(JSON.stringify(allUserInfos[i]));
+						res.end();
+						break;
 					}
-				});
+				}
 			}
 		});
 
-		res.end();
+		//console.log(userDetailInfoToReturn);
 	});
 });
+
+// app.post('/iTopoEarthLogin', function(req, res) {
+
+// 	var postData = "";
+
+// 	req.setEncoding("utf8");
+// 	res.setHeader("Access-Control-Allow-Origin", "*");
+// 	res.setHeader("Cache-Control", "no-cache");
+
+// 	//res.setHeader("application/json; charset=utf-8");
+// 	//JSON.parse()
+// 	//
+
+// 	console.log(res);
+// 	req.addListener("end", function() {
+
+// 		var cellPhone;
+
+// 		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+// 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+// 			if (err) {
+// 				console.log(err);
+// 			} else {
+// 				var userStarInfos = JSON.parse(data);
+// 				userStarInfos.forEach(function(userInfo){
+// 					if(cellPhone === userInfo.cellPhone){
+// 						res.send(userInfo);
+// 					}
+// 				});
+// 			}
+// 		});
+
+// 		res.end();
+// 	});
+// });
 
 app.post('/addTask', function(req, res) {
 

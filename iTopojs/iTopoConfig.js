@@ -7,8 +7,9 @@ function iTopoConfig() {
 	var name = 'iTopoEarth';
 
 	var storage = {
-		'url/api/iTopoEarthRegister':'http://127.0.0.1:8081/iTopoEarthRegister',
-
+		'url/api/iTopoEarthRegister' : 'http://127.0.0.1:8081/iTopoEarthRegister',
+		'url/api/iTopoEarthLogin' : 'http://127.0.0.1:8081/iTopoEarthLogin',
+		
 		'language': 'zh',
 		'activedStarUserUUID' :'',
 		//'exportPrecision': 6,

@@ -30,7 +30,6 @@ function iTopoMenubarStarUser( editor , menubar, userStarInfo) {
 		var starUUID = editor.config.getKey( 'activedStarUserUUID');
 		console.log(starUUID);
 		var star = editor.objectByiTopoUUID(starUUID);
-		console.log(star);
 		editor.select(star);// this function will call editor.signals.objectSelected.dispatch(star);
 	});
 	options.add(starInfoMenu);

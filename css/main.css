@@ -444,8 +444,8 @@ select {
 
 #toolbar {
 	position: absolute;
-	left: 10px;
-	top: 42px;
+	right: 310px;
+	top: 100px;
 	width: 32px;
 	background: #eee;
 	text-align: center;
