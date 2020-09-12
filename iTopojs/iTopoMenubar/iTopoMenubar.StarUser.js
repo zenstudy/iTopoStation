@@ -41,6 +41,7 @@ function iTopoMenubarStarUser( editor , menubar, userStarInfo) {
 		menubar.container.add(menubar.registerMenu);
 		menubar.container.add(menubar.loginMenu);
 		menubar.removeMenubarStarUser();
+		editor.signals.userLogoff.dispatch();
 	});
 	options.add(exitMenu);
 

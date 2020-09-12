@@ -7,14 +7,7 @@ import {MeshBasicMaterial} from '../../src/materials/MeshBasicMaterial.js';
 import {TWEEN} from '../../examples/jsm/libs/tween.module.min.js';
 import {iTopoEarthModel} from './iTopoEarthModel.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
-import {iTopoResourceTracker} from './iTopoResourceTracker.js';
 import {ajaxGet,_fetch} from './ajaxPostHelper.js'
-import {DRACOLoader} from '../../examples/jsm/loaders/DRACOLoader.js';
-import {GLTFLoader} from '../../examples/jsm/loaders/GLTFLoader.js';
-import {OBJLoader2} from '../../examples/jsm/loaders/OBJLoader2.js';
-import {MTLLoader} from '../../examples/jsm/loaders/MTLLoader.js';
-import {MtlObjBridge} from '../../examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
-
 
 var orbits = [];
 var balls = [];
@@ -23,31 +16,33 @@ function iTopoBaseHelper() {
 
 	Object3D.call(this);
 
-	this.resMgr = new iTopoResourceTracker();
+	// this.resMgr = new iTopoResourceTracker();
+	// this.dracoLoader = new DRACOLoader();
+	// this.dracoLoader.setDecoderPath( '../examples/js/libs/draco/gltf/' );
 
-	for (var i = 2; i < 10; i++) {
-		var radius = 3 * i; //设置同心圆，只有半径不一样
-		var factorOrbit = new THREE.CircleGeometry(radius, 20); //半径，分段数
-		factorOrbit.vertices.shift(); // 第一个节点是中心点
+	// for (var i = 2; i < 10; i++) {
+	// 	var radius = 3 * i; //设置同心圆，只有半径不一样
+	// 	var factorOrbit = new THREE.CircleGeometry(radius, 20); //半径，分段数
+	// 	factorOrbit.vertices.shift(); // 第一个节点是中心点
 
-		var material = new THREE.MeshBasicMaterial({
-			color: +iTopoEarthModel.RandomColor(),
-		})
-		var orbitMesh = new THREE.LineLoop(factorOrbit, material);
-		orbits.push(factorOrbit);
-		this.add(orbitMesh);
+	// 	var material = new THREE.MeshBasicMaterial({
+	// 		color: +iTopoEarthModel.RandomColor(),
+	// 	})
+	// 	var orbitMesh = new THREE.LineLoop(factorOrbit, material);
+	// 	orbits.push(factorOrbit);
+	// 	this.add(orbitMesh);
 
-		var geometry = new THREE.SphereGeometry(1, 22, 16);
-		var material2 = new THREE.MeshBasicMaterial({
-			color: +iTopoEarthModel.RandomColor()
-		})
-		var ball = new THREE.Mesh(geometry, material2);
-		var ballCenter = factorOrbit.vertices[0].clone();
-		balls.push(ball);
-		ball.position.copy(ballCenter);
+	// 	var geometry = new THREE.SphereGeometry(1, 22, 16);
+	// 	var material2 = new THREE.MeshBasicMaterial({
+	// 		color: +iTopoEarthModel.RandomColor()
+	// 	})
+	// 	var ball = new THREE.Mesh(geometry, material2);
+	// 	var ballCenter = factorOrbit.vertices[0].clone();
+	// 	balls.push(ball);
+	// 	ball.position.copy(ballCenter);
 
-		this.add(ball);
-	}
+	// 	this.add(ball);
+	// }
 
 	//this.update();
 }
@@ -59,6 +54,7 @@ iTopoBaseHelper.prototype.dispose = function() {
 	this.children[0].geometry.dispose();
 	this.children[0].material.dispose();
 	TWEEN.removeAll();
+
 };
 
 
@@ -87,11 +83,6 @@ iTopoBaseHelper.prototype.dispose = function() {
 // }
 
 iTopoBaseHelper.prototype.setFromObject = function(object) {
-	//console.log(this.userData + ',' + object.userData);
-	// if(this.userData === object.userData){
-	// 	this.visiable = true;
-	// 	return;
-	// }
 	if(object.userData.objectUUID === undefined || object.userData.objectType === undefined ){
 		return;
 	}
@@ -99,69 +90,73 @@ iTopoBaseHelper.prototype.setFromObject = function(object) {
 	this.userData = object.userData;
 	this.object = object;
 	this.children = [];
-	TWEEN.removeAll();
-	this.resMgr.clearResources();
 	this.updateBase();
 
+	//TWEEN.removeAll();
 	//this.UpdateWithFetch();
 
 	return this;
 };
 
 iTopoBaseHelper.prototype.updateBase = function() {
-
-	if (this.object === undefined)
+	var scope = this;
+	if (scope.object === undefined)
 		return;
 
-	this.matrix.identity();
-	this.matrixWorld.identity();
+	scope.matrix.identity();
+	scope.matrixWorld.identity();
 	//this.rotation = this.object.rotation;
 
-	this.position.copy(this.object.position);
+	scope.position.copy(scope.object.position);
 
 	if (iTopoEarthSettings.GLOBAL_KIND === "Global3D") {
-		this.lookAt(0, 0, 0);
+		scope.lookAt(0, 0, 0);
 	} else {
-		this.lookAt(this.object.position.x, this.object.position.y, 100 * iTopoEarthSettings.CITY_RADIUS);
-		this.object.position.z += 1;
+		scope.lookAt(scope.object.position.x, scope.object.position.y, 100 * iTopoEarthSettings.CITY_RADIUS);
+		scope.object.position.z += 1;
 	}
-
-	for (var i = 0; i < orbits.length; ++i) {
-		this.baseDynamic(orbits[i], balls[i]);
-	}
-
-	if (this.object.userData.objectType === 'iTopoType/TaskObject/SharedCanteen'
-	|| this.object.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm') {
-		this.loadiTopoGLTFModel();
-	}
-
-	if(this.userData.objectType ==='iTopoType/TaskObject/Star'){
+	// for (var i = 0; i < orbits.length; ++i) {
+	// 	this.baseDynamic(orbits[i], balls[i]);
+	// }
+	var originPosition = new THREE.Vector3();
+	if(scope.object.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm') {
+		editor.resourceTracker.loadMountainLandscape( originPosition, 100, function(baseModel){
+			scope.loadiTopoGLTFModel(baseModel);
+		});
+	} else if (scope.object.userData.objectType === 'iTopoType/TaskObject/SharedCanteen') {
+		editor.resourceTracker.loadLittlestTokyo( originPosition, 100, function(baseModel){
+			scope.loadiTopoGLTFModel(baseModel);
+		});
+	} else if(scope.userData.objectType ==='iTopoType/TaskObject/Star'){
 		var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
-		this.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
+		scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
 	}
 };
 
 iTopoBaseHelper.prototype.showQRCode = function() {
-	var __this = this;
+	var scope = this;
 	let P1 = new Promise( resolve => {
 		var qrcodeURL = "./iTopoObjects/" + this.userData.objectUUID + "/WXqrcode.png";
 		var fLoader = new THREE.FileLoader();
 		fLoader.load(qrcodeURL,
 			function ( data ) {// onLoad回调
-				__this.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
+				scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
 			}
 		);
 	});
 
 	let P2 = new Promise( resolve => {
 		var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
-		__this.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
+		scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
 	});
 
+	console.log('iTopoBaseHelper.showQRCode');
 	Promise.race([P1 , P2])
 	.then(value => {
 	    console.log(value);
-	})
+		editor.signals.sceneGraphChanged.dispatch();
+	});
+
 }
 
 iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
@@ -219,31 +214,6 @@ iTopoBaseHelper.prototype.CreateQRCode = function(texture) {
 		}
 	}
 
-	// iTopoBaseHelper.prototype.loadiTopoObjModel = function() {
-	// 	baseModel = {};
-	// 	const mtlLoader = new MTLLoader();
-	// 	mtlLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill-fixed.mtl', (mtlParseResult) => {
-	// 		console.log(mtlParseResult);
-	// 		const objLoader = new OBJLoader2();
-	// 		const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-	// 		materials.Material.side = THREE.DoubleSide;
-	// 		objLoader.addMaterials(materials);
-	// 		objLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill.obj', (root) => {
-	// 			let matrix2 = new THREE.Matrix4;
-	// 			matrix2.makeRotationX(-Math.PI / 2);
-	// 			let matrix3 = new THREE.Matrix4;
-	// 			matrix3.makeRotationY(Math.PI);
-	// 			matrix2.multiply(matrix3);
-	// 			matrix2.setPosition(new THREE.Vector3(0, 0, 0));
-	// 			root.applyMatrix4(matrix2);
-	// 			console.log(root);
-	// 			root.scale.set(5, 5, 5);
-	// 			baseModel = root;
-	// 			this.add(baseModel);
-	// 		});
-	// 	});
-	// }
-
 iTopoBaseHelper.prototype.getBaseModelURL = function() {
 	if (this.userData.objectType === 'iTopoType/TaskObject/EcologicalFarm')
 		return './iTopoObjects/00_Default_Resource/mountain_landscape/scene.gltf';
@@ -253,32 +223,7 @@ iTopoBaseHelper.prototype.getBaseModelURL = function() {
 	return '';
 }
 
-iTopoBaseHelper.prototype.loadiTopoGLTFModel = function() {
-
-	this.modelURL = this.getBaseModelURL();
-	if (this.modelURL === '')
-		return;
-
-	const track = this.resMgr.track.bind(this.resMgr);
-
-	var dracoLoader = new DRACOLoader();
-	dracoLoader.setDecoderPath( '../examples/js/libs/draco/gltf/' );
-
-	const loader = new GLTFLoader();
-	loader.setDRACOLoader( dracoLoader );
-	loader.load(this.modelURL, (gltf) => {
-
-		var baseModel = track(gltf.scene);
-		this.box = new THREE.Box3().setFromObject(baseModel);
-		baseModel.traverse((child) => {
-			if (child.isMesh) {
-				child.castShadow = true;
-				child.receiveShadow = true;
-			}
-		});
-
-		var box = new THREE.Box3().setFromObject(baseModel);
-		var scale =100 / Math.max(box.max.x,box.max.y, box.max.z );
+iTopoBaseHelper.prototype.loadiTopoGLTFModel = function(baseModel) {
 
 		if (iTopoEarthSettings.GLOBAL_KIND === "Global3D") {
 			let matrix2 = new THREE.Matrix4;
@@ -288,20 +233,23 @@ iTopoBaseHelper.prototype.loadiTopoGLTFModel = function() {
 			matrix2.multiply(matrix3);
 			matrix2.setPosition(new THREE.Vector3(0, 0, 0));
 			baseModel.applyMatrix4(matrix2);
-			baseModel.scale.set(scale, scale, scale);
+			//baseModel.scale.set(scale, scale, scale);
 		} else {
 			let matrix2 = new THREE.Matrix4;
 			matrix2.makeRotationX(Math.PI / 2);
 			//matrix2.setPosition(new THREE.Vector3(0, 0, iTopoEarthSettings.zHeight));
 			baseModel.applyMatrix4(matrix2);
-			let tmpScale = scale * iTopoEarthSettings.mapScaleSize;
-			baseModel.scale.set(tmpScale, tmpScale, tmpScale);
+			//let tmpScale = scale * iTopoEarthSettings.mapScaleSize;
+			//baseModel.scale.set(tmpScale, tmpScale, tmpScale);
 		}
 		this.add(baseModel);
 
 		this.showQRCode();
-	});
+		setTimeout(function(){
+			editor.signals.sceneGraphChanged.dispatch();
+		},200);
 }
+
 
 iTopoBaseHelper.prototype.baseDynamic = function(factorOrbit, ball) {
 	var __this = this;
@@ -334,9 +282,5 @@ iTopoBaseHelper.prototype.copy = function(source) {
 
 	return this;
 };
-
-// iTopoBaseHelper.prototype.dispose = function() {
-
-// };
 
 export { iTopoBaseHelper };

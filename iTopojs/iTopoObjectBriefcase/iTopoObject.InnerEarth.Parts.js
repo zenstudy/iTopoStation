@@ -5,7 +5,7 @@ import { iTopoProductManager } from '../iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
 import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
 
-function iTopoObjectLunarMoonParts( editor ) {
+function iTopoObjectInnerEarthParts( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
@@ -19,10 +19,10 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoObjectLunarMoonParts.prototype = Object.create( UIElement.prototype );
-iTopoObjectLunarMoonParts.prototype.constructor = iTopoObjectLunarMoonParts;
+iTopoObjectInnerEarthParts.prototype = Object.create( UIElement.prototype );
+iTopoObjectInnerEarthParts.prototype.constructor = iTopoObjectInnerEarthParts;
 
-iTopoObjectLunarMoonParts.prototype = {
+iTopoObjectInnerEarthParts.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
@@ -40,8 +40,10 @@ iTopoObjectLunarMoonParts.prototype = {
 	},
 
 	dispose: function() {
-		this.thumbnailManager.dispose();
-		this.thumbnailManager = null;
+		if(this.thumbnailManager !== undefined && this.thumbnailManager !== null){
+			this.thumbnailManager.dispose();
+			this.thumbnailManager = null;
+		}
 	},
 
 	getValue: function () {
@@ -106,11 +108,13 @@ iTopoObjectLunarMoonParts.prototype = {
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 			scope.outlookManager.createThumbnailItem( title + (i+1), mesh, onSelect);
 		}
-		scope.outlookManager.updateCanvasSize();
+		scope.outlookManager.active();
 
-		editor.signals.sceneRendering.add( function ( ) {
-			scope.outlookManager.render();
-		} );
+		displayStand.closeBtn.dom.addEventListener('click', function(){
+			scope.outlookManager.deactive();
+			scope.outlookManager.dispose();
+			scope.outlookManager = null;
+		});
 	},
 
 	onSiteProductClassCSS3D: function() {
@@ -121,7 +125,7 @@ iTopoObjectLunarMoonParts.prototype = {
 		displayStand.container.setDisplay( 'block' );
 		displayStand.container.setPosition('absolate');
 
-		var explore = new iTopoTask3dExplore.Explore();
+		var explore = new iTopoTask3DView.Explore();
 		explore.show3D();
 		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
 		explore.play();
@@ -130,8 +134,7 @@ iTopoObjectLunarMoonParts.prototype = {
 		displayStand.container.dom.addEventListener( 'resize', function () {
 		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
 		} );
-
 	}
 }
 
-export { iTopoObjectLunarMoonParts };
+export { iTopoObjectInnerEarthParts };

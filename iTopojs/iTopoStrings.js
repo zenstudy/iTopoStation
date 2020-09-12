@@ -55,7 +55,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/skyCastle/Header' : '事务大厅',
 			'sidebar/skyCastle/Header/Outlook' : '事务大厅模型空间',
-			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务空间',
+			'sidebar/skyCastle/Header/iTopoTaskCards' : '公众任务空间',
 			'sidebar/SkyCastle/Header/Title': '名称',
 			'sidebar/SkyCastle/Header/castleUUID': '事务大厅UUID',
 			'sidebar/skyCastle/iTopoItems' : '详情',
@@ -192,6 +192,16 @@ function iTopoStrings( config ) {
 
 			'taskbar/History': '任务历史',
 			'taskbar/link': '相关链接',
+
+			'userBriefcase/RegisterTool': '开始共享',
+			'userBriefcase/RegisterTool/RegisterSharedCanteen': '注册共享食堂-点亮地球',
+			'userBriefcase/RegisterTool/RegisterEcologicalFarm': '注册生态基地-点亮地球',
+
+			'userBriefcase/MineAsset': '我注册的共享',
+			'userBriefcase/MineFocus': '订阅的共享',
+			'userBriefcase/MineFollower': '关注我的人们',
+
+			'userBriefcase/BluePrintPage': '什么是共享地球',
 		},
 
 		en: {

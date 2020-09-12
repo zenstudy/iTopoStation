@@ -44,7 +44,7 @@ function iTopoObjectBriefcase(editor) {
 	var container = new UITabbedPanel();
 	//container.setId( 'properties' );
 	container.setId('sidebar');
-	container.setDisplay( 'none' );
+	//container.setDisplay( 'none' );
 
 	// var sharedCanteen = new UISpan().add(
 	// 	new iTopoObjectHeader( editor ),
@@ -157,15 +157,11 @@ function iTopoObjectBriefcase(editor) {
 		var headerTab = new iTopoObjectEcologicalFarmHeader(editor);
 		var productItemsTab = new iTopoObjectEcologicalFarmProduct(editor);
 		var lifeItemsTab = new iTopoObjectEcologicalFarmLife(editor);
-		// var dynamicTab = new iTopoObjectDynamic(editor);
-		// var contributeTab = new iTopoObjectContribute(editor);
 		var participantsTab = new iTopoObjectParticipants(editor);
 
 		tabs.push( {name:'farmHeader', title:strings.getKey('sidebar/EcologicalFarm/Header')  ,panel: headerTab} );
 		tabs.push( {name:'product', title: strings.getKey('sidebar/EcologicalFarm/product'),panel: productItemsTab} );
 		tabs.push( {name:'life', title: strings.getKey('sidebar/EcologicalFarm/life'),panel: lifeItemsTab} );
-		// tabs.push( {name:'dynamic', title:strings.getKey('sidebar/iTopoTask/dynamic')  ,panel: dynamicTab} );
-		// tabs.push( {name:'contribute', title: strings.getKey('sidebar/iTopoTask/contribute'),panel: contributeTab} );
 		tabs.push( {name:'participants', title: strings.getKey('sidebar/iTopoTask/participants'),panel: participantsTab} );
 
 		tabs.forEach(function(tab){
@@ -192,6 +188,7 @@ function iTopoObjectBriefcase(editor) {
 	}
 
 	function refreshEcologicalFarmTabs() {
+
 		fetch(iTopoEarthSettings.ITOPOBASE_FILE, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求
@@ -199,6 +196,16 @@ function iTopoObjectBriefcase(editor) {
 		}).then(function(response) {
 			//打印返回的json数据
 			response.json().then(function(json) {
+
+				if(editor.selected === null)
+					return;
+
+				if(editor.selected.userData === null || editor.selected.userData === undefined)
+					return;
+
+				if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+					return;
+
 				for (var i = 0; i < json.length; i++) {
 					if (json[i].baseUUID === editor.selected.userData.objectUUID) {
 
@@ -216,12 +223,21 @@ function iTopoObjectBriefcase(editor) {
 	}
 
 	function refreshSharedCanteenTabs() {
-
 		fetch(iTopoEarthSettings.ITOPOBASE_FILE, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求
 			credentials: 'include'
 		}).then(function(response) {
+
+			if(editor.selected === null)
+				return;
+
+			if(editor.selected.userData === null || editor.selected.userData === undefined)
+				return;
+
+			if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+				return;
+
 			//打印返回的json数据
 			response.json().then(function(json) {
 				for (var i = 0; i < json.length; i++) {
@@ -243,6 +259,15 @@ function iTopoObjectBriefcase(editor) {
 
 	function refreshiTopoSkyCastleTabs() {
 
+		if(editor.selected === null)
+			return;
+
+		if(editor.selected.userData === null || editor.selected.userData === undefined)
+			return;
+
+		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+			return;
+
 		if (iTopoEarthModel.SkyCastle.castleUUID === editor.selected.userData.objectUUID) {
 
 			tabs.forEach(function(tab) {
@@ -254,6 +279,15 @@ function iTopoObjectBriefcase(editor) {
 	}
 
 	function refreshiTopoInnerEarthTabs() {
+
+		if(editor.selected === null)
+			return;
+
+		if(editor.selected.userData === null || editor.selected.userData === undefined)
+			return;
+
+		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+			return;
 
 		if (iTopoEarthModel.InnerEarth.innerEarthUUID === editor.selected.userData.objectUUID) {
 
@@ -267,6 +301,15 @@ function iTopoObjectBriefcase(editor) {
 
 	function refreshiTopoLunarMoonTabs() {
 
+		if(editor.selected === null)
+			return;
+
+		if(editor.selected.userData === null || editor.selected.userData === undefined)
+			return;
+
+		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+			return;
+
 		if (iTopoEarthModel.LunarMoon.lunarMoonUUID === editor.selected.userData.objectUUID) {
 
 			tabs.forEach(function(tab) {
@@ -278,6 +321,7 @@ function iTopoObjectBriefcase(editor) {
 	}
 
 	function refreshStarTabs() {
+
 		fetch(iTopoEarthSettings.ITOPOUSER_FILE, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求
@@ -285,6 +329,16 @@ function iTopoObjectBriefcase(editor) {
 		}).then(function(response) {
 			//打印返回的json数据
 			response.json().then(function(json) {
+				
+				if(editor.selected === null)
+					return;
+				
+				if(editor.selected.userData === null || editor.selected.userData === undefined)
+					return;
+				
+				if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+					return;
+				
 				for (var i = 0; i < json.length; i++) {
 					if (json[i].starUUID === editor.selected.userData.objectUUID) {
 
@@ -312,7 +366,14 @@ function iTopoObjectBriefcase(editor) {
 			ActivedObjectType = '';
 			removeAllTabs();
 			console.log('ActivedObjectType:' + ActivedObjectType);
-			container.setDisplay( 'none' );
+			//container.setDisplay( 'none' );
+
+			var skyCastle = editor.objectByiTopoUUID(iTopoEarthModel.SkyCastle.castleUUID);
+			//editor.select(skyCastle);// this function will call
+			createiTopoSkyCastleTabs();
+			tabs.forEach(function(tab) {
+				tab.panel.setValue(iTopoEarthModel.SkyCastle);
+			});
 			return;
 		}
 
@@ -341,6 +402,7 @@ function iTopoObjectBriefcase(editor) {
 					createStarTabs();
 					break;
 				default:
+					createiTopoSkyCastleTabs();
 					console.log('did not implement');
 			}
 		}
@@ -366,12 +428,20 @@ function iTopoObjectBriefcase(editor) {
 				refreshStarTabs();
 				break;
 			default:
+				refreshiTopoSkyCastleTabs();
 				console.log('did not implement');
 		}
 	}
 
 	signals.objectSelected.add(function(object) {
 		refreshObjectUI(object);
+	});
+
+//	var skyCastle = editor.objectByiTopoUUID(iTopoEarthModel.SkyCastle.castleUUID);
+//	editor.select(skyCastle);// this function will call
+	createiTopoSkyCastleTabs();
+	tabs.forEach(function(tab) {
+		tab.panel.setValue(iTopoEarthModel.SkyCastle);
 	});
 
 	return container;

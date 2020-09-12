@@ -1,13 +1,12 @@
 import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
-import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
 import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
-function iTopoObjectLunarMoonHeader(editor) {
+function iTopoObjectInnerEarthHeader(editor) {
 	var scope = this;
 	var strings = editor.strings;
 
@@ -22,27 +21,17 @@ function iTopoObjectLunarMoonHeader(editor) {
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
 		scope.thumbnailManager.create(containerBaseModel.dom);
-		const glftloader = new GLTFLoader();
-		glftloader.load('./iTopoObjects/00_Default_Resource/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) => {
 
-			var baseModel = gltf.scene;
-			baseModel.traverse((child) => {
-				if (child.isMesh) {
-					child.castShadow = true;
-					child.receiveShadow = true;
-				}
-			});
-			console.log(baseModel);
+		var originPosition = new THREE.Vector3();
+		editor.resourceTracker.loadSmallCityModel(originPosition, 1, function(object){
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/InnerEarth/Header/Outlook' ),
+		 	object , scope.onClickThumbnail);
+		}) ;
 
-			var box = new THREE.Box3().setFromObject(baseModel);
-			var scale =0.81 / Math.max(box.max.x,box.max.y, box.max.z );
-
-			baseModel.scale.set(scale,scale,scale);
-
-			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ), baseModel , this.onClickThumbnail);
-			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ), baseModel.clone() , this.onTaskCardsClassCSS3D);
-			scope.thumbnailManager.updateCanvasSize();
-		});
+		editor.resourceTracker.loadSmallCityModel(originPosition, 1, function(object){
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/InnerEarth/Header/iTopoTaskCards' ),
+			 	object , scope.onTaskCardsClassCSS3D);
+		}) ;
 	}
 
 	var containerParameter = new UIPanel();
@@ -54,8 +43,8 @@ function iTopoObjectLunarMoonHeader(editor) {
 		// baseUUID
 		var geometryUUIDRow = new UIRow();
 		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(iTopoEarthModel.LunarMoon.lunarMoonUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/LunarMoon/Header/lunarMoonUUID')).setWidth('90px'));
+		this.geometryUUID.setValue(iTopoEarthModel.InnerEarth.innerEarthUUID);
+		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/InnerEarth/Header/innerEarthUUID')).setWidth('90px'));
 		geometryUUIDRow.add(this.geometryUUID);
 
 		containerParameter.add(geometryUUIDRow);
@@ -64,10 +53,10 @@ function iTopoObjectLunarMoonHeader(editor) {
 	{
 		// title
 		var titleRow = new UIRow();
-		titleRow.add(new UIText(strings.getKey('sidebar/LunarMoon/Header/Title')).setWidth('90px'));
+		titleRow.add(new UIText(strings.getKey('sidebar/InnerEarth/Header/Title')).setWidth('90px'));
 
 		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
-		this.titleInput.setValue(iTopoEarthModel.LunarMoon.title);
+		this.titleInput.setValue(iTopoEarthModel.SkyCastle.title);
 		this.titleInput.onChange(function() {
 			//lightTask.title = this.getValue();
 		});
@@ -79,10 +68,10 @@ function iTopoObjectLunarMoonHeader(editor) {
 	return this;
 }
 
-iTopoObjectLunarMoonHeader.prototype = Object.create( UIElement.prototype );
-iTopoObjectLunarMoonHeader.prototype.constructor = iTopoObjectLunarMoonHeader;
+iTopoObjectInnerEarthHeader.prototype = Object.create( UIElement.prototype );
+iTopoObjectInnerEarthHeader.prototype.constructor = iTopoObjectInnerEarthHeader;
 
-iTopoObjectLunarMoonHeader.prototype = {
+iTopoObjectInnerEarthHeader.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
@@ -100,8 +89,10 @@ iTopoObjectLunarMoonHeader.prototype = {
 	},
 
 	dispose: function() {
-		this.thumbnailManager.dispose();
-		this.thumbnailManager = null;
+		if(this.thumbnailManager !== undefined && this.thumbnailManager !== null){
+			this.thumbnailManager.dispose();
+			this.thumbnailManager = null;
+		}
 	},
 
 	onClickThumbnail1: function() {// this对应一个item
@@ -255,9 +246,7 @@ iTopoObjectLunarMoonHeader.prototype = {
 	},
 
 	getValue: function () {
-
 		return this.taskObject;
-
 	},
 
 	setValue: function (taskObject) {
@@ -270,6 +259,7 @@ iTopoObjectLunarMoonHeader.prototype = {
 
 		this.taskObject = taskObject;
 	}
+
 }
 
-export { iTopoObjectLunarMoonHeader };
+export { iTopoObjectInnerEarthHeader };

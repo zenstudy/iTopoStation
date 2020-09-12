@@ -61,7 +61,7 @@ export function ajaxGet(url,fnSucceed, fnFail, fnLoading, username,password){
 //     }, function(err) {
 //         console.log(err);
 //     });
-function _fetch(fetch_promise, timeout) {
+export function _fetch(fetch_promise, timeout) {
       var abort_fn = null;
 
       //这是一个可以被reject的promise
@@ -84,4 +84,13 @@ function _fetch(fetch_promise, timeout) {
        return abortable_promise;
 }
 
-export { _fetch };
+//连续执行N次
+export function setTimeout_nTimes( sumTimes, indexTime, intervalTime, fn){
+	if(indexTime === sumTimes)
+		return;
+	setTimeout( function() {
+		fn() ;
+		console.log('this time index=' + indexTime);
+		setTimeout_nTimes( sumTimes, ++indexTime, intervalTime, fn );
+		}, intervalTime) ;
+}

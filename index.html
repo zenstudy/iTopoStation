@@ -50,7 +50,8 @@
 			import { iTopoViewport } from './itopojs/iTopoViewport/iTopoViewport.js';
 			import { iTopoToolbarLight } from './itopojs/iTopoToolbar.Light.js'
 			import { iTopoToolbar } from './itopojs/iTopoToolbar.js';
-			import { iTopoObjectBriefcase } from './itopojs/iTopoSidebar/iTopoObjectBriefcase.js';
+			import { iTopoObjectBriefcase } from './itopojs/iTopoObjectBriefcase/iTopoObjectBriefcase.js';
+			import { iTopoUserBriefcase } from './itopojs/iTopoUserBriefcase/iTopoUserBriefcase.js';
 			import { iTopoMenubar} from './itopojs/iTopoMenubar/iTopoMenubar.js'
 			import { iTopoEarthModel } from './iTopojs/iTopoEarthModel.js';
 			
@@ -84,6 +85,9 @@
 
 			var sidebar = new iTopoObjectBriefcase( editor );
 			document.body.appendChild( sidebar.dom );
+
+			var userBriefcase = new iTopoUserBriefcase( editor );
+			document.body.appendChild( userBriefcase.dom );
 
 			var menubar = new iTopoMenubar( editor );
 			document.body.appendChild( menubar.dom );

@@ -1028,7 +1028,7 @@ iTopoEarthModel.createEarthAxis = function() {
 
 function randomLightConeHeight() {
 	let height = (Math.random() * (iTopoEarthSettings.COLUD_RADIUS_RATIO - 1.1) + 0.1) * iTopoEarthSettings
-		.CITY_RADIUS;
+		.CITY_RADIUS*0.72;
 	return height;
 }
 

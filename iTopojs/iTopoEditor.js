@@ -9,6 +9,7 @@ import { iTopoHistory as _History } from './iTopoHistory.js';
 import { iTopoStorage as _Storage } from './iTopoStorage.js';
 import { iTopoStrings } from './iTopoStrings.js';
 import { iTopoConfig } from './iTopoConfig.js';
+import { iTopoResourceTracker} from './iTopoFrame/iTopoResourceTracker.js';
 
 var _DEFAULT_CAMERA = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );
 _DEFAULT_CAMERA.name = 'Camera';
@@ -21,6 +22,8 @@ function iTopoEditor() {
 
 	this.signals = {
 		// notifications
+		userRegisteredOrLogin: new Signal(),
+		userLogoff: new Signal(),
 
 		editorCleared: new Signal(),
 
@@ -46,6 +49,7 @@ function iTopoEditor() {
 
 		geometryChanged: new Signal(),
 
+		objectHovered: new Signal(),
 		objectSelected: new Signal(),//important
 		objectFocused: new Signal(),
 		objectAdded: new Signal(),
@@ -145,6 +149,7 @@ function iTopoEditor() {
 	this.cameras = {};
 	this.viewportCamera = this.camera;
 	this.addCamera( this.camera );
+	this.resourceTracker = new iTopoResourceTracker();
 
 	// {
 	// 	this.cameraHelper = new THREE.CameraHelper(this.viewportCamera);
@@ -617,6 +622,7 @@ iTopoEditor.prototype = {
 
 		this.config.setKey( 'selected', uuid );
 		this.signals.objectSelected.dispatch( object );
+		console.log('editor select null object and send it.')
 
 	},
 
@@ -702,9 +708,9 @@ iTopoEditor.prototype = {
 		this.mixer.stopAllAction();
 
 		this.deselect();
-
+		
 		this.signals.editorCleared.dispatch();
-
+		this.resourceTracker.dispose();
 	},
 
 	//

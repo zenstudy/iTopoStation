@@ -38,8 +38,10 @@ iTopoObjectEcologicalFarmProduct.prototype = {
 	},
 
 	dispose: function() {
-		this.thumbnailManager.dispose();
-		this.thumbnailManager = null;
+		if(this.thumbnailManager !== undefined && this.thumbnailManager !== null){
+			this.thumbnailManager.dispose();
+			this.thumbnailManager = null;
+		}
 	},
 
 	getValue: function() {

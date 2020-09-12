@@ -40,7 +40,7 @@ iTopoObjectSkyCastleLife.prototype = {
 
 	setValue: function (taskObject) {
 		var scope = this;
-		if (editor.selected !== null) {
+		if (taskObject !== null) {
 
 			var title = editor.strings.getKey( 'sidebar/skyCastle/Life' ) ;
 			var productPanel = new iTopoArticleManager();

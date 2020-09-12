@@ -5,12 +5,15 @@ import { iTopoProductManager } from '../iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
 import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
 
-function iTopoObjectInnerEarthParts( editor ) {
+function iTopoObjectSkyCastleParts( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
 	var container = new UIPanel();
 	scope.container = container;
+
+	scope.thumbnailManager = new iTopoThumbnailManager();
+	scope.thumbnailManager.create(scope.container.dom);
 
 	return scope;
 }
@@ -19,29 +22,30 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoObjectInnerEarthParts.prototype = Object.create( UIElement.prototype );
-iTopoObjectInnerEarthParts.prototype.constructor = iTopoObjectInnerEarthParts;
+iTopoObjectSkyCastleParts.prototype = Object.create( UIElement.prototype );
+iTopoObjectSkyCastleParts.prototype.constructor = iTopoObjectSkyCastleParts;
 
-iTopoObjectInnerEarthParts.prototype = {
+iTopoObjectSkyCastleParts.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
 		if(scope.thumbnailManager === null) return;
-		if(scope.thumbnailManager === undefined) return;
-	
+		console.log(scope.thumbnailManager);
 		scope.thumbnailManager.updateCanvasSize();
 		scope.thumbnailManager.active();
 	},
-	
+
 	deactiveTabPanel: function(){
 		var scope = this;
 		if(scope.thumbnailManager === null) return;
 		scope.thumbnailManager.deactive();
 	},
-	
+
 	dispose: function() {
-		this.thumbnailManager.dispose();
-		this.thumbnailManager = null;
+		if(this.thumbnailManager !== undefined && this.thumbnailManager !== null){
+			this.thumbnailManager.dispose();
+			this.thumbnailManager = null;
+		}
 	},
 
 	getValue: function () {
@@ -50,11 +54,7 @@ iTopoObjectInnerEarthParts.prototype = {
 
 	setValue: function (taskObject) {
 		var scope = this;
-		if (editor.selected !== null) {
-
-			scope.thumbnailManager = new iTopoThumbnailManager();
-
-			scope.thumbnailManager.create(scope.container.dom);
+		if (taskObject !== null) {
 
 			var material = new THREE.MeshStandardMaterial({
 						color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
@@ -73,15 +73,13 @@ iTopoObjectInnerEarthParts.prototype = {
 			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
 			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/ReservedGroupX' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
 
-			//scope.thumbnailManager.createThumbnailItem( title + '品种2D区' , mesh.clone(), scope.onSiteProductClass2D);
-
 			scope.thumbnailManager.updateCanvasSize();
 		}
 
 		scope.taskObject = taskObject;
 	},
 
-	onSiteProductClass3D: function() {// this对应一个item
+	/*onSiteProductClass3D: function() {// this对应一个item
 		var scope = this;
 	    var title = editor.strings.getKey( 'sidebar/skyCastle/Parts' ) ;
 		var displayStand = new iTopoDisplayStand(title);
@@ -107,13 +105,13 @@ iTopoObjectInnerEarthParts.prototype = {
 			scope.outlookManager.createThumbnailItem( title + (i+1), mesh, onSelect);
 		}
 		scope.outlookManager.active();
-		
+
 		displayStand.closeBtn.dom.addEventListener('click', function(){
 			scope.outlookManager.deactive();
 			scope.outlookManager.dispose();
 			scope.outlookManager = null;
 		});
-	},
+	},*/
 
 	onSiteProductClassCSS3D: function() {
 	var scope = this;
@@ -123,7 +121,7 @@ iTopoObjectInnerEarthParts.prototype = {
 		displayStand.container.setDisplay( 'block' );
 		displayStand.container.setPosition('absolate');
 
-		var explore = new iTopoTask3DView.Explore();
+		var explore = new iTopoTask3dExplore.Explore();
 		explore.show3D();
 		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
 		explore.play();
@@ -131,8 +129,14 @@ iTopoObjectInnerEarthParts.prototype = {
 		displayStand.container.dom.appendChild( explore.dom );
 		displayStand.container.dom.addEventListener( 'resize', function () {
 		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
-		} );
+		});
+
+		displayStand.closeBtn.dom.addEventListener('click', function() {
+			explore.stop();
+			explore.dispose();
+			explore = null;
+		});
 	}
 }
 
-export { iTopoObjectInnerEarthParts };
+export { iTopoObjectSkyCastleParts };

@@ -424,7 +424,7 @@ iTopoEarthBuilder.createSkyCastle = function(option) {
 
 			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
 			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],dis2zero);
-					console.log(ptOnSphere);
+//			console.log(ptOnSphere);
 			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
 			fontMesh.lookAt(0, 0, 0);
 
@@ -485,7 +485,7 @@ iTopoEarthBuilder.createInnerEarth = function(option) {
 
 			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
 			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],dis2zero);
-					console.log(ptOnSphere);
+//			console.log(ptOnSphere);
 			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
 			fontMesh.lookAt(0, 0, 0);
 
@@ -546,7 +546,7 @@ iTopoEarthBuilder.createLunarMoon = function(option) {
 
 			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
 			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],dis2zero);
-					console.log(ptOnSphere);
+//			console.log(ptOnSphere);
 			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
 			fontMesh.lookAt(0, 0, 0);
 

@@ -22,8 +22,9 @@ import { SetScaleCommand } from '../commands/SetScaleCommand.js';
 
 import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
-import {iTopoEarthSettings} from'../iTopoEarthSettings.js';
-import {iTopoBaseHelper} from'../iTopoBaseHelper.js';
+import { iTopoEarthSettings } from'../iTopoEarthSettings.js';
+import { iTopoBaseHelper } from'../iTopoBaseHelper.js';
+//import { setTimeout_nTimes } from'../ajaxPostHelper.js';
 
 function iTopoViewport( editor ) {
 
@@ -46,7 +47,7 @@ function iTopoViewport( editor ) {
 	var camera = editor.camera;
 	var scene = editor.scene;
 	var sceneHelpers = editor.sceneHelpers;
-	var showSceneHelpers = true;
+//	var showSceneHelpers = true;
 
 	var needsUpdate = true;
 	var objects = [];
@@ -180,7 +181,12 @@ function iTopoViewport( editor ) {
 		raycaster.setFromCamera( mouse, camera );
 
 		return raycaster.intersectObjects( objects );
+	}
 
+	function getIntersectsWithChildren( point, objects ) {
+		mouse.set( ( point.x * 2 ) - 1, - ( point.y * 2 ) + 1 );
+		raycaster.setFromCamera( mouse, camera );
+		return raycaster.intersectObjects( objects, true /*recursive */);
 	}
 
 	var onDownPosition = new THREE.Vector2();
@@ -210,12 +216,49 @@ function iTopoViewport( editor ) {
 				}
 
 			} else {
+				console.log('handleClick select and send null object');
 				editor.select( null );
 			}
 
 			render();
+		} else {
+			editor.select( null );
 		}
 	}
+
+	function onMouseMove( event ) {
+		if(editor.selected !== null)
+			return;
+
+		var mousePosition = new THREE.Vector2();
+		var array = getMousePosition( container.dom, event.clientX, event.clientY );
+		mousePosition.fromArray( array );
+
+		if(selectionBox.visible){
+			var intersectsWithHelper = getIntersectsWithChildren( mousePosition, selectionBox.children );
+			//console.log(selectionBox.children);
+			if ( intersectsWithHelper.length !== 0 ) {
+				selectionBox.visible = true;
+				return;
+			} else {
+				selectionBox.visible = false;
+			}
+		}
+
+		needsUpdate = true;
+
+		var intersects = getIntersects( mousePosition, objects );
+		if ( intersects.length > 0 ) {
+			var object = intersects[ 0 ].object;
+			editor.signals.objectHovered.dispatch(object);//send hovered message
+		} else {
+			selectionBox.visible = false;
+			editor.select( null );
+		}
+
+		render();
+	}
+
 
 	function onMouseDown( event ) {
 
@@ -280,6 +323,7 @@ function iTopoViewport( editor ) {
 
 	}
 
+	container.dom.addEventListener( 'mousemove', onMouseMove, false );
 	container.dom.addEventListener( 'mousedown', onMouseDown, false );
 	container.dom.addEventListener( 'touchstart', onTouchStart, false );
 	container.dom.addEventListener( 'dblclick', onDoubleClick, false );
@@ -393,12 +437,37 @@ function iTopoViewport( editor ) {
 
 	} );
 
-	signals.objectSelected.add( function ( object ) {
+	signals.objectHovered.add( function ( object ) {
 
 		selectionBox.visible = false;
 		transformControls.detach();
 
 		if ( object !== null && object !== scene && object !== camera ) {
+			box.setFromObject( object );
+			console.log('objectUUID=' + object.userData.objectUUID + ',objectType=' + object.userData.objectType);
+			if ( box.isEmpty() === false ) {
+				selectionBox.setFromObject( object );
+				selectionBox.visible = true;
+				needsUpdate = true;
+				//setTimeout_nTimes(20, 0, 200, render);
+			}
+			transformControls.attach( object );
+			needsUpdate = false;
+
+		} else {
+			selectionBox.resMgr.clearResources();
+			needsUpdate = true;
+			render();
+		}
+	} );
+
+	signals.objectSelected.add( function ( object ) {
+
+		if ( object !== null && object !== scene && object !== camera ) {
+			if(object.userData.objectUUID === editor.selected.userData.objectUUID)
+				return;
+
+			transformControls.detach();//平移对象的control，暂时无用
 			box.setFromObject( object );
 			console.log('objectUUID=' + object.userData.objectUUID + ',objectType=' + object.userData.objectType);
 			if ( box.isEmpty() === false ) {
@@ -410,7 +479,8 @@ function iTopoViewport( editor ) {
 			needsUpdate = false;
 
 		} else {
-			selectionBox.resMgr.clearResources();
+			selectionBox.visible = false;
+			//selectionBox.resMgr.clearResources();
 			needsUpdate = true;
 			render();
 		}
@@ -690,7 +760,7 @@ function iTopoViewport( editor ) {
 
 	signals.showHelpersChanged.add( function ( showHelpers ) {
 
-		showSceneHelpers = showHelpers;
+		//showSceneHelpers = showHelpers;
 		transformControls.enabled = showHelpers;
 
 		render();
@@ -707,10 +777,9 @@ function iTopoViewport( editor ) {
 
 		requestAnimationFrame( animate );
 
-		console.log('needsUpdate = ' + needsUpdate);
 		if(needsUpdate === true) {
 
-			var mixer = editor.mixer;
+			var mixer = editor.mixer; //stop or start all anmiation
 			var delta = clock.getDelta();
 
 			if ( mixer.stats.actions.inUse > 0 ) {
@@ -737,14 +806,6 @@ function iTopoViewport( editor ) {
 
 		startTime = performance.now();
 
-		// Adding/removing grid to scene so materials with depthWrite false
-		// don't render under the grid.
-
-		scene.add( grid );
-		renderer.setViewport( 0, 0, container.dom.offsetWidth, container.dom.offsetHeight );
-		renderer.render( scene, editor.viewportCamera );
-		scene.remove( grid );
-
 	//	editor.cameraHelper.update();
 
 		if(iTopoEarthSettings.GLOBAL_KIND == 'Global3D') {
@@ -755,13 +816,21 @@ function iTopoViewport( editor ) {
 			sceneHelpers.rotation.y = 0;
 		 }
 
+		 // Adding/removing grid to scene so materials with depthWrite false
+		 // don't render under the grid.
+
+		 scene.add( grid );
+		 renderer.setViewport( 0, 0, container.dom.offsetWidth, container.dom.offsetHeight );
+		 renderer.render( scene, editor.viewportCamera );
+		 scene.remove( grid );
+
 		if ( camera === editor.viewportCamera ) {
 
 			//---BEGIN---
 			renderer.autoClear = false;
 
-			if ( showSceneHelpers === true )
-				renderer.render( sceneHelpers, camera );
+			//if ( showSceneHelpers === true )
+			renderer.render( sceneHelpers, camera );
 
 			//屏幕左下角文字提示区
 			viewHelper.render( renderer );
