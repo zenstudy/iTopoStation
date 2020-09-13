@@ -30,7 +30,7 @@ iTopoResourceTracker.prototype.constructor = iTopoResourceTracker;
 iTopoResourceTracker.prototype = {
 
 	dispose: function() {
-		this.manager.dispose();
+		//this.manager.dispose();
 		this.dracoLoader.dispose();
 		this.clearResources();
 		console.log('===disposed:iTopoThumbnailManager=========== ');

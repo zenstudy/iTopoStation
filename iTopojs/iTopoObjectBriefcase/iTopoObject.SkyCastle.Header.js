@@ -118,65 +118,40 @@ iTopoObjectSkyCastleHeader.prototype = {
 	},
 
 	onTaskCardsClassCSS3D: function() {
-		var scope = this;
 
-		var taskFile = './iTopoObjects/' + iTopoEarthModel.SkyCastle.castleUUID + '/tasks.json';
-		fetch( taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
-				var displayStand = new iTopoDisplayStand(title);
-				document.body.appendChild(displayStand.container.dom);
-				displayStand.container.setDisplay( 'block' );
-				displayStand.container.setPosition('absolate');
-
-				var explore = new iTopoTask3dExplore.Explore(displayStand);
-				explore.initialize();
-
-				for (var i = 0; i < json.length; i++) {
-					explore.appendCardItem(json[i]);
-				}
-
-				// for( var i=0; i < 100; i ++)
-				// {
-				// 	var taskObject = {
-				// 		taskUUID:THREE.MathUtils.generateUUID(),
-				// 		taskTitle:'任务标题',
-				// 		taskCreatedby:'任务创建者',
-				// 		taskStatus:'待办',
-				// 		taskDescription:"共享地球任务书" + (i+1),
-				// 	};
-				// 	explore.appendCardItem(taskObject);
-				// }
-
+		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.castleUUID,function(json){
+			var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
+			var displayStand = new iTopoDisplayStand(title);
+			document.body.appendChild(displayStand.container.dom);
+			displayStand.container.setDisplay( 'block' );
+			displayStand.container.setPosition('absolate');
+			
+			var explore = new iTopoTask3dExplore.Explore(displayStand);
+			explore.initialize();
+			
+			for (var i = 0; i < json.length; i++) {
+				explore.appendCardItem(json[i]);
+			}
+			
+			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+			
+			explore.show3D();
+			explore.play();
+			
+			displayStand.container.dom.appendChild( explore.dom );
+			displayStand.container.dom.addEventListener( 'resize', function () {
 				explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-
-				explore.show3D();
-				explore.play();
-
-				displayStand.container.dom.appendChild( explore.dom );
-				displayStand.container.dom.addEventListener( 'resize', function () {
-					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-				});
-
-				displayStand.closeBtn.dom.addEventListener('click', function() {
-					explore.stop();
-					explore.dispose();
-					explore = null;
-				});
-
-				var taskBriefcase = new iTopoTaskBriefcase( editor );
-				displayStand.container.dom.appendChild( taskBriefcase.dom );
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
+			});
+			
+			displayStand.closeBtn.dom.addEventListener('click', function() {
+				explore.stop();
+				explore.dispose();
+				explore = null;
+			});
+			
+			var taskBriefcase = new iTopoTaskBriefcase( editor );
+			displayStand.container.dom.appendChild( taskBriefcase.dom );
+		});
 	},
 
 	getValue: function () {

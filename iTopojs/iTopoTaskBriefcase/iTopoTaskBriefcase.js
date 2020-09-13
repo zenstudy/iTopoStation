@@ -108,6 +108,7 @@ function iTopoTaskBriefcase(editor) {
 	}
 
 	signals.taskCardSelected.add(function(object) {
+		
 		if(object === null || object === undefined){
 			refreshObjectUI(null);
 			return;
@@ -117,25 +118,16 @@ function iTopoTaskBriefcase(editor) {
 			refreshObjectUI(null);
 			return;
 		}
-
-		var taskFile = './iTopoObjects/' + object.userData.objectUUID + '/tasks.json';
-		fetch( taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-				for (var i = 0; i < json.length; i++) {
-					if (json[i].taskUUID === object.userData.taskUUID) {
-						refreshObjectUI(json[i]);
-						return;
-					}
+		
+		editor.stationDB.fetchiTopoTaskCards(object.userData.objectUUID,function(json){
+			for (var i = 0; i < json.length; i++) {
+				if (json[i].taskUUID === object.userData.taskUUID) {
+					refreshObjectUI(json[i]);
+					return;
 				}
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
+			}
+		});
+
 	});
 
 	return container;

@@ -14,18 +14,16 @@ function iTopoUserBriefcase(editor) {
 	var signals = editor.signals;
 	var strings = editor.strings;
 	var ActivedObjectType = '';
-	var tabs = [];
+	scope.tabs = [];
 
 	var container = new UITabbedPanel();
 	//container.setId( 'properties' );
 	container.setId('userBriefcase');
 	//container.setDisplay( 'none' );
 
-	//createUserBriefcase();
-
 	container.tabsDiv.dom.addEventListener('click', function() {
 
-		tabs.forEach(function(tab) {
+		scope.tabs.forEach(function(tab) {
 			if(tab.name === container.selected){
 				if(tab.panel.activeTabPanel!== undefined){
 					tab.panel.activeTabPanel();
@@ -46,12 +44,12 @@ function iTopoUserBriefcase(editor) {
 	// events
 
 	function removeAllTabs() {
-		tabs.forEach(function(tab){
+		scope.tabs.forEach(function(tab){
 			console.log(tab);
 			tab.panel.dispose();
 		}) ;
 
-		tabs = [];
+		scope.tabs = [];
 
 		container.removeAllTab();
 	}
@@ -63,43 +61,52 @@ function iTopoUserBriefcase(editor) {
 		tab.panel.activeTabPanel();
 	}
 
+	function getTab( tabName ) {
+		for(var i = 0 ; i < scope.tabs.length; ++i) {
+			if(scope.tabs[i].name === tabName){
+				return scope.tabs[i];
+			}
+		}
+		return null;
+	}
+
 	function createUserBriefcase() {
-		var registerToolTab = new iTopoUserBriefcaseRegisterTool(editor);
+		var registerToolTab = new iTopoUserBriefcaseRegisterTool(editor,scope);
 		var mineAssetTab = new iTopoUserBriefcaseMineAsset(editor);
-		mineAssetTab.setValue();
+		//mineAssetTab.setValue();
 		var userBriefcaseTab = new iTopoUserBriefcaseMineFocus(editor);
-		userBriefcaseTab.setValue();
+		//userBriefcaseTab.setValue();
 		var mineFollowerTab = new iTopoUserBriefcaseMineFollower(editor);
-		mineFollowerTab.setValue();
+		//mineFollowerTab.setValue();
 
-		tabs.push( {name:'registerTool', title:strings.getKey('userBriefcase/RegisterTool')  ,panel: registerToolTab} );
-		tabs.push( {name:'minAsset', title: strings.getKey('userBriefcase/MineAsset'),panel: mineAssetTab} );
-		tabs.push( {name:'mineFocus', title: strings.getKey('userBriefcase/MineFocus'),panel: userBriefcaseTab} );
-		tabs.push( {name:'mineFollower', title: strings.getKey('userBriefcase/MineFollower'),panel: mineFollowerTab} );
+		scope.tabs.push( {name:'registerTool', title:strings.getKey('userBriefcase/RegisterTool')  ,panel: registerToolTab} );
+		scope.tabs.push( {name:'minAsset', title: strings.getKey('userBriefcase/MineAsset'),panel: mineAssetTab} );
+		scope.tabs.push( {name:'mineFocus', title: strings.getKey('userBriefcase/MineFocus'),panel: userBriefcaseTab} );
+		scope.tabs.push( {name:'mineFollower', title: strings.getKey('userBriefcase/MineFollower'),panel: mineFollowerTab} );
 
-		tabs.forEach(function(tab){
+		scope.tabs.forEach(function(tab){
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		activeTab( tabs[0] );
+		activeTab( scope.tabs[0] );
 	}
 
 	function createBluePrintPage() {
 
 		var bluePrintTab = new iTopoUserBriefcaseBluePrint(editor);
 
-		tabs.push( {name:'bluePrintTab', title: strings.getKey('userBriefcase/BluePrintPage'),panel: bluePrintTab} );
+		scope.tabs.push( {name:'bluePrintTab', title: strings.getKey('userBriefcase/BluePrintPage'),panel: bluePrintTab} );
 
-		tabs.forEach(function(tab){
+		scope.tabs.forEach(function(tab){
 			container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		activeTab( tabs[0] );
+		activeTab( scope.tabs[0] );
 	}
 
 
 	function refreshTaskbar(object) {
-		tabs.forEach(function(tab) {tab.panel.setValue(object);	});
+		scope.tabs.forEach(function(tab) {tab.panel.setValue(object);	});
 	}
 
 	var ignoreObjectSelectedSignal = false;
@@ -131,10 +138,10 @@ function iTopoUserBriefcase(editor) {
 		createBluePrintPage();
 	});
 
-	// var sharedCanteen = new UISpan().add(
-	// 	new iTopoObjectHeader( editor ),
-	// 	new iTopoTaskBriefcaseBody( editor )
-	// );
+	signals.baseRegistered.add( function(object){
+		var assetTab = getTab( 'minAsset' );
+		assetTab.panel.registerMineAsset(object);
+	});
 
 	createBluePrintPage();
 

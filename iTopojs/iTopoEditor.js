@@ -10,6 +10,7 @@ import { iTopoStorage as _Storage } from './iTopoStorage.js';
 import { iTopoStrings } from './iTopoStrings.js';
 import { iTopoConfig } from './iTopoConfig.js';
 import { iTopoResourceTracker} from './iTopoFrame/iTopoResourceTracker.js';
+import { iTopoStationDB } from './iTopoStationDB.js';
 
 var _DEFAULT_CAMERA = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );
 _DEFAULT_CAMERA.name = 'Camera';
@@ -49,6 +50,7 @@ function iTopoEditor() {
 
 		geometryChanged: new Signal(),
 
+		baseRegistered: new Signal(),
 		objectHovered: new Signal(),
 		objectSelected: new Signal(),//important
 		objectFocused: new Signal(),
@@ -84,7 +86,7 @@ function iTopoEditor() {
 	this.strings = new iTopoStrings( this.config );
 	this.loader = new _Loader( this );
 	this.camera = _DEFAULT_CAMERA.clone();
-
+	this.stationDB = new iTopoStationDB();
 	this.scene = new THREE.Scene();
 	this.scene.name = 'Scene';
 
@@ -708,8 +710,9 @@ iTopoEditor.prototype = {
 		this.mixer.stopAllAction();
 
 		this.deselect();
-		
+
 		this.signals.editorCleared.dispatch();
+		this.stationDB.dispose();
 		this.resourceTracker.dispose();
 	},
 

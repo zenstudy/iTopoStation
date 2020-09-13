@@ -189,46 +189,8 @@ function iTopoObjectBriefcase(editor) {
 
 	function refreshEcologicalFarmTabs() {
 
-		fetch(iTopoEarthSettings.ITOPOBASE_FILE, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				if(editor.selected === null)
-					return;
-
-				if(editor.selected.userData === null || editor.selected.userData === undefined)
-					return;
-
-				if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
-					return;
-
-				for (var i = 0; i < json.length; i++) {
-					if (json[i].baseUUID === editor.selected.userData.objectUUID) {
-
-						tabs.forEach(function(tab) {
-							tab.panel.setValue(json[i]);
-						});
-
-						return;
-					}
-				}
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	}
-
-	function refreshSharedCanteenTabs() {
-		fetch(iTopoEarthSettings.ITOPOBASE_FILE, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-
+		editor.stationDB.fetchiTopobase(function(json){
+			
 			if(editor.selected === null)
 				return;
 
@@ -238,23 +200,46 @@ function iTopoObjectBriefcase(editor) {
 			if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
 				return;
 
-			//打印返回的json数据
-			response.json().then(function(json) {
-				for (var i = 0; i < json.length; i++) {
-					if (json[i].baseUUID === editor.selected.userData.objectUUID) {
+			for (var i = 0; i < json.length; i++) {
+				if (json[i].baseUUID === editor.selected.userData.objectUUID) {
 
-						tabs.forEach(function(tab) {
-							tab.panel.setValue(json[i]);
-						});
+					tabs.forEach(function(tab) {
+						tab.panel.setValue(json[i]);
+					});
 
-						return;
-					}
+					return;
 				}
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
+			}
+			
+		});
+		
+	}
 
+	function refreshSharedCanteenTabs() {
+		
+		editor.stationDB.fetchiTopobase(function(json){
+			
+			if(editor.selected === null)
+				return;
+		
+			if(editor.selected.userData === null || editor.selected.userData === undefined)
+				return;
+		
+			if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+				return;
+		
+			for (var i = 0; i < json.length; i++) {
+				if (json[i].baseUUID === editor.selected.userData.objectUUID) {
+		
+					tabs.forEach(function(tab) {
+						tab.panel.setValue(json[i]);
+					});
+		
+					return;
+				}
+			}
+			
+		});
 	}
 
 	function refreshiTopoSkyCastleTabs() {
@@ -321,24 +306,17 @@ function iTopoObjectBriefcase(editor) {
 	}
 
 	function refreshStarTabs() {
-
-		fetch(iTopoEarthSettings.ITOPOUSER_FILE, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-				
-				if(editor.selected === null)
+		
+		editor.stationDB.fetchiTopoStars(function(json){
+			if(editor.selected === null)
 					return;
-				
+
 				if(editor.selected.userData === null || editor.selected.userData === undefined)
 					return;
-				
+
 				if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
 					return;
-				
+
 				for (var i = 0; i < json.length; i++) {
 					if (json[i].starUUID === editor.selected.userData.objectUUID) {
 
@@ -349,10 +327,8 @@ function iTopoObjectBriefcase(editor) {
 						return;
 					}
 				}
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
+		});
+		
 	}
 
 	var ignoreObjectSelectedSignal = false;

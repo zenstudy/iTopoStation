@@ -53,6 +53,23 @@ export function ajaxGet(url,fnSucceed, fnFail, fnLoading, username,password){
 	}
 	ajax.send();
 }
+// 函数使用方法
+// userLogin: function(userStarInfo, fnUserRegistered){
+
+// 	ajaxPost(jsonFileUrl.iTopoEarthLogin, JSON.stringify(userStarInfo),
+// 	function fnSucceed(jsonData)
+// 	{
+// 		fnUserRegistered();
+// 	},
+// 	function fnFail()
+// 	{
+// 		console.log("post failed.");
+// 	},
+// 	function fnLoading()
+// 	{
+
+// 	});
+// },
 
 //usage:
 // _fetch(fetch('//a.com/b/c'), 2000)

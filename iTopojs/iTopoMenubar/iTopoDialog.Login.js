@@ -4,7 +4,6 @@
 
 import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
-import { ajaxGet, ajaxPost } from '../ajaxPostHelper.js'
 import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 
@@ -78,11 +77,9 @@ function iTopoDialogLogin( editor, menubar ) {
 		var lightStars = new UIButton( strings.getKey( 'iTopoDialog/login/login' ) );
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
-
-			// ajaxPost(editor.config.getKey( 'url/api/iTopoEarthLogin' ),JSON.stringify(userStarInfo),
-			// 	function fnSucceed(jsonData)
-			// 	{
-					//var detailUserInfo = JSON.parse(jsonData);
+			
+			editor.stationDB.userLogin( userStarInfo, function(){
+				//var detailUserInfo = JSON.parse(jsonData);
 					var detailUserInfo = new iTopoStarUser();
 					detailUserInfo.starUUID = "D15A6F8A-B35A-453C-AC44-BAC042A44FDD";
 					menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, detailUserInfo ) );
@@ -97,16 +94,9 @@ function iTopoDialogLogin( editor, menubar ) {
 					editor.select(star);// this function will call
 					
 					editor.signals.userRegisteredOrLogin.dispatch(detailUserInfo);
-				// },
-				// function fnFail()
-				// {
-				// 	console.log("post failed.");
-				// },
-				// function fnLoading()
-				// {
+			});
 
-				// },
-			//);
+
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 
 		} );

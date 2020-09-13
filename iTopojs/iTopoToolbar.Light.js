@@ -5,7 +5,7 @@
 import { UIPanel, UIButton } from './iTopoUI.js';
 import { UIBoolean } from '../js/libs/ui.three.js';
 import { iTopoDialogLightStar } from './iTopoDialog.LightStar.js';
-import { iTopoDialogLightEarth } from './iTopoDialog.LightEarth.js';
+import { iTopoDialogRegisterBase } from './iTopoUserBriefcase/iTopoDialog.RegisterBase.js';
 
 var iTopoToolbarLight = function ( editor ) {
 
@@ -47,7 +47,7 @@ var iTopoToolbarLight = function ( editor ) {
 		var dlg = new UIPanel();
 		dlgContainer.add(dlg);
 
-		var lightEarthDlg = new iTopoDialogLightEarth( editor );
+		var lightEarthDlg = new iTopoDialogRegisterBase( editor );
 		dlg.add(lightEarthDlg);
 
 		document.body.appendChild(dlgContainer.dom);

@@ -66,13 +66,13 @@ iTopoEarthModel.ReCreate = function() {
 	iTopoEarthModel.MarkiTopoStars();
 
 	if (iTopoEarthSettings.MAP_KIND == "共创基地") {
-		iTopoEarthModel.MarkiTopoBase(iTopoEarthSettings.ITOPOBASE_FILE);
+		iTopoEarthModel.MarkiTopoBase();
 	} else if (iTopoEarthSettings.MAP_KIND == "雨花斋") {
-		iTopoEarthModel.MarkCanteen(iTopoEarthSettings.CANTEEN_YUHUAZHAI_FILE);
+		iTopoEarthModel.MarkiTopoCanteen();
 	}else if (iTopoEarthSettings.MAP_KIND == "超级节点儿") {
-		iTopoEarthModel.MarkZenNodes(iTopoEarthSettings.HORIZEN_SUPERNODES_FILE);
+		iTopoEarthModel.MarkHorizenSuperNodes();
 	} else if (iTopoEarthSettings.MAP_KIND == "普通节点儿") {
-		iTopoEarthModel.MarkZenNodes(iTopoEarthSettings.HORIZEN_SECURENODES_FILE);
+		iTopoEarthModel.MarkHorizenSecureNodes();
 	} else if (iTopoEarthSettings.MAP_KIND == "国家分布") {
 		iTopoEarthModel.MarkCountries();
 	}
@@ -278,6 +278,14 @@ iTopoEarthModel.lightStars = function(userStarInfo) {
 // 	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.fontMesh));
 // }
 
+iTopoEarthModel.focusObject = function(lightTask) {
+	const seeFrom = createPosition(lightTask.lng, lightTask.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);
+
+	iTopoEarthModel.ParticlesMove(seeFrom);
+	editor.camera.position.copy(seeFrom);
+	editor.camera.lookAt(0, 0, 0);
+}
+
 iTopoEarthModel.lightEarth = function(lightTask) {
 
 	const seeFrom = createPosition(lightTask.lng, lightTask.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);
@@ -336,42 +344,34 @@ iTopoEarthModel.ParticlesMove = function(camera2Pos) {
 
 iTopoEarthModel.MarkiTopoStars = function() {
 
-	fetch(iTopoEarthSettings.ITOPOUSER_FILE, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		//打印返回的json数据
-		response.json().then(function(json) {
-			var average = getAverage();
-			var objArray = [];
-			for (var i = 0; i < json.length; i++) {
-				// var plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-				// var plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-				// var lngx = plusOrMinus_lngx * (Math.random() * 180);
-				// var latx = plusOrMinus_latx * (Math.random() * 90);
+	editor.stationDB.fetchiTopoStars(function(json){
+	var average = getAverage();
+		var objArray = [];
+		for (var i = 0; i < json.length; i++) {
+			// var plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
+			// var plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
+			// var lngx = plusOrMinus_lngx * (Math.random() * 180);
+			// var latx = plusOrMinus_latx * (Math.random() * 90);
 
-				var option = {
-					"objectUUID": json[i].starUUID,
-					"objectType": "iTopoType/TaskObject/Star",
-					"pos": [json[i].lng, json[i].lat],
-					"starSize": iTopoEarthSettings.starSize * (1 + Math.random())*3,
-					"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS * 2,
-					"textMarked": false,
-					"textValue": json[i].cellPhone,
-					"fontColor": iTopoEarthSettings.markingTextColor,
-					"fontSize": iTopoEarthSettings.markingFontSize,
-					"average": average,
-				}
-
-				var star = iTopoEarthBuilder.createStar(option);
-				objArray.push(star);
+			var option = {
+				"objectUUID": json[i].starUUID,
+				"objectType": "iTopoType/TaskObject/Star",
+				"pos": [json[i].lng, json[i].lat],
+				"starSize": iTopoEarthSettings.starSize * (1 + Math.random())*3,
+				"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS * 2,
+				"textMarked": false,
+				"textValue": json[i].cellPhone,
+				"fontColor": iTopoEarthSettings.markingTextColor,
+				"fontSize": iTopoEarthSettings.markingFontSize,
+				"average": average,
 			}
-			editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
-		})
-	}).catch(function(e) {
-		console.log('error: ' + e.toString());
-	})
+
+			var star = iTopoEarthBuilder.createStar(option);
+			objArray.push(star);
+		}
+		editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
+	});
+
 }
 
 iTopoEarthModel.createStarParticles = function() {
@@ -414,15 +414,11 @@ iTopoEarthModel.createStarParticles = function() {
 	return layerStarParticles;
 }
 
-iTopoEarthModel.MarkiTopoBase = function(url) {
-	fetch(url, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		//打印返回的json数据
-		response.json().then(function(json) {
-			var average = getAverage();
+iTopoEarthModel.MarkiTopoBase = function() {
+
+	editor.stationDB.fetchiTopobase(function(json){
+
+	var average = getAverage();
 			if (iTopoEarthSettings.markingKind === "lightCone") {
 				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
@@ -483,20 +479,13 @@ iTopoEarthModel.MarkiTopoBase = function(url) {
 			}
 			editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 		})
-	}).catch(function(e) {
-		console.log('error: ' + e.toString());
-	})
 }
 
-iTopoEarthModel.MarkCanteen = function(url) {
-	fetch(url, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		//打印返回的json数据
-		response.json().then(function(json) {
-			var average = getAverage();
+iTopoEarthModel.MarkiTopoCanteen = function() {
+
+	editor.stationDB.fetchiTopoCanteen(function(json){
+
+	var average = getAverage();
 			if (iTopoEarthSettings.markingKind === "lightCone") {
 				var objArray = [];
 				for (var i = 0; i < json.length; i++) {
@@ -554,22 +543,13 @@ iTopoEarthModel.MarkCanteen = function(url) {
 				objArray.push(mesh);
 				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			}
-
-		})
-	}).catch(function(e) {
-		console.log('error: ' + e.toString());
-	})
+	});
 }
 
-iTopoEarthModel.MarkZenNodes = function(url) {
-	fetch(url, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		//打印返回的json数据
-		response.json().then(function(json) {
-			var average = getAverage();
+iTopoEarthModel.MarkHorizenSuperNodes = function() {
+
+	editor.stationDB.fetchHorizenSuperNodes(function(json){
+		var average = getAverage();
 			if (iTopoEarthSettings.markingKind === "lightCone") {
 
 				var objArray = [];
@@ -632,92 +612,222 @@ iTopoEarthModel.MarkZenNodes = function(url) {
 				objArray.push(mesh);
 				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			}
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	})
+	});
 }
 
-iTopoEarthModel.MarkZenNodeParticleOnPlane = function(url) {
-	fetch(url, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		//打印返回的json数据
-		response.json().then(function(json) {
-			//存放粒子数据的网格
-			var geom = new THREE.Geometry();
-			//样式化粒子的THREE.PointCloudMaterial材质
-			var material = new THREE.PointsMaterial({
-				size: 10,
-				sizeAttenuation: true,
-				vertexColors: THREE.VertexColors,
-				transparent: true,
-				opacity: 0.99,
-				map: new THREE.TextureLoader().load(iTopoEarthSettings.LAND_MARK_01),
-				side: THREE.FrontSide,
-				depthWrite: false,
-				speed_: iTopoEarthSettings.BLINT_SPEED
-			});
+iTopoEarthModel.MarkHorizenSuperNodes = function() {
 
-			let average = getAverage();
-			var markedNames = [];
-			for (var i = 0; i < json.length; i++) {
+	editor.stationDB.fetchHorizenSuperNodes(function(json){
+		var average = getAverage();
+			if (iTopoEarthSettings.markingKind === "lightCone") {
 
-				var option = {
-					"textValue": json[i].city,
-					"fontColor": iTopoEarthSettings.markingTextColor,
-					"fontSize": iTopoEarthSettings.markingFontSize,
-					"pos": [json[i].lon, json[i].lat]
+				var objArray = [];
+				for (var i = 0; i < json.length; i++) {
+
+					var option = {
+						"objectUUID": THREE.MathUtils.generateUUID(),
+						"objectType": 'ZNode',
+						"pos": [json[i].lon, json[i].lat],
+						"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
+						"lightConeHeight": randomLightConeHeight(),
+						"textMarked": false,
+						"textValue": json[i].city + ", " + json[i].country,
+						"fontColor": iTopoEarthSettings.markingTextColor,
+						"fontSize": iTopoEarthSettings.markingFontSize,
+						"average": average,
+					}
+
+					var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
+					objArray.push(lightConeMark.lightConeGrp);
+					layerMarks.add(lightConeMark.fontMesh);
+				}
+				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
+			} else if (iTopoEarthSettings.markingKind === "balloon") {
+
+				const geometries = [];
+				var markedNames = [];
+				var objArray = [];
+				for (var i = 0; i < json.length; i++) {
+
+					var option = {
+						"objectUUID": THREE.MathUtils.generateUUID(),
+						"objectType": 'ZNode',
+						"pos": [json[i].lon, json[i].lat],
+						"textMarked": false,
+						"textValue": json[i].city,
+						"fontColor": iTopoEarthSettings.markingTextColor,
+						"fontSize": iTopoEarthSettings.markingFontSize,
+						"average": average,
+					}
+
+					markedNames.forEach((mn) => {
+						if (mn === json[i].city)
+							option.textMarked = true;
+					});
+
+					if (!option.textMarked)
+						markedNames.push(json[i].city);
+
+					var balloonMark = iTopoEarthBuilder.createBalloonMark(option);
+
+					geometries.push(balloonMark.ball);
+					geometries.push(balloonMark.cylinder);
+					if (!option.textMarked)
+						layerMarks.add(balloonMark.fontMesh);
 				}
 
-				let cityX = option.pos[0] * average / iTopoEarthSettings.mapScaleSize;
-				let cityY = option.pos[1] * average / iTopoEarthSettings.mapScaleSize;
-
-				var particle = new THREE.Vector3(cityX, cityY, iTopoEarthSettings.zHeight + 1);
-				geom.vertices.push(particle);
-				var color = new THREE.Color(+iTopoEarthModel.RandomColor());
-				geom.colors.push(color);
-
-				let textMarked = false;
-
-				markedNames.forEach((mn) => {
-					if (mn === json[i].city)
-						textMarked = true;
-				})
-
-				if (!textMarked) {
-					markedNames.push(json[i].city);
-
-					// 添加文字说明
-					let textLength = option.textValue.length;
-					let texture = new THREE.CanvasTexture(iTopoEarthBuilder.getCanvasFont(textLength * option.fontSize *
-						average,
-						option.fontSize * average, option.textValue, option.fontColor));
-					let fontMesh = new THREE.Sprite(
-						new THREE.SpriteMaterial({
-							map: texture
-						})
-					)
-					fontMesh.scale.x = option.fontSize / average * textLength;
-					fontMesh.scale.y = option.fontSize / average;
-					fontMesh.position.set(cityX, cityY, iTopoEarthSettings.zHeight + iTopoEarthSettings.circularHeight +
-						iTopoEarthSettings
-						.circularRadio + option.fontSize / average + 0.5); // 定义提示文字显示位置
-
-					layerMarks.add(fontMesh);
-				}
+				const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries, false);
+				const mesh = new THREE.Mesh(mergedGeometry, iTopoEarthCache.markingSymbolMaterial);
+				objArray.push(mesh);
+				editor.execute(new AddiTopoObjArrayCommand(editor, objArray));
 			}
+	});
+}
 
-			//生成模型，添加到场景当中
-			var cloud1 = new THREE.Points(geom, material);
-			layerMarks.add(cloud1);
+iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
+	
+	editor.stationDB.fetchHorizenSecureNodes(function(json){
+		//存放粒子数据的网格
+		var geom = new THREE.Geometry();
+		//样式化粒子的THREE.PointCloudMaterial材质
+		var material = new THREE.PointsMaterial({
+			size: 10,
+			sizeAttenuation: true,
+			vertexColors: THREE.VertexColors,
+			transparent: true,
+			opacity: 0.99,
+			map: new THREE.TextureLoader().load(iTopoEarthSettings.LAND_MARK_01),
+			side: THREE.FrontSide,
+			depthWrite: false,
+			speed_: iTopoEarthSettings.BLINT_SPEED
+		});
+		
+		let average = getAverage();
+		var markedNames = [];
+		for (var i = 0; i < json.length; i++) {
+		
+			var option = {
+				"textValue": json[i].city,
+				"fontColor": iTopoEarthSettings.markingTextColor,
+				"fontSize": iTopoEarthSettings.markingFontSize,
+				"pos": [json[i].lon, json[i].lat]
+			}
+		
+			let cityX = option.pos[0] * average / iTopoEarthSettings.mapScaleSize;
+			let cityY = option.pos[1] * average / iTopoEarthSettings.mapScaleSize;
+		
+			var particle = new THREE.Vector3(cityX, cityY, iTopoEarthSettings.zHeight + 1);
+			geom.vertices.push(particle);
+			var color = new THREE.Color(+iTopoEarthModel.RandomColor());
+			geom.colors.push(color);
+		
+			let textMarked = false;
+		
+			markedNames.forEach((mn) => {
+				if (mn === json[i].city)
+					textMarked = true;
+			})
+		
+			if (!textMarked) {
+				markedNames.push(json[i].city);
+		
+				// 添加文字说明
+				let textLength = option.textValue.length;
+				let texture = new THREE.CanvasTexture(iTopoEarthBuilder.getCanvasFont(textLength * option.fontSize *
+					average,
+					option.fontSize * average, option.textValue, option.fontColor));
+				let fontMesh = new THREE.Sprite(
+					new THREE.SpriteMaterial({
+						map: texture
+					})
+				)
+				fontMesh.scale.x = option.fontSize / average * textLength;
+				fontMesh.scale.y = option.fontSize / average;
+				fontMesh.position.set(cityX, cityY, iTopoEarthSettings.zHeight + iTopoEarthSettings.circularHeight +
+					iTopoEarthSettings
+					.circularRadio + option.fontSize / average + 0.5); // 定义提示文字显示位置
+		
+				layerMarks.add(fontMesh);
+			}
+		}
+		
+		//生成模型，添加到场景当中
+		var cloud1 = new THREE.Points(geom, material);
+		layerMarks.add(cloud1);
+	});
+}
 
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	})
+iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
+	
+	editor.stationDB.fetchHorizenSecureNodes(function(json){
+		//存放粒子数据的网格
+		var geom = new THREE.Geometry();
+		//样式化粒子的THREE.PointCloudMaterial材质
+		var material = new THREE.PointsMaterial({
+			size: 10,
+			sizeAttenuation: true,
+			vertexColors: THREE.VertexColors,
+			transparent: true,
+			opacity: 0.99,
+			map: new THREE.TextureLoader().load(iTopoEarthSettings.LAND_MARK_01),
+			side: THREE.FrontSide,
+			depthWrite: false,
+			speed_: iTopoEarthSettings.BLINT_SPEED
+		});
+		
+		let average = getAverage();
+		var markedNames = [];
+		for (var i = 0; i < json.length; i++) {
+		
+			var option = {
+				"textValue": json[i].city,
+				"fontColor": iTopoEarthSettings.markingTextColor,
+				"fontSize": iTopoEarthSettings.markingFontSize,
+				"pos": [json[i].lon, json[i].lat]
+			}
+		
+			let cityX = option.pos[0] * average / iTopoEarthSettings.mapScaleSize;
+			let cityY = option.pos[1] * average / iTopoEarthSettings.mapScaleSize;
+		
+			var particle = new THREE.Vector3(cityX, cityY, iTopoEarthSettings.zHeight + 1);
+			geom.vertices.push(particle);
+			var color = new THREE.Color(+iTopoEarthModel.RandomColor());
+			geom.colors.push(color);
+		
+			let textMarked = false;
+		
+			markedNames.forEach((mn) => {
+				if (mn === json[i].city)
+					textMarked = true;
+			})
+		
+			if (!textMarked) {
+				markedNames.push(json[i].city);
+		
+				// 添加文字说明
+				let textLength = option.textValue.length;
+				let texture = new THREE.CanvasTexture(iTopoEarthBuilder.getCanvasFont(textLength * option.fontSize *
+					average,
+					option.fontSize * average, option.textValue, option.fontColor));
+				let fontMesh = new THREE.Sprite(
+					new THREE.SpriteMaterial({
+						map: texture
+					})
+				)
+				fontMesh.scale.x = option.fontSize / average * textLength;
+				fontMesh.scale.y = option.fontSize / average;
+				fontMesh.position.set(cityX, cityY, iTopoEarthSettings.zHeight + iTopoEarthSettings.circularHeight +
+					iTopoEarthSettings
+					.circularRadio + option.fontSize / average + 0.5); // 定义提示文字显示位置
+		
+				layerMarks.add(fontMesh);
+			}
+		}
+		
+		//生成模型，添加到场景当中
+		var cloud1 = new THREE.Points(geom, material);
+		layerMarks.add(cloud1);
+	});
 }
 
 iTopoEarthModel.MarkCountries = function() {
@@ -748,78 +858,67 @@ iTopoEarthModel.MarkCountries = function() {
 
 // 计算绘制地图参数函数
 var CreateWorldPlaneMap = function() {
-	fetch(iTopoEarthSettings.WORLD_JSON_FILE, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		//打印返回的json数据
-		response.json().then(function(worldGeometry) {
-			drawShapeOptionFun(worldGeometry);
-			drawWorldLineFun2D(worldGeometry);
-		})
-	}).catch(function(e) {
-		console.log('error: ' + e.toString());
-	})
+
+	editor.stationDB.fetchiWorldGeo(function(worldGeometry){
+
+		drawShapeOptionFun(worldGeometry);
+		drawWorldLineFun2D(worldGeometry);
+
+	});
+
 }
 
 var CreateWorldSphereMap = function() {
-	fetch(iTopoEarthSettings.WORLD_JSON_FILE, {
-		method: 'GET',
-		mode: 'cors', // 允许发送跨域请求
-		credentials: 'include'
-	}).then(function(response) {
-		response.json().then(function(json) {
 
-			var worldGeometry = [];
+	editor.stationDB.fetchiWorldGeo(function(json){
+
+	var worldGeometry = [];
 			// 绘制世界地图
-			json.features.forEach(function(worldItem) {
-				var length = worldItem.geometry.coordinates.length;
-				var multipleBool = length > 1 ? true : false;
-				worldItem.geometry.coordinates.forEach(function(worldChildItem) {
-					if (multipleBool) {
-						// 值界可以使用的经纬度信息
-						if (worldChildItem.length && worldChildItem[0].length == 2) {
-							worldGeometry.push(worldChildItem);
-						}
-						// 需要转换才可以使用的经纬度信息
-						if (worldChildItem.length && worldChildItem[0].length > 2) {
-							worldChildItem.forEach(function(countryItem, countryItenIndex) {
-								worldGeometry.push(countryItem);
-							})
-						}
-					} else {
-						var countryPos = null;
-						if (worldChildItem.length > 1) {
-							countryPos = worldChildItem;
-						} else {
-							countryPos = worldChildItem[0];
-						}
-						if (countryPos) {
-							worldGeometry.push(countryPos);
-						}
+		json.features.forEach(function(worldItem) {
+			var length = worldItem.geometry.coordinates.length;
+			var multipleBool = length > 1 ? true : false;
+			worldItem.geometry.coordinates.forEach(function(worldChildItem) {
+				if (multipleBool) {
+					// 值界可以使用的经纬度信息
+					if (worldChildItem.length && worldChildItem[0].length == 2) {
+						worldGeometry.push(worldChildItem);
 					}
-				})
-			})
-
-			// 创建地球
-			//var earthPic = new THREE.TextureLoader().load(iTopoEarthSettings.EARTH_PNG_WORLDGEOMETRY);
-			var earthPic = new THREE.CanvasTexture(createCanvas(2048, 1024, worldGeometry));
-			var sphereMesh = new THREE.Mesh(iTopoEarthCache.earthBufferSphere,
-				new THREE.MeshBasicMaterial({
-					map: earthPic,
-					side: THREE.FrontSide
-				}));
-
-			layerPlanet.add(sphereMesh);
-
-			// 绘制世界地图
-			worldGeometry.forEach(function(item, index) {
-				CreateSphereLine(item, index);
+					// 需要转换才可以使用的经纬度信息
+					if (worldChildItem.length && worldChildItem[0].length > 2) {
+						worldChildItem.forEach(function(countryItem, countryItenIndex) {
+							worldGeometry.push(countryItem);
+						})
+					}
+				} else {
+					var countryPos = null;
+					if (worldChildItem.length > 1) {
+						countryPos = worldChildItem;
+					} else {
+						countryPos = worldChildItem[0];
+					}
+					if (countryPos) {
+						worldGeometry.push(countryPos);
+					}
+				}
 			})
 		})
-	}).catch(function(e) {
-		console.log("Oops, error");
+
+		// 创建地球
+		//var earthPic = new THREE.TextureLoader().load(iTopoEarthSettings.EARTH_PNG_WORLDGEOMETRY);
+		var earthPic = new THREE.CanvasTexture(createCanvas(2048, 1024, worldGeometry));
+		var sphereMesh = new THREE.Mesh(iTopoEarthCache.earthBufferSphere,
+			new THREE.MeshBasicMaterial({
+				map: earthPic,
+				side: THREE.FrontSide
+			}));
+
+		layerPlanet.add(sphereMesh);
+
+		// 绘制世界地图
+		worldGeometry.forEach(function(item, index) {
+			CreateSphereLine(item, index);
+		})
+
 	});
 }
 

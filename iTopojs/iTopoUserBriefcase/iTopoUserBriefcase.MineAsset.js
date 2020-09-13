@@ -7,7 +7,7 @@ import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
 import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
-import { iTopoDialogLightEarth } from '../iTopoDialog.LightEarth.js';
+import { iTopoDialogRegisterBase } from './iTopoDialog.RegisterBase.js';
 
 function iTopoUserBriefcaseMineAsset(editor) {
 	var scope = this;
@@ -24,18 +24,6 @@ function iTopoUserBriefcaseMineAsset(editor) {
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
 		scope.thumbnailManager.create(containerBaseModel.dom);
-
-		var originPosition = new THREE.Vector3();
-		editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 1, function(object){
-			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'userBriefcase/RegisterTool/RegisterEcologicalFarm' ),
-		 	object , scope.onRegisterEcologicalFarm);
-		}) ;
-
-		editor.resourceTracker.loadModel("iTopoType/TaskObject/SharedCanteen", originPosition, 1, function(object){
-			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'userBriefcase/RegisterTool/RegisterSharedCanteen' ),
-			 	object , scope.onRegisterSharedCanteen);
-		}) ;
-
 	}
 
 	return this;
@@ -67,108 +55,6 @@ iTopoUserBriefcaseMineAsset.prototype = {
 		scope.thumbnailManager = null;
 	},
 
-	onClickThumbnail1: function() {// this对应一个item
-		var scope = this;
-	    var title = editor.strings.getKey( 'userBriefcase/RegisterTool' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-		displayStand.container.setPosition('absolate');
-
-	//	var dom = document.createElement( 'div' );
-	//	displayStand.container.dom.appendChild( dom );
-
-	// var items = [
-	// 	{ title: 'menubar/examples/Arkanoid', file: 'arkanoid.app.json' },
-	// 	{ title: 'menubar/examples/Camera', file: 'camera.app.json' },
-	// 	{ title: 'menubar/examples/Particles', file: 'particles.app.json' },
-	// 	{ title: 'menubar/examples/Pong', file: 'pong.app.json' },
-	// 	{ title: 'menubar/examples/Shaders', file: 'shaders.app.json' }
-	// ];
-
-		// var loader = new THREE.FileLoader();// 以Index.html为根路径
-		// loader.load( 'examples/camera.app.json', function ( text ) {
-		// 	var player = new iTopo3dExplore.Player();
-		// 	player.load( JSON.parse( text ) );
-		// 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight  );
-		// 	player.play();
-		// 	displayStand.container.dom.appendChild( player.dom );
-		// 	displayStand.container.dom.addEventListener( 'resize', function () {
-		// 	 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight );
-		// 	} );
-		// } );
-
-		{
-		var sphereGeometry = new THREE.SphereGeometry(2, 20, 20);
-		var sphereMateial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: true});
-		var sphere = new THREE.Mesh(sphereGeometry, sphereMateial);
-		}
-
-		function random(min, max) {
-		  return Math.floor(Math.random() * (max - min)) + min;
-		}
-
-			//webaudio_orientation.html
-			// var reflectionCube = new THREE.CubeTextureLoader()
-			// 	.setPath( 'textures/cube/SwedishRoyalCastle/' )
-			// 	.load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] );
-
-		const loader = new THREE.CubeTextureLoader(); //载入顺序为[right,left,up,down,front,back]
-
-		var texturePaths = ['iTopoObjects/00_Default_Resource/computer-history-museum/',
-		'iTopoObjects/00_Default_Resource/FishPond/',
-		'iTopoObjects/00_Default_Resource/Footballfield/',
-		'iTopoObjects/00_Default_Resource/Park/'];
-		var index = random(0,3);
-		const texture = loader.load([
-		  texturePaths[index] + 'posx.jpg',
-		  texturePaths[index] + 'negx.jpg',
-		  texturePaths[index] + 'posy.jpg',
-		  texturePaths[index] + 'negy.jpg',
-		  texturePaths[index] + 'posz.jpg',
-		  texturePaths[index] + 'negz.jpg',
-		]);
-
-		var explore = new iTopo3dExplore.Explore();
-		explore.show3D(texture , sphere);
-		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight  );
-		explore.play();
-
-		displayStand.container.dom.appendChild( explore.dom );
-		displayStand.container.dom.addEventListener( 'resize', function () {
-		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight );
-		} );
-
-	},
-
-	onRegisterSharedCanteen: function() {// this对应一个item
-		var dlgContainer = new UIPanel();
-		dlgContainer.setId( 'iTopoDialog' );
-		dlgContainer.setDisplay( 'block' );
-
-		var dlg = new UIPanel();
-		dlgContainer.add(dlg);
-
-		var lightEarthDlg = new iTopoDialogLightEarth( editor );
-		dlg.add(lightEarthDlg);
-
-		document.body.appendChild(dlgContainer.dom);
-	},
-
-	onRegisterEcologicalFarm: function() {
-		var dlgContainer = new UIPanel();
-		dlgContainer.setId( 'iTopoDialog' );
-		dlgContainer.setDisplay( 'block' );
-
-		var dlg = new UIPanel();
-		dlgContainer.add(dlg);
-
-		var lightEarthDlg = new iTopoDialogLightEarth( editor );
-		dlg.add(lightEarthDlg);
-
-		document.body.appendChild(dlgContainer.dom);
-	},
-
 	getValue: function () {
 
 		return this.taskObject;
@@ -183,6 +69,20 @@ iTopoUserBriefcaseMineAsset.prototype = {
 		}
 
 		this.taskObject = taskObject;
+	},
+
+	registerMineAsset: function(taskObject) {
+		var scope = this;
+		var originPosition = new THREE.Vector3();
+		editor.resourceTracker.loadModel(taskObject.taskType, originPosition, 1, function(object){
+			object.userData = {	objectUUID: taskObject.baseUUID, objectType: taskObject.taskType, };
+
+			scope.thumbnailManager.createThumbnailItem( taskObject.title, object , function(){
+				var baseObject = editor.objectByiTopoUUID(taskObject.baseUUID);
+				editor.select(baseObject);
+				editor.signals.objectFocused.dispatch( baseObject );
+			});
+		}) ;
 	}
 }
 

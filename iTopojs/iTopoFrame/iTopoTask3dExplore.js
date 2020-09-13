@@ -3,7 +3,7 @@
 import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
 import { CSS3DRenderer, CSS3DObject } from '../../../examples/jsm/renderers/CSS3DRenderer.js';
 import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
-import { ajaxPost } from '../ajaxPostHelper.js'
+
 
 var iTopoTask3dExplore = {
 
@@ -188,35 +188,25 @@ var iTopoTask3dExplore = {
 			tableButton.type="button";
 			tableButton.value = editor.strings.getKey( 'iTopoTask3dExplore/TaskViewTopMenu/AddTask' );
 			tableButton.addEventListener('click', function(){
-					var taskObject = {
-						objectUUID : editor.selected.userData.objectUUID,
-						taskUUID:THREE.MathUtils.generateUUID(),
-						taskTitle:'任务标题',
-						taskCreatedby:'任务创建者',
-						taskStatus:'待办',
-						taskDescription:'关于此任务的详细描述',
-					};
-					scope.unshiftCardItem(taskObject);
-					scope.generateTaskLayouts();
-					scope.transformWithOutAnimate( scope.targets.helix, 2000 );
+				var taskObject = {
+					objectUUID : editor.selected.userData.objectUUID,
+					taskUUID:THREE.MathUtils.generateUUID(),
+					taskTitle:'任务标题',
+					taskCreatedby:'任务创建者',
+					taskStatus:'待办',
+					taskDescription:'关于此任务的详细描述',
+				};
+				scope.unshiftCardItem(taskObject);
+				scope.generateTaskLayouts();
+				scope.transformWithOutAnimate( scope.targets.helix, 2000 );
 
-					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
+				scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
 
-					ajaxPost('http://127.0.0.1:8081/addTask', JSON.stringify(taskObject),
-					function fnSucceed(jsonData)
-					{
-						editor.signals.taskCardSelected.dispatch(scope.objects[0]);
-					},
-					function fnFail()
-					{
-						console.log("post failed.");
-					},
-					function fnLoading()
-					{
-
-					});
-
-				} );
+				editor.stationDB.addTask(JSON.stringify(taskObject), function(){
+					editor.signals.taskCardSelected.dispatch(scope.objects[0]);
+				});
+				
+			} );
 			css3dMenu.appendChild( tableButton );
 
 			var sphereButton = document.createElement( 'input' );

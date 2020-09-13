@@ -24,7 +24,6 @@ import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
 import { iTopoEarthSettings } from'../iTopoEarthSettings.js';
 import { iTopoBaseHelper } from'../iTopoBaseHelper.js';
-//import { setTimeout_nTimes } from'../ajaxPostHelper.js';
 
 function iTopoViewport( editor ) {
 
@@ -487,8 +486,16 @@ function iTopoViewport( editor ) {
 	} );
 
 	signals.objectFocused.add( function ( object ) {
+		//controls.focus( object );
 
-		controls.focus( object );
+		editor.stationDB.fetchiTopobase(function(json){
+			for (var i = 0; i < json.length; i++) {
+				if (json[i].baseUUID === object.userData.objectUUID) {
+					iTopoEarthModel.focusObject(json[i]);
+					break;
+				}
+			}
+		});
 
 	} );
 

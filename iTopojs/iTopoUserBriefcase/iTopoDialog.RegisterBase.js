@@ -1,11 +1,7 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea,UINumber, UIInteger, UIInput } from'./iTopoUI.js';
-import { iTopoEarthModel } from './iTopoEarthModel.js'
-import { ajaxPost } from './ajaxPostHelper.js'
+import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea,UINumber, UIInteger, UIInput } from'../iTopoUI.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js'
 
-function iTopoDialogLightEarth( editor ) {
+function iTopoDialogRegisterBase( editor ) {
 	var strings = editor.strings;
 
 	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
@@ -180,22 +176,12 @@ function iTopoDialogLightEarth( editor ) {
 		var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/lightEarth' ) );
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
-
-			ajaxPost('http://127.0.0.1:8081/lightEarth', JSON.stringify(lightTask),
-			function fnSucceed(jsonData)
-			{
-				console.log(JSON.parse(jsonData));
+			editor.stationDB.lightEarth(lightTask, function(){
+				//	console.log(JSON.parse(jsonData));
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
 				iTopoEarthModel.lightEarth(lightTask);
-			},
-			function fnFail()
-			{
-				console.log("post failed.");
-			},
-			function fnLoading()
-			{
-
+				editor.signals.baseRegistered.dispatch(lightTask);
 			});
 
 			document.body.removeChild(document.getElementById("iTopoDialog"));
@@ -216,4 +202,4 @@ function iTopoDialogLightEarth( editor ) {
 	return container;
 }
 
-export { iTopoDialogLightEarth };
+export { iTopoDialogRegisterBase };

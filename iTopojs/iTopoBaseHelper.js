@@ -7,7 +7,6 @@ import {MeshBasicMaterial} from '../../src/materials/MeshBasicMaterial.js';
 import {TWEEN} from '../../examples/jsm/libs/tween.module.min.js';
 import {iTopoEarthModel} from './iTopoEarthModel.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
-import {ajaxGet,_fetch} from './ajaxPostHelper.js'
 
 var orbits = [];
 var balls = [];
@@ -56,31 +55,6 @@ iTopoBaseHelper.prototype.dispose = function() {
 	TWEEN.removeAll();
 
 };
-
-
-// iTopoBaseHelper.prototype.UpdateWithFetch = function() {
-// 	var __this = this;
-// 	fetch(iTopoEarthSettings.CANTEEN_ITOPOBASE_FILE, {
-// 		method: 'GET',
-// 		mode: 'cors', // 允许发送跨域请求
-// 		credentials: 'include'
-// 	}).then(function(response) {
-// 		//打印返回的json数据
-// 		response.json().then(function(json) {
-// 			for (var i = 0; i < json.length; i++) {
-// 				if(json[i].baseUUID === editor.selected.userData.baseUUID) {
-// 					__this.update();
-// 					return;
-// 				}
-// 			}
-
-// 			console.log('did not find base UUID:' + this.userData);
-// 			// __this.update();
-// 		})
-// 	}).catch(function(e) {
-// 		console.log('error: ' + e.toString());
-// 	})
-// }
 
 iTopoBaseHelper.prototype.setFromObject = function(object) {
 	if(object.userData.objectUUID === undefined || object.userData.objectType === undefined ){

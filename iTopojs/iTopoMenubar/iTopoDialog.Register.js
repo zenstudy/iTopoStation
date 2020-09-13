@@ -4,7 +4,6 @@
 
 import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
-import { ajaxPost } from '../ajaxPostHelper.js'
 import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 
@@ -116,32 +115,23 @@ function iTopoDialogRegister( editor, menubar ) {
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 
-			ajaxPost(editor.config.getKey( 'url/api/iTopoEarthRegister' ), JSON.stringify(userStarInfo),
-			function fnSucceed(jsonData)
-			{
+			editor.stationDB.RegisterUser(JSON.stringify(userStarInfo), function(){
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, userStarInfo) );
 				menubar.removeRegisterMenu();
 				menubar.removeLoginMenu();
-
+				
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
-
+				
 				var star = iTopoEarthModel.lightStars(userStarInfo);
 				editor.select(star); // this function will call editor.signals.objectSelected.dispatch(star);
 				editor.config.setKey( 'activedStarUserUUID', star.userData.objectUUID);
 				console.log(star.userData.objectUUID);
-			},
-			function fnFail()
-			{
-				console.log("post failed.");
-			},
-			function fnLoading()
-			{
-
-			}
-		);
-		document.body.removeChild(document.getElementById("iTopoDialog"));
+			});
+			
+			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
+		
 		buttonPanel.add( lightStars );
 	}
 

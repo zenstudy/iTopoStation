@@ -22,13 +22,6 @@ iTopoEarthSettings = {
 	LAND_MARK_LIGHTRAYYELLOW_JPG: "./iTopoObjects/00_iTopoEarth/lightray_yellow.jpg",
 	LAND_MARK_01: "./iTopoObjects/00_iTopoEarth/LAND_MARK_01.jpg",
 
-	WORLD_JSON_FILE: "./iTopoObjects/00_iTopoEarth/Json/world.json",
-	HORIZEN_SUPERNODES_FILE: "./iTopoObjects/00_iTopoEarth/Json/ZenSuperNodes.json",
-	HORIZEN_SECURENODES_FILE: "./iTopoObjects/00_iTopoEarth/Json/ZenSecureNodes.json",
-
-	CANTEEN_YUHUAZHAI_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopoCanteen.json",
-	ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopobase.json",
-	ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopoUser.json",
 	// 地图z轴厚度
 	zHeight: 33,
 
