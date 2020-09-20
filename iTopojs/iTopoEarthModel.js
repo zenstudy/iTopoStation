@@ -243,7 +243,7 @@ iTopoEarthModel.lightStars = function(userStarInfo) {
 	return star;
 }
 
-// iTopoEarthModel.lightEarth = function(objUUID, camera) {
+// iTopoEarthModel.appendBaseObject = function(objUUID, camera) {
 // 	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
 // 	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
 // 	const lngx = plusOrMinus_lngx * (Math.random() * 180);
@@ -286,7 +286,7 @@ iTopoEarthModel.focusObject = function(lightTask) {
 	editor.camera.lookAt(0, 0, 0);
 }
 
-iTopoEarthModel.lightEarth = function(lightTask) {
+iTopoEarthModel.appendBaseObject = function(lightTask) {
 
 	const seeFrom = createPosition(lightTask.lng, lightTask.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);
 
@@ -685,7 +685,7 @@ iTopoEarthModel.MarkHorizenSuperNodes = function() {
 }
 
 iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
-	
+
 	editor.stationDB.fetchHorizenSecureNodes(function(json){
 		//存放粒子数据的网格
 		var geom = new THREE.Geometry();
@@ -701,36 +701,36 @@ iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
 			depthWrite: false,
 			speed_: iTopoEarthSettings.BLINT_SPEED
 		});
-		
+
 		let average = getAverage();
 		var markedNames = [];
 		for (var i = 0; i < json.length; i++) {
-		
+
 			var option = {
 				"textValue": json[i].city,
 				"fontColor": iTopoEarthSettings.markingTextColor,
 				"fontSize": iTopoEarthSettings.markingFontSize,
 				"pos": [json[i].lon, json[i].lat]
 			}
-		
+
 			let cityX = option.pos[0] * average / iTopoEarthSettings.mapScaleSize;
 			let cityY = option.pos[1] * average / iTopoEarthSettings.mapScaleSize;
-		
+
 			var particle = new THREE.Vector3(cityX, cityY, iTopoEarthSettings.zHeight + 1);
 			geom.vertices.push(particle);
 			var color = new THREE.Color(+iTopoEarthModel.RandomColor());
 			geom.colors.push(color);
-		
+
 			let textMarked = false;
-		
+
 			markedNames.forEach((mn) => {
 				if (mn === json[i].city)
 					textMarked = true;
 			})
-		
+
 			if (!textMarked) {
 				markedNames.push(json[i].city);
-		
+
 				// 添加文字说明
 				let textLength = option.textValue.length;
 				let texture = new THREE.CanvasTexture(iTopoEarthBuilder.getCanvasFont(textLength * option.fontSize *
@@ -746,11 +746,11 @@ iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
 				fontMesh.position.set(cityX, cityY, iTopoEarthSettings.zHeight + iTopoEarthSettings.circularHeight +
 					iTopoEarthSettings
 					.circularRadio + option.fontSize / average + 0.5); // 定义提示文字显示位置
-		
+
 				layerMarks.add(fontMesh);
 			}
 		}
-		
+
 		//生成模型，添加到场景当中
 		var cloud1 = new THREE.Points(geom, material);
 		layerMarks.add(cloud1);
@@ -758,7 +758,7 @@ iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
 }
 
 iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
-	
+
 	editor.stationDB.fetchHorizenSecureNodes(function(json){
 		//存放粒子数据的网格
 		var geom = new THREE.Geometry();
@@ -774,36 +774,36 @@ iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
 			depthWrite: false,
 			speed_: iTopoEarthSettings.BLINT_SPEED
 		});
-		
+
 		let average = getAverage();
 		var markedNames = [];
 		for (var i = 0; i < json.length; i++) {
-		
+
 			var option = {
 				"textValue": json[i].city,
 				"fontColor": iTopoEarthSettings.markingTextColor,
 				"fontSize": iTopoEarthSettings.markingFontSize,
 				"pos": [json[i].lon, json[i].lat]
 			}
-		
+
 			let cityX = option.pos[0] * average / iTopoEarthSettings.mapScaleSize;
 			let cityY = option.pos[1] * average / iTopoEarthSettings.mapScaleSize;
-		
+
 			var particle = new THREE.Vector3(cityX, cityY, iTopoEarthSettings.zHeight + 1);
 			geom.vertices.push(particle);
 			var color = new THREE.Color(+iTopoEarthModel.RandomColor());
 			geom.colors.push(color);
-		
+
 			let textMarked = false;
-		
+
 			markedNames.forEach((mn) => {
 				if (mn === json[i].city)
 					textMarked = true;
 			})
-		
+
 			if (!textMarked) {
 				markedNames.push(json[i].city);
-		
+
 				// 添加文字说明
 				let textLength = option.textValue.length;
 				let texture = new THREE.CanvasTexture(iTopoEarthBuilder.getCanvasFont(textLength * option.fontSize *
@@ -819,11 +819,11 @@ iTopoEarthModel.MarkHorizenSecureNodesParticleOnPlane = function() {
 				fontMesh.position.set(cityX, cityY, iTopoEarthSettings.zHeight + iTopoEarthSettings.circularHeight +
 					iTopoEarthSettings
 					.circularRadio + option.fontSize / average + 0.5); // 定义提示文字显示位置
-		
+
 				layerMarks.add(fontMesh);
 			}
 		}
-		
+
 		//生成模型，添加到场景当中
 		var cloud1 = new THREE.Points(geom, material);
 		layerMarks.add(cloud1);

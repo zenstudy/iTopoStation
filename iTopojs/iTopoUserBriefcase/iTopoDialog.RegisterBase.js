@@ -1,25 +1,11 @@
 import { UIPanel, UISpan, UIButton, UIRow, UISelect, UIText,UITextArea,UINumber, UIInteger, UIInput } from'../iTopoUI.js';
-import { iTopoEarthModel } from '../iTopoEarthModel.js'
+import { iTopoEarthModel } from '../iTopoEarthModel.js';
+import { iTopoBaseObject } from '../iTopoElement/iTopoBaseObject.js';
 
 function iTopoDialogRegisterBase( editor ) {
 	var strings = editor.strings;
 
-	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-	const lng = plusOrMinus_lngx * (Math.random() * 180);
-	const lat = plusOrMinus_latx * (Math.random() * 90);
-
-	var lightTask = {
-		"baseUUID": THREE.MathUtils.generateUUID(),
-		"taskType": 'iTopoType/TaskObject/EcologicalFarm',
-		"title": "有机农场",
-		"city": "城市1",
-		"address": "详细地址1",
-		"lng":lng,
-		"lat":lat,
-		"lightWish":"共同创造基地",
-		"QRcode":"./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg"
-	}
+	var baseObjectOnEarth = new iTopoBaseObject();
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
@@ -64,11 +50,11 @@ function iTopoDialogRegisterBase( editor ) {
 
 		var taskTypeSelect = new UISelect().setWidth( '160px' );
 		taskTypeSelect.setOptions( options );
-		taskTypeSelect.setValue(lightTask.taskType);
+		taskTypeSelect.setValue(baseObjectOnEarth.taskType);
 		taskTypeSelect.onChange( function () {
 			var value = this.getValue();
-			lightTask.taskType =  value;
-			console.log(lightTask.taskType );
+			baseObjectOnEarth.taskType =  value;
+			console.log(baseObjectOnEarth.taskType );
 		} );
 
 		taskTypeRow.add( taskTypeSelect );
@@ -81,9 +67,9 @@ function iTopoDialogRegisterBase( editor ) {
 		titleRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/title' ) ).setWidth( '90px' ) );
 
 		var titleInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
-		titleInput.setValue( lightTask.title );
+		titleInput.setValue( baseObjectOnEarth.title );
 		titleInput.onChange( function () {
-			lightTask.title = this.getValue();
+			baseObjectOnEarth.title = this.getValue();
 		} );
 		titleRow.add( titleInput );
 
@@ -96,9 +82,9 @@ function iTopoDialogRegisterBase( editor ) {
 		cityRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/city' ) ).setWidth( '90px' ) );
 
 		var cityInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
-		cityInput.setValue( lightTask.city );
+		cityInput.setValue( baseObjectOnEarth.city );
 		cityInput.onChange( function () {
-			lightTask.city = this.getValue();
+			baseObjectOnEarth.city = this.getValue();
 		} );
 		cityRow.add( cityInput );
 
@@ -111,9 +97,9 @@ function iTopoDialogRegisterBase( editor ) {
 		addressRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/address' ) ).setWidth( '90px' ) );
 
 		var addressInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
-		addressInput.setValue( lightTask.address );
+		addressInput.setValue( baseObjectOnEarth.address );
 		addressInput.onChange( function () {
-			lightTask.lng = this.getValue();
+			baseObjectOnEarth.lng = this.getValue();
 		} );
 		addressRow.add( addressInput );
 
@@ -125,9 +111,9 @@ function iTopoDialogRegisterBase( editor ) {
 
 		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/longitude' ) ).setWidth( '90px' ) );
 
-		var longitudeValueUI = new UINumber( lightTask.lng ).setRange( 2, Infinity );
+		var longitudeValueUI = new UINumber( baseObjectOnEarth.lng ).setRange( 2, Infinity );
 		longitudeValueUI.onChange( function () {
-			lightTask.lng = this.getValue();
+			baseObjectOnEarth.lng = this.getValue();
 		} );
 		longitudeRow.add( longitudeValueUI );
 
@@ -139,9 +125,9 @@ function iTopoDialogRegisterBase( editor ) {
 
 		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/latitude' ) ).setWidth( '90px' ) );
 
-		var latitudeValueUI = new UINumber( lightTask.lat ).setRange( 2, Infinity );
+		var latitudeValueUI = new UINumber( baseObjectOnEarth.lat ).setRange( 2, Infinity );
 		latitudeValueUI.onChange( function () {
-			lightTask.lat = this.getValue();
+			baseObjectOnEarth.lat = this.getValue();
 
 		} );
 		latitudeRow.add( latitudeValueUI );
@@ -157,9 +143,9 @@ function iTopoDialogRegisterBase( editor ) {
 		var lightWishTextAreaRow = new UIRow();
 		var lightWishValueUI = new UITextArea().setHeight( '120px' ).setFontSize( '12px' )/*.onChange( update )*/;
 		lightWishValueUI.dom.cols = 40;
-		lightWishValueUI.setValue( lightTask.lightWish );
+		lightWishValueUI.setValue( baseObjectOnEarth.lightWish );
 		lightWishValueUI.onKeyUp( function () {
-			lightTask.lightWish = this.getValue();
+			baseObjectOnEarth.lightWish = this.getValue();
 
 		} );
 		lightWishTextAreaRow.add( lightWishValueUI );
@@ -176,14 +162,8 @@ function iTopoDialogRegisterBase( editor ) {
 		var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/lightEarth' ) );
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
-			editor.stationDB.lightEarth(lightTask, function(){
-				//	console.log(JSON.parse(jsonData));
-				editor.scene.rotation.y = 0;
-				editor.sceneHelpers.rotation.y = 0;
-				iTopoEarthModel.lightEarth(lightTask);
-				editor.signals.baseRegistered.dispatch(lightTask);
-			});
 
+			editor.signals.baseRegistered.dispatch( editor.starUser.starUUID, baseObjectOnEarth);
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 
 		} );

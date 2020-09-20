@@ -57,31 +57,41 @@ iTopoUserBriefcaseMineAsset.prototype = {
 
 	getValue: function () {
 
-		return this.taskObject;
+		return this.starUser;
 
 	},
 
-	setValue: function (taskObject) {
+	setValue: function (starUser) {
+		var scope = this;
+		this.starUser = starUser;
+		if (starUser === null) { return; }
 
-		if (editor.selected !== null) {
-		//	container.setDisplay( 'block' );
+		for(var i=0; i < starUser.userRegisteredBases.length; ++i){
 
+			editor.stationDB.fetchBaseObjectWithObjectUUID(starUser.userRegisteredBases[i], function(baseObjectOnEarth){
+				var originPosition = new THREE.Vector3();
+				editor.resourceTracker.loadModel(baseObjectOnEarth.taskType, originPosition, 1, function(object){
+					object.userData = {	objectUUID: baseObjectOnEarth.baseUUID, objectType: baseObjectOnEarth.taskType, };
+					scope.thumbnailManager.createThumbnailItem( baseObjectOnEarth.title, object, function(){
+						console.log('iTopoUserBriefcaseMineAsset.create' + baseObjectOnEarth.title);
+					});
+				}) ;
+			})
 		}
-
-		this.taskObject = taskObject;
 	},
 
-	registerMineAsset: function(taskObject) {
+	registerMineAsset: function(baseObjectOnEarth) {
 		var scope = this;
 		var originPosition = new THREE.Vector3();
-		editor.resourceTracker.loadModel(taskObject.taskType, originPosition, 1, function(object){
-			object.userData = {	objectUUID: taskObject.baseUUID, objectType: taskObject.taskType, };
+		editor.resourceTracker.loadModel(baseObjectOnEarth.taskType, originPosition, 1, function(object){
 
-			scope.thumbnailManager.createThumbnailItem( taskObject.title, object , function(){
-				var baseObject = editor.objectByiTopoUUID(taskObject.baseUUID);
+			object.userData = {	objectUUID: baseObjectOnEarth.baseUUID, objectType: baseObjectOnEarth.taskType, };
+			scope.thumbnailManager.createThumbnailItem( baseObjectOnEarth.title, object, function(){
+				var baseObject = editor.objectByiTopoUUID(baseObjectOnEarth.baseUUID);
 				editor.select(baseObject);
 				editor.signals.objectFocused.dispatch( baseObject );
 			});
+
 		}) ;
 	}
 }

@@ -217,6 +217,7 @@ var iTopo3dExplore = {
 		}
 
 		function onDocumentMouseUp( event ) {
+			console.log('aaa');
 			dispatch( events.mouseup, event );
 		}
 
@@ -376,14 +377,15 @@ var iTopo3dExplore = {
 			if ( renderer.xr.enabled ) dom.append( vrButton );
 			prevTime = performance.now();
 
-			document.addEventListener( 'keydown', onDocumentKeyDown );
-			document.addEventListener( 'keyup', onDocumentKeyUp );
-			document.addEventListener( 'mousedown', onDocumentMouseDown );
-			document.addEventListener( 'mouseup', onDocumentMouseUp );
-			document.addEventListener( 'mousemove', onDocumentMouseMove );
-			document.addEventListener( 'touchstart', onDocumentTouchStart );
-			document.addEventListener( 'touchend', onDocumentTouchEnd );
-			document.addEventListener( 'touchmove', onDocumentTouchMove );
+			var dom = this.dom;
+			dom.addEventListener( 'keydown', onDocumentKeyDown );
+			dom.addEventListener( 'keyup', onDocumentKeyUp );
+			dom.addEventListener( 'mousedown', onDocumentMouseDown );
+			dom.addEventListener( 'mouseup', onDocumentMouseUp );
+			dom.addEventListener( 'mousemove', onDocumentMouseMove );
+			dom.addEventListener( 'touchstart', onDocumentTouchStart );
+			dom.addEventListener( 'touchend', onDocumentTouchEnd );
+			dom.addEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.start, arguments );
 			renderer.setAnimationLoop( animate );
@@ -392,14 +394,15 @@ var iTopo3dExplore = {
 		this.stop = function () {
 			if ( renderer.xr.enabled ) vrButton.remove();
 
-			document.removeEventListener( 'keydown', onDocumentKeyDown );
-			document.removeEventListener( 'keyup', onDocumentKeyUp );
-			document.removeEventListener( 'mousedown', onDocumentMouseDown );
-			document.removeEventListener( 'mouseup', onDocumentMouseUp );
-			document.removeEventListener( 'mousemove', onDocumentMouseMove );
-			document.removeEventListener( 'touchstart', onDocumentTouchStart );
-			document.removeEventListener( 'touchend', onDocumentTouchEnd );
-			document.removeEventListener( 'touchmove', onDocumentTouchMove );
+			var dom = this.dom;
+			dom.removeEventListener( 'keydown', onDocumentKeyDown );
+			dom.removeEventListener( 'keyup', onDocumentKeyUp );
+			dom.removeEventListener( 'mousedown', onDocumentMouseDown );
+			dom.removeEventListener( 'mouseup', onDocumentMouseUp );
+			dom.removeEventListener( 'mousemove', onDocumentMouseMove );
+			dom.removeEventListener( 'touchstart', onDocumentTouchStart );
+			dom.removeEventListener( 'touchend', onDocumentTouchEnd );
+			dom.removeEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.stop, arguments );
 			renderer.setAnimationLoop( null );

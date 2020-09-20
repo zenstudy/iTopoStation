@@ -43,7 +43,7 @@ function iTopoTaskBriefcase(editor) {
 			}
 		});
 
-		 event.preventDefault();
+		// event.preventDefault();
 	});
 
 	// events

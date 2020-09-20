@@ -7,13 +7,15 @@ function iTopoConfig() {
 	var name = 'iTopoEarth';
 
 	var storage = {
-		
+
 		'language': 'zh',
 		'activedStarUserUUID' :'',
-		//'exportPrecision': 6,
+		'activedStarUserNickname':'',
+		'activedStarUserCellPhone':'',
+		'activedStarUserToken': '',
 
 		//'autosave': false,
-
+		//'exportPrecision': 6,
 		// 'project/title': '',
 		// 'project/editable': false,
 		// 'project/vr': false,

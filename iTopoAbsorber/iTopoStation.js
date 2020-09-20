@@ -96,15 +96,15 @@ app.get('/SecureNodes', function(req, res) {
 });
 
 // POST method route —— 根据请求路径来处理客户端发出的Post请求。
-// app.post('/', function (req, res) {
-// 	res.send('POST request to the homepage');
-// });
+app.post('/', function (req, res) {
+	res.send('POST request to the homepage');
+});
 
-app.get('/lightEarth', function(req, res) {
+app.get('/registerBaseObjectOnEarth', function(req, res) {
 	res.send('the lightEarth page');
 });
 
-app.post('/lightEarth', function(req, res) {
+app.post('/registerBaseObjectOnEarth', function(req, res) {
 
 	var postData = "";
 
@@ -112,19 +112,14 @@ app.post('/lightEarth', function(req, res) {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Cache-Control", "no-cache");
 
-	//res.setHeader("application/json; charset=utf-8");
-	//JSON.parse()
-	//
-	//res.send(JSON.stringify(lightTask));
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
-		console.log("Received POST data :") + postDataChunk;
 	});
 
 	req.addListener("end", function() {
 		res.write(postData);
 		var newLightTask = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(newLightTask)) ;
 		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopobase.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
@@ -153,19 +148,14 @@ app.post('/iTopoEarthRegister', function(req, res) {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Cache-Control", "no-cache");
 
-	//res.setHeader("application/json; charset=utf-8");
-	//JSON.parse()
-	//
-	//res.send(JSON.stringify(lightTask));
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
-		console.log("Received POST data :") + postDataChunk;
 	});
 
 	req.addListener("end", function() {
 		res.write(postData);
 		var newUserStarInfo = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(newUserStarInfo)) ;
 		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
@@ -186,6 +176,48 @@ app.post('/iTopoEarthRegister', function(req, res) {
 	});
 });
 
+app.post('/updateStarUser', function(req, res) {
+
+	var postData = "";
+
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		res.write(postData);
+		var newUserStarInfo = JSON.parse(postData);
+		console.log("===Received POST data :" + JSON.stringify(newUserStarInfo)) ;
+		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var userStarInfos = JSON.parse(data);
+				//console.log(userStarInfos);
+
+				for( var i=0; i < userStarInfos.length; ++i){
+					if(userStarInfos[i].starUUID ===newUserStarInfo.starUUID ){
+						userStarInfos[i] = newUserStarInfo;
+						console.log('===update star user:' + JSON.stringify(userStarInfos[i]) );
+					}
+				}
+
+				fs.writeFile(iTopoJsonFName, JSON.stringify(userStarInfos), function(err) {
+					if (err) console.error(err);
+					console.log('===数据已经写入' + iTopoJsonFName);
+				});
+			}
+		});
+
+		res.end();
+	});
+});
+
 app.post('/iTopoEarthLogin', function(req, res) {
 
 	var postData = "";
@@ -194,18 +226,13 @@ app.post('/iTopoEarthLogin', function(req, res) {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Cache-Control", "no-cache");
 
-	//res.setHeader("application/json; charset=utf-8");
-	//JSON.parse()
-	//
-	//res.send(JSON.stringify(lightTask));
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
-		console.log("Received POST data :") + postDataChunk;
 	});
 
 	req.addListener("end", function() {
 		var loginUser = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(loginUser)) ;
 		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
@@ -227,40 +254,80 @@ app.post('/iTopoEarthLogin', function(req, res) {
 	});
 });
 
-// app.post('/iTopoEarthLogin', function(req, res) {
+app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 
-// 	var postData = "";
+	console.log("app.post.fetchBaseObjectWithObjectUUID");
+	var postData = "";
 
-// 	req.setEncoding("utf8");
-// 	res.setHeader("Access-Control-Allow-Origin", "*");
-// 	res.setHeader("Cache-Control", "no-cache");
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
 
-// 	//res.setHeader("application/json; charset=utf-8");
-// 	//JSON.parse()
-// 	//
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
 
-// 	console.log(res);
-// 	req.addListener("end", function() {
+	req.addListener("end", function() {
+		var objectUUID = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(objectUUID)) ;
+		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopobase.json';
+		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var allBaseObjectInfos = JSON.parse(data);
 
-// 		var cellPhone;
+				for (let i = 0; i < allBaseObjectInfos.length; i++) {
+						console.log(allBaseObjectInfos[i].objectUUID);
+						console.log(objectUUID);
+						if(objectUUID === allBaseObjectInfos[i].baseUUID){
+						res.write(JSON.stringify(allBaseObjectInfos[i]));
+						console.log(JSON.stringify(allBaseObjectInfos[i]));
+						res.end();
+						break;
+					}
+				}
+			}
+		});
+	});
+});
 
-// 		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
-// 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-// 			if (err) {
-// 				console.log(err);
-// 			} else {
-// 				var userStarInfos = JSON.parse(data);
-// 				userStarInfos.forEach(function(userInfo){
-// 					if(cellPhone === userInfo.cellPhone){
-// 						res.send(userInfo);
-// 					}
-// 				});
-// 			}
-// 		});
 
-// 		res.end();
-// 	});
-// });
+app.post('/fetchUserWithStarUUID', function(req, res) {
+
+	console.log("app.post.fetchUserWithStarUUID");
+	var postData = "";
+
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		var starUUID = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(starUUID)) ;
+		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var allUserInfos = JSON.parse(data);
+
+				for (let i = 0; i < allUserInfos.length; i++) {
+						if(starUUID=== allUserInfos[i].starUUID){
+						res.write(JSON.stringify(allUserInfos[i]));
+						console.log(JSON.stringify(allUserInfos[i]));
+						res.end();
+						break;
+					}
+				}
+			}
+		});
+	});
+});
 
 app.post('/addTask', function(req, res) {
 
@@ -270,19 +337,14 @@ app.post('/addTask', function(req, res) {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Cache-Control", "no-cache");
 
-	//res.setHeader("application/json; charset=utf-8");
-	//JSON.parse()
-	//
-	//res.send(JSON.stringify(lightTask));
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
-		console.log("Received POST data :") + postDataChunk;
 	});
 
 	req.addListener("end", function() {
-		res.write(postData);
 		var taskObject = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(taskObject)) ;
+		res.write(postData);
 		const taskJsonFile = '../iTopoObjects/' + taskObject.objectUUID + '/tasks.json';
 		fs.readFile(taskJsonFile, 'utf-8', function(err, data) {
 			if (err) {

@@ -11,8 +11,11 @@ var iTopoStationAPI = {
 
 	iTopoEarthRegister : 'http://127.0.0.1:8081/iTopoEarthRegister',
 	iTopoEarthLogin : 'http://127.0.0.1:8081/iTopoEarthLogin',
-	lightEarth:'http://127.0.0.1:8081/lightEarth',
+	registerBaseObjectOnEarth:'http://127.0.0.1:8081/registerBaseObjectOnEarth',
 	addTask:'http://127.0.0.1:8081/addTask',
+	fetchUserWithStarUUID:'http://127.0.0.1:8081/fetchUserWithStarUUID',
+	updateStarUser:'http://127.0.0.1:8081/updateStarUser',
+	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
 }
 
 function iTopoStationDB() {
@@ -200,16 +203,17 @@ iTopoStationDB.prototype = {
 		fetch(request)
 		.then(response => response.json())
 		.then(json => {
-			fnUserLogin();
-			console.log('fetch.post:' + JSON.stringify(json));
+			fnUserLogin(json);
+			console.log('iTopoStationAPI.iTopoEarthLogin user:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
 
 	},
-	lightEarth: function(lightTask, fnAfterLight){
 
-		var request = new Request(iTopoStationAPI.lightEarth, {
+	registerBaseObjectOnEarth: function(lightTask, fnAfterLight){
+
+		var request = new Request(iTopoStationAPI.registerBaseObjectOnEarth, {
 			method: 'POST',
 			body: JSON.stringify(lightTask),
 			headers: new Headers()
@@ -220,6 +224,63 @@ iTopoStationDB.prototype = {
 		.then(json => {
 			fnAfterLight();
 			console.log('fetch.post:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	fetchBaseObjectWithObjectUUID: function(objectUUID, fnAfterFetchedBaseObject){
+
+		var request = new Request(iTopoStationAPI.fetchBaseObjectWithObjectUUID, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterFetchedBaseObject(json);
+			console.log('iTopoStationAPI.fetchBaseObjectWithObjectUUID baseObject:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	fetchUserWithStarUUID: function(starUUID, fnAfterFetchedUser){
+
+		var request = new Request(iTopoStationAPI.fetchUserWithStarUUID, {
+			method: 'POST',
+			body: JSON.stringify(starUUID),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterFetchedUser(json);
+			console.log('iTopoStationAPI.fetchUserWithStarUUID user:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	updateStarUser: function(starUser, fnAfterUpdate){
+
+		var request = new Request(iTopoStationAPI.updateStarUser, {
+			method: 'POST',
+			body: JSON.stringify(starUser),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterUpdate();
+			console.log('updateStarUser.post:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })

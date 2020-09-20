@@ -1,22 +1,20 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
 import { UITabbedPanel, UISpan } from '../iTopoUI.js';
 import { iTopoUserBriefcaseRegisterTool } from './iTopoUserBriefcase.RegisterTool.js';
 import { iTopoUserBriefcaseMineAsset } from './iTopoUserBriefcase.MineAsset.js';
 import { iTopoUserBriefcaseMineFocus } from './iTopoUserBriefcase.MineFocus.js';
 import { iTopoUserBriefcaseMineFollower } from './iTopoUserBriefcase.MineFollower.js';
 import { iTopoUserBriefcaseBluePrint } from './iTopoUserBriefcase.BluePrint.js';
-// import { iTopoEarthModel } from '../iTopoEarthModel.js';
 
 function iTopoUserBriefcase(editor) {
 	var scope = this;
 	var signals = editor.signals;
-	var strings = editor.strings;
+	this.strings = editor.strings;
 	var ActivedObjectType = '';
 	scope.tabs = [];
 
 	var container = new UITabbedPanel();
+	this.container = container;
+
 	//container.setId( 'properties' );
 	container.setId('userBriefcase');
 	//container.setDisplay( 'none' );
@@ -38,114 +36,98 @@ function iTopoUserBriefcase(editor) {
 			}
 		});
 
-		 event.preventDefault();
+		// event.preventDefault();
 	});
 
-	// events
+	if(editor.starUser.alreadyLoggedIn()){
+		scope.createUserBriefcase();
+		scope.refreshUserBriefcase(editor.starUser);
+	} else {
+		scope.createBluePrintPage();
+	}
 
-	function removeAllTabs() {
+	return scope;
+}
+
+iTopoUserBriefcase.prototype.constructor = iTopoUserBriefcase;
+
+iTopoUserBriefcase.prototype = {
+
+	// events
+	removeAllTabs: function() {
+		var scope = this;
 		scope.tabs.forEach(function(tab){
 			console.log(tab);
 			tab.panel.dispose();
 		}) ;
 
 		scope.tabs = [];
+		scope.container.removeAllTab();
+	},
 
-		container.removeAllTab();
-	}
-
-	function activeTab( tab ){
-		container.select(tab.name);
+	activeTab: function( tab ){
+		var scope = this;
+		scope.container.select(tab.name);
 		scope.lastSelectTabName = tab.name;
 		console.log(tab.name);
 		tab.panel.activeTabPanel();
-	}
+	},
 
-	function getTab( tabName ) {
+	getTab: function( tabName ) {
+		var scope = this;
 		for(var i = 0 ; i < scope.tabs.length; ++i) {
 			if(scope.tabs[i].name === tabName){
 				return scope.tabs[i];
 			}
 		}
 		return null;
-	}
+	},
 
-	function createUserBriefcase() {
+	createUserBriefcase: function () {
+		var scope = this;
 		var registerToolTab = new iTopoUserBriefcaseRegisterTool(editor,scope);
 		var mineAssetTab = new iTopoUserBriefcaseMineAsset(editor);
-		//mineAssetTab.setValue();
 		var userBriefcaseTab = new iTopoUserBriefcaseMineFocus(editor);
-		//userBriefcaseTab.setValue();
 		var mineFollowerTab = new iTopoUserBriefcaseMineFollower(editor);
-		//mineFollowerTab.setValue();
 
-		scope.tabs.push( {name:'registerTool', title:strings.getKey('userBriefcase/RegisterTool')  ,panel: registerToolTab} );
-		scope.tabs.push( {name:'minAsset', title: strings.getKey('userBriefcase/MineAsset'),panel: mineAssetTab} );
-		scope.tabs.push( {name:'mineFocus', title: strings.getKey('userBriefcase/MineFocus'),panel: userBriefcaseTab} );
-		scope.tabs.push( {name:'mineFollower', title: strings.getKey('userBriefcase/MineFollower'),panel: mineFollowerTab} );
+		scope.tabs.push( {name:'registerTool', title: scope.strings.getKey('userBriefcase/RegisterTool')  ,panel: registerToolTab} );
+		scope.tabs.push( {name:'minAsset', title: scope.strings.getKey('userBriefcase/MineAsset'),panel: mineAssetTab} );
+		scope.tabs.push( {name:'mineFocus', title: scope.strings.getKey('userBriefcase/MineFocus'),panel: userBriefcaseTab} );
+		scope.tabs.push( {name:'mineFollower', title: scope.strings.getKey('userBriefcase/MineFollower'),panel: mineFollowerTab} );
 
 		scope.tabs.forEach(function(tab){
-			container.addTab(tab.name, tab.title, tab.panel.container);
+			scope.container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
 
-		activeTab( scope.tabs[0] );
-	}
+		scope.activeTab( scope.tabs[0] );
+	},
 
-	function createBluePrintPage() {
-
+	createBluePrintPage: function () {
+		var scope = this;
 		var bluePrintTab = new iTopoUserBriefcaseBluePrint(editor);
-
-		scope.tabs.push( {name:'bluePrintTab', title: strings.getKey('userBriefcase/BluePrintPage'),panel: bluePrintTab} );
-
+		scope.tabs.push( {name:'bluePrintTab', title: scope.strings.getKey('userBriefcase/BluePrintPage'),panel: bluePrintTab} );
 		scope.tabs.forEach(function(tab){
-			container.addTab(tab.name, tab.title, tab.panel.container);
+			scope.container.addTab(tab.name, tab.title, tab.panel.container);
 		}) ;
+		scope.activeTab( scope.tabs[0] );
+	},
 
-		activeTab( scope.tabs[0] );
-	}
+	refreshUserBriefcase: function(starUser) {
 
-
-	function refreshTaskbar(object) {
-		scope.tabs.forEach(function(tab) {tab.panel.setValue(object);	});
-	}
-
-	var ignoreObjectSelectedSignal = false;
-
-	function refreshObjectUI(object) {
-
-		if (ignoreObjectSelectedSignal === true)
-			return;
-
-		if (object === null) {
-			container.setDisplay( 'none' );
+		var scope = this;
+		if (starUser === null) {
 			return;
 		}
-
-		container.setDisplay( 'inline-block' );
-
 		//to refresh
-		refreshTaskbar(object);
+		scope.tabs.forEach(function(tab) { tab.panel.setValue(starUser); });
+
+	},
+
+	registerBaseIntoMineAsset:function(baseObject)
+	{
+		var assetTab = this.getTab( 'minAsset' );
+		assetTab.panel.registerMineAsset(baseObject);
 	}
-
-	signals.userRegisteredOrLogin.add(function(object) {
-		removeAllTabs();
-		createUserBriefcase();
-		refreshTaskbar(object);
-	});
-
-	signals.userLogoff.add(function() {
-		removeAllTabs();
-		createBluePrintPage();
-	});
-
-	signals.baseRegistered.add( function(object){
-		var assetTab = getTab( 'minAsset' );
-		assetTab.panel.registerMineAsset(object);
-	});
-
-	createBluePrintPage();
-
-	return container;
 }
 
 export { iTopoUserBriefcase };

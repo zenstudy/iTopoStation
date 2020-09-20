@@ -54,6 +54,7 @@
 			import { iTopoUserBriefcase } from './itopojs/iTopoUserBriefcase/iTopoUserBriefcase.js';
 			import { iTopoMenubar} from './itopojs/iTopoMenubar/iTopoMenubar.js'
 			import { iTopoEarthModel } from './iTopojs/iTopoEarthModel.js';
+			import { iTopoEarthHandler } from './iTopojs/iTopoEarthHandler.js';
 			
 			import { VRButton } from '../examples/jsm/webxr/VRButton.js';
 
@@ -73,43 +74,51 @@
 			window.editor = editor; // Expose editor to Console
 			window.THREE = THREE; // Expose THREE to APP Scripts and Console
 			window.VRButton = VRButton; // Expose VRButton to APP Scripts
-
-			var viewport = new iTopoViewport( editor );
-			document.body.appendChild( viewport.dom );
-
-			var toolbar = new iTopoToolbar( editor );
-			document.body.appendChild( toolbar.dom );
-
-			var lightToolbar = new iTopoToolbarLight( editor );
-			document.body.appendChild( lightToolbar.dom );
-
-			var sidebar = new iTopoObjectBriefcase( editor );
-			document.body.appendChild( sidebar.dom );
-
-			var userBriefcase = new iTopoUserBriefcase( editor );
-			document.body.appendChild( userBriefcase.dom );
-
-			var menubar = new iTopoMenubar( editor );
-			document.body.appendChild( menubar.dom );
 			
-			//
-			createRenderer();
-			iTopoEarthModel.ReCreate();
-			iTopoEarthModel.RotateToBeijing(editor.camera);
-			//
+			editor.loginiTopoEarth( function afterlogin() {
+				
+				var viewport = new iTopoViewport( editor );
+				document.body.appendChild( viewport.dom );
+				
+				var toolbar = new iTopoToolbar( editor );
+				document.body.appendChild( toolbar.dom );
+				
+				var lightToolbar = new iTopoToolbarLight( editor );
+				document.body.appendChild( lightToolbar.dom );
+				
+				var sidebar = new iTopoObjectBriefcase( editor );
+				document.body.appendChild( sidebar.dom );
+				
+				var userBriefcase = new iTopoUserBriefcase( editor );
+				document.body.appendChild( userBriefcase.container.dom );
+				
+				var menubar = new iTopoMenubar( editor );
+				document.body.appendChild( menubar.dom );
+				
+				var handler = new iTopoEarthHandler(editor, sidebar, userBriefcase);
+				
+				//
+				createRenderer();
+				iTopoEarthModel.ReCreate();
+				iTopoEarthModel.RotateToBeijing(editor.camera);
+				//
+				
+				function createRenderer() {
+					var currentRenderer = new THREE.WebGLRenderer( { antialias: true } );
+					//currentRenderer.outputEncoding = THREE.sRGBEncoding;
+					//currentRenderer.physicallyCorrectLights =true;
+					//currentRenderer.shadowMap.enabled = false;
+					//currentRenderer.shadowMap.type = parseFloat( shadowTypeSelect.getValue() );
+					//currentRenderer.toneMapping = parseFloat( toneMappingSelect.getValue() );
+					//currentRenderer.toneMappingExposure = toneMappingExposure.getValue();
+				
+					editor.signals.rendererChanged.dispatch( currentRenderer );
+				}
+				
+				
+				onWindowResize();
+			})
 			
-			function createRenderer() {
-				var currentRenderer = new THREE.WebGLRenderer( { antialias: true } );
-				//currentRenderer.outputEncoding = THREE.sRGBEncoding;
-				//currentRenderer.physicallyCorrectLights =true;
-				//currentRenderer.shadowMap.enabled = false;
-				//currentRenderer.shadowMap.type = parseFloat( shadowTypeSelect.getValue() );
-				//currentRenderer.toneMapping = parseFloat( toneMappingSelect.getValue() );
-				//currentRenderer.toneMappingExposure = toneMappingExposure.getValue();
-			
-				editor.signals.rendererChanged.dispatch( currentRenderer );
-			}
-
 			editor.storage.init( function () {
 
 				editor.storage.get( function ( state ) {
@@ -214,7 +223,6 @@
 
 			window.addEventListener( 'resize', onWindowResize, false );
 
-			onWindowResize();
 
 			//
 

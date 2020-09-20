@@ -16,7 +16,7 @@ var iTopoTask3dExplore = {
 
 		var renderer = new CSS3DRenderer();
 		var glRenderer = new THREE.WebGLRenderer( { antialias: true } );
-		glRenderer.setPixelRatio( window.devicePixelRatio );
+		//glRenderer.setPixelRatio( window.devicePixelRatio );
 		glRenderer.setClearColor( '#86c9c9' );
 		// //renderer.outputEncoding = THREE.sRGBEncoding;
 
@@ -40,9 +40,8 @@ var iTopoTask3dExplore = {
 		//dom.style.position = 'absolate';
 
 		//glRenderer.domElement.style.top = '0px';
-		dom.appendChild( glRenderer.domElement );
 		glRenderer.domElement.id = 'taskView';
-		// renderer.domElement.style.position = 'absolate';
+		dom.appendChild( glRenderer.domElement );
 		dom.appendChild( renderer.domElement );
 
 		scope.dom = dom;
@@ -170,7 +169,6 @@ var iTopoTask3dExplore = {
 					.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
 					.easing( TWEEN.Easing.Exponential.InOut )
 					.start();
-
 			}
 
 			new TWEEN.Tween( this )
@@ -180,7 +178,7 @@ var iTopoTask3dExplore = {
 		};
 
 		this.createTaskMenu = function(){
-			var scope =this;
+			var scope = this;
 			var css3dMenu = document.createElement( 'div' );
 			css3dMenu.id = 'TaskViewTopMenu';
 
@@ -205,7 +203,7 @@ var iTopoTask3dExplore = {
 				editor.stationDB.addTask(JSON.stringify(taskObject), function(){
 					editor.signals.taskCardSelected.dispatch(scope.objects[0]);
 				});
-				
+
 			} );
 			css3dMenu.appendChild( tableButton );
 
@@ -397,6 +395,7 @@ var iTopoTask3dExplore = {
 			if ( renderer ) {
 				renderer.setSize( width, height );
 				glRenderer.setSize( width, height );
+				glRenderer.setPixelRatio(  width/ height );
 			}
 		};
 
@@ -416,10 +415,10 @@ var iTopoTask3dExplore = {
 				console.error( ( e.message || e ), ( e.stack || "" ) );
 			}
 
-	//		console.log('iTopoCSS3DBriefcase animate..........');
-
 			if(requestAnimate !== true)
 				return;
+
+			console.log('iTopoTask3dExplore.animate');
 
 			controls.update();
 			glControls.update();
@@ -427,6 +426,7 @@ var iTopoTask3dExplore = {
 
 			renderer.render( scene, camera );
 			glRenderer.render( glScene, camera );
+			glRenderer.setViewport( 0, 0, glRenderer.domElement.offsetWidth, glRenderer.domElement.offsetHeight );
 
 			prevTime = time;
 
@@ -436,15 +436,15 @@ var iTopoTask3dExplore = {
 		this.play = function () {
 			//if ( renderer.xr.enabled ) dom.append( vrButton );
 			prevTime = performance.now();
-
-			document.addEventListener( 'keydown', onDocumentKeyDown );
-			document.addEventListener( 'keyup', onDocumentKeyUp );
-			document.addEventListener( 'mousedown', onDocumentMouseDown );
-			document.addEventListener( 'mouseup', onDocumentMouseUp );
-			document.addEventListener( 'mousemove', onDocumentMouseMove );
-			document.addEventListener( 'touchstart', onDocumentTouchStart );
-			document.addEventListener( 'touchend', onDocumentTouchEnd );
-			document.addEventListener( 'touchmove', onDocumentTouchMove );
+			var dom = this.dom;
+			dom.addEventListener( 'keydown', onDocumentKeyDown );
+			dom.addEventListener( 'keyup', onDocumentKeyUp );
+			dom.addEventListener( 'mousedown', onDocumentMouseDown );
+			dom.addEventListener( 'mouseup', onDocumentMouseUp );
+			dom.addEventListener( 'mousemove', onDocumentMouseMove );
+			dom.addEventListener( 'touchstart', onDocumentTouchStart );
+			dom.addEventListener( 'touchend', onDocumentTouchEnd );
+			dom.addEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.start, arguments );
 			//renderer.setAnimationLoop( animate ); //CSS3DRenderer没有setAnimationLoop功能
@@ -455,15 +455,15 @@ var iTopoTask3dExplore = {
 
 		this.stop = function () {
 			//if ( renderer.xr.enabled ) vrButton.remove();
-
-			document.removeEventListener( 'keydown', onDocumentKeyDown );
-			document.removeEventListener( 'keyup', onDocumentKeyUp );
-			document.removeEventListener( 'mousedown', onDocumentMouseDown );
-			document.removeEventListener( 'mouseup', onDocumentMouseUp );
-			document.removeEventListener( 'mousemove', onDocumentMouseMove );
-			document.removeEventListener( 'touchstart', onDocumentTouchStart );
-			document.removeEventListener( 'touchend', onDocumentTouchEnd );
-			document.removeEventListener( 'touchmove', onDocumentTouchMove );
+			var dom = this.dom;
+			dom.removeEventListener( 'keydown', onDocumentKeyDown );
+			dom.removeEventListener( 'keyup', onDocumentKeyUp );
+			dom.removeEventListener( 'mousedown', onDocumentMouseDown );
+			dom.removeEventListener( 'mouseup', onDocumentMouseUp );
+			dom.removeEventListener( 'mousemove', onDocumentMouseMove );
+			dom.removeEventListener( 'touchstart', onDocumentTouchStart );
+			dom.removeEventListener( 'touchend', onDocumentTouchEnd );
+			dom.removeEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.stop, arguments );
 			requestAnimate = false;
@@ -498,11 +498,13 @@ var iTopoTask3dExplore = {
 		}
 
 		function handleClick() {
+
 			if( onUpPosition.x > 1.0 || onUpPosition.y > 1.0)
 				return;
 
 			if ( onDownPosition.distanceTo( onUpPosition ) === 0 ) {
 				var intersects = getIntersects( onUpPosition, scope.objects /*scope.targets.sphere*/ );
+
 				if ( intersects.length > 0 ) {
 					var object = intersects[ 0 ].object;
 					console.log(object.userData);
@@ -531,6 +533,9 @@ var iTopoTask3dExplore = {
 		}
 
 		function onDocumentMouseUp( event ) {
+
+			console.log('onDocumentMouseUp.handleClick');
+
 			var array = getMousePosition( glRenderer.domElement, event.clientX, event.clientY );
 			onUpPosition.fromArray( array );
 

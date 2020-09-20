@@ -9,8 +9,9 @@ import { iTopoHistory as _History } from './iTopoHistory.js';
 import { iTopoStorage as _Storage } from './iTopoStorage.js';
 import { iTopoStrings } from './iTopoStrings.js';
 import { iTopoConfig } from './iTopoConfig.js';
-import { iTopoResourceTracker} from './iTopoFrame/iTopoResourceTracker.js';
 import { iTopoStationDB } from './iTopoStationDB.js';
+import { iTopoStarUser} from './iTopoElement/iTopoStarUser.js';
+import { iTopoResourceTracker} from './iTopoFrame/iTopoResourceTracker.js';
 
 var _DEFAULT_CAMERA = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );
 _DEFAULT_CAMERA.name = 'Camera';
@@ -80,40 +81,35 @@ function iTopoEditor() {
 		viewportCameraChanged: new Signal()
 	};
 
-	this.config = new iTopoConfig();
-	this.history = new _History( this );
-	this.storage = new _Storage();
-	this.strings = new iTopoStrings( this.config );
-	this.loader = new _Loader( this );
-	this.camera = _DEFAULT_CAMERA.clone();
-	this.stationDB = new iTopoStationDB();
-	this.scene = new THREE.Scene();
-	this.scene.name = 'Scene';
+	var scope = this;
+	scope.config = new iTopoConfig();
+	scope.history = new _History( scope );
+	scope.storage = new _Storage();
+	scope.strings = new iTopoStrings( scope.config );
+	scope.loader = new _Loader( scope );
+	scope.camera = _DEFAULT_CAMERA.clone();
+	scope.stationDB = new iTopoStationDB();
+	scope.starUser = new iTopoStarUser();
 
-	this.sceneHelpers = new THREE.Scene();
+	scope.scene = new THREE.Scene();
+	scope.scene.name = 'Scene';
+	scope.sceneHelpers = new THREE.Scene();
 	{
-	  const skyColor = 0xB1E1FF;  // light blue
-	  const groundColor = 0xB97A20;  // brownish orange
-	  const intensity = 1;
-	  const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
-	  this.sceneHelpers.add(light);
-	}
+		const skyColor = 0xB1E1FF;  // light blue
+		const groundColor = 0xB97A20;  // brownish orange
+		const intensity = 1;
+		const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+		scope.sceneHelpers.add(light);
 
-	{
-	  const color = 0xFFFFFF;
-	  const intensity = 1;
-	  const light = new THREE.DirectionalLight(color, intensity);
-	  light.position.set(0, 50, 50);
-	  this.sceneHelpers.add(light);
-	  this.sceneHelpers.add(light.target);
-	}
+		const color = 0xFFFFFF;
+		const intensity2 = 1;
+		const light2 = new THREE.DirectionalLight(color, intensity2);
+		light2.position.set(0, 50, 50);
+		scope.sceneHelpers.add(light2);
+		scope.sceneHelpers.add(light2.target);
 
-	{
 		var ambient = new THREE.AmbientLight(0xffffff);
-		this.sceneHelpers.add(ambient);
-	}
-
-	{ //lights()光影自己改哦
+		scope.sceneHelpers.add(ambient);
 
 	    //聚光灯
 	    //SpotLight( color：颜色, intensity：强度, distance：发光距离, angle：角度, penumbra：边缘范围, decay：衰减 )
@@ -128,30 +124,30 @@ function iTopoEditor() {
 	    spotLight.shadow.mapSize.height = 1024;
 	    spotLight.shadow.camera.near = 10; //近截面
 	    spotLight.shadow.camera.far = 250;
-	    this.sceneHelpers.add(spotLight);
+	    scope.sceneHelpers.add(spotLight);
 
 		// 聚光灯显示助手SpotLightHelper( light:灯光, color：颜色 )
-	//	var lightHelper = new THREE.SpotLightHelper(spotLight, 0xdfdfdf);
-	//	this.sceneHelpers.add(lightHelper);
+		//	var lightHelper = new THREE.SpotLightHelper(spotLight, 0xdfdfdf);
+		//	this.sceneHelpers.add(lightHelper);
 	}
 
-	this.object = {};
-	this.geometries = {};
-	this.materials = {};
-	this.textures = {};
-	this.materialsRefCounter = new Map(); // tracks how often is a material used by a 3D object
-	this.scripts = {};
+	scope.object = {};
+	scope.geometries = {};
+	scope.materials = {};
+	scope.textures = {};
+	scope.materialsRefCounter = new Map(); // tracks how often is a material used by a 3D object
+	scope.scripts = {};
 
-	this.animations = {};
-	this.mixer = new THREE.AnimationMixer( this.scene );
+	scope.animations = {};
+	scope.mixer = new THREE.AnimationMixer( scope.scene );
 
-	this.selected = null;
-	this.helpers = {};
+	scope.selected = null;
+	scope.helpers = {};
 
-	this.cameras = {};
-	this.viewportCamera = this.camera;
-	this.addCamera( this.camera );
-	this.resourceTracker = new iTopoResourceTracker();
+	scope.cameras = {};
+	scope.viewportCamera = scope.camera;
+	scope.addCamera( scope.camera );
+	scope.resourceTracker = new iTopoResourceTracker();
 
 	// {
 	// 	this.cameraHelper = new THREE.CameraHelper(this.viewportCamera);
@@ -160,6 +156,15 @@ function iTopoEditor() {
 }
 
 iTopoEditor.prototype = {
+
+	loginiTopoEarth: function( fnAfterLogin ){
+		var scope = this;
+		scope.starUser.restoreActiveUser(scope);
+			scope.stationDB.fetchUserWithStarUUID(/*this.starUser.starUUID*/"8E59BDD4-25EE-4E90-A612-4537AFAA80FF", function(starUserInfo){
+			scope.starUser.setStarUserInfo(starUserInfo);
+			fnAfterLogin();
+		});
+	},
 
 	setScene: function ( scene ) {
 

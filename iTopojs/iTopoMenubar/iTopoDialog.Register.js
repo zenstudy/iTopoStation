@@ -115,23 +115,25 @@ function iTopoDialogRegister( editor, menubar ) {
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 
-			editor.stationDB.RegisterUser(JSON.stringify(userStarInfo), function(){
+			editor.stationDB.registerUser(userStarInfo, function(){
+				userStarInfo.storeActiveUserInfo2Config(editor);
+
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, userStarInfo) );
 				menubar.removeRegisterMenu();
 				menubar.removeLoginMenu();
-				
+
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
-				
+
 				var star = iTopoEarthModel.lightStars(userStarInfo);
 				editor.select(star); // this function will call editor.signals.objectSelected.dispatch(star);
-				editor.config.setKey( 'activedStarUserUUID', star.userData.objectUUID);
+
 				console.log(star.userData.objectUUID);
 			});
-			
+
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
-		
+
 		buttonPanel.add( lightStars );
 	}
 

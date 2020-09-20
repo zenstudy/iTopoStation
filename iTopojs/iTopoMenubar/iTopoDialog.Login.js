@@ -9,17 +9,6 @@ import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 
 function iTopoDialogLogin( editor, menubar ) {
 
-	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-	const lng = plusOrMinus_lngx * (Math.random() * 180);
-	const lat = plusOrMinus_latx * (Math.random() * 90);
-
-	//var config = editor.config;
-	var userStarInfo = {
-		cellPhone:13688888888,
-		password:'lightstar',
-	};
-
 	var strings = editor.strings;
 
 	var container = new UISpan();
@@ -41,7 +30,7 @@ function iTopoDialogLogin( editor, menubar ) {
 
 		cellPhoneRow.add( new UIText( strings.getKey( 'iTopoDialog/login/cellPhone' ) ).setWidth( '80px' ) );
 
-		var inputCellPhone = new UIInput( userStarInfo.cellPhone );
+		var inputCellPhone = new UIInput( editor.starUser.cellPhone );
 		inputCellPhone.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -57,7 +46,7 @@ function iTopoDialogLogin( editor, menubar ) {
 		passwordRow.add( new UIText( strings.getKey( 'iTopoDialog/login/password' ) ).setWidth( '80px' ) );
 
 		var inputPassword = new UIInput();
-		inputPassword.setValue( userStarInfo.password );
+		inputPassword.setValue( editor.starUser.password );
 		inputPassword.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -78,22 +67,20 @@ function iTopoDialogLogin( editor, menubar ) {
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 			
-			editor.stationDB.userLogin( userStarInfo, function(){
-				//var detailUserInfo = JSON.parse(jsonData);
-					var detailUserInfo = new iTopoStarUser();
-					detailUserInfo.starUUID = "D15A6F8A-B35A-453C-AC44-BAC042A44FDD";
-					menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, detailUserInfo ) );
-					menubar.removeRegisterMenu();
-					menubar.removeLoginMenu();
+			editor.stationDB.userLogin( editor.starUser, function(detailUserInfo){
+				editor.starUser.storeActiveUserInfo2Config();
+		
+				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, detailUserInfo ) );
+				menubar.removeRegisterMenu();
+				menubar.removeLoginMenu();
 
-					editor.scene.rotation.y = 0;
-					editor.sceneHelpers.rotation.y = 0;
-
-					editor.config.setKey( 'activedStarUserUUID', detailUserInfo.starUUID);
-					var star = editor.objectByiTopoUUID(detailUserInfo.starUUID);
-					editor.select(star);// this function will call
-					
-					editor.signals.userRegisteredOrLogin.dispatch(detailUserInfo);
+				editor.scene.rotation.y = 0;
+				editor.sceneHelpers.rotation.y = 0;
+				
+				var star = editor.objectByiTopoUUID(detailUserInfo.starUUID);
+				editor.select(star);// this function will call
+				
+				editor.signals.userRegisteredOrLogin.dispatch(detailUserInfo);
 			});
 
 

@@ -1,7 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIPanel } from '../iTopoUI.js';
 
 import { iTopoMenubarEarthHub } from './iTopoMenubar.EarthHub.js';
@@ -11,43 +7,70 @@ import { iTopoMenubarBlockChain } from './iTopoMenubar.BlockChain.js';
 
 import { iTopoMenubarLogin } from './iTopoMenubar.Login.js';
 import { iTopoMenubarRegister } from './iTopoMenubar.Register.js';
+import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 
-function iTopoMenubar( editor ) {
+function iTopoMenubar(editor) {
 
 	this.container = new UIPanel();
-	this.container.setId( 'menubar' );
+	this.container.setId('menubar');
 
-	this.container.add( new iTopoMenubarEarthHub( editor ) );
-	this.container.add( new iTopoMenubarEcologicalFarm( editor ) );
-	this.container.add( new iTopoMenubarSharedCanteen( editor ) );
-	this.container.add( new iTopoMenubarBlockChain( editor ) );
+	this.container.add(new iTopoMenubarEarthHub(editor));
+	this.container.add(new iTopoMenubarEcologicalFarm(editor));
+	this.container.add(new iTopoMenubarSharedCanteen(editor));
+	this.container.add(new iTopoMenubarBlockChain(editor));
 
-	this.registerMenu = new iTopoMenubarRegister( editor, this );
-	this.container.add( this.registerMenu );
+	if (editor.starUser.alreadyLoggedIn()) {
+		this.addMenubarStarUser(new iTopoMenubarStarUser(editor, this, editor.starUser));
+	} else {
+		this.registerMenu = new iTopoMenubarRegister(editor, this);
+		this.container.add(this.registerMenu);
 
-	this.loginMenu = new iTopoMenubarLogin( editor, this );
-	this.container.add( this.loginMenu );
+		this.loginMenu = new iTopoMenubarLogin(editor, this);
+		this.container.add(this.loginMenu);
+	}
 
 	return this.container;
 }
 
 iTopoMenubar.prototype = {
 
-	addMenubarStarUser:function (starUserMenu) {
+	addMenubarStarUser: function(starUserMenu) {
 		this.starUserMenu = starUserMenu;
-		this.container.add( this.starUserMenu );
+		this.container.add(this.starUserMenu);
 	},
 
-	removeMenubarStarUser: function (){
+	addMenubarRegisterMenu: function() {
+		if (this.registerMenu === undefined || this.registerMenu === undefined)
+			this.registerMenu = new iTopoMenubarRegister(editor, this);
+		this.container.add(this.registerMenu);
+	},
+
+	addMenubarLoginMenu: function() {
+		if (this.loginMenu === undefined || this.loginMenu === undefined)
+			this.loginMenu = new iTopoMenubarLogin(editor, this);
+		this.container.add(this.loginMenu);
+	},
+
+	removeMenubarStarUser: function() {
+		if (this.starUserMenu === undefined || this.starUserMenu === undefined)
+			return;
 		this.container.remove(this.starUserMenu);
+		this.starUserMenu = null;
 	},
 
-	removeRegisterMenu: function ( ) {
+	removeRegisterMenu: function() {
+		if (this.registerMenu === undefined || this.registerMenu === undefined)
+			return;
 		this.container.remove(this.registerMenu);
+		this.registerMenu = null;
 	},
 
-	removeLoginMenu: function ( ) {
+	removeLoginMenu: function() {
+		if (this.loginMenu === undefined || this.loginMenu === undefined)
+			return;
 		this.container.remove(this.loginMenu);
+		this.loginMenu = null;
 	}
 }
+
 export { iTopoMenubar };

@@ -114,6 +114,12 @@ iTopoObjectSkyCastleHeader.prototype = {
 			displayStand.container.dom.addEventListener( 'resize', function () {
 			 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
 			} );
+			
+			displayStand.closeBtn.dom.addEventListener('click', function() {
+				explore.stop();
+				explore.dispose();
+				explore = null;
+			});
 		}) ;
 	},
 
