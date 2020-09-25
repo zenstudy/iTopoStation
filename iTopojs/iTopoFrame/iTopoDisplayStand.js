@@ -1,7 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIElement, UIPanel, UIText } from '../iTopoUI.js';
 
 import { SetScriptValueCommand } from '../../js/commands/SetScriptValueCommand.js';
@@ -12,8 +8,7 @@ function iTopoDisplayStand( dispalyContext ) {
 
 	var container = new UIPanel();
 	container.setId( 'DisplayStand' );
-	container.setPosition( 'absolute' );
-	container.setBackgroundColor( '#fffae8' );
+//	container.setBackgroundColor( '#fffae8' );
 	container.setDisplay( 'none' );
 	this.container = container;
 

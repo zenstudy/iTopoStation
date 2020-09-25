@@ -1,9 +1,7 @@
-//import { TransformControls } from '../../../examples/jsm/controls/TransformControls.js';
-//import { TrackballControls } from '../../../examples/jsm/controls/TrackballControls.js';
-import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
 import { CSS3DRenderer, CSS3DObject } from '../../../examples/jsm/renderers/CSS3DRenderer.js';
 import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
-
+import { UIPanel } from '../iTopoUI.js';
+import { iTopoOrbitControls } from './iTopoOrbitControls.js';
 
 var iTopoTask3dExplore = {
 
@@ -11,8 +9,6 @@ var iTopoTask3dExplore = {
 		var scope = this;
 		this.objects = [];
 		this.targets = { random: [], table: [], sphere: [], helix: [], grid: [] };
-	//	var exploreContainerDom = parentContainerDom;
-	//	console.log(parentContainerDom);
 
 		var renderer = new CSS3DRenderer();
 		var glRenderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -29,25 +25,26 @@ var iTopoTask3dExplore = {
 		// if ( project.physicallyCorrectLights !== undefined ) renderer.physicallyCorrectLights = project.physicallyCorrectLights;
 
 		var requestAnimate = true;
-		var camera, scene, glScene, controls, glControls;
-		var vrButton = VRButton.createButton( renderer );
+		var camera, scene, glScene, orbitControls;
+	//	var vrButton = VRButton.createButton( renderer );
 		var events = {};
 		var onDownPosition = new THREE.Vector2();
 		var onUpPosition = new THREE.Vector2();
 
-		var dom = document.createElement( 'div' );
-		//dom.style.background = '#86c9c9';
-		//dom.style.position = 'absolate';
+		var container = new UIPanel();
+		container.setPosition( 'absolute' );
 
-		//glRenderer.domElement.style.top = '0px';
+		displayStand.container.dom.appendChild( container.dom );
+		scope.dom = container.dom;
+
 		glRenderer.domElement.id = 'taskView';
-		dom.appendChild( glRenderer.domElement );
-		dom.appendChild( renderer.domElement );
+		scope.dom.appendChild( glRenderer.domElement );
+		//renderer.domElement.id = 'taskView';
+		scope.dom.appendChild( renderer.domElement );
 
-		scope.dom = dom;
 
-		this.width = 500;
-		this.height = 500;
+		scope.width = 500;
+		scope.height = 500;
 
 		this.initialize = function ( ) {
 			scene = new THREE.Scene();
@@ -71,30 +68,18 @@ var iTopoTask3dExplore = {
 			camera.lookAt(0,0,0);
 			this.setCamera(camera);
 
-			// var controls = new OrbitControls( camera, renderer.domElement );
-			// controls.maxPolarAngle = Math.PI * 0.5;
-			// controls.minDistance = 10;
-			// controls.maxDistance = 75;
-			// controls.target.set( 0, 2.5, 0 );
-			// controls.update();
+			orbitControls = new iTopoOrbitControls(camera, renderer.domElement);
+			orbitControls.maxPolarAngle = Math.PI * 0.5;
+			orbitControls.minDistance = 10;
+			orbitControls.maxDistance = 6000;
+			orbitControls.enablePan = true;
+			orbitControls.enableZoom = true;
+			orbitControls.enabled = true;
+			orbitControls.update();
+			renderer.domElement.removeAttribute("tabindex");
 
-			controls = new OrbitControls(camera, renderer.domElement);
-			controls.maxPolarAngle = Math.PI * 0.5;
-			controls.minDistance = 10;
-			controls.maxDistance = 6000;
-			controls.enablePan = true;
-			controls.enableZoom = true;
-			controls.update();
-
-			glControls = new OrbitControls(camera, glRenderer.domElement);
-			glControls.minDistance = 10;
-			glControls.maxDistance = 6000;
-			glControls.enablePan = true;
-			glControls.enableZoom = true;
-			glControls.update();
-
-			var axes = new THREE.AxesHelper(2072);
-			scene.add(axes);
+			// var axes = new THREE.AxesHelper(2072);
+			// scene.add(axes);
 
 			events = {
 				init: [],
@@ -115,6 +100,7 @@ var iTopoTask3dExplore = {
 		};
 
 		this.show3D = function ( ) {
+
 			this.createTaskMenu();
 			this.createLayoutMenu();
 
@@ -139,7 +125,7 @@ var iTopoTask3dExplore = {
 				let material = new THREE.MeshBasicMaterial({
 					color:0x00ff00,
 					side: THREE.DoubleSide,
-					opacity: 0.01,
+					opacity: .01,
 					blending: THREE.AdditiveBlending,
 					transparent: true,
 					depthTest: false
@@ -387,6 +373,9 @@ var iTopoTask3dExplore = {
 			this.width = width;
 			this.height = height;
 
+			scope.dom.style.width = width + 'px';
+			scope.dom.style.height = height + 'px';
+
 			if ( camera ) {
 				camera.aspect = this.width / this.height;
 				camera.updateProjectionMatrix();
@@ -420,8 +409,8 @@ var iTopoTask3dExplore = {
 
 			console.log('iTopoTask3dExplore.animate');
 
-			controls.update();
-			glControls.update();
+			orbitControls.update();
+
 			//TWEEN.update();
 
 			renderer.render( scene, camera );
@@ -436,15 +425,17 @@ var iTopoTask3dExplore = {
 		this.play = function () {
 			//if ( renderer.xr.enabled ) dom.append( vrButton );
 			prevTime = performance.now();
-			var dom = this.dom;
-			dom.addEventListener( 'keydown', onDocumentKeyDown );
-			dom.addEventListener( 'keyup', onDocumentKeyUp );
-			dom.addEventListener( 'mousedown', onDocumentMouseDown );
-			dom.addEventListener( 'mouseup', onDocumentMouseUp );
-			dom.addEventListener( 'mousemove', onDocumentMouseMove );
-			dom.addEventListener( 'touchstart', onDocumentTouchStart );
-			dom.addEventListener( 'touchend', onDocumentTouchEnd );
-			dom.addEventListener( 'touchmove', onDocumentTouchMove );
+			var domX =  orbitControls.domElement;
+			console.log(orbitControls.domElement);
+
+			domX.addEventListener( 'keydown', onDocumentKeyDown );
+			domX.addEventListener( 'keyup', onDocumentKeyUp );
+			domX.addEventListener( 'mousedown', onDocumentMouseDown );
+			domX.addEventListener( 'mouseup', onDocumentMouseUp );
+			domX.addEventListener( 'mousemove', onDocumentMouseMove );
+			domX.addEventListener( 'touchstart', onDocumentTouchStart );
+			domX.addEventListener( 'touchend', onDocumentTouchEnd );
+			domX.addEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.start, arguments );
 			//renderer.setAnimationLoop( animate ); //CSS3DRenderer没有setAnimationLoop功能
@@ -455,15 +446,16 @@ var iTopoTask3dExplore = {
 
 		this.stop = function () {
 			//if ( renderer.xr.enabled ) vrButton.remove();
-			var dom = this.dom;
-			dom.removeEventListener( 'keydown', onDocumentKeyDown );
-			dom.removeEventListener( 'keyup', onDocumentKeyUp );
-			dom.removeEventListener( 'mousedown', onDocumentMouseDown );
-			dom.removeEventListener( 'mouseup', onDocumentMouseUp );
-			dom.removeEventListener( 'mousemove', onDocumentMouseMove );
-			dom.removeEventListener( 'touchstart', onDocumentTouchStart );
-			dom.removeEventListener( 'touchend', onDocumentTouchEnd );
-			dom.removeEventListener( 'touchmove', onDocumentTouchMove );
+			var domX =  orbitControls.domElement/*displayStand.container.dom*/;
+			console.log('glRenderer.domElement');
+			domX.removeEventListener( 'keydown', onDocumentKeyDown );
+			domX.removeEventListener( 'keyup', onDocumentKeyUp );
+			domX.removeEventListener( 'mousedown', onDocumentMouseDown );
+			domX.removeEventListener( 'mouseup', onDocumentMouseUp );
+			domX.removeEventListener( 'mousemove', onDocumentMouseMove );
+			domX.removeEventListener( 'touchstart', onDocumentTouchStart );
+			domX.removeEventListener( 'touchend', onDocumentTouchEnd );
+			domX.removeEventListener( 'touchmove', onDocumentTouchMove );
 
 			dispatch( events.stop, arguments );
 			requestAnimate = false;
@@ -503,7 +495,7 @@ var iTopoTask3dExplore = {
 				return;
 
 			if ( onDownPosition.distanceTo( onUpPosition ) === 0 ) {
-				var intersects = getIntersects( onUpPosition, scope.objects /*scope.targets.sphere*/ );
+				var intersects = getIntersects( onUpPosition, scope.objects);
 
 				if ( intersects.length > 0 ) {
 					var object = intersects[ 0 ].object;
@@ -526,6 +518,7 @@ var iTopoTask3dExplore = {
 		}
 
 		function onDocumentMouseDown( event ) {
+
 			var array = getMousePosition( glRenderer.domElement, event.clientX, event.clientY );
 			onDownPosition.fromArray( array );
 
@@ -533,8 +526,6 @@ var iTopoTask3dExplore = {
 		}
 
 		function onDocumentMouseUp( event ) {
-
-			console.log('onDocumentMouseUp.handleClick');
 
 			var array = getMousePosition( glRenderer.domElement, event.clientX, event.clientY );
 			onUpPosition.fromArray( array );
@@ -559,6 +550,8 @@ var iTopoTask3dExplore = {
 		function onDocumentTouchMove( event ) {
 			dispatch( events.touchmove, event );
 		}
+
+		return scope;
 	}
 };
 

@@ -1,7 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIElement, UIPanel, UIText } from '../iTopoUI.js';
 
 import { SetScriptValueCommand } from '../../js/commands/SetScriptValueCommand.js';

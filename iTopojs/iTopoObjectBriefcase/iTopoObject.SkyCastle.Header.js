@@ -114,7 +114,7 @@ iTopoObjectSkyCastleHeader.prototype = {
 			displayStand.container.dom.addEventListener( 'resize', function () {
 			 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
 			} );
-			
+
 			displayStand.closeBtn.dom.addEventListener('click', function() {
 				explore.stop();
 				explore.dispose();
@@ -131,30 +131,27 @@ iTopoObjectSkyCastleHeader.prototype = {
 			document.body.appendChild(displayStand.container.dom);
 			displayStand.container.setDisplay( 'block' );
 			displayStand.container.setPosition('absolate');
-			
+
 			var explore = new iTopoTask3dExplore.Explore(displayStand);
 			explore.initialize();
-			
+
 			for (var i = 0; i < json.length; i++) {
 				explore.appendCardItem(json[i]);
 			}
-			
 			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-			
+
 			explore.show3D();
 			explore.play();
-			
-			displayStand.container.dom.appendChild( explore.dom );
+
 			displayStand.container.dom.addEventListener( 'resize', function () {
 				explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 			});
-			
 			displayStand.closeBtn.dom.addEventListener('click', function() {
 				explore.stop();
 				explore.dispose();
 				explore = null;
 			});
-			
+
 			var taskBriefcase = new iTopoTaskBriefcase( editor );
 			displayStand.container.dom.appendChild( taskBriefcase.dom );
 		});

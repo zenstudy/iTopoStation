@@ -1,6 +1,6 @@
 import * as THREE from '../../../build/three.module.js';
 import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
-import { UIPanel } from '../iTopoUI.js';
+
 
 function iTopoThumbnailManager() {
 

@@ -212,12 +212,10 @@ var iTopo3dExplore = {
 		}
 
 		function onDocumentMouseDown( event ) {
-
 			dispatch( events.mousedown, event );
 		}
 
 		function onDocumentMouseUp( event ) {
-			console.log('aaa');
 			dispatch( events.mouseup, event );
 		}
 
