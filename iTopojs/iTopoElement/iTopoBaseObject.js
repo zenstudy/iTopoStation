@@ -13,15 +13,17 @@ class iTopoBaseObject {
 		}
 		var lnglatPair = randonlnglatPair();
 
-		this.baseUUID = THREE.MathUtils.generateUUID(),
-			this.taskType = 'iTopoType/TaskObject/EcologicalFarm';
-		this.title = "有机农场";
-		this.city = "城市1";
-		this.address = "详细地址1";
-		this.lng = lnglatPair[0];
-		this.lat = lnglatPair[1];
-		this.lightWish = "共同创造基地";
-		this.QRcode = "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg";
+		this.info = {
+			baseUUID : THREE.MathUtils.generateUUID(),
+			taskType : 'iTopoType/TaskObject/EcologicalFarm',
+			title : "有机农场",
+			city : "城市1",
+			address : "详细地址1",
+			lng : lnglatPair[0],
+			lat : lnglatPair[1],
+			lightWish : "共同创造基地",
+			QRcode : "./iTopojs/QRcode/88F48BD-823C-42F1-857A-124E495B351B.jpg",
+		}
 	}
 }
 

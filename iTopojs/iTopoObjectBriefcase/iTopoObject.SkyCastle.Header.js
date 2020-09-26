@@ -3,13 +3,14 @@ import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoObjectSkyCastleHeader(editor) {
 	var scope = this;
 	var strings = editor.strings;
-
+	var skyCastleinfo=iTopoEarthModel.SkyCastle.info;
+	
 	var container = new UISpan();
 	this.container = container;
 
@@ -22,7 +23,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 		// baseUUID
 		var geometryUUIDRow = new UIRow();
 		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(iTopoEarthModel.SkyCastle.castleUUID);
+		this.geometryUUID.setValue(skyCastleinfo.castleUUID);
 		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/castleUUID')).setWidth('90px'));
 		geometryUUIDRow.add(this.geometryUUID);
 
@@ -35,7 +36,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 		titleRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/Title')).setWidth('90px'));
 
 		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
-		this.titleInput.setValue(iTopoEarthModel.SkyCastle.title);
+		this.titleInput.setValue(skyCastleinfo.title);
 		this.titleInput.onChange(function() {
 			//lightTask.title = this.getValue();
 		});
@@ -97,7 +98,7 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 	onClickThumbnail: function() {// this对应一个item
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
+	    var title = editor.strings.getKey( 'sidebar/skyCastle/Header/Outlook' ) ;
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
 		displayStand.container.setDisplay( 'block' );
@@ -105,6 +106,7 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 		var originPosition = new THREE.Vector3();
 		editor.resourceTracker.loadSmallCityModel(originPosition, 30, function(baseModel){
+			
 			var explore = new iTopo3dExplore.Explore();
 			explore.show3D(null , baseModel);
 			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
@@ -120,19 +122,20 @@ iTopoObjectSkyCastleHeader.prototype = {
 				explore.dispose();
 				explore = null;
 			});
+			
 		}) ;
 	},
 
 	onTaskCardsClassCSS3D: function() {
 
-		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.castleUUID,function(json){
+		editor.stationDB.fetchiTopoTaskCards(skyCastleinfo.castleUUID,function(json){
 			var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
 			var displayStand = new iTopoDisplayStand(title);
 			document.body.appendChild(displayStand.container.dom);
 			displayStand.container.setDisplay( 'block' );
 			displayStand.container.setPosition('absolate');
 
-			var explore = new iTopoTask3dExplore.Explore(displayStand);
+			var explore = new iTopoTaskDashboard3D.Explore(displayStand);
 			explore.initialize();
 
 			for (var i = 0; i < json.length; i++) {
@@ -167,8 +170,8 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 		if (editor.selected !== null) {
 		//	container.setDisplay( 'block' );
-			this.geometryUUID.setValue(taskObject.castleUUID);
-			this.titleInput.setValue(taskObject.title);
+			this.geometryUUID.setValue(taskObject.info.castleUUID);
+			this.titleInput.setValue(taskObject.info.title);
 		}
 
 		this.taskObject = taskObject;

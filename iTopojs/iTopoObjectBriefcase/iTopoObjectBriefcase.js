@@ -253,7 +253,7 @@ function iTopoObjectBriefcase(editor) {
 		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
 			return;
 
-		if (iTopoEarthModel.SkyCastle.castleUUID === editor.selected.userData.objectUUID) {
+		if (iTopoEarthModel.SkyCastle.info.castleUUID === editor.selected.userData.objectUUID) {
 
 			tabs.forEach(function(tab) {
 				tab.panel.setValue(iTopoEarthModel.SkyCastle);

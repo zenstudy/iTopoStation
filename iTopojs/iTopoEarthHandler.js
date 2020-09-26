@@ -27,15 +27,15 @@ function iTopoEarthHandler(editor, sidebar, userBriefcase) {
 			iTopoEarthModel.appendBaseObject(baseObjectOnEarth);
 			scope.userBriefcase.registerBaseIntoMineAsset(baseObjectOnEarth);
 
-			editor.stationDB.fetchUserWithStarUUID(starUUID, function(starUser){
-				console.log(starUser);
-				if(starUser.userRegisteredBases === undefined) {
-					starUser.userRegisteredBases = [];
+			editor.stationDB.fetchUserWithStarUUID(starUUID, function(starUserInfo){
+				console.log(starUserInfo);
+				if(starUserInfo.userRegisteredBases === undefined) {
+					starUserInfo.userRegisteredBases = [];
 				}
-				starUser.userRegisteredBases.push(baseObjectOnEarth.baseUUID);
-				editor.stationDB.updateStarUser(starUser, function(){
+				starUserInfo.userRegisteredBases.push(baseObjectOnEarth.baseUUID);
+				editor.stationDB.updateStarUser(starUserInfo, function(){
 					console.log('updateStarUser:');
-					console.log(starUser);
+					console.log(starUserInfo);
 				});
 			})
 

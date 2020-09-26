@@ -4,7 +4,7 @@ import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoTaskHeader(editor) {
@@ -56,10 +56,10 @@ function iTopoTaskHeader(editor) {
 	{
 		// status
 		var statusRow = new UIRow();
-		statusRow.add(new UIText(strings.getKey('taskbar/Header/taskTitle')).setWidth('90px'));
+		statusRow.add(new UIText(strings.getKey('taskbar/Header/taskStatus')).setWidth('90px'));
 
 		this.statusInput = new UIInput().setWidth('160px').setFontSize('12px');
-		this.statusInput.setValue(taskInfo.taskTitle);
+		this.statusInput.setValue(taskInfo.taskStatus);
 		this.statusInput.onChange(function() {
 			//lightTask.title = this.getValue();
 		});

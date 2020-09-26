@@ -1,11 +1,6 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
-import {UIPanel,UIRow,UIButton} from '../iTopoUI.js';
+import { UIPanel,UIRow,UIButton } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
-import { iTopoEarthBluePrint } from '../iTopoFrame/iTopoEarthBluePrint.js';
 
 function iTopoMenubarEarthHub(editor) {
 
@@ -23,29 +18,7 @@ function iTopoMenubarEarthHub(editor) {
 	options.setClass('options');
 	container.add(options);
 
-	var whitepaperMenu = new UIRow();
-	whitepaperMenu.setClass('option');
-	whitepaperMenu.setTextContent(strings.getKey('menubar/iTopoEarthHub/iTopoBluePrint'));
-	whitepaperMenu.onClick(function() {
 
-		var scope = this;
-	    var title = editor.strings.getKey( 'menubar/iTopoEarthHub/iTopoBluePrint' ) ;
-		var bluePrintWindow = new iTopoEarthBluePrint(title);
-		document.body.appendChild(bluePrintWindow.container.dom);
-		bluePrintWindow.container.setDisplay( 'block' );
-		bluePrintWindow.container.setPosition('absolate');
-
-		
-		bluePrintWindow.container.dom.addEventListener( 'resize', function () {
-
-		});
-
-		bluePrintWindow.closeBtn.dom.addEventListener('click', function() {
-
-		});
-
-	});
-	options.add(whitepaperMenu);
 
 	var skyCastleMenu = new UIRow();
 	skyCastleMenu.setClass('option');
@@ -53,9 +26,9 @@ function iTopoMenubarEarthHub(editor) {
 	skyCastleMenu.onClick(function() {
 
 		editor.scene.traverse(function(obj) {
-			  if (obj.userData.objectUUID === iTopoEarthModel.SkyCastle.castleUUID) {
+			if (obj.userData.objectUUID === iTopoEarthModel.SkyCastle.castleUUID) {
 				editor.select(obj);
-			  }
+			}
 		});
 
 	});
@@ -67,9 +40,9 @@ function iTopoMenubarEarthHub(editor) {
 	innerEarthMenu.onClick(function() {
 
 		editor.scene.traverse(function(obj) {
-			  if (obj.userData.objectUUID === iTopoEarthModel.InnerEarth.innerEarthUUID) {
+			if (obj.userData.objectUUID === iTopoEarthModel.InnerEarth.innerEarthUUID) {
 				editor.select(obj);
-			  }
+			}
 		});
 
 	});
@@ -81,9 +54,9 @@ function iTopoMenubarEarthHub(editor) {
 	lunarMoonMenu.onClick(function() {
 
 		editor.scene.traverse(function(obj) {
-			  if (obj.userData.objectUUID === iTopoEarthModel.LunarMoon.lunarMoonUUID) {
+			if (obj.userData.objectUUID === iTopoEarthModel.LunarMoon.lunarMoonUUID) {
 				editor.select(obj);
-			  }
+			}
 		});
 
 	});
@@ -92,4 +65,6 @@ function iTopoMenubarEarthHub(editor) {
 	return container;
 }
 
-export { iTopoMenubarEarthHub };
+export {
+	iTopoMenubarEarthHub
+};

@@ -10,6 +10,7 @@ import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 function iTopoDialogLogin( editor, menubar ) {
 
 	var strings = editor.strings;
+	var starUserInfo = editor.starUser.info;
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
@@ -30,7 +31,7 @@ function iTopoDialogLogin( editor, menubar ) {
 
 		cellPhoneRow.add( new UIText( strings.getKey( 'iTopoDialog/login/cellPhone' ) ).setWidth( '80px' ) );
 
-		var inputCellPhone = new UIInput( editor.starUser.cellPhone );
+		var inputCellPhone = new UIInput( starUserInfo.cellPhone );
 		inputCellPhone.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -46,7 +47,7 @@ function iTopoDialogLogin( editor, menubar ) {
 		passwordRow.add( new UIText( strings.getKey( 'iTopoDialog/login/password' ) ).setWidth( '80px' ) );
 
 		var inputPassword = new UIInput();
-		inputPassword.setValue( editor.starUser.password );
+		inputPassword.setValue( starUserInfo.password );
 		inputPassword.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );

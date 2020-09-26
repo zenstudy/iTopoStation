@@ -12,7 +12,7 @@ import { MtlObjBridge } from '../../../examples/jsm/loaders/obj2/bridge/MtlObjBr
 import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoObjectStarUserHeader(editor) {
@@ -20,16 +20,7 @@ function iTopoObjectStarUserHeader(editor) {
 
 	var strings = editor.strings;
 
-	var starUser = {
-	"starUUID": "88F48BD-823C-42F1-857A-124E495B351B",
-	"gender" : "female", //"male", "female"
-	"cellPhone": 13688888888,
-	"password": "starstar",
-	"lng": 100,
-	"lat": 100,
-	"starWish": "star wish",
-	"wxQRcode": ""
-	};
+	var starUserInfo = editor.starUser.info
 
 	var container = new UISpan();
 	this.container = container;
@@ -46,12 +37,12 @@ function iTopoObjectStarUserHeader(editor) {
 
 			var originPosition = new THREE.Vector3();
 			originPosition.set(0,-1.0,0);
-			editor.resourceTracker.loadiTopoUser(starUser.gender, originPosition, 2, function(object){
+			editor.resourceTracker.loadiTopoUser(starUserInfo.gender, originPosition, 2, function(object){
 				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ),
 			 	object , function() {scope.onClickThumbnail()});
 			}) ;
 
-			editor.resourceTracker.loadiTopoUser(starUser.gender, originPosition, 2, function(object){
+			editor.resourceTracker.loadiTopoUser(starUserInfo.gender, originPosition, 2, function(object){
 				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/iTopoTaskCards' ),
 				 	object , function(){scope.onTaskCardsClassCSS3D()});
 			}) ;
@@ -66,7 +57,7 @@ function iTopoObjectStarUserHeader(editor) {
 		// starUUID
 		var starUUIDRow = new UIRow();
 		this.starUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.starUUID.setValue(starUser.starUUID);
+		this.starUUID.setValue(starUserInfo.starUUID);
 		starUUIDRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starUUID')).setWidth('90px'));
 		starUUIDRow.add(this.starUUID);
 
@@ -79,9 +70,9 @@ function iTopoObjectStarUserHeader(editor) {
 		genderRow.add(new UIText(strings.getKey('sidebar/starUser/Header/gender')).setWidth('90px'));
 
 		this.genderInput = new UIInput().setWidth('160px').setFontSize('12px');
-		this.genderInput.setValue(starUser.gender);
+		this.genderInput.setValue(starUserInfo.gender);
 		this.genderInput.onChange(function() {
-			starUser.gender = this.getValue();
+			starUserInfo.gender = this.getValue();
 		});
 		genderRow.add(this.genderInput);
 
@@ -94,9 +85,9 @@ function iTopoObjectStarUserHeader(editor) {
 		cellPhoneRow.add(new UIText(strings.getKey('sidebar/starUser/Header/cellPhone')).setWidth('90px'));
 
 		this.cellPhoneInput = new UIInput().setWidth('160px').setFontSize('12px');
-		this.cellPhoneInput.setValue(starUser.cellPhone);
+		this.cellPhoneInput.setValue(starUserInfo.cellPhone);
 		this.cellPhoneInput.onChange(function() {
-			starUser.title = this.getValue();
+			starUserInfo.title = this.getValue();
 		});
 		cellPhoneRow.add(this.cellPhoneInput);
 
@@ -108,7 +99,7 @@ function iTopoObjectStarUserHeader(editor) {
 
 		longitudeRow.add(new UIText(strings.getKey('sidebar/starUser/Header/longitude')).setWidth('90px'));
 
-		this.longitudeValueUI = new UINumber(starUser.longitude).setRange(2, Infinity);
+		this.longitudeValueUI = new UINumber(starUserInfo.longitude).setRange(2, Infinity);
 		this.longitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -123,7 +114,7 @@ function iTopoObjectStarUserHeader(editor) {
 
 		latitudeRow.add(new UIText(strings.getKey('sidebar/starUser/Header/latitude')).setWidth('90px'));
 
-		this.latitudeValueUI = new UINumber(starUser.latitude).setRange(2, Infinity);
+		this.latitudeValueUI = new UINumber(starUserInfo.latitude).setRange(2, Infinity);
 		this.latitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -142,7 +133,7 @@ function iTopoObjectStarUserHeader(editor) {
 		this.starWishValueUI = new UITextArea().setWidth('250px').setFontSize('12px') /*.onChange( update )*/ ;
 		this.starWishValueUI.dom.style.height = '662px';
 		this.starWishValueUI.onKeyUp(function() {
-			starUser.starWish = this.getValue();
+			starUserInfo.starWish = this.getValue();
 
 		});
 		starWishTextAreaRow.add(this.starWishValueUI);
@@ -246,7 +237,7 @@ iTopoObjectStarUserHeader.prototype = {
 				displayStand.container.setDisplay( 'block' );
 				displayStand.container.setPosition('absolate');
 
-				var explore = new iTopoTask3dExplore.Explore(displayStand);
+				var explore = new iTopoTaskDashboard3D.Explore(displayStand);
 				explore.initialize();
 
 				for (var i = 0; i < json.length; i++) {

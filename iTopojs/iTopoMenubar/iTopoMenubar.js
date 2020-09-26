@@ -4,6 +4,7 @@ import { iTopoMenubarEarthHub } from './iTopoMenubar.EarthHub.js';
 import { iTopoMenubarSharedCanteen } from './iTopoMenubar.SharedCanteen.js';
 import { iTopoMenubarEcologicalFarm } from './iTopoMenubar.EcologicalFarm.js';
 import { iTopoMenubarBlockChain } from './iTopoMenubar.BlockChain.js';
+import { iTopoMenubarAboutiTopoEarth } from './iTopoMenubar.AboutiTopoEarth.js';
 
 import { iTopoMenubarLogin } from './iTopoMenubar.Login.js';
 import { iTopoMenubarRegister } from './iTopoMenubar.Register.js';
@@ -18,6 +19,7 @@ function iTopoMenubar(editor) {
 	this.container.add(new iTopoMenubarEcologicalFarm(editor));
 	this.container.add(new iTopoMenubarSharedCanteen(editor));
 	this.container.add(new iTopoMenubarBlockChain(editor));
+	this.container.add(new iTopoMenubarAboutiTopoEarth(editor));
 
 	if (editor.starUser.alreadyLoggedIn()) {
 		this.addMenubarStarUser(new iTopoMenubarStarUser(editor, this, editor.starUser));

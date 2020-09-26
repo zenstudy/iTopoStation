@@ -17,8 +17,7 @@ function iTopoStrings( config ) {
 			'iTopoType/TaskObject/iTopoInnerEarth':'地心门户',
 			'iTopoType/TaskObject/iTopoLunarMoon': '月球',
 
-			'menubar/iTopoEarthHub': '共享地球',
-			'menubar/iTopoEarthHub/iTopoBluePrint' : '共享地球蓝图',
+			'menubar/iTopoEarthHub': '共享地球首页',
 			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球事务大厅',
 			'menubar/iTopoEarthHub/iTopoInnerEarth' : '地心门户',
 			'menubar/iTopoEarthHub/iTopoLunarMoon' : '月球',
@@ -34,6 +33,9 @@ function iTopoStrings( config ) {
 			'menubar/blockChain/HorizenSecureNodesMap' :'Horizen安全节点儿全球分布图',
 			'menubar/blockChain/horizenSuperNodesMap'  :'horizen超级节点儿全球分布图',
 
+			'menubar/AboutiTopoEarth':'关于共享地球',
+			'menubar/AboutiTopoEarth/iTopoBluePrint' : '共享地球蓝图',
+
 			'menubar/Login' : '登陆',
 			'menubar/register': '注册',
 			'menubar/StarUser/exit':'退出',
@@ -44,9 +46,10 @@ function iTopoStrings( config ) {
 			'iTopoToolbar/scale':'缩放',
 			'iTopoToolbar/local':'本地',
 
-			'iTopoToolbarLight/mineStar': '我的星星',
-			'iTopoToolbarLight/lightEarth': '点亮地球',
-			'iTopoToolbarLight/cancel' : '取消',
+			'iTopoToolbarLight/RegisterEcologicalFarm': '注册生态基地',
+			'iTopoToolbarLight/RegisterSharedCanteen': '注册共享食堂',
+			'iTopoToolbarLight/ok':'确定',
+			'iTopoToolbarLight/cancel':'取消',
 
 			'iTopoViewport/info/objects' : '对象数量',
 			'iTopoViewport/info/vertices' : '顶点儿数',
@@ -62,12 +65,12 @@ function iTopoStrings( config ) {
 			'sidebar/skyCastle/iTopoItems/workplace' : '工作空间',
 
 			'sidebar/skyCastle/Parts' : '服务小组',
-			'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' : 'iTopo系统研究小组',
-			'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' : '生活饮食文化研究小组',
-			'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' : '人类科学研究小组',
-			'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' : '生态恢复研究小组',
-			'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' : '绿色新能源研究小组',
-			'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' : '星际文明研究小组',
+			'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' : 'iTopo系统研发组',
+			'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' : '生态恢复志愿组',
+			'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' : '生活饮食文化志愿组',
+			'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' : '绿色新能源志愿组',
+			'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' : '星际文明志愿组',
+			'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' : '人类科学志愿组',
 			'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' : '挂号组织和成员',
 			'sidebar/skyCastle/Parts/ReservedGroupX' : '预留小组x',
 
@@ -175,27 +178,24 @@ function iTopoStrings( config ) {
 			'iTopoDialog/lightEarth/city' :'城市',
 			'iTopoDialog/lightEarth/address' :'地址',
 
-			'iTopoTask3dExplore/TaskViewTopMenu/AddTask' :'添加任务',
-			'iTopoTask3dExplore/TaskViewTopMenu/DeleteTask' :'删除任务',
+			'iTopoTaskDashboard3D/TaskViewTopMenu/AddTask' :'添加任务',
+			'iTopoTaskDashboard3D/TaskViewTopMenu/DeleteTask' :'删除任务',
 
-			'iTopoTask3dExplore/TaskViewBottomMenu/Table' :'表格样式',
-			'iTopoTask3dExplore/TaskViewBottomMenu/Sphere' :'球形样式',
-			'iTopoTask3dExplore/TaskViewBottomMenu/Helix' :'螺旋样式',
-			'iTopoTask3dExplore/TaskViewBottomMenu/Grid' :'阵列样式',
-			'iTopoTask3dExplore/TaskViewBottomMenu/random' :'随机样式',
+			'iTopoTaskDashboard3D/TaskViewBottomMenu/Table' :'表格样式',
+			'iTopoTaskDashboard3D/TaskViewBottomMenu/Sphere' :'球形样式',
+			'iTopoTaskDashboard3D/TaskViewBottomMenu/Helix' :'螺旋样式',
+			'iTopoTaskDashboard3D/TaskViewBottomMenu/Grid' :'阵列样式',
+			'iTopoTaskDashboard3D/TaskViewBottomMenu/random' :'随机样式',
 
 			'taskbar/Header': '任务描述',
 			'taskbar/Header/taskUUID': '任务UUID',
 			'taskbar/Header/taskTitle': '任务标题',
+			'taskbar/Header/taskStatus': '任务状态',
 			'taskbar/Header/taskCreatedby': '任务创建者',
 			'taskbar/Header/taskDescription': '任务描述',
 
 			'taskbar/History': '任务历史',
 			'taskbar/link': '相关链接',
-
-			'userBriefcase/RegisterTool': '开始共享',
-			'userBriefcase/RegisterTool/RegisterSharedCanteen': '注册共享食堂-点亮地球',
-			'userBriefcase/RegisterTool/RegisterEcologicalFarm': '注册生态基地-点亮地球',
 
 			'userBriefcase/MineAsset': '我注册的共享',
 			'userBriefcase/MineFocus': '订阅的共享',

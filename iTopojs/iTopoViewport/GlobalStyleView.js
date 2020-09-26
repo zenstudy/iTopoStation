@@ -7,15 +7,13 @@ import { iTopoEarthModel } from '../iTopoEarthModel.js';
 import {iTopoEarthSettings} from'../iTopoEarthSettings.js';
 
 function GlobalStyleView( editor ) {
-
 	var signals = editor.signals;
 
 	//
-
 	var globalSelect = new UISelect();
 	globalSelect.setPosition( 'absolute' );
-	globalSelect.setRight( '10px' );
-	globalSelect.setTop( '40px' );
+	globalSelect.setLeft( '120px' );
+	globalSelect.setTop( '10px' );
 	globalSelect.onChange( function () {
 		editor.clear();
 		iTopoEarthSettings.EARTH_STYLE = this.getValue();

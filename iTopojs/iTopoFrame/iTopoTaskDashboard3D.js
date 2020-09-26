@@ -3,7 +3,7 @@ import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
 import { UIPanel } from '../iTopoUI.js';
 import { iTopoOrbitControls } from './iTopoOrbitControls.js';
 
-var iTopoTask3dExplore = {
+var iTopoTaskDashboard3D = {
 
 	Explore: function (displayStand) {
 		var scope = this;
@@ -64,16 +64,18 @@ var iTopoTask3dExplore = {
 
 			var camera = new THREE.PerspectiveCamera(75, renderer.domElement.innerWidth/renderer.domElement.innerHeight, 1, 10000);
 			camera.name = 'Camera';
-			camera.position.set( 0, 0, 2000 );
+			camera.position.set( 0, 0, 1000 );
 			camera.lookAt(0,0,0);
 			this.setCamera(camera);
 
 			orbitControls = new iTopoOrbitControls(camera, renderer.domElement);
 			orbitControls.maxPolarAngle = Math.PI * 0.5;
-			orbitControls.minDistance = 10;
-			orbitControls.maxDistance = 6000;
+			orbitControls.minDistance = 1;
+			orbitControls.maxDistance = 10000;
 			orbitControls.enablePan = true;
+			orbitControls.panSpeed = 3;
 			orbitControls.enableZoom = true;
+			orbitControls.zoomSpeed = 3;
 			orbitControls.enabled = true;
 			orbitControls.update();
 			renderer.domElement.removeAttribute("tabindex");
@@ -105,7 +107,7 @@ var iTopoTask3dExplore = {
 			this.createLayoutMenu();
 
 			this.generateTaskLayouts();
-			this.transformWithOutAnimate( this.targets.helix, 2000 );
+			this.transformWithOutAnimate( this.targets.table, 2000 );
 		};
 
 		this.transformWithOutAnimate = function( targets ) {
@@ -170,7 +172,7 @@ var iTopoTask3dExplore = {
 
 			var tableButton = document.createElement( 'input' );
 			tableButton.type="button";
-			tableButton.value = editor.strings.getKey( 'iTopoTask3dExplore/TaskViewTopMenu/AddTask' );
+			tableButton.value = editor.strings.getKey( 'iTopoTaskDashboard3D/TaskViewTopMenu/AddTask' );
 			tableButton.addEventListener('click', function(){
 				var taskObject = {
 					objectUUID : editor.selected.userData.objectUUID,
@@ -195,7 +197,7 @@ var iTopoTask3dExplore = {
 
 			var sphereButton = document.createElement( 'input' );
 			sphereButton.type="button";
-			sphereButton.value = editor.strings.getKey( 'iTopoTask3dExplore/TaskViewTopMenu/DeleteTask' );
+			sphereButton.value = editor.strings.getKey( 'iTopoTaskDashboard3D/TaskViewTopMenu/DeleteTask' );
 			sphereButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.sphere,2000 ); } );
 			css3dMenu.appendChild( sphereButton );
 
@@ -209,31 +211,31 @@ var iTopoTask3dExplore = {
 
 			var tableButton = document.createElement( 'input' );
 			tableButton.type="button";
-			tableButton.value = editor.strings.getKey('iTopoTask3dExplore/TaskViewBottomMenu/Table');
+			tableButton.value = editor.strings.getKey('iTopoTaskDashboard3D/TaskViewBottomMenu/Table');
 			tableButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.table,2000 ); } );
 			css3dMenu.appendChild( tableButton );
 
-			var sphereButton = document.createElement( 'input' );
-			sphereButton.type="button";
-			sphereButton.value = editor.strings.getKey('iTopoTask3dExplore/TaskViewBottomMenu/Sphere');
-			sphereButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.sphere,2000 ); } );
-			css3dMenu.appendChild( sphereButton );
-
 			var helixButton = document.createElement( 'input' );
 			helixButton.type="button";
-			helixButton.value = editor.strings.getKey('iTopoTask3dExplore/TaskViewBottomMenu/Helix');
+			helixButton.value = editor.strings.getKey('iTopoTaskDashboard3D/TaskViewBottomMenu/Helix');
 			helixButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.helix,2000 ); } );
 			css3dMenu.appendChild( helixButton );
 
+			var sphereButton = document.createElement( 'input' );
+			sphereButton.type="button";
+			sphereButton.value = editor.strings.getKey('iTopoTaskDashboard3D/TaskViewBottomMenu/Sphere');
+			sphereButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.sphere,2000 ); } );
+			css3dMenu.appendChild( sphereButton );
+
 			var gridButton = document.createElement( 'input' );
 			gridButton.type="button";
-			gridButton.value = editor.strings.getKey('iTopoTask3dExplore/TaskViewBottomMenu/Grid');
+			gridButton.value = editor.strings.getKey('iTopoTaskDashboard3D/TaskViewBottomMenu/Grid');
 			gridButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.grid,2000 ); } );
 			css3dMenu.appendChild( gridButton );
 
 			var randomButton = document.createElement( 'input' );
 			randomButton.type="button";
-			randomButton.value = editor.strings.getKey('iTopoTask3dExplore/TaskViewBottomMenu/random');
+			randomButton.value = editor.strings.getKey('iTopoTaskDashboard3D/TaskViewBottomMenu/random');
 			randomButton.addEventListener('click', function(){ scope.transformWithOutAnimate( scope.targets.random,2000 ); } );
 			css3dMenu.appendChild( randomButton );
 
@@ -252,7 +254,7 @@ var iTopoTask3dExplore = {
 
 			var taskDetail = document.createElement( 'div' );
 			taskDetail.className = 'TaskDetail';
-			taskDetail.textContent = taskObject.taskDescription;
+			taskDetail.textContent = taskObject.taskTitle;
 			element.appendChild( taskDetail );
 
 			var taskCreatedBy = document.createElement( 'div' );
@@ -295,9 +297,15 @@ var iTopoTask3dExplore = {
 			var vector = new THREE.Vector3();
 			for ( var i = 0, l = this.objects.length; i < l; i ++ ) {
 				var object = new THREE.Object3D();
-				object.position.x = Math.random() * 4000 - 2000;
-				object.position.y = Math.random() * 4000 - 2000;
-				object.position.z = Math.random() * 4000 - 2000;
+
+				const plusOrMinus_x = Math.round(Math.random()) * 2 - 1;
+				const plusOrMinus_y = Math.round(Math.random()) * 2 - 1;
+				const plusOrMinus_z = Math.round(Math.random()) * 2 - 1;
+
+				object.position.x = plusOrMinus_x*Math.random() * 800;
+				object.position.y = plusOrMinus_y*Math.random() * 800;
+				object.position.z = plusOrMinus_z*Math.random() * 800;
+
 				this.targets.random.push( object );
 			}
 		};
@@ -305,11 +313,14 @@ var iTopoTask3dExplore = {
 		this.createTableFormation = function(){
 			var columnCount = 10;
 			this.targets.table.length = 0;
-			var vector = new THREE.Vector3();
+			var topCenter = new THREE.Vector3();
+			topCenter.x = - columnCount*140/2;
+			topCenter.y = (this.objects.length/columnCount)*200/2;
 			for ( var i = 0, l = this.objects.length; i < l; i ++ ) {
 				var object = new THREE.Object3D();
-				object.position.x = ( ( i % columnCount) * 140 ) - columnCount*140/2;
-				object.position.y = - ( parseInt( i / columnCount) * 180 ) + 990;
+				object.position.x = topCenter.x + ( ( i % columnCount) * 140 ) ;
+				object.position.y = topCenter.y - ( parseInt( i / columnCount) * 180 );
+				object.position.z = topCenter.z;
 				this.targets.table.push( object );
 			}
 		};
@@ -321,7 +332,7 @@ var iTopoTask3dExplore = {
 				var phi = Math.acos( - 1 + ( 2 * i ) / l );
 				var theta = Math.sqrt( l * Math.PI ) * phi;
 				var object = new THREE.Object3D();
-				object.position.setFromSphericalCoords( 800, phi, theta );
+				object.position.setFromSphericalCoords( 500, phi, theta );
 				vector.copy( object.position ).multiplyScalar( 2 );
 				object.lookAt( vector );
 				this.targets.sphere.push( object );
@@ -332,10 +343,10 @@ var iTopoTask3dExplore = {
 			this.targets.helix.length = 0;
 			var vector = new THREE.Vector3();
 			for ( var i = 0, l = this.objects.length; i < l; i ++ ) {
-				var theta = i * 0.175 + Math.PI;
-				var y = - ( i * 8 ) + 450;
+				var theta = i * 0.28 ;
+				var y = - ( i * 8 ) + 160;
 				var object = new THREE.Object3D();
-				object.position.setFromCylindricalCoords( 900, theta, y );
+				object.position.setFromCylindricalCoords( 600, theta, y );
 				vector.x = object.position.x * 2;
 				vector.y = object.position.y;
 				vector.z = object.position.z * 2;
@@ -348,9 +359,9 @@ var iTopoTask3dExplore = {
 			this.targets.grid.length = 0;
 			for ( var i = 0; i < this.objects.length; i ++ ) {
 				var object = new THREE.Object3D();
-				object.position.x = ( ( i % 5 ) * 400 ) - 800;
-				object.position.y = ( - ( Math.floor( i / 5 ) % 5 ) * 400 ) + 800;
-				object.position.z = ( Math.floor( i / 25 ) ) * 1000 - 2000;
+				object.position.x = ( ( i % 5 ) * 400 )-800;
+				object.position.y = 800-( ( Math.floor( i / 5 ) % 5 ) * 400 );
+				object.position.z = -( Math.floor( i / 25 ) ) * 400;
 				this.targets.grid.push( object );
 			}
 		};
@@ -407,7 +418,7 @@ var iTopoTask3dExplore = {
 			if(requestAnimate !== true)
 				return;
 
-			console.log('iTopoTask3dExplore.animate');
+			console.log('iTopoTaskDashboard3D.animate');
 
 			orbitControls.update();
 
@@ -555,4 +566,4 @@ var iTopoTask3dExplore = {
 	}
 };
 
-export { iTopoTask3dExplore };
+export { iTopoTaskDashboard3D };

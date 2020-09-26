@@ -5,7 +5,7 @@ import { OBJLoader } from '../../../examples/jsm/loaders/OBJLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoDialogRegisterBase } from './iTopoDialog.RegisterBase.js';
 
@@ -66,9 +66,9 @@ iTopoUserBriefcaseMineAsset.prototype = {
 		this.starUser = starUser;
 		if (starUser === null) { return; }
 
-		for(var i=0; i < starUser.userRegisteredBases.length; ++i){
+		for(var i=0; i < starUser.info.userRegisteredBases.length; ++i){
 
-			editor.stationDB.fetchBaseObjectWithObjectUUID(starUser.userRegisteredBases[i], function(baseObjectOnEarth){
+			editor.stationDB.fetchBaseObjectWithObjectUUID(starUser.info.userRegisteredBases[i], function(baseObjectOnEarth){
 				var originPosition = new THREE.Vector3();
 				editor.resourceTracker.loadModel(baseObjectOnEarth.taskType, originPosition, 1, function(object){
 					object.userData = {	objectUUID: baseObjectOnEarth.baseUUID, objectType: baseObjectOnEarth.taskType, };

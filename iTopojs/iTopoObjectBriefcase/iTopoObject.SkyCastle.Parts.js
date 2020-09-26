@@ -1,19 +1,40 @@
-import { UIElement,UIPanel, UIBreak, UIText } from '../iTopoUI.js';
+import { UIElement,UISpan,UIPanel, UIBreak, UIText , UIRow, UIInput} from '../iTopoUI.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from '../iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js'
 
 function iTopoObjectSkyCastleParts( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
-	var container = new UIPanel();
+	var container = new UISpan();
 	scope.container = container;
 
+	var groupPanel = new UIPanel();
+	groupPanel.setWidth('280px');
+	groupPanel.setHeight('250px');
+	groupPanel.setOverflow('auto');
 	scope.thumbnailManager = new iTopoThumbnailManager();
-	scope.thumbnailManager.create(scope.container.dom);
+	scope.thumbnailManager.setItemClassName("register-item");
+	scope.thumbnailManager.create(groupPanel.dom);
+
+	container.add(groupPanel);
+
+	var memberDetailPanel = new UIPanel();
+	memberDetailPanel.setTop( '310px' );
+	memberDetailPanel.setWidth('280px');
+	memberDetailPanel.setHeight('680px');
+	memberDetailPanel.setOverflow('auto');
+
+	var geometryUUIDRow = new UIRow();
+	scope.thumbnailManager2 = new iTopoThumbnailManager();
+	scope.thumbnailManager2.setItemClassName("register-item");
+	scope.thumbnailManager2.create(geometryUUIDRow.dom);
+	memberDetailPanel.add(geometryUUIDRow);
+	container.add(memberDetailPanel);
 
 	return scope;
 }
@@ -29,22 +50,36 @@ iTopoObjectSkyCastleParts.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
-		if(scope.thumbnailManager === null) return;
-		console.log(scope.thumbnailManager);
+		if(scope.thumbnailManager !== null){
 		scope.thumbnailManager.updateCanvasSize();
 		scope.thumbnailManager.active();
+		}
+
+		if(scope.thumbnailManager2 !== null){
+		scope.thumbnailManager2.updateCanvasSize();
+		scope.thumbnailManager2.active();
+		}
 	},
 
 	deactiveTabPanel: function(){
 		var scope = this;
-		if(scope.thumbnailManager === null) return;
-		scope.thumbnailManager.deactive();
+		if(scope.thumbnailManager !== null){
+			scope.thumbnailManager.deactive();
+		}
+		if(scope.thumbnailManager2 !== null){
+			scope.thumbnailManager2.deactive();
+		}
 	},
 
 	dispose: function() {
 		if(this.thumbnailManager !== undefined && this.thumbnailManager !== null){
 			this.thumbnailManager.dispose();
 			this.thumbnailManager = null;
+		}
+
+		if(this.thumbnailManager2 !== undefined && this.thumbnailManager2 !== null){
+			this.thumbnailManager2.dispose();
+			this.thumbnailManager2 = null;
 		}
 	},
 
@@ -53,6 +88,7 @@ iTopoObjectSkyCastleParts.prototype = {
 	},
 
 	setValue: function (taskObject) {
+
 		var scope = this;
 		if (taskObject !== null) {
 
@@ -64,78 +100,60 @@ iTopoObjectSkyCastleParts.prototype = {
 					});
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' ) , mesh, scope.onSiteProductClassCSS3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/ReservedGroupX' ) , mesh.clone(), scope.onSiteProductClassCSS3D);
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
+			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/ReservedGroupX' ) ,
+				mesh.clone(), function(){scope.onSelectTeam()});
 
 			scope.thumbnailManager.updateCanvasSize();
+
 		}
 
 		scope.taskObject = taskObject;
 	},
 
-	/*onSiteProductClass3D: function() {// this对应一个item
+	onSelectTeam: function() {
+
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/skyCastle/Parts' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-		displayStand.container.setPosition('absolate');
 
-		var dom = document.createElement( 'div' );
-		displayStand.container.dom.appendChild( dom );
+		var material = new THREE.MeshStandardMaterial({
+					color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
+					roughness: 0.5,
+					metalness: 0,
+					flatShading: true
+				});
+		var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 
-		scope.outlookManager = new iTopoThumbnailManager();
-		scope.outlookManager.create(dom);
-
-		for(var i=0; i < 8; ++i)
-		{
-			var material = new THREE.MeshStandardMaterial({
-						color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
-						roughness: 0.5,
-						metalness: 0,
-						flatShading: true
-					});
-			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
-			scope.outlookManager.createThumbnailItem( title + (i+1), mesh, onSelect);
-		}
-		scope.outlookManager.active();
-
-		displayStand.closeBtn.dom.addEventListener('click', function(){
-			scope.outlookManager.deactive();
-			scope.outlookManager.dispose();
-			scope.outlookManager = null;
-		});
-	},*/
-
-	onSiteProductClassCSS3D: function() {
-	var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-		displayStand.container.setPosition('absolate');
-
-		var explore = new iTopoTask3dExplore.Explore();
-		explore.show3D();
-		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
-		explore.play();
-
-		displayStand.container.dom.appendChild( explore.dom );
-		displayStand.container.dom.addEventListener( 'resize', function () {
-		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
+		editor.stationDB.fetchiTopoStars(function(json){
+			scope.thumbnailManager2.clearAllThumbnailItems();
+			for (var i = 0; i < json.length; i++) {
+				var starUserJson = json[i];
+				scope.thumbnailManager2.createThumbnailItem( json[i].userNickname ,
+				mesh.clone(), function() {
+					scope.locationStarUser(starUserJson);
+				});
+			}
+			scope.thumbnailManager2.updateCanvasSize();
+			scope.thumbnailManager2.active();
 		});
 
-		displayStand.closeBtn.dom.addEventListener('click', function() {
-			explore.stop();
-			explore.dispose();
-			explore = null;
-		});
+	},
+
+	locationStarUser: function(starUserJson) {
+
+		iTopoEarthModel.focusStar(starUserJson);
 	}
 }
 

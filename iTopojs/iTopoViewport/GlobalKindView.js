@@ -1,20 +1,14 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UISelect } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
 import {iTopoEarthSettings} from'../iTopoEarthSettings.js';
 
 function GlobalKindView( editor ) {
-
 	var signals = editor.signals;
 
 	//
-
 	var globalSelect = new UISelect();
 	globalSelect.setPosition( 'absolute' );
-	globalSelect.setRight( '10px' );
+	globalSelect.setLeft( '10px' );
 	globalSelect.setTop( '10px' );
 	globalSelect.onChange( function () {
 		editor.clear();
@@ -34,7 +28,6 @@ function GlobalKindView( editor ) {
 	}
 
 	return globalSelect;
-
 }
 
 export { GlobalKindView };

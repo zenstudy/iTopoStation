@@ -5,6 +5,7 @@ import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
 function iTopoThumbnailManager() {
 
 	this.thumbnailItemScenes = [];
+	this.itemClassName = 'list-item';
 	return this;
 }
 
@@ -22,7 +23,9 @@ iTopoThumbnailManager.prototype = {
 		var scope = this;
 		scope.renderer.setAnimationLoop(null);
 	},
-
+	setItemClassName: function(newItemClassName){
+		this.itemClassName = newItemClassName;
+	},
 	create :function (panelDom){
 		var scope = this;
 		this.panelDom = panelDom;
@@ -37,7 +40,7 @@ iTopoThumbnailManager.prototype = {
 
 		this.itemsDom = document.createElement('div');
 		this.itemsDom.style.position = 'absolute';
-		this.panelDom.style.zIndex = 1;
+//		this.panelDom.style.zIndex = 1;
 		panelDom.appendChild(this.itemsDom);
 	},
 
@@ -131,25 +134,21 @@ iTopoThumbnailManager.prototype = {
 
 		// make a list item
 		var elementListItem = document.createElement('div');
-		elementListItem.className = 'list-item';
+		elementListItem.className = this.itemClassName;
+		elementListItem.addEventListener('click', itemfn );
 
 		var sceneElement = document.createElement('div');
 		elementListItem.appendChild(sceneElement);
-		//sceneElement.addEventListener('click', itemfn );
 
 		var descriptionElement = document.createElement('div');
 		descriptionElement.innerText = itemTitle;
 		elementListItem.appendChild(descriptionElement);
-		descriptionElement.addEventListener('click', itemfn );
 
 		// the element that represents the area we want to render the scene
 		scene.userData.element = sceneElement;
 		scene.name = itemTitle;
 
 		this.itemsDom.appendChild(elementListItem);
-
-//		console.log(elementListItem.style.zIndex);
-//		console.log('elementListItem: w = ' + elementListItem.offsetWidth + ',h=' + elementListItem.offsetHeight);
 
 		var camera = new THREE.PerspectiveCamera(61.8, 1.0, 1, 10);
 		camera.position.z = 2;
@@ -187,6 +186,22 @@ iTopoThumbnailManager.prototype = {
 				scope.addLights(scene);
 			}
 		});
+	},
+
+	clearAllThumbnailItems: function(){
+
+		var scope = this;
+		scope.thumbnailItemScenes.forEach( function (scene){
+			scope.clearScene(scene);
+			scene.children.length = 0;
+		});
+		scope.thumbnailItemScenes = [];
+
+		var childs = scope.itemsDom.childNodes;
+		for(var i = childs .length - 1; i >= 0; i--) {
+		  scope.itemsDom.removeChild(childs[i]);
+		}
+
 	},
 
 	clearScene: function ( scene ) {

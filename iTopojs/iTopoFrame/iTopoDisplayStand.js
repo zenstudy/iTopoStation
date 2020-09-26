@@ -8,7 +8,6 @@ function iTopoDisplayStand( dispalyContext ) {
 
 	var container = new UIPanel();
 	container.setId( 'DisplayStand' );
-//	container.setBackgroundColor( '#fffae8' );
 	container.setDisplay( 'none' );
 	this.container = container;
 
@@ -40,11 +39,11 @@ function iTopoDisplayStand( dispalyContext ) {
 	closeBtn.setRight( '1px' );
 	closeBtn.setCursor( 'pointer' );
 	closeBtn.dom.addEventListener( 'click', function () {
-		//container.setDisplay( 'none' );
 		document.body.removeChild(scope.container.dom);
 	} );
 	header.add( closeBtn );
 	this.closeBtn = closeBtn;
+
 	this.header = header;
 
 	return scope;
@@ -60,7 +59,6 @@ iTopoDisplayStand.prototype = {
 
 	contexHeight: function() {
 		var height = this.container.dom.offsetHeight - this.header.dom.offsetHeight;
-		console.log(height);
 		return height;
 	}
 }

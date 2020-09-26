@@ -7,7 +7,7 @@ import { UIElement, UISpan, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, 
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoObjectEcologicalFarmHeader(editor) {
@@ -226,7 +226,7 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 		displayStand.container.setDisplay( 'block' );
 		displayStand.container.setPosition('absolate');
 
-		var explore = new iTopoTask3dExplore.Explore(displayStand);
+		var explore = new iTopoTaskDashboard3D.Explore(displayStand);
 		explore.initialize();
 
 		for( var i=0; i < 100; i ++)

@@ -3,7 +3,7 @@ import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
 function iTopoObjectInnerEarthHeader(editor) {
@@ -212,7 +212,7 @@ iTopoObjectInnerEarthHeader.prototype = {
 		displayStand.container.setDisplay( 'block' );
 		displayStand.container.setPosition('absolate');
 
-		var explore = new iTopoTask3dExplore.Explore(displayStand);
+		var explore = new iTopoTaskDashboard3D.Explore(displayStand);
 		explore.initialize();
 
 		for( var i=0; i < 100; i ++)

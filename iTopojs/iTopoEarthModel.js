@@ -58,7 +58,6 @@ iTopoEarthModel.ReCreate = function() {
 		layerMarks.add(iTopoEarthBuilder.createModelTitle(iTopoEarthModel.GetModelTopic(), titlePos, iTopoEarthSettings.topicFontSize));
 	}
 
-
 	iTopoEarthModel.CreateGlobalModel();
 	iTopoEarthModel.CreateiTopoSkyCastle();
 	iTopoEarthModel.CreateiTopoInnerEarth();
@@ -98,8 +97,7 @@ iTopoEarthModel.RotateToBeijing = function(camera) {
 	var lngx = 116.20;
 	var latx = 39.55;
 
-	const seeFrom = createPosition(lngx, latx, 2 * iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings
-		.COLUD_RADIUS_RATIO);
+	const seeFrom = createPosition(lngx, latx, 2 * iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);
 
 	iTopoEarthModel.ParticlesMove(seeFrom, camera);
 	camera.position.copy(seeFrom);
@@ -137,12 +135,13 @@ iTopoEarthModel.CreateGlobalModel = function() {
 
 iTopoEarthModel.CreateiTopoSkyCastle = function() {
 
+	var  skyCastleinfo=iTopoEarthModel.SkyCastle.info;
 	var option = {
-		"objectUUID": iTopoEarthModel.SkyCastle.castleUUID,
+		"objectUUID": skyCastleinfo.castleUUID,
 		"objectType": "iTopoType/TaskObject/iTopoSkyCastle",
-		"pos": [iTopoEarthModel.SkyCastle.lng, iTopoEarthModel.SkyCastle.lat],
-		"starSize": iTopoEarthModel.SkyCastle.size,
-		"dis2Cloud": iTopoEarthModel.SkyCastle.dis2Cloud,
+		"pos": [skyCastleinfo.lng, skyCastleinfo.lat],
+		"starSize": skyCastleinfo.size,
+		"dis2Cloud": skyCastleinfo.dis2Cloud,
 		"textMarked": false,
 		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoSkyCastle'),
 		"fontColor": iTopoEarthSettings.markingTextColor,
@@ -165,11 +164,11 @@ iTopoEarthModel.CreateiTopoSkyCastle = function() {
 iTopoEarthModel.CreateiTopoInnerEarth = function() {
 
 	var option = {
-		"objectUUID": iTopoEarthModel.InnerEarth.innerEarthUUID,
+		"objectUUID": iTopoEarthModel.InnerEarth.info.innerEarthUUID,
 		"objectType": "iTopoType/TaskObject/iTopoInnerEarth",
-		"pos": [iTopoEarthModel.InnerEarth.lng, iTopoEarthModel.InnerEarth.lat],
-		"starSize": iTopoEarthModel.InnerEarth.size,
-		"dis2Cloud": iTopoEarthModel.InnerEarth.dis2Cloud,
+		"pos": [iTopoEarthModel.InnerEarth.info.lng, iTopoEarthModel.InnerEarth.info.lat],
+		"starSize": iTopoEarthModel.InnerEarth.info.size,
+		"dis2Cloud": iTopoEarthModel.InnerEarth.info.dis2Cloud,
 		"textMarked": false,
 		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoInnerEarth'),
 		"fontColor": iTopoEarthSettings.markingTextColor,
@@ -192,11 +191,11 @@ iTopoEarthModel.CreateiTopoInnerEarth = function() {
 iTopoEarthModel.CreateiTopoLunarMoon = function() {
 
 	var option = {
-		"objectUUID": iTopoEarthModel.LunarMoon.lunarMoonUUID,
+		"objectUUID": iTopoEarthModel.LunarMoon.info.lunarMoonUUID,
 		"objectType": "iTopoType/TaskObject/iTopoLunarMoon",
-		"pos": [iTopoEarthModel.LunarMoon.lng, iTopoEarthModel.LunarMoon.lat],
-		"starSize": iTopoEarthModel.LunarMoon.size,
-		"dis2Cloud": iTopoEarthModel.LunarMoon.dis2Cloud,
+		"pos": [iTopoEarthModel.LunarMoon.info.lng, iTopoEarthModel.LunarMoon.info.lat],
+		"starSize": iTopoEarthModel.LunarMoon.info.size,
+		"dis2Cloud": iTopoEarthModel.LunarMoon.info.dis2Cloud,
 		"textMarked": false,
 		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoLunarMoon'),
 		"fontColor": iTopoEarthSettings.markingTextColor,
@@ -243,40 +242,14 @@ iTopoEarthModel.lightStars = function(userStarInfo) {
 	return star;
 }
 
-// iTopoEarthModel.appendBaseObject = function(objUUID, camera) {
-// 	const plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-// 	const plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-// 	const lngx = plusOrMinus_lngx * (Math.random() * 180);
-// 	const latx = plusOrMinus_latx * (Math.random() * 90);
+iTopoEarthModel.focusStar = function(userStarInfo) {
+	const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
+		/*+ option.dis2Cloud*/+1.2*iTopoEarthSettings.CITY_RADIUS );
 
-// 	const lookat = createPosition(lngx, latx, iTopoEarthSettings.CITY_RADIUS*1.2 );
-
-// 	let seeFrom = (plusOrMinus_latx === 1)?
-// 		createPosition(lngx, latx - 28, iTopoEarthSettings.CITY_RADIUS*1.3)
-// 		: createPosition(lngx, latx + 28, iTopoEarthSettings.CITY_RADIUS*1.3);
-
-// //	iTopoEarthModel.ParticlesMove(seeFrom, editor.camera);
-// 	editor.camera.position.copy(seeFrom);
-// 	editor.camera.lookAt(lookat.x, lookat.y, lookat.z);
-// //	camera.up.set(0,iTopoEarthSettings.CITY_RADIUS*3,0);
-
-// 	var option = {
-// 		"objectUUID": objUUID,
-// 		"GlobalKind": iTopoEarthSettings.GLOBAL_KIND,
-// 		"pos": [lngx, latx],
-// 		"sphereRadius": iTopoEarthSettings.CITY_RADIUS,
-// 		"lightConeHeight": randomLightConeHeight(),
-// 		"textMarked": false,
-// 		"textValue": "共创基地" + lngx + "," + latx,
-// 		"fontColor": iTopoEarthSettings.markingTextColor,
-// 		"fontSize": iTopoEarthSettings.markingFontSize,
-// 		"average": getAverage(),
-// 	}
-
-// 	var lightConeMark = iTopoEarthBuilder.createLightConeMark(option);
-// 	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.lightConeGrp));
-// 	editor.execute(new AddiTopoObjCommand(editor, lightConeMark.fontMesh));
-// }
+	iTopoEarthModel.ParticlesMove(seeFrom);
+	editor.camera.position.copy(seeFrom);
+	editor.camera.lookAt(0, 0, 0);
+}
 
 iTopoEarthModel.focusObject = function(lightTask) {
 	const seeFrom = createPosition(lightTask.lng, lightTask.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO);

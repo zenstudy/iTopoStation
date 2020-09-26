@@ -6,10 +6,11 @@ function iTopoDialogRegisterBase( editor ) {
 	var strings = editor.strings;
 
 	var baseObjectOnEarth = new iTopoBaseObject();
+	var baseInfo = baseObjectOnEarth.info;
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
-	dlgTitleRow.add( new UIText( strings.getKey( 'iTopoToolbarLight/lightEarth' ) ).setWidth( '120px' ) );
+	dlgTitleRow.add( new UIText( strings.getKey( 'iTopoToolbarLight/RegisterEcologicalFarm' ) ).setWidth( '120px' ) );
 	container.add(dlgTitleRow);
 
 	var dlgBody = new UIPanel();
@@ -50,11 +51,11 @@ function iTopoDialogRegisterBase( editor ) {
 
 		var taskTypeSelect = new UISelect().setWidth( '160px' );
 		taskTypeSelect.setOptions( options );
-		taskTypeSelect.setValue(baseObjectOnEarth.taskType);
+		taskTypeSelect.setValue(baseInfo.taskType);
 		taskTypeSelect.onChange( function () {
 			var value = this.getValue();
-			baseObjectOnEarth.taskType =  value;
-			console.log(baseObjectOnEarth.taskType );
+			baseInfo.taskType =  value;
+			console.log(baseInfo.taskType );
 		} );
 
 		taskTypeRow.add( taskTypeSelect );
@@ -67,9 +68,9 @@ function iTopoDialogRegisterBase( editor ) {
 		titleRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/title' ) ).setWidth( '90px' ) );
 
 		var titleInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
-		titleInput.setValue( baseObjectOnEarth.title );
+		titleInput.setValue( baseInfo.title );
 		titleInput.onChange( function () {
-			baseObjectOnEarth.title = this.getValue();
+			baseInfo.title = this.getValue();
 		} );
 		titleRow.add( titleInput );
 
@@ -82,9 +83,9 @@ function iTopoDialogRegisterBase( editor ) {
 		cityRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/city' ) ).setWidth( '90px' ) );
 
 		var cityInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
-		cityInput.setValue( baseObjectOnEarth.city );
+		cityInput.setValue( baseInfo.city );
 		cityInput.onChange( function () {
-			baseObjectOnEarth.city = this.getValue();
+			baseInfo.city = this.getValue();
 		} );
 		cityRow.add( cityInput );
 
@@ -97,9 +98,9 @@ function iTopoDialogRegisterBase( editor ) {
 		addressRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/address' ) ).setWidth( '90px' ) );
 
 		var addressInput = new UIInput().setWidth( '160px' ).setFontSize( '12px' );
-		addressInput.setValue( baseObjectOnEarth.address );
+		addressInput.setValue( baseInfo.address );
 		addressInput.onChange( function () {
-			baseObjectOnEarth.lng = this.getValue();
+			baseInfo.lng = this.getValue();
 		} );
 		addressRow.add( addressInput );
 
@@ -111,9 +112,9 @@ function iTopoDialogRegisterBase( editor ) {
 
 		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/longitude' ) ).setWidth( '90px' ) );
 
-		var longitudeValueUI = new UINumber( baseObjectOnEarth.lng ).setRange( 2, Infinity );
+		var longitudeValueUI = new UINumber( baseInfo.lng ).setRange( 2, Infinity );
 		longitudeValueUI.onChange( function () {
-			baseObjectOnEarth.lng = this.getValue();
+			baseInfo.lng = this.getValue();
 		} );
 		longitudeRow.add( longitudeValueUI );
 
@@ -125,9 +126,9 @@ function iTopoDialogRegisterBase( editor ) {
 
 		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/lightEarth/latitude' ) ).setWidth( '90px' ) );
 
-		var latitudeValueUI = new UINumber( baseObjectOnEarth.lat ).setRange( 2, Infinity );
+		var latitudeValueUI = new UINumber( baseInfo.lat ).setRange( 2, Infinity );
 		latitudeValueUI.onChange( function () {
-			baseObjectOnEarth.lat = this.getValue();
+			baseInfo.lat = this.getValue();
 
 		} );
 		latitudeRow.add( latitudeValueUI );
@@ -143,9 +144,9 @@ function iTopoDialogRegisterBase( editor ) {
 		var lightWishTextAreaRow = new UIRow();
 		var lightWishValueUI = new UITextArea().setHeight( '120px' ).setFontSize( '12px' )/*.onChange( update )*/;
 		lightWishValueUI.dom.cols = 40;
-		lightWishValueUI.setValue( baseObjectOnEarth.lightWish );
+		lightWishValueUI.setValue( baseInfo.lightWish );
 		lightWishValueUI.onKeyUp( function () {
-			baseObjectOnEarth.lightWish = this.getValue();
+			baseInfo.lightWish = this.getValue();
 
 		} );
 		lightWishTextAreaRow.add( lightWishValueUI );
@@ -159,11 +160,11 @@ function iTopoDialogRegisterBase( editor ) {
 	buttonPanel.setPaddingBottom( '20px' );
 	container.add( buttonPanel );
 	{
-		var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/lightEarth' ) );
+		var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/ok' ) );
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
 
-			editor.signals.baseRegistered.dispatch( editor.starUser.starUUID, baseObjectOnEarth);
+			editor.signals.baseRegistered.dispatch( editor.starUser.starUUID, baseInfo);
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 
 		} );

@@ -422,7 +422,7 @@ select {
 	}
 
 	#sidebar .Row {
-		min-height: 20px;
+		min-height: 18px;
 		margin-bottom: 10px;
 	}
 
@@ -444,8 +444,8 @@ select {
 
 #toolbar {
 	position: absolute;
-	right: 310px;
-	top: 100px;
+	left: 310px;
+	top: 80px;
 	width: 32px;
 	background: #eee;
 	text-align: center;
@@ -462,26 +462,17 @@ select {
 		
 #LightToolbar {
 	position: absolute;
-	left: calc(50% - 290px); /* ( ( 100% - 300px ) / 2.0 ) - 140px */
-	bottom: 16px;
-	height: 32px;
+	right: 310px; 
+	top: 46px;
+	width: 85px;
+	height: 200px;
 	background: #eee;
 	color: #333;
 }
 
-	#LightToolbar * {
-		vertical-align: middle;
-	}
-
 	#LightToolbar .Panel {
-		padding: 4px;
+		padding: 1px;
 		color: #888;
-	}
-
-	#LightToolbar button {
-		margin-right: 6px;
-		line-height: 14px;
-		height: 24px;
 	}
 
 #iTopoDialog {

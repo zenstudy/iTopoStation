@@ -3,7 +3,7 @@ import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from '../iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
-import { iTopoTask3dExplore } from '../iTopoFrame/iTopoTask3dExplore.js';
+import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 
 function iTopoObjectInnerEarthParts( editor ) {
 	var scope = this;

@@ -9,7 +9,8 @@ import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
 
 function iTopoDialogRegister( editor, menubar ) {
 	var strings = editor.strings;
-	var userStarInfo = new iTopoStarUser();
+	var userStar = new iTopoStarUser();
+	var userStarInfo = userStar.info;
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();

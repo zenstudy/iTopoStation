@@ -1,5 +1,4 @@
 import { UITabbedPanel, UISpan } from '../iTopoUI.js';
-import { iTopoUserBriefcaseRegisterTool } from './iTopoUserBriefcase.RegisterTool.js';
 import { iTopoUserBriefcaseMineAsset } from './iTopoUserBriefcase.MineAsset.js';
 import { iTopoUserBriefcaseMineFocus } from './iTopoUserBriefcase.MineFocus.js';
 import { iTopoUserBriefcaseMineFollower } from './iTopoUserBriefcase.MineFollower.js';
@@ -85,12 +84,10 @@ iTopoUserBriefcase.prototype = {
 
 	createUserBriefcase: function () {
 		var scope = this;
-		var registerToolTab = new iTopoUserBriefcaseRegisterTool(editor,scope);
 		var mineAssetTab = new iTopoUserBriefcaseMineAsset(editor);
 		var userBriefcaseTab = new iTopoUserBriefcaseMineFocus(editor);
 		var mineFollowerTab = new iTopoUserBriefcaseMineFollower(editor);
 
-		scope.tabs.push( {name:'registerTool', title: scope.strings.getKey('userBriefcase/RegisterTool')  ,panel: registerToolTab} );
 		scope.tabs.push( {name:'minAsset', title: scope.strings.getKey('userBriefcase/MineAsset'),panel: mineAssetTab} );
 		scope.tabs.push( {name:'mineFocus', title: scope.strings.getKey('userBriefcase/MineFocus'),panel: userBriefcaseTab} );
 		scope.tabs.push( {name:'mineFollower', title: scope.strings.getKey('userBriefcase/MineFollower'),panel: mineFollowerTab} );
