@@ -36,7 +36,7 @@ function iTopoObjectInnerEarthHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setPaddingTop('610px');
+	containerParameter.setTop('610px');
 	container.add(containerParameter);
 
 	{

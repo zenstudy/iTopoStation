@@ -51,7 +51,7 @@ function iTopoObjectStarUserHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setPaddingTop('610px');
+	containerParameter.setTop('610px');
 	container.add(containerParameter);
 	{
 		// starUUID
@@ -65,7 +65,7 @@ function iTopoObjectStarUserHeader(editor) {
 	}
 
 	{
-		// cellPhone
+		// gender
 		var genderRow = new UIRow();
 		genderRow.add(new UIText(strings.getKey('sidebar/starUser/Header/gender')).setWidth('90px'));
 
@@ -122,6 +122,21 @@ function iTopoObjectStarUserHeader(editor) {
 		latitudeRow.add(this.latitudeValueUI);
 
 		containerParameter.add(latitudeRow);
+	}
+
+	{
+		var starValueRow = new UIRow();
+
+		starValueRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starValue')).setWidth('90px'));
+
+		this.starValueUI = new UINumber(starUserInfo.starValue).setRange(2, Infinity);
+		this.starValueUI.onChange(function() {
+			// var value = this.getValue();
+			// editor.config.setKey( 'exportPrecision', value );
+		});
+		starValueRow.add(this.starValueUI);
+
+		containerParameter.add(starValueRow);
 	}
 
 	{
@@ -211,6 +226,7 @@ iTopoObjectStarUserHeader.prototype = {
 			this.cellPhoneInput.setValue(taskObject.cellPhone);
 			this.longitudeValueUI.setValue(taskObject.lng);
 			this.latitudeValueUI.setValue(taskObject.lat);
+			this.starValueUI.setValue(taskObject.starValue);
 			this.starWishValueUI.setValue(taskObject.starWish);
 		}
 
@@ -263,7 +279,7 @@ iTopoObjectStarUserHeader.prototype = {
 				var taskBriefcase = new iTopoTaskBriefcase( editor );
 				displayStand.container.dom.appendChild( taskBriefcase.dom );
 			});
-			
+
 		}
 }
 

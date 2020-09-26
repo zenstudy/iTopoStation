@@ -137,22 +137,24 @@ iTopoObjectSkyCastleParts.prototype = {
 		var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 
 		editor.stationDB.fetchiTopoStars(function(json){
+
 			scope.thumbnailManager2.clearAllThumbnailItems();
-			for (var i = 0; i < json.length; i++) {
-				var starUserJson = json[i];
-				scope.thumbnailManager2.createThumbnailItem( json[i].userNickname ,
+
+			json.forEach(function(starUserInfo) {
+				scope.thumbnailManager2.createThumbnailItem( starUserInfo.userNickname ,
 				mesh.clone(), function() {
-					scope.locationStarUser(starUserJson);
+					scope.locationStarUser(starUserInfo);
 				});
-			}
+			});
+
 			scope.thumbnailManager2.updateCanvasSize();
 			scope.thumbnailManager2.active();
+
 		});
 
 	},
 
 	locationStarUser: function(starUserJson) {
-
 		iTopoEarthModel.focusStar(starUserJson);
 	}
 }

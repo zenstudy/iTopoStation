@@ -74,6 +74,7 @@ iTopoUserBriefcaseMineAsset.prototype = {
 					object.userData = {	objectUUID: baseObjectOnEarth.baseUUID, objectType: baseObjectOnEarth.taskType, };
 					scope.thumbnailManager.createThumbnailItem( baseObjectOnEarth.title, object, function(){
 						console.log('iTopoUserBriefcaseMineAsset.create' + baseObjectOnEarth.title);
+						iTopoEarthModel.focusObject(baseObjectOnEarth);
 					});
 				}) ;
 			})

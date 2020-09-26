@@ -15,6 +15,11 @@ var iTopoToolbarLight = function ( editor ) {
 	container.setId( 'LightToolbar' );
 	container.setDisplay( 'block' );
 
+	// baseUUID
+	var toolHeaderRow = new UIRow();
+	toolHeaderRow.add(new UIText(strings.getKey('iTopoToolbarLight/enteriTopoEarth')).setWidth('100px'));
+	container.add(toolHeaderRow);
+
 	scope.thumbnailManager = new iTopoThumbnailManager();
 	scope.thumbnailManager.setItemClassName("register-item");
 	scope.thumbnailManager.create(container.dom);

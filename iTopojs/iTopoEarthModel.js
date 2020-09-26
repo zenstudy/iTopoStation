@@ -318,20 +318,17 @@ iTopoEarthModel.ParticlesMove = function(camera2Pos) {
 iTopoEarthModel.MarkiTopoStars = function() {
 
 	editor.stationDB.fetchiTopoStars(function(json){
-	var average = getAverage();
+		var rarefaction = json.length*3/5040; //稀松率，越大间距越大，最大显示数为5040，大于此数值显示在屏幕外
+		var average = getAverage();
 		var objArray = [];
 		for (var i = 0; i < json.length; i++) {
-			// var plusOrMinus_lngx = Math.round(Math.random()) * 2 - 1;
-			// var plusOrMinus_latx = Math.round(Math.random()) * 2 - 1;
-			// var lngx = plusOrMinus_lngx * (Math.random() * 180);
-			// var latx = plusOrMinus_latx * (Math.random() * 90);
 
 			var option = {
 				"objectUUID": json[i].starUUID,
 				"objectType": "iTopoType/TaskObject/Star",
 				"pos": [json[i].lng, json[i].lat],
-				"starSize": iTopoEarthSettings.starSize * (1 + Math.random())*3,
-				"dis2Cloud": Math.random() * iTopoEarthSettings.CITY_RADIUS * 2,
+				"starSize": iTopoEarthSettings.starSize * (1 + json[i].starValue/100),
+				"dis2Cloud":(360-json[i].starValue)*rarefaction* iTopoEarthSettings.CITY_RADIUS,
 				"textMarked": false,
 				"textValue": json[i].cellPhone,
 				"fontColor": iTopoEarthSettings.markingTextColor,

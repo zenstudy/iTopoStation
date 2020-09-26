@@ -10,7 +10,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 	var scope = this;
 	var strings = editor.strings;
 	var skyCastleinfo=iTopoEarthModel.SkyCastle.info;
-	
+
 	var container = new UISpan();
 	this.container = container;
 
@@ -48,7 +48,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 	{
 		var containerBaseModel = new UIPanel();
 		containerBaseModel.setBorderTop('0');
-		containerBaseModel.setPaddingTop('90px');
+		containerBaseModel.setTop('90px');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
@@ -106,7 +106,7 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 		var originPosition = new THREE.Vector3();
 		editor.resourceTracker.loadSmallCityModel(originPosition, 30, function(baseModel){
-			
+
 			var explore = new iTopo3dExplore.Explore();
 			explore.show3D(null , baseModel);
 			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
@@ -122,7 +122,7 @@ iTopoObjectSkyCastleHeader.prototype = {
 				explore.dispose();
 				explore = null;
 			});
-			
+
 		}) ;
 	},
 

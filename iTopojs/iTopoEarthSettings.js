@@ -25,7 +25,7 @@ iTopoEarthSettings = {
 	// 地图z轴厚度
 	zHeight: 33,
 
-	starSize: 10,
+	starSize: 20,
 
 	WORLD_LINE_WIDTH: 3,
 	CITY_MARGIN: 1,

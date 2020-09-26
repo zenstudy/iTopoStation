@@ -46,6 +46,7 @@ function iTopoStrings( config ) {
 			'iTopoToolbar/scale':'缩放',
 			'iTopoToolbar/local':'本地',
 
+			'iTopoToolbarLight/enteriTopoEarth': '入驻共享地球',
 			'iTopoToolbarLight/RegisterEcologicalFarm': '注册生态基地',
 			'iTopoToolbarLight/RegisterSharedCanteen': '注册共享食堂',
 			'iTopoToolbarLight/ok':'确定',
@@ -100,6 +101,7 @@ function iTopoStrings( config ) {
 			'sidebar/starUser/Header/cellPhone':'手机',
 			'sidebar/starUser/Header/longitude':'经度',
 			'sidebar/starUser/Header/latitude':'纬度',
+			'sidebar/starUser/Header/starValue':'星值',
 			'sidebar/starUser/Header/starWish':'星语星愿',
 
 			'sidebar/StarUser/DiyCreations':'发明创造',
