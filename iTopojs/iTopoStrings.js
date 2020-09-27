@@ -41,6 +41,10 @@ function iTopoStrings( config ) {
 			'menubar/StarUser/exit':'退出',
 			'menubar/StarUser/mineStar':'我的信息',
 
+			'iTopoSpriteOwnLogo/logoCaption': ' ≡ 共享地球 ≡ ',
+			'iTopoSpriteSponsor/iTopoEarthSponsor' : '赞助位',
+			'iTopoSpriteSponsor/becomeSponsor' : '赞助共享地球',
+
 			'iTopoToolbar/translate':'平移',
 			'iTopoToolbar/rotate':'旋转',
 			'iTopoToolbar/scale':'缩放',
@@ -65,17 +69,13 @@ function iTopoStrings( config ) {
 			'sidebar/skyCastle/iTopoItems' : '详情',
 			'sidebar/skyCastle/iTopoItems/workplace' : '工作空间',
 
-			'sidebar/skyCastle/Parts' : '服务小组',
-			'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' : 'iTopo系统研发组',
-			'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' : '生态恢复志愿组',
-			'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' : '生活饮食文化志愿组',
-			'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' : '绿色新能源志愿组',
-			'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' : '星际文明志愿组',
-			'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' : '人类科学志愿组',
-			'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' : '挂号组织和成员',
-			'sidebar/skyCastle/Parts/ReservedGroupX' : '预留小组x',
-
 			'sidebar/skyCastle/Life' : '公告',
+
+			'sidebar/skyCastle/Teams' : '志愿小组',
+			'sidebar/skyCastle/Teams/applyToJoining' : '申请加入...',
+
+			'sidebar/skyCastle/Sponsors': '赞助者',
+			'sidebar/skyCastle/Sponsors/clickToSponsor': '点击赞助...',
 
 			'sidebar/LunarMoon/Header':'月球',
 			'sidebar/LunarMoon/Header/lunarMoonUUID': '月球UUID',

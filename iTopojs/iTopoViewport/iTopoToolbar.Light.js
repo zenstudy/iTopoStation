@@ -1,10 +1,10 @@
 
 //import { UIBoolean } from '../js/libs/ui.three.js';
-import { iTopoDialogLightStar } from './iTopoDialog.LightStar.js';
-import { iTopoDialogRegisterBase } from './iTopoUserBriefcase/iTopoDialog.RegisterBase.js';
+import { iTopoDialogLightStar } from '../iTopoDialog.LightStar.js';
+import { iTopoDialogRegisterBase } from '../iTopoUserBriefcase/iTopoDialog.RegisterBase.js';
 
-import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from './iTopoUI.js';
-import { iTopoThumbnailManager } from './iTopoFrame/iTopoThumbnailManager.js';
+import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
+import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 
 var iTopoToolbarLight = function ( editor ) {
 	var scope = this;

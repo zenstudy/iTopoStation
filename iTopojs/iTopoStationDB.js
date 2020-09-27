@@ -135,9 +135,19 @@ iTopoStationDB.prototype = {
 		})
 	},
 
-	fetchiTopoTaskCards: function(objectUUID,fnAfterFetch) {
+	fetchiTopoTaskCards: function(objectUUID, taskStatus, fnAfterFetch) {
 
-		var taskFile = './iTopoObjects/' + objectUUID + '/tasks.json';
+		var jsonFileName = "";
+
+		if(taskStatus === "Todo")
+			jsonFileName = 'tasksTodo.json';
+		else if(taskStatus === "InProgress")
+			jsonFileName = 'tasksInProgress.json';
+		else if(taskStatus === "Done")
+			jsonFileName = 'tasksDone.json';
+
+		var taskFile = './iTopoObjects/' + objectUUID + '/' + jsonFileName;
+		
 		fetch(taskFile, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求
@@ -285,6 +295,44 @@ iTopoStationDB.prototype = {
 		  	console.log('error: ' + e.toString());
 		 })
 
+	},
+
+	fetchiTopoSkyCastleTeams: function(skyCastleUUID,fnAfterFetch) {
+
+		var taskFile = './iTopoObjects/' + skyCastleUUID + '/workTeams.json';
+		fetch(taskFile, {
+			method: 'GET',
+			mode: 'cors', // 允许发送跨域请求
+			credentials: 'include'
+		}).then(function(response) {
+			//打印返回的json数据
+			response.json().then(function(json) {
+
+				fnAfterFetch(json);
+
+			})
+		}).catch(function(e) {
+			console.log('error: ' + e.toString());
+		})
+	},
+
+	fetchiTopoSkyCastleSponsors: function(skyCastleUUID,fnAfterFetch) {
+
+		var taskFile = './iTopoObjects/' + skyCastleUUID + '/sponsorOrgs.json';
+		fetch(taskFile, {
+			method: 'GET',
+			mode: 'cors', // 允许发送跨域请求
+			credentials: 'include'
+		}).then(function(response) {
+			//打印返回的json数据
+			response.json().then(function(json) {
+
+				fnAfterFetch(json);
+
+			})
+		}).catch(function(e) {
+			console.log('error: ' + e.toString());
+		})
 	},
 }
 

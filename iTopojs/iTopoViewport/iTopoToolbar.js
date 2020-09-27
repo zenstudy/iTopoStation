@@ -1,8 +1,4 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
-import { UIPanel, UIButton, UICheckbox } from './iTopoUI.js';
+import { UIPanel, UIButton, UICheckbox } from '../iTopoUI.js';
 
 function iTopoToolbar( editor ) {
 

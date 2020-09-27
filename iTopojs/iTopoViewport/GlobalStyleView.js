@@ -13,7 +13,7 @@ function GlobalStyleView( editor ) {
 	var globalSelect = new UISelect();
 	globalSelect.setPosition( 'absolute' );
 	globalSelect.setLeft( '120px' );
-	globalSelect.setTop( '10px' );
+	globalSelect.setTop( '40px' );
 	globalSelect.onChange( function () {
 		editor.clear();
 		iTopoEarthSettings.EARTH_STYLE = this.getValue();

@@ -6,8 +6,9 @@ import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 
 import { iTopoObjectSkyCastleHeader } from './iTopoObject.SkyCastle.Header.js';
-import { iTopoObjectSkyCastleParts } from './iTopoObject.SkyCastle.Parts.js';
 import { iTopoObjectSkyCastleLife } from './iTopoObject.SkyCastle.Life.js';
+import { iTopoObjectSkyCastleTeams } from './iTopoObject.SkyCastle.Teams.js';
+import { iTopoObjectSkyCastleSponsor } from './iTopoObject.SkyCastle.Sponsor.js';
 
 import { iTopoObjectInnerEarthHeader } from './iTopoObject.InnerEarth.Header.js';
 import { iTopoObjectInnerEarthParts } from './iTopoObject.InnerEarth.Parts.js';
@@ -45,11 +46,6 @@ function iTopoObjectBriefcase(editor) {
 	//container.setId( 'properties' );
 	container.setId('sidebar');
 	//container.setDisplay( 'none' );
-
-	// var sharedCanteen = new UISpan().add(
-	// 	new iTopoObjectHeader( editor ),
-	// 	new iTopoTaskBriefcaseBody( editor )
-	// );
 
 	container.tabsDiv.dom.addEventListener('click', function() {
 
@@ -91,12 +87,16 @@ function iTopoObjectBriefcase(editor) {
 
 	function createiTopoSkyCastleTabs() {
 		var headerTab = new iTopoObjectSkyCastleHeader(editor);
-		var partsTab = new iTopoObjectSkyCastleParts(editor);
 		var lifeTab = new iTopoObjectSkyCastleLife(editor);
+		var teamsTab = new iTopoObjectSkyCastleTeams(editor);
+		var sponsorTab = new iTopoObjectSkyCastleSponsor(editor);
+
 
 		tabs.push( {name:'skyCastle', title:strings.getKey('sidebar/skyCastle/Header')  ,panel: headerTab} );
-		tabs.push( {name:'parts', title: strings.getKey('sidebar/skyCastle/Parts'),panel: partsTab} );
 		tabs.push( {name:'life', title: strings.getKey('sidebar/skyCastle/Life'),panel: lifeTab} );
+		tabs.push( {name:'teams', title: strings.getKey('sidebar/skyCastle/Teams'),panel: teamsTab} );
+		tabs.push( {name:'sponsors', title: strings.getKey('sidebar/skyCastle/Sponsors'),panel: sponsorTab} );
+
 
 		tabs.forEach(function(tab){
 			container.addTab(tab.name, tab.title, tab.panel.container);
@@ -190,7 +190,7 @@ function iTopoObjectBriefcase(editor) {
 	function refreshEcologicalFarmTabs() {
 
 		editor.stationDB.fetchiTopobase(function(json){
-			
+
 			if(editor.selected === null)
 				return;
 
@@ -210,35 +210,35 @@ function iTopoObjectBriefcase(editor) {
 					return;
 				}
 			}
-			
+
 		});
-		
+
 	}
 
 	function refreshSharedCanteenTabs() {
-		
+
 		editor.stationDB.fetchiTopobase(function(json){
-			
+
 			if(editor.selected === null)
 				return;
-		
+
 			if(editor.selected.userData === null || editor.selected.userData === undefined)
 				return;
-		
+
 			if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
 				return;
-		
+
 			for (var i = 0; i < json.length; i++) {
 				if (json[i].baseUUID === editor.selected.userData.objectUUID) {
-		
+
 					tabs.forEach(function(tab) {
 						tab.panel.setValue(json[i]);
 					});
-		
+
 					return;
 				}
 			}
-			
+
 		});
 	}
 
@@ -255,11 +255,16 @@ function iTopoObjectBriefcase(editor) {
 
 		if (iTopoEarthModel.SkyCastle.info.castleUUID === editor.selected.userData.objectUUID) {
 
-			tabs.forEach(function(tab) {
-				tab.panel.setValue(iTopoEarthModel.SkyCastle);
-			});
+		editor.stationDB.fetchiTopoSkyCastleTeams( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
+				iTopoEarthModel.SkyCastle.info.teams = json;
 
-			return;
+				editor.stationDB.fetchiTopoSkyCastleSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
+					iTopoEarthModel.SkyCastle.info.sponsors = json;
+					tabs.forEach(function(tab) {
+						tab.panel.setValue(iTopoEarthModel.SkyCastle);
+					});
+				});
+			});
 		}
 	}
 
@@ -306,7 +311,7 @@ function iTopoObjectBriefcase(editor) {
 	}
 
 	function refreshStarTabs() {
-		
+
 		editor.stationDB.fetchiTopoStars(function(json){
 			if(editor.selected === null)
 					return;
@@ -328,7 +333,7 @@ function iTopoObjectBriefcase(editor) {
 					}
 				}
 		});
-		
+
 	}
 
 	var ignoreObjectSelectedSignal = false;
@@ -413,12 +418,18 @@ function iTopoObjectBriefcase(editor) {
 		refreshObjectUI(object);
 	});
 
-//	var skyCastle = editor.objectByiTopoUUID(iTopoEarthModel.SkyCastle.castleUUID);
-//	editor.select(skyCastle);// this function will call
 	createiTopoSkyCastleTabs();
-	tabs.forEach(function(tab) {
-		tab.panel.setValue(iTopoEarthModel.SkyCastle);
-	});
+
+	editor.stationDB.fetchiTopoSkyCastleTeams( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
+			iTopoEarthModel.SkyCastle.info.teams = json;
+
+			editor.stationDB.fetchiTopoSkyCastleSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
+				iTopoEarthModel.SkyCastle.info.sponsors = json;
+				tabs.forEach(function(tab) {
+					tab.panel.setValue(iTopoEarthModel.SkyCastle);
+				});
+			});
+		});
 
 	return container;
 }

@@ -6,7 +6,7 @@ import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 
-function iTopoObjectSkyCastleParts( editor ) {
+function iTopoObjectSkyCastleTeams( editor ) {
 	var scope = this;
 	scope.strings = editor.strings;
 
@@ -43,10 +43,10 @@ function onSelect() {
 		console.log(this);
 	}
 
-iTopoObjectSkyCastleParts.prototype = Object.create( UIElement.prototype );
-iTopoObjectSkyCastleParts.prototype.constructor = iTopoObjectSkyCastleParts;
+iTopoObjectSkyCastleTeams.prototype = Object.create( UIElement.prototype );
+iTopoObjectSkyCastleTeams.prototype.constructor = iTopoObjectSkyCastleTeams;
 
-iTopoObjectSkyCastleParts.prototype = {
+iTopoObjectSkyCastleTeams.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
@@ -100,25 +100,14 @@ iTopoObjectSkyCastleParts.prototype = {
 					});
 			var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/iTopoSystemDevelopmentGroup' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/EcologicalRestorationDevelopmentGroup' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/LifeFoodDevelopmentGroup' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/GreenNewEnergyDevelopmentGroup' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/HumanScienceDevelopmentGroup' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/InterstellarCivilizationResearchGroup' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/RegisteredOrganizationsAndMembers' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
-			scope.thumbnailManager.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Parts/ReservedGroupX' ) ,
-				mesh.clone(), function(){scope.onSelectTeam()});
+			if(taskObject.info.teams.length !== 0){
+				 taskObject.info.teams.forEach(function(team){
+				 	scope.thumbnailManager.createThumbnailItem( team.teamName ,
+				 	mesh.clone(), function(){scope.onSelectTeam()});
+				 })
+			}
 
 			scope.thumbnailManager.updateCanvasSize();
-
 		}
 
 		scope.taskObject = taskObject;
@@ -136,9 +125,14 @@ iTopoObjectSkyCastleParts.prototype = {
 				});
 		var mesh = new THREE.Mesh(new THREE.DodecahedronBufferGeometry(0.5), material);
 
-		editor.stationDB.fetchiTopoStars(function(json){
+		scope.thumbnailManager2.clearAllThumbnailItems();
 
-			scope.thumbnailManager2.clearAllThumbnailItems();
+		scope.thumbnailManager2.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Teams/applyToJoining' ) ,
+		mesh.clone(), function() {
+			iTopoEarthModel.SkyCastle.applyToJoining( teamUUID, starUUID );
+		});
+
+		editor.stationDB.fetchiTopoStars(function(json){
 
 			json.forEach(function(starUserInfo) {
 				scope.thumbnailManager2.createThumbnailItem( starUserInfo.userNickname ,
@@ -159,4 +153,4 @@ iTopoObjectSkyCastleParts.prototype = {
 	}
 }
 
-export { iTopoObjectSkyCastleParts };
+export { iTopoObjectSkyCastleTeams };

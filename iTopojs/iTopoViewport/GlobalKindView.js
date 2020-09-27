@@ -8,7 +8,7 @@ function GlobalKindView( editor ) {
 	//
 	var globalSelect = new UISelect();
 	globalSelect.setPosition( 'absolute' );
-	globalSelect.setLeft( '10px' );
+	globalSelect.setLeft( '120px' );
 	globalSelect.setTop( '10px' );
 	globalSelect.onChange( function () {
 		editor.clear();

@@ -108,7 +108,7 @@ function iTopoTaskBriefcase(editor) {
 	}
 
 	signals.taskCardSelected.add(function(object) {
-		
+
 		if(object === null || object === undefined){
 			refreshObjectUI(null);
 			return;
@@ -118,8 +118,16 @@ function iTopoTaskBriefcase(editor) {
 			refreshObjectUI(null);
 			return;
 		}
-		
-		editor.stationDB.fetchiTopoTaskCards(object.userData.objectUUID,function(json){
+
+		var taskType = "";
+		if(object.userData.taskStatus === "待办")
+			taskType = "Todo";
+		if(object.userData.taskStatus === "在办")
+			taskType = "InProgress";
+		if(object.userData.taskStatus === "已办")
+			taskType = "Done";
+
+		editor.stationDB.fetchiTopoTaskCards(object.userData.objectUUID, taskType, function(json){
 			for (var i = 0; i < json.length; i++) {
 				if (json[i].taskUUID === object.userData.taskUUID) {
 					refreshObjectUI(json[i]);

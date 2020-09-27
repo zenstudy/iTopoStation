@@ -245,7 +245,13 @@ var iTopoTaskDashboard3D = {
 		this.createObject = function(taskObject) {
 			var element = document.createElement( 'div' );
 			element.className = 'TaskCard';
-			element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+
+			if(taskObject.taskStatus ==="待办")
+				element.style.backgroundColor = '#08f';
+			else if(taskObject.taskStatus ==="在办")
+				element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+			else if(taskObject.taskStatus ==="已办")
+					element.style.backgroundColor = '#bbb';
 
 			var taskStatus = document.createElement( 'div' );
 			taskStatus.className = 'TaskStatus';
@@ -266,7 +272,7 @@ var iTopoTaskDashboard3D = {
 			object.position.x = 0;
 			object.position.y = 0;
 			object.position.z = 0;
-			object.userData = { objectUUID : taskObject.objectUUID , taskUUID: taskObject.taskUUID };
+			object.userData = { objectUUID : taskObject.objectUUID , taskUUID: taskObject.taskUUID, taskStatus: taskObject.taskStatus };
 
 			return object;
 		};

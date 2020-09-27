@@ -162,6 +162,7 @@ iTopoEditor.prototype = {
 		scope.starUser.restoreActiveUser(scope);
 			scope.stationDB.fetchUserWithStarUUID(/*this.starUser.starUUID*/"8E59BDD4-25EE-4E90-A612-4537AFAA80FF", function(starUserInfo){
 			scope.starUser.setStarUserInfo(starUserInfo);
+			console.log(starUserInfo);
 			fnAfterLogin();
 		});
 	},

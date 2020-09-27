@@ -67,20 +67,21 @@ function iTopoDialogLogin( editor, menubar ) {
 		var lightStars = new UIButton( strings.getKey( 'iTopoDialog/login/login' ) );
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
-			
+			console.log('login ');
 			editor.stationDB.userLogin( editor.starUser, function(detailUserInfo){
+				console.log(detailUserInfo);
 				editor.starUser.storeActiveUserInfo2Config();
-		
+
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, detailUserInfo ) );
 				menubar.removeRegisterMenu();
 				menubar.removeLoginMenu();
 
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
-				
+
 				var star = editor.objectByiTopoUUID(detailUserInfo.starUUID);
 				editor.select(star);// this function will call
-				
+
 				editor.signals.userRegisteredOrLogin.dispatch(detailUserInfo);
 			});
 

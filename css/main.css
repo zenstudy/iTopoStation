@@ -444,8 +444,8 @@ select {
 
 #toolbar {
 	position: absolute;
-	left: 310px;
-	top: 80px;
+	right: 310px;
+	top: 280px;
 	width: 32px;
 	background: #eee;
 	text-align: center;
@@ -463,7 +463,7 @@ select {
 #LightToolbar {
 	position: absolute;
 	right: 310px; 
-	top: 46px;
+	top: 40px;
 	width: 85px;
 	height: 200px;
 	background: #eee;
@@ -471,6 +471,36 @@ select {
 }
 
 	#LightToolbar .Panel {
+		padding: 1px;
+		color: #888;
+	}
+
+#OwnLogoSprite {
+	position: absolute;
+	left: 310px; 
+	top: 40px;
+	width: 85px;
+	height: 100px;
+	background: #eee;
+	color: #333;
+}
+
+	#OwnLogoSprite .Panel {
+		padding: 1px;
+		color: #888;
+	}
+
+#SponsorSprite {
+	position: absolute;
+	right: 400px; 
+	top: 40px;
+	width: 85px;
+	height: 120px;
+	background: #eee;
+	color: #333;
+}
+
+	#SponsorSprite .Panel {
 		padding: 1px;
 		color: #888;
 	}

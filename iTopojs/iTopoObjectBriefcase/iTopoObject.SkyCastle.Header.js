@@ -48,7 +48,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 	{
 		var containerBaseModel = new UIPanel();
 		containerBaseModel.setBorderTop('0');
-		containerBaseModel.setTop('90px');
+		containerBaseModel.setTop('120px');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
@@ -128,36 +128,52 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 	onTaskCardsClassCSS3D: function() {
 
-		editor.stationDB.fetchiTopoTaskCards(skyCastleinfo.castleUUID,function(json){
-			var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
-			var displayStand = new iTopoDisplayStand(title);
-			document.body.appendChild(displayStand.container.dom);
-			displayStand.container.setDisplay( 'block' );
-			displayStand.container.setPosition('absolate');
+		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Todo",function(jsonTodo){
+			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"InProgress",function(jsonInProgress){
+				editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Done",function(jsonDone){
 
-			var explore = new iTopoTaskDashboard3D.Explore(displayStand);
-			explore.initialize();
+					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
+					var displayStand = new iTopoDisplayStand(title);
+					document.body.appendChild(displayStand.container.dom);
+					displayStand.container.setDisplay( 'block' );
+					displayStand.container.setPosition('absolate');
 
-			for (var i = 0; i < json.length; i++) {
-				explore.appendCardItem(json[i]);
-			}
-			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
+					explore.initialize();
 
-			explore.show3D();
-			explore.play();
+					for (var i = 0; i < jsonTodo.length; i++) {
+						explore.appendCardItem(jsonTodo[i]);
+					}
 
-			displayStand.container.dom.addEventListener( 'resize', function () {
-				explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-			});
-			displayStand.closeBtn.dom.addEventListener('click', function() {
-				explore.stop();
-				explore.dispose();
-				explore = null;
-			});
+					for (var i = 0; i < jsonInProgress.length; i++) {
+						explore.appendCardItem(jsonInProgress[i]);
+					}
 
-			var taskBriefcase = new iTopoTaskBriefcase( editor );
-			displayStand.container.dom.appendChild( taskBriefcase.dom );
+					for (var i = 0; i < jsonDone.length; i++) {
+						explore.appendCardItem(jsonDone[i]);
+					}
+
+					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+
+					explore.show3D();
+					explore.play();
+
+					displayStand.container.dom.addEventListener( 'resize', function () {
+						explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					});
+					displayStand.closeBtn.dom.addEventListener('click', function() {
+						explore.stop();
+						explore.dispose();
+						explore = null;
+					});
+
+					var taskBriefcase = new iTopoTaskBriefcase( editor );
+					displayStand.container.dom.appendChild( taskBriefcase.dom );
+
+				})
+			})
 		});
+
 	},
 
 	getValue: function () {

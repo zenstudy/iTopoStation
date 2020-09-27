@@ -6,7 +6,7 @@ import { UIPanel, UIRow, UIButton } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 
-function iTopoMenubarStarUser( editor , menubar, userStarInfo) {
+function iTopoMenubarStarUser( editor , menubar) {
 
 	var strings = editor.strings;
 
@@ -14,8 +14,7 @@ function iTopoMenubarStarUser( editor , menubar, userStarInfo) {
 	//container.setClass( 'menu' );
 	container.setClass( 'menu right' );
 
-//	console.log(userStarInfo);
-	var title = new UIButton(userStarInfo.userNickname);
+	var title = new UIButton(editor.starUser.info.userNickname);
 	title.setClass( 'title' );
 //	title.setTextContent(  );
 	container.add( title );
@@ -29,9 +28,7 @@ function iTopoMenubarStarUser( editor , menubar, userStarInfo) {
 	starInfoMenu.setTextContent(strings.getKey('menubar/StarUser/mineStar'));
 	starInfoMenu.onClick(function() {
 		var starUUID = editor.config.getKey( 'activedStarUserUUID');
-		console.log(starUUID);
 		var star = editor.objectByiTopoUUID(starUUID);
-		console.log(star);
 		if(star !== undefined && star !== null){
 			editor.select(star);// this function will call editor.signals.objectSelected.dispatch(star);
 		}

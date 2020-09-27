@@ -48,8 +48,10 @@
 
 			import { iTopoEditor } from './itopojs/iTopoEditor.js';
 			import { iTopoViewport } from './itopojs/iTopoViewport/iTopoViewport.js';
-			import { iTopoToolbarLight } from './itopojs/iTopoToolbar.Light.js'
-			import { iTopoToolbar } from './itopojs/iTopoToolbar.js';
+			import { iTopoToolbar } from './itopojs/iTopoViewport/iTopoToolbar.js';
+			import { iTopoToolbarLight } from './itopojs/iTopoViewport/iTopoToolbar.Light.js';
+			import { iTopoSpriteOwnLogo } from './itopojs/iTopoViewport/iTopoSpriteOwnLogo.js';
+			import { iTopoSpriteSponsor } from './itopojs/iTopoViewport/iTopoSpriteSponsor.js';
 			import { iTopoObjectBriefcase } from './itopojs/iTopoObjectBriefcase/iTopoObjectBriefcase.js';
 			import { iTopoUserBriefcase } from './itopojs/iTopoUserBriefcase/iTopoUserBriefcase.js';
 			import { iTopoMenubar} from './itopojs/iTopoMenubar/iTopoMenubar.js'
@@ -85,6 +87,12 @@
 				
 				var lightToolbar = new iTopoToolbarLight( editor );
 				document.body.appendChild( lightToolbar.dom );
+				
+				var ownLogoSprite = new iTopoSpriteOwnLogo( editor );
+				document.body.appendChild( ownLogoSprite.dom );
+				
+				var sponsorSprite = new iTopoSpriteSponsor( editor );
+				document.body.appendChild( sponsorSprite.dom );
 				
 				var sidebar = new iTopoObjectBriefcase( editor );
 				document.body.appendChild( sidebar.dom );
