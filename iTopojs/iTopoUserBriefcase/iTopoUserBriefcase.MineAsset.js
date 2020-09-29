@@ -7,7 +7,7 @@ import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
-import { iTopoDialogRegisterBase } from './iTopoDialog.RegisterBase.js';
+import { iTopoDialogRegisterBase } from '../iTopoDialog/iTopoDialog.RegisterBase.js';
 
 function iTopoUserBriefcaseMineAsset(editor) {
 	var scope = this;

@@ -53,8 +53,6 @@ function iTopoStrings( config ) {
 			'iTopoToolbarLight/enteriTopoEarth': '入驻共享地球',
 			'iTopoToolbarLight/RegisterEcologicalFarm': '注册生态基地',
 			'iTopoToolbarLight/RegisterSharedCanteen': '注册共享食堂',
-			'iTopoToolbarLight/ok':'确定',
-			'iTopoToolbarLight/cancel':'取消',
 
 			'iTopoViewport/info/objects' : '对象数量',
 			'iTopoViewport/info/vertices' : '顶点儿数',
@@ -66,10 +64,10 @@ function iTopoStrings( config ) {
 			'sidebar/skyCastle/Header/iTopoTaskCards' : '公众任务空间',
 			'sidebar/SkyCastle/Header/Title': '名称',
 			'sidebar/SkyCastle/Header/castleUUID': '事务大厅UUID',
+			'sidebar/skyCastle/Header/announcement' : '公告',
+
 			'sidebar/skyCastle/iTopoItems' : '详情',
 			'sidebar/skyCastle/iTopoItems/workplace' : '工作空间',
-
-			'sidebar/skyCastle/Life' : '公告',
 
 			'sidebar/skyCastle/Teams' : '志愿小组',
 			'sidebar/skyCastle/Teams/applyToJoining' : '申请加入...',
@@ -82,7 +80,6 @@ function iTopoStrings( config ) {
 			'sidebar/LunarMoon/Header/Title': '名称',
 			'sidebar/LunarMoon/Parts': '组成',
 			'sidebar/LunarMoon/Life':'生活',
-
 
 			'sidebar/InnerEarth/Header':'地心门户',
 			'sidebar/InnerEarth/Header/Outlook':'地心概貌',
@@ -150,6 +147,9 @@ function iTopoStrings( config ) {
 			'sidebar/contribute/editTask' :'查看',
 			'sidebar/contribute/removeTask': '删除',
 
+			'iTopoDialog/ok':'确定',
+			'iTopoDialog/cancel':'取消',
+
 			'iTopoDialog/login/login' : '登陆',
 			'iTopoDialog/login/cellPhone':'手机',
 			'iTopoDialog/login/longitude': '经度',
@@ -180,6 +180,10 @@ function iTopoStrings( config ) {
 			'iTopoDialog/lightEarth/city' :'城市',
 			'iTopoDialog/lightEarth/address' :'地址',
 
+			'iTopoDialog/ApplyToJoining/joiningReason': '描述一下申请加入的原因',
+
+			'iTopoDialog/Sponsor/applyToJoining': '申请加入',
+
 			'iTopoTaskDashboard3D/TaskViewTopMenu/AddTask' :'添加任务',
 			'iTopoTaskDashboard3D/TaskViewTopMenu/DeleteTask' :'删除任务',
 
@@ -199,9 +203,11 @@ function iTopoStrings( config ) {
 			'taskbar/History': '任务历史',
 			'taskbar/link': '相关链接',
 
-			'userBriefcase/MineAsset': '我注册的共享',
-			'userBriefcase/MineFocus': '订阅的共享',
-			'userBriefcase/MineFollower': '关注我的人们',
+			'userBriefcase/MineNotification': '消息中心',
+			'userBriefcase/MineNotification/Notification': '我的消息',
+
+			'userBriefcase/MineAsset': '我的资产',
+			'userBriefcase/MineFollower': '我的粉丝',
 
 			'userBriefcase/BluePrintPage': '什么是共享地球',
 		},

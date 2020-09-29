@@ -1,10 +1,6 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
-import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
+import { iTopoMenubarStarUser } from '../iTopoMenubar/iTopoMenubar.StarUser.js';
 import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 
 function iTopoDialogLogin( editor, menubar ) {

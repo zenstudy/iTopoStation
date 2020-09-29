@@ -1,12 +1,8 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
 import { UITabbedPanel, UISpan } from '../iTopoUI.js';
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 
 import { iTopoObjectSkyCastleHeader } from './iTopoObject.SkyCastle.Header.js';
-import { iTopoObjectSkyCastleLife } from './iTopoObject.SkyCastle.Life.js';
 import { iTopoObjectSkyCastleTeams } from './iTopoObject.SkyCastle.Teams.js';
 import { iTopoObjectSkyCastleSponsor } from './iTopoObject.SkyCastle.Sponsor.js';
 
@@ -87,13 +83,11 @@ function iTopoObjectBriefcase(editor) {
 
 	function createiTopoSkyCastleTabs() {
 		var headerTab = new iTopoObjectSkyCastleHeader(editor);
-		var lifeTab = new iTopoObjectSkyCastleLife(editor);
 		var teamsTab = new iTopoObjectSkyCastleTeams(editor);
 		var sponsorTab = new iTopoObjectSkyCastleSponsor(editor);
 
 
 		tabs.push( {name:'skyCastle', title:strings.getKey('sidebar/skyCastle/Header')  ,panel: headerTab} );
-		tabs.push( {name:'life', title: strings.getKey('sidebar/skyCastle/Life'),panel: lifeTab} );
 		tabs.push( {name:'teams', title: strings.getKey('sidebar/skyCastle/Teams'),panel: teamsTab} );
 		tabs.push( {name:'sponsors', title: strings.getKey('sidebar/skyCastle/Sponsors'),panel: sponsorTab} );
 

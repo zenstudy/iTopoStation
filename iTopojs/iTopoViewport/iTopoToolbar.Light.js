@@ -1,10 +1,6 @@
-
-//import { UIBoolean } from '../js/libs/ui.three.js';
-import { iTopoDialogLightStar } from '../iTopoDialog.LightStar.js';
-import { iTopoDialogRegisterBase } from '../iTopoUserBriefcase/iTopoDialog.RegisterBase.js';
-
 import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
+import { iTopoDialogRegisterBase } from '../iTopoDialog/iTopoDialog.RegisterBase.js';
 
 var iTopoToolbarLight = function ( editor ) {
 	var scope = this;
@@ -71,32 +67,37 @@ iTopoToolbarLight.prototype = {
 		scope.thumbnailManager = null;
 	},
 
-	onRegisterSharedCanteen: function() {// this对应一个item
-		var dlgContainer = new UIPanel();
-		dlgContainer.setId( 'iTopoDialog' );
-		dlgContainer.setDisplay( 'block' );
+	onRegisterEcologicalFarm: function() {
+			var title = editor.strings.getKey('iTopoToolbarLight/RegisterEcologicalFarm');
+			var applyDlg = new iTopoDialogRegisterBase(editor,title);
+			console.log(applyDlg);
+			document.body.appendChild(applyDlg.container.dom);
+			applyDlg.container.setDisplay('block');
+			applyDlg.container.setPosition('absolate');
 
-		var dlg = new UIPanel();
-		dlgContainer.add(dlg);
+			applyDlg.container.dom.addEventListener('resize', function() {
 
-		var lightEarthDlg = new iTopoDialogRegisterBase( editor, userBriefcase );
-		dlg.add(lightEarthDlg);
+			});
 
-		document.body.appendChild(dlgContainer.dom);
+			applyDlg.closeBtn.dom.addEventListener('click', function() {
+
+			});
 	},
 
-	onRegisterEcologicalFarm: function() {
-		var dlgContainer = new UIPanel();
-		dlgContainer.setId( 'iTopoDialog' );
-		dlgContainer.setDisplay( 'block' );
+	onRegisterSharedCanteen: function() {// this对应一个item
+			var title = editor.strings.getKey('iTopoToolbarLight/RegisterSharedCanteen');
+			var applyDlg = new iTopoDialogRegisterBase(editor,title);
+			document.body.appendChild(applyDlg.container.dom);
+			applyDlg.container.setDisplay('block');
+			applyDlg.container.setPosition('absolate');
 
-		var dlg = new UIPanel();
-		dlgContainer.add(dlg);
+			applyDlg.container.dom.addEventListener('resize', function() {
 
-		var lightEarthDlg = new iTopoDialogRegisterBase( editor, userBriefcase );
-		dlg.add(lightEarthDlg);
+			});
 
-		document.body.appendChild(dlgContainer.dom);
+			applyDlg.closeBtn.dom.addEventListener('click', function() {
+
+			});
 	},
 
 	getValue: function () {

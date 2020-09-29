@@ -19,9 +19,13 @@ function iTopoUserBriefcaseMineFollower(editor) {
 		var containerBaseModel = new UIPanel();
 		containerBaseModel.setBorderTop('0');
 		containerBaseModel.setPaddingTop('10px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('250px');
+		containerBaseModel.setOverflow('auto');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
+		scope.thumbnailManager.setItemClassName("register-item");
 		scope.thumbnailManager.create(containerBaseModel.dom);
 
 		const glftloader = new GLTFLoader();
@@ -212,7 +216,7 @@ iTopoUserBriefcaseMineFollower.prototype = {
 
 	onTaskCardsClassCSS3D: function() {
 		//var scope = this;
-		
+
 		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.castleUUID,function(json){
 			var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
 			var displayStand = new iTopoDisplayStand(title);

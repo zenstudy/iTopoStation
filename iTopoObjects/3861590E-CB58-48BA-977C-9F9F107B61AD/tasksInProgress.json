@@ -8,38 +8,38 @@
 }, {
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "F53061AC-DE9C-4B86-A3F5-66985455EAB4",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
+	"taskTitle": "开发用户消息中心",
+	"taskCreatedby": "亿能",
 	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
+	"taskDescription": "协调各方，系统发送给用户的消息"
 }, {
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "7AC30467-8C4B-4CA3-9BAF-E50984BA20E8",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
+	"taskTitle": "开发搜索功能",
+	"taskCreatedby": "亿能",
 	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
+	"taskDescription": "使共享地球具备搜索的功能，搜索指定的基地或用户或者其它用户关注的内容。"
 }, {
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "107CBF67-4815-4F9E-B817-004184905538",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
+	"taskTitle": "文章管理功能",
+	"taskCreatedby": "亿能",
 	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
+	"taskDescription": "开发用户的文章的管理功能，供用户发布文章或者信息"
 }, {
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "10466D1D-3F9A-4AC3-BD34-C7C0F6514DF8",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
+	"taskTitle": "上传产品的功能",
+	"taskCreatedby": "亿能",
 	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
+	"taskDescription": "让用户自己上传自己的产品的功能"
 }, {
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "926AF9A8-5050-4287-9BDA-A12206EC5DA6",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
+	"taskTitle": "任务处理机制",
+	"taskCreatedby": "亿能",
 	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
+	"taskDescription": "让系统具备任务处理的功能"
 }, {
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "8FEA7323-00EB-4C42-855E-DF032EDD02D6",
@@ -134,97 +134,6 @@
 }, {
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "5838C35D-C70F-44BD-A0DF-D5306C876D3B",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "D9D0364D-57C8-40D3-8529-A45C28985E9B",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "170C07B4-78AD-4445-9003-8F5904CA651E",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "5601F3B5-5A59-4ABF-8157-E9EB255A7D46",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "D602A926-BDA8-4E14-B813-AFAE0E8BA83D",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "C6F0B64B-B76B-4F80-97F0-A7C0B1DD6899",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "97857C88-4E41-493D-8BB2-C6F3866D3A0D",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "12027134-8D1B-40DE-AA06-50DF6E308236",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "A82A9C3E-99C1-4552-BC5E-3F7265D40112",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "0E3A8C45-F63C-4A46-9057-28ABB3B46BB7",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "467ACDB5-6FAD-42C2-9A4A-A23A5D727FD6",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "DE362117-8495-4923-91DD-38FD8353AE1F",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "DB7D3219-FAE3-4AA5-9E87-5C1375CFDF0C",
-	"taskTitle": "任务标题",
-	"taskCreatedby": "任务创建者",
-	"taskStatus": "在办",
-	"taskDescription": "关于此任务的详细描述"
-}, {
-	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
-	"taskUUID": "B7A56B08-641C-4FFA-BAF5-DC0F6B0229C3",
 	"taskTitle": "任务标题",
 	"taskCreatedby": "任务创建者",
 	"taskStatus": "在办",

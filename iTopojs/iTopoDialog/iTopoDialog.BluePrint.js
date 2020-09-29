@@ -3,7 +3,7 @@ import { UIElement, UIPanel, UIText } from '../iTopoUI.js';
 import { SetScriptValueCommand } from '../../js/commands/SetScriptValueCommand.js';
 import { SetMaterialValueCommand } from '../../js/commands/SetMaterialValueCommand.js';
 
-function iTopoEarthBluePrint( dispalyContext ) {
+function iTopoDialogBluePrint( dispalyContext ) {
 	var scope = this;
 
 	var container = new UIPanel();
@@ -67,9 +67,9 @@ function iTopoEarthBluePrint( dispalyContext ) {
 	return scope;
 }
 
-iTopoEarthBluePrint.prototype.constructor = iTopoEarthBluePrint;
+iTopoDialogBluePrint.prototype.constructor = iTopoDialogBluePrint;
 
-iTopoEarthBluePrint.prototype = {
+iTopoDialogBluePrint.prototype = {
 
 	titleHeight: function() {
 		return this.header.dom.offsetHeight;
@@ -82,4 +82,4 @@ iTopoEarthBluePrint.prototype = {
 	}
 }
 
-export { iTopoEarthBluePrint };
+export { iTopoDialogBluePrint };

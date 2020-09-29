@@ -4,7 +4,8 @@ import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from '../iTopoFrame/iTopoProductManager.js';
 import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
-import { iTopoEarthModel } from '../iTopoEarthModel.js'
+import { iTopoDialogApplyToJoining } from '../iTopoDialog/iTopoDialog.ApplyToJoining.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js';
 
 function iTopoObjectSkyCastleSponsor( editor ) {
 	var scope = this;
@@ -129,7 +130,26 @@ iTopoObjectSkyCastleSponsor.prototype = {
 
 		scope.thumbnailManager2.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Sponsors/clickToSponsor' ) ,
 		mesh.clone(), function() {
-			iTopoEarthModel.SkyCastle.applyToJoining( teamUUID, starUUID );
+
+			//iTopoDialogApplyToJoining
+
+			//iTopoEarthModel.SkyCastle.applyToJoining( teamUUID, starUUID );
+
+			var title = editor.strings.getKey('iTopoDialog/Sponsor/applyToJoining');
+			var applyToJoinDlg = new iTopoDialogApplyToJoining(title);
+			document.body.appendChild(applyToJoinDlg.container.dom);
+			applyToJoinDlg.container.setDisplay('block');
+			applyToJoinDlg.container.setPosition('absolate');
+
+
+			applyToJoinDlg.container.dom.addEventListener('resize', function() {
+
+			});
+
+			applyToJoinDlg.closeBtn.dom.addEventListener('click', function() {
+
+			});
+
 		});
 
 		editor.stationDB.fetchiTopoStars(function(json){

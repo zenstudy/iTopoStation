@@ -174,6 +174,7 @@ var iTopoTaskDashboard3D = {
 			tableButton.type="button";
 			tableButton.value = editor.strings.getKey( 'iTopoTaskDashboard3D/TaskViewTopMenu/AddTask' );
 			tableButton.addEventListener('click', function(){
+				
 				var taskObject = {
 					objectUUID : editor.selected.userData.objectUUID,
 					taskUUID:THREE.MathUtils.generateUUID(),
@@ -247,11 +248,11 @@ var iTopoTaskDashboard3D = {
 			element.className = 'TaskCard';
 
 			if(taskObject.taskStatus ==="待办")
-				element.style.backgroundColor = '#08f';
+				element.style.backgroundColor = 'rgb(0,0,255)';
 			else if(taskObject.taskStatus ==="在办")
-				element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+				element.style.backgroundColor = 'rgb(255,0,0)';
 			else if(taskObject.taskStatus ==="已办")
-					element.style.backgroundColor = '#bbb';
+					element.style.backgroundColor = 'rgb(118, 118, 118)';
 
 			var taskStatus = document.createElement( 'div' );
 			taskStatus.className = 'TaskStatus';

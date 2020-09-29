@@ -1,7 +1,7 @@
 
 import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
-import { iTopoEarthBluePrint } from '../iTopoFrame/iTopoEarthBluePrint.js';
+import { iTopoDialogBluePrint } from '../iTopoDialog/iTopoDialog.BluePrint.js';
 
 var iTopoSpriteOwnLogo = function ( editor ) {
 	var scope = this;
@@ -59,7 +59,7 @@ iTopoSpriteOwnLogo.prototype = {
 
 		var scope = this;
 		var title = editor.strings.getKey('menubar/AboutiTopoEarth/iTopoBluePrint');
-		var bluePrintWindow = new iTopoEarthBluePrint(title);
+		var bluePrintWindow = new iTopoDialogBluePrint(title);
 		document.body.appendChild(bluePrintWindow.container.dom);
 		bluePrintWindow.container.setDisplay('block');
 		bluePrintWindow.container.setPosition('absolate');

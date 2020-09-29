@@ -1,6 +1,6 @@
 import { UITabbedPanel, UISpan } from '../iTopoUI.js';
 import { iTopoUserBriefcaseMineAsset } from './iTopoUserBriefcase.MineAsset.js';
-import { iTopoUserBriefcaseMineFocus } from './iTopoUserBriefcase.MineFocus.js';
+import { iTopoUserBriefcaseMineNotification } from './iTopoUserBriefcase.MineNotification.js';
 import { iTopoUserBriefcaseMineFollower } from './iTopoUserBriefcase.MineFollower.js';
 import { iTopoUserBriefcaseBluePrint } from './iTopoUserBriefcase.BluePrint.js';
 
@@ -84,12 +84,12 @@ iTopoUserBriefcase.prototype = {
 
 	createUserBriefcase: function () {
 		var scope = this;
+		var mineNotificationTab = new iTopoUserBriefcaseMineNotification(editor);
 		var mineAssetTab = new iTopoUserBriefcaseMineAsset(editor);
-		var userBriefcaseTab = new iTopoUserBriefcaseMineFocus(editor);
 		var mineFollowerTab = new iTopoUserBriefcaseMineFollower(editor);
 
+		scope.tabs.push( {name:'mineNotification', title: scope.strings.getKey('userBriefcase/MineNotification'),panel: mineNotificationTab} );
 		scope.tabs.push( {name:'minAsset', title: scope.strings.getKey('userBriefcase/MineAsset'),panel: mineAssetTab} );
-		scope.tabs.push( {name:'mineFocus', title: scope.strings.getKey('userBriefcase/MineFocus'),panel: userBriefcaseTab} );
 		scope.tabs.push( {name:'mineFollower', title: scope.strings.getKey('userBriefcase/MineFollower'),panel: mineFollowerTab} );
 
 		scope.tabs.forEach(function(tab){

@@ -28,7 +28,7 @@ function iTopoObjectInnerEarthHeader(editor) {
 		 	object , scope.onClickThumbnail);
 		}) ;
 
-		editor.resourceTracker.loadSmallCityModel(originPosition, 1, function(object){
+		editor.resourceTracker.loadTreeModel(originPosition, 1, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/InnerEarth/Header/iTopoTaskCards' ),
 			 	object , scope.onTaskCardsClassCSS3D);
 		}) ;
@@ -36,7 +36,7 @@ function iTopoObjectInnerEarthHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setTop('610px');
+	containerParameter.setTop('550px');
 	container.add(containerParameter);
 
 	{

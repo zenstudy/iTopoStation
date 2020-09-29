@@ -1,8 +1,8 @@
 import { UIPanel, UIRow, UIButton } from '../iTopoUI.js';
-import { iTopoEarthBluePrint } from '../iTopoFrame/iTopoEarthBluePrint.js';
+import { iTopoDialogBluePrint } from '../iTopoDialog/iTopoDialog.BluePrint.js';
 
 function iTopoMenubarAboutiTopoEarth(editor, menubar) {
-
+	var scope = this;
 	var strings = editor.strings;
 
 	var container = new UIPanel();
@@ -23,9 +23,8 @@ function iTopoMenubarAboutiTopoEarth(editor, menubar) {
 	whitepaperMenu.setTextContent(strings.getKey('menubar/AboutiTopoEarth/iTopoBluePrint'));
 	whitepaperMenu.onClick(function() {
 
-		var scope = this;
 		var title = editor.strings.getKey('menubar/AboutiTopoEarth/iTopoBluePrint');
-		var bluePrintWindow = new iTopoEarthBluePrint(title);
+		var bluePrintWindow = new iTopoDialogBluePrint(title);
 		document.body.appendChild(bluePrintWindow.container.dom);
 		bluePrintWindow.container.setDisplay('block');
 		bluePrintWindow.container.setPosition('absolate');

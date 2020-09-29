@@ -160,7 +160,7 @@ function iTopoDialogRegisterBase( editor ) {
 	buttonPanel.setPaddingBottom( '20px' );
 	container.add( buttonPanel );
 	{
-		var lightEarth = new UIButton( strings.getKey( 'iTopoToolbarLight/ok' ) );
+		var lightEarth = new UIButton( strings.getKey( 'iTopoDialog/ok' ) );
 		lightEarth.setMarginRight( '20px' );
 		lightEarth.onClick( function () {
 
@@ -172,7 +172,7 @@ function iTopoDialogRegisterBase( editor ) {
 	}
 
 	{
-		var cancelBtn = new UIButton( strings.getKey( 'iTopoToolbarLight/cancel' ) );
+		var cancelBtn = new UIButton( strings.getKey( 'iTopoDialog/ok' ) );
 		cancelBtn.onClick( function () {
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );

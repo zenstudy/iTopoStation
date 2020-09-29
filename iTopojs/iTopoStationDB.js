@@ -147,7 +147,7 @@ iTopoStationDB.prototype = {
 			jsonFileName = 'tasksDone.json';
 
 		var taskFile = './iTopoObjects/' + objectUUID + '/' + jsonFileName;
-		
+
 		fetch(taskFile, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求
@@ -166,7 +166,7 @@ iTopoStationDB.prototype = {
 
 	addTask: function(taskObject, fnTaskAdded){
 
-		var request = new Request(iTopoStationAPI.iTopoEarthLogin, {
+		var request = new Request(iTopoStationAPI.addTask, {
 			method: 'POST',
 			body: JSON.stringify(taskObject),
 			headers: new Headers()
@@ -185,7 +185,7 @@ iTopoStationDB.prototype = {
 
 	registerUser: function(userStarInfo, fnUserRegistered){
 
-		var request = new Request(iTopoStationAPI.iTopoEarthLogin, {
+		var request = new Request(iTopoStationAPI.iTopoEarthRegister, {
 			method: 'POST',
 			body: JSON.stringify(userStarInfo),
 			headers: new Headers()

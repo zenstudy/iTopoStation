@@ -1,11 +1,7 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
-import { iTopoMenubarStarUser } from './iTopoMenubar.StarUser.js';
+import { iTopoMenubarStarUser } from '../iTopoMenubar/iTopoMenubar.StarUser.js';
 
 function iTopoDialogRegister( editor, menubar ) {
 	var strings = editor.strings;
@@ -88,22 +84,6 @@ function iTopoDialogRegister( editor, menubar ) {
 
 		dlgBody.add( latitudeRow );
 	}
-
-	// {
-	// 	var starWishTitleRow = new UIRow();
-	// 	starWishTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/register/starWish' ) ).setWidth( '80px' ) );
-	// 	dlgBody.add( starWishTitleRow );
-
-	// 	var starWishTextAreaRow = new UIRow();
-	// 	var starWishValueUI = new UITextArea().setWidth( '250px' ).setHeight( '80px' ).setFontSize( '12px' )/*.onChange( update )*/;
-	// 	starWishValueUI.onKeyUp( function () {
-	// 		userStarInfo.starWish = this.getValue();
-
-	// 	} );
-	// 	starWishTextAreaRow.add( starWishValueUI );
-
-	// 	dlgBody.add( starWishTextAreaRow );
-	// }
 
 	var buttonPanel = new UIPanel();
 	buttonPanel.setPaddingLeft( '20px' );

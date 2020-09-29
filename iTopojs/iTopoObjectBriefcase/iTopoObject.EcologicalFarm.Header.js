@@ -51,7 +51,7 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setTop('610px');
+	containerParameter.setTop('550px');
 	container.add(containerParameter);
 
 	{
@@ -170,7 +170,7 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 
 		var lightWishTextAreaRow = new UIRow();
 		this.lightWishValueUI = new UITextArea().setWidth('250px').setFontSize('12px') /*.onChange( update )*/ ;
-		this.lightWishValueUI.dom.style.height = '662px';
+		this.lightWishValueUI.dom.style.height = '500px';
 		this.lightWishValueUI.onKeyUp(function() {
 			lightTask.lightWish = this.getValue();
 

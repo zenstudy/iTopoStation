@@ -44,7 +44,7 @@ function iTopoObjectSharedCanteenHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setTop('610px');
+	containerParameter.setTop('550px');
 	container.add(containerParameter);
 	{
 		// baseUUID

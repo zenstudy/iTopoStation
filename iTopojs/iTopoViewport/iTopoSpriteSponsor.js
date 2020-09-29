@@ -1,5 +1,4 @@
-import { iTopoDialogLightStar } from '../iTopoDialog.LightStar.js';
-import { iTopoDialogRegisterBase } from '../iTopoUserBriefcase/iTopoDialog.RegisterBase.js';
+import { iTopoDialogRegisterBase } from '../iTopoDialog/iTopoDialog.RegisterBase.js';
 import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 

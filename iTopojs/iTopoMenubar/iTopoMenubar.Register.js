@@ -1,12 +1,8 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import * as THREE from '../../../build/three.module.js';
 
 import { UIPanel, UIButton } from '../iTopoUI.js';
 import { UIBoolean } from '../../js/libs/ui.three.js';
-import { iTopoDialogRegister } from './iTopoDialog.Register.js';
+import { iTopoDialogRegister } from '../iTopoDialog/iTopoDialog.Register.js';
 
 function iTopoMenubarRegister( editor, menubar ) {
 	var strings = editor.strings;
