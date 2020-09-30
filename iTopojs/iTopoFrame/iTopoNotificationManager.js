@@ -1,34 +1,30 @@
 import { UIPanel } from '../iTopoUI.js';
 
-function iTopoArticleManager() {
+function iTopoNotificationManager() {
 
 	return this;
 }
 
 //iTopoArticleManager.prototype = Object.create( UIElement.prototype );
-iTopoArticleManager.prototype.constructor = iTopoArticleManager;
+iTopoNotificationManager.prototype.constructor = iTopoNotificationManager;
 
-iTopoArticleManager.prototype = {
+iTopoNotificationManager.prototype = {
 
 	createDisplayStand :function (panelDom){
 		var scope = this;
 		this.panelDom = panelDom;
 
 		this.itemsPanel =document.createElement('div');
-		this.itemsPanel.id = 'ArticleItem';
+		this.itemsPanel.id = 'NotificationItem';
 		panelDom.appendChild(this.itemsPanel);
 
 		this.itemsUL = document.createElement('ul');
 		this.itemsPanel.append(this.itemsUL);
 	},
 
-	addArticleItem : function (img, itemTitle, itemSummary, itemfn) {
+	addNotificationItem : function (itemTitle, itemSummary, itemfn) {
 		// make a list item
 		var liElement = document.createElement('li');
-
-		var imgElement = document.createElement('img');
-		imgElement.src = img;
-		liElement.appendChild(imgElement);
 
 		var h3Element = document.createElement('h3');
 		h3Element.innerText = itemTitle;
@@ -40,7 +36,22 @@ iTopoArticleManager.prototype = {
 
 		liElement.addEventListener('click',itemfn );
 		this.itemsUL.appendChild(liElement);
+	},
+
+	removeNotificationItem : function (itemTitle) {
+		var scope = this;
+		var Lis = this.itemsUL.getElementsByTagName('li');
+		console.log(Lis);
+		for(var i = 0; i < Lis.length; i++){
+			var h3Element = Lis[i].getElementsByTagName("h3")[0];
+			console.log(h3Element);
+			console.log(itemTitle);
+			if(h3Element.innerText === itemTitle){
+				this.itemsUL.removeChild(Lis[i]);
+				return;
+			}
+		}
 	}
 }
 
-export { iTopoArticleManager };
+export { iTopoNotificationManager };

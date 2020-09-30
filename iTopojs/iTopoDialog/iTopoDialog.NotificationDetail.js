@@ -1,7 +1,7 @@
 import { UIElement, UISpan, UIPanel, UIText, UIRow, UITextArea, UIButton } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
 
-function iTopoDialogApplyToJoining( editor, dispalyContext, teamToJoin ) {
+function iTopoDialogNotificationDetail( editor, dispalyContext, notificationToRead, fnOK ) {
 	var scope = this;
 	var strings = editor.strings;
 
@@ -53,13 +53,13 @@ function iTopoDialogApplyToJoining( editor, dispalyContext, teamToJoin ) {
 	scope.container.add( dlgBody );
 	{
 		var lightWishTitleRow = new UIRow();
-		lightWishTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/ApplyToJoining/joiningReason' ) ) );
+		lightWishTitleRow.add( new UIText( notificationToRead.taskTitle ) );
 		dlgBody.add( lightWishTitleRow );
 
 		var lightWishTextAreaRow = new UIRow();
 		var lightWishValueUI = new UITextArea().setHeight( '120px' ).setFontSize( '12px' );
 		lightWishValueUI.dom.cols = 40;
-		lightWishValueUI.setValue( 'apply...' );
+		lightWishValueUI.setValue( notificationToRead.taskDescription );
 		lightWishValueUI.onKeyUp( function () {
 			//baseInfo.lightWish = this.getValue();
 
@@ -74,23 +74,12 @@ function iTopoDialogApplyToJoining( editor, dispalyContext, teamToJoin ) {
 	bottomPanel.setBackgroundColor( '#dddddd' );
 	container.add( bottomPanel );
 	{
-		var lightEarth = new UIButton( strings.getKey( 'iTopoDialog/ok' ) );
-		lightEarth.setLeft( '170px' );
+		var lightEarth = new UIButton( strings.getKey( 'iTopoDialog/NotificationDetail/MarkAsRead' ) );
+		lightEarth.setLeft( '140px' );
 		lightEarth.onClick( function () {
-
-			var taskObject = {
-				objectUUID : iTopoEarthModel.SkyCastle.info.castleUUID,
-				taskUUID:THREE.MathUtils.generateUUID(),
-				taskTitle:'处理志愿者加入申请',
-				taskCreatedby:'共享地球系统',
-				taskStatus:'待办',
-				taskDescription: editor.starUser.info.userNickname + '想加入志愿者团队-' + teamToJoin + ',因为' + lightWishValueUI.getValue(),
-			};
-
-			editor.stationDB.addTask(JSON.stringify(taskObject), function(){
-			//	editor.stationDB.addNotification();
+			editor.stationDB.moveTaskFromTodoToDone(JSON.stringify(notificationToRead), function(){
+				fnOK();
 			});
-
 			document.body.removeChild(document.getElementById("BluePrint"));
 		} );
 		bottomPanel.add( lightEarth );
@@ -98,7 +87,7 @@ function iTopoDialogApplyToJoining( editor, dispalyContext, teamToJoin ) {
 
 	{
 		var cancelBtn = new UIButton( strings.getKey( 'iTopoDialog/cancel' ) );
-		cancelBtn.setLeft( '180px' );
+		cancelBtn.setLeft( '140px' );
 		cancelBtn.onClick( function () {
 			document.body.removeChild(document.getElementById("BluePrint"));
 		} );
@@ -108,9 +97,9 @@ function iTopoDialogApplyToJoining( editor, dispalyContext, teamToJoin ) {
 	return scope;
 }
 
-iTopoDialogApplyToJoining.prototype.constructor = iTopoDialogApplyToJoining;
+iTopoDialogNotificationDetail.prototype.constructor = iTopoDialogNotificationDetail;
 
-iTopoDialogApplyToJoining.prototype = {
+iTopoDialogNotificationDetail.prototype = {
 
 	titleHeight: function() {
 		return this.header.dom.offsetHeight;
@@ -123,4 +112,4 @@ iTopoDialogApplyToJoining.prototype = {
 	}
 }
 
-export { iTopoDialogApplyToJoining };
+export { iTopoDialogNotificationDetail };

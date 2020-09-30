@@ -343,20 +343,31 @@ app.post('/addTask', function(req, res) {
 
 	req.addListener("end", function() {
 		var taskObject = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(taskObject)) ;
-		res.write(postData);
-		const taskJsonFile = '../iTopoObjects/' + taskObject.objectUUID + '/tasks.json';
-		fs.readFile(taskJsonFile, 'utf-8', function(err, data) {
+		res.write(taskObject);
+		taskObject = JSON.parse(taskObject);
+		console.log("Received POST data :") ;
+		console.log(taskObject.objectUUID);
+
+		var taskJsonFileName;
+		if(taskObject.taskStatus === "待办")
+			taskJsonFileName = "tasksTodo.json";
+		else if(taskObject.taskStatus === "在办")
+			taskJsonFileName = "tasksInProgress.json";
+		else if(taskObject.taskStatus === "已办")
+			taskJsonFileName = "tasksDone.json";
+
+		const jsonFile = '../iTopoObjects/' + taskObject.objectUUID +'/' + taskJsonFileName;
+		fs.readFile(jsonFile, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
 			} else {
 				var taskObjects = JSON.parse(data);
 				console.log(taskObjects);
-				taskObjects.push(taskObject);
+				taskObjects.unshift(taskObject);
 
-				fs.writeFile(taskJsonFile, JSON.stringify(taskObjects), function(err) {
+				fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
 					if (err) console.error(err);
-					console.log('数据已经写入' + taskJsonFile);
+					console.log('数据已经写入' + jsonFile);
 				});
 			}
 		});
@@ -365,6 +376,68 @@ app.post('/addTask', function(req, res) {
 	});
 });
 
+app.post('/moveTaskFromTodoToDone', function(req, res) {
+
+	var postData = "";
+
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		var taskObject = JSON.parse(postData);
+		res.write(taskObject);
+		taskObject = JSON.parse(taskObject);
+		console.log("Received POST data :") ;
+		console.log(taskObject.taskUUID);
+
+		const jsonFile = '../iTopoObjects/' + taskObject.objectUUID +'/tasksTodo.json';
+		fs.readFile(jsonFile, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var taskObjects = JSON.parse(data);
+
+				for(var index = 0; index < taskObjects.length; ++index)
+				{
+					console.log('taskObjects[index].taskUUID:' + taskObjects[index].taskUUID);
+					if(taskObject.taskUUID === taskObjects[index].taskUUID){
+						taskObjects.splice(index, 1);
+						break;
+					}
+				}
+
+				fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
+					if (err) console.error(err);
+					console.log('数据已经写入' + jsonFile);
+				});
+			}
+		});
+
+		const jsonFile2 = '../iTopoObjects/' + taskObject.objectUUID +'/tasksDone.json';
+		fs.readFile(jsonFile2, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var taskObjects = JSON.parse(data);
+				taskObject.taskStatus = "已办";
+				console.log(taskObjects);
+				taskObjects.unshift(taskObject);
+
+				fs.writeFile(jsonFile2, JSON.stringify(taskObjects), function(err) {
+					if (err) console.error(err);
+					console.log('数据已经写入' + jsonFile2);
+				});
+			}
+		});
+
+		res.end();
+	});
+});
 
 var server = app.listen(8081, function() {
 	var host = server.address().address;

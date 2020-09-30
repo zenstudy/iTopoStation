@@ -92,7 +92,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/StarUser/Header': '星民信息',
 			'sidebar/StarUser/Header/Outlook': '头像',
-			'sidebar/StarUser/Header/iTopoTaskCards': '任务空间',
+			'sidebar/StarUser/Header/iTopoTaskCards': '公开的任务',
 			'sidebar/starUser/Header/starUUID':'starUUID',
 			'sidebar/starUser/Header/gender':'性别',
 			'sidebar/starUser/Header/cellPhone':'手机',
@@ -183,6 +183,8 @@ function iTopoStrings( config ) {
 			'iTopoDialog/ApplyToJoining/joiningReason': '描述一下申请加入的原因',
 
 			'iTopoDialog/Sponsor/applyToJoining': '申请加入',
+			
+			'iTopoDialog/NotificationDetail/MarkAsRead': '标记成已读',
 
 			'iTopoTaskDashboard3D/TaskViewTopMenu/AddTask' :'添加任务',
 			'iTopoTaskDashboard3D/TaskViewTopMenu/DeleteTask' :'删除任务',

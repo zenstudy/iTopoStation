@@ -169,6 +169,35 @@
 	cursor: pointer;
 }
 
+#NotificationItem div {
+	margin: 1px;
+}
+
+#NotificationItem ul {
+	padding-inline-start: 2px;
+	list-style-type: none;
+}
+
+#NotificationItem h3 {
+	font: bold 15px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+#NotificationItem li p {
+	font: 200 12px/1.5 Georgia, Times New Roman, serif;
+}
+
+#NotificationItem li {
+	margin: 0.5em;
+	padding: 0.5em;
+	overflow: auto;
+	box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+#NotificationItem li:hover {
+	background: #00ffff;
+	cursor: pointer;
+}
+
 #TaskViewTopMenu {
 	position: absolute;
 	top: 50px;

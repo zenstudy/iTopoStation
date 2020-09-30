@@ -13,6 +13,7 @@ var iTopoStationAPI = {
 	iTopoEarthLogin : 'http://127.0.0.1:8081/iTopoEarthLogin',
 	registerBaseObjectOnEarth:'http://127.0.0.1:8081/registerBaseObjectOnEarth',
 	addTask:'http://127.0.0.1:8081/addTask',
+	moveTaskFromTodoToDone:'http://127.0.0.1:8081/moveTaskFromTodoToDone',
 	fetchUserWithStarUUID:'http://127.0.0.1:8081/fetchUserWithStarUUID',
 	updateStarUser:'http://127.0.0.1:8081/updateStarUser',
 	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
@@ -167,6 +168,25 @@ iTopoStationDB.prototype = {
 	addTask: function(taskObject, fnTaskAdded){
 
 		var request = new Request(iTopoStationAPI.addTask, {
+			method: 'POST',
+			body: JSON.stringify(taskObject),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnTaskAdded();
+			console.log('fetch.post:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	moveTaskFromTodoToDone: function(taskObject, fnTaskAdded){
+
+		var request = new Request(iTopoStationAPI.moveTaskFromTodoToDone, {
 			method: 'POST',
 			body: JSON.stringify(taskObject),
 			headers: new Headers()

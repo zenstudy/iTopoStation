@@ -2,7 +2,8 @@ import { UIElement,UIPanel, UIBreak, UIText } from '../iTopoUI.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from '../iTopoFrame/iTopoProductManager.js';
-import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
+import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
+import { iTopoDialogNotificationDetail } from '../iTopoDialog/iTopoDialog.NotificationDetail.js';
 
 function iTopoUserBriefcaseMineNotification( editor ) {
 	this.editor = editor;
@@ -42,37 +43,43 @@ iTopoUserBriefcaseMineNotification.prototype = {
 		if (taskObject !== null) {
 
 			var title = editor.strings.getKey( 'userBriefcase/MineNotification/Notification' ) ;
-			var productPanel = new iTopoArticleManager();
-			productPanel.createDisplayStand(scope.container.dom);
+			var notificationPanel = new iTopoNotificationManager();
+			scope.notificationPanel = notificationPanel;
+			notificationPanel.createDisplayStand(scope.container.dom);
 
-			for(var i=0; i < 8; ++i)
-			{
-				var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
-				productPanel.addArticleItem(qrcodeURL , title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSiteProduct);
-			}
+			editor.stationDB.fetchiTopoTaskCards(editor.starUser.info.starUUID,"Todo",function(jsonTodo){
+
+				jsonTodo.forEach(function(taskTodo){
+				 	notificationPanel.addNotificationItem(taskTodo.taskTitle, taskTodo.taskDescription,
+				 	function(){
+				 		scope.onNotification(taskTodo);
+				 	});
+				 })
+			})
 
 		}
 
 		scope.taskObject = taskObject;
 	},
 
-	onSiteProduct: function() {
+	onNotification: function(notificationToRead) {
 		var scope = this;
-		var title = editor.strings.getKey( 'userBriefcase/MineNotification/Notification' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-
-		var dom = document.createElement( 'div' );
-		displayStand.container.dom.appendChild( dom );
-
-		var productPanel = new iTopoProductManager();
-		productPanel.createDisplayStand(dom);
-
-		for(var i=0; i < 8; ++i)
-		{
-			productPanel.addProductItem( title + (i+1), onSelect);
+		var title = editor.strings.getKey('userBriefcase/MineNotification/Notification');
+		function fnOK(){
+			scope.notificationPanel.removeNotificationItem( notificationToRead.taskTitle );
 		}
+		var notificationDlg = new iTopoDialogNotificationDetail(editor, title, notificationToRead, fnOK);
+		document.body.appendChild(notificationDlg.container.dom);
+		notificationDlg.container.setDisplay('block');
+		notificationDlg.container.setPosition('absolate');
+
+		notificationDlg.container.dom.addEventListener('resize', function() {
+
+		});
+
+		notificationDlg.closeBtn.dom.addEventListener('click', function() {
+
+		});
 	}
 }
 

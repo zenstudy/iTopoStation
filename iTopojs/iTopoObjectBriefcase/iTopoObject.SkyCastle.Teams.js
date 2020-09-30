@@ -41,10 +41,6 @@ function iTopoObjectSkyCastleTeams( editor ) {
 	return scope;
 }
 
-function onSelect() {
-		console.log(this);
-	}
-
 iTopoObjectSkyCastleTeams.prototype = Object.create( UIElement.prototype );
 iTopoObjectSkyCastleTeams.prototype.constructor = iTopoObjectSkyCastleTeams;
 
@@ -105,7 +101,7 @@ iTopoObjectSkyCastleTeams.prototype = {
 			if(taskObject.info.teams.length !== 0){
 				 taskObject.info.teams.forEach(function(team){
 				 	scope.thumbnailManager.createThumbnailItem( team.teamName ,
-				 	mesh.clone(), function(){scope.onSelectTeam()});
+				 	mesh.clone(), function(){scope.onSelectTeam(team.teamName)});
 				 })
 			}
 
@@ -115,7 +111,7 @@ iTopoObjectSkyCastleTeams.prototype = {
 		scope.taskObject = taskObject;
 	},
 
-	onSelectTeam: function() {
+	onSelectTeam: function(teamToJoin) {
 
 		var scope = this;
 
@@ -133,7 +129,7 @@ iTopoObjectSkyCastleTeams.prototype = {
 		mesh.clone(), function() {
 
 			var title = editor.strings.getKey('sidebar/skyCastle/Teams/applyToJoining');
-			var applyDlg = new iTopoDialogApplyToJoining(title);
+			var applyDlg = new iTopoDialogApplyToJoining(editor, title,teamToJoin);
 			document.body.appendChild(applyDlg.container.dom);
 			applyDlg.container.setDisplay('block');
 			applyDlg.container.setPosition('absolate');
