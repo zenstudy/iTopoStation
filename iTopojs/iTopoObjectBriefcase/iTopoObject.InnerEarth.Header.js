@@ -9,14 +9,16 @@ import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js'
 function iTopoObjectInnerEarthHeader(editor) {
 	var scope = this;
 	var strings = editor.strings;
+	var innerEarthinfo=iTopoEarthModel.InnerEarth.info;
 
 	var container = new UISpan();
 	this.container = container;
 
 	{
 		var containerBaseModel = new UIPanel();
-		containerBaseModel.setBorderTop('0');
-		containerBaseModel.setPaddingTop('10px');
+		containerBaseModel.setTop('140px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('150px');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
@@ -36,18 +38,23 @@ function iTopoObjectInnerEarthHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setTop('550px');
+//	containerParameter.setTop('550px');
 	container.add(containerParameter);
 
 	{
 		// baseUUID
-		var geometryUUIDRow = new UIRow();
-		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(iTopoEarthModel.InnerEarth.innerEarthUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/InnerEarth/Header/innerEarthUUID')).setWidth('90px'));
-		geometryUUIDRow.add(this.geometryUUID);
+		var baseUUIDRow = new UIRow();
+		baseUUIDRow.add(new UIText(strings.getKey('sidebar/InnerEarth/Header/innerEarthUUID')).setWidth('270px'));
+		containerParameter.add(baseUUIDRow);
 
-		containerParameter.add(geometryUUIDRow);
+		var baseUUIDValueRow = new UIRow();
+		this.geometryUUID = new UIInput().setWidth('270px').setFontSize('10px').setDisabled(true);
+		this.geometryUUID.setBackground("#ffffff");
+		this.geometryUUID.setValue(innerEarthinfo.innerEarthUUID);
+
+		baseUUIDValueRow.add(this.geometryUUID);
+		containerParameter.add(baseUUIDValueRow);
+
 	}
 
 	{
@@ -56,7 +63,7 @@ function iTopoObjectInnerEarthHeader(editor) {
 		titleRow.add(new UIText(strings.getKey('sidebar/InnerEarth/Header/Title')).setWidth('90px'));
 
 		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
-		this.titleInput.setValue(iTopoEarthModel.SkyCastle.title);
+		this.titleInput.setValue(innerEarthinfo.title);
 		this.titleInput.onChange(function() {
 			//lightTask.title = this.getValue();
 		});

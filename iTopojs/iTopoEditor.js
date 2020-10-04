@@ -160,7 +160,7 @@ iTopoEditor.prototype = {
 	loginiTopoEarth: function( fnAfterLogin ){
 		var scope = this;
 		scope.starUser.restoreActiveUser(scope);
-			scope.stationDB.fetchUserWithStarUUID(/*this.starUser.starUUID*/"8E59BDD4-25EE-4E90-A612-4537AFAA80FF", function(starUserInfo){
+			scope.stationDB.fetchUserWithStarUUID(/*this.starUser.starUUID*/"5E59BDD4-25EE-4E90-A612-4537AFAA80FE", function(starUserInfo){
 			scope.starUser.setStarUserInfo(starUserInfo);
 			console.log(starUserInfo);
 			fnAfterLogin();

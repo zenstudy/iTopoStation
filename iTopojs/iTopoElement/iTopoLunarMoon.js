@@ -7,7 +7,7 @@ class iTopoLunarMoon {
 
     this.info = {
 		lunarMoonUUID : '8C38386A-886D-4B8B-92B8-05E8CB6BCB85',
-		title : '月球',
+		title : '月球门户',
 		lng : 0,
 		lat : 0,
 		size : 100,

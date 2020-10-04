@@ -1,14 +1,10 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIElement, UISpan, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
-//import { UIOutliner, UITexture } from '../js/libs/ui.three.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
-
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
+import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 
 function iTopoObjectEcologicalFarmHeader(editor) {
 	var scope = this;
@@ -30,8 +26,9 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 
 	{
 		var containerBaseModel = new UIPanel();
-		containerBaseModel.setBorderTop('0');
 		containerBaseModel.setPaddingTop('10px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('150px');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
@@ -50,19 +47,20 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 	}
 
 	var containerParameter = new UIPanel();
-	containerParameter.setBorderTop('0');
-	containerParameter.setTop('550px');
+	containerParameter.setTop('220px');
 	container.add(containerParameter);
 
 	{
 		// baseUUID
-		var geometryUUIDRow = new UIRow();
-		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(lightTask.baseUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/baseUUID')).setWidth('90px'));
-		geometryUUIDRow.add(this.geometryUUID);
+		var baseUUIDRow = new UIRow();
+		baseUUIDRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/baseUUID')).setWidth('260px'));
+		containerParameter.add(baseUUIDRow);
 
-		containerParameter.add(geometryUUIDRow);
+		var baseUUIDValueRow = new UIRow();
+		this.geometryUUID = new UIInput().setWidth('260px').setFontSize('12px').setDisabled(true);
+		this.geometryUUID.setValue(lightTask.baseUUID);
+		baseUUIDValueRow.add(this.geometryUUID);
+		containerParameter.add(baseUUIDValueRow);
 	}
 
 	{
@@ -92,7 +90,7 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		var titleRow = new UIRow();
 		titleRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/title')).setWidth('90px'));
 
-		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
+		this.titleInput = new UIInput().setWidth('180px').setFontSize('12px');
 		this.titleInput.setValue(lightTask.title);
 		this.titleInput.onChange(function() {
 			lightTask.title = this.getValue();
@@ -107,7 +105,7 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		var cityRow = new UIRow();
 		cityRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/city')).setWidth('90px'));
 
-		this.cityInput = new UIInput().setWidth('160px').setFontSize('12px');
+		this.cityInput = new UIInput().setWidth('180px').setFontSize('12px');
 		this.cityInput.setValue(lightTask.city);
 		this.cityInput.onChange(function() {
 			lightTask.city = this.getValue();
@@ -122,7 +120,7 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		var addressRow = new UIRow();
 		addressRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/address')).setWidth('90px'));
 
-		this.addressInput = new UIInput().setWidth('160px').setFontSize('12px');
+		this.addressInput = new UIInput().setWidth('180px').setFontSize('12px');
 		this.addressInput.setValue(lightTask.address);
 		this.addressInput.onChange(function() {
 			lightTask.lng = this.getValue();
@@ -135,10 +133,9 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 
 	{
 		var longitudeRow = new UIRow();
-
 		longitudeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/longitude')).setWidth('90px'));
 
-		this.longitudeValueUI = new UINumber(lightTask.longitude).setRange(2, Infinity);
+		this.longitudeValueUI = new UINumber(lightTask.longitude).setRange(2, Infinity).setWidth('180px');
 		this.longitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -150,10 +147,9 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 
 	{
 		var latitudeRow = new UIRow();
-
 		latitudeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/latitude')).setWidth('90px'));
 
-		this.latitudeValueUI = new UINumber(lightTask.latitude).setRange(2, Infinity);
+		this.latitudeValueUI = new UINumber(lightTask.latitude).setRange(2, Infinity).setWidth('180px');
 		this.latitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -169,8 +165,8 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		containerParameter.add(lightWishTitleRow);
 
 		var lightWishTextAreaRow = new UIRow();
-		this.lightWishValueUI = new UITextArea().setWidth('250px').setFontSize('12px') /*.onChange( update )*/ ;
-		this.lightWishValueUI.dom.style.height = '500px';
+		this.lightWishValueUI = new UITextArea().setWidth('270px').setFontSize('12px') /*.onChange( update )*/ ;
+		this.lightWishValueUI.dom.style.height = '120px';
 		this.lightWishValueUI.onKeyUp(function() {
 			lightTask.lightWish = this.getValue();
 
@@ -180,6 +176,19 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		containerParameter.add(lightWishTextAreaRow);
 	}
 
+	{
+		var containerAnnouncement = new UIPanel();
+		containerAnnouncement.setTop('645px');
+		containerAnnouncement.setWidth('280px');
+		containerAnnouncement.setHeight('200px');
+		container.add(containerAnnouncement);
+
+		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/life' ) ;
+		var notificationPanel = new iTopoNotificationManager();
+		scope.notificationPanel = notificationPanel;
+		notificationPanel.createDisplayStand(containerAnnouncement.dom);
+
+	}
 
 
 	return this;
@@ -266,7 +275,7 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 	},
 
 	setValue: function (taskObject) {
-
+		var scope = this;
 		if (editor.selected !== null) {
 		//	containerParameter.setDisplay( 'block' );
 			this.geometryUUID.setValue(taskObject.baseUUID);
@@ -277,10 +286,45 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 			this.longitudeValueUI.setValue(taskObject.lng);
 			this.latitudeValueUI.setValue(taskObject.lat);
 			this.lightWishValueUI.setValue(taskObject.lightWish);
+			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
+			editor.stationDB.fetchiTopoBaseObjectAnnouncement(taskObject.baseUUID,function(jsonAnnouncement){
+
+				jsonAnnouncement.forEach(function(announcement){
+					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
+				  	function(){
+				  		scope.onAnnouncement(announcement);
+				  	});
+				})
+			})
 		}
 
 		this.taskObject = taskObject;
-	}
+	},
+
+	onAnnouncement: function(announcement){
+
+		var displayStand = new iTopoDisplayStand(announcement.Title);
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay( 'block' );
+		displayStand.container.setPosition('absolate');
+
+		var h1 = document.createElement("h1");
+		var content=document.createTextNode(announcement.Title);
+		h1.appendChild(content);
+		displayStand.container.dom.appendChild(h1);
+
+		var pEle = document.createElement("p");//创建元素节点p
+		var textEle = document.createTextNode(announcement.Description);
+		pEle.appendChild(textEle);//将文本追加到p中
+		displayStand.container.dom.appendChild(pEle);//将p追加到body中
+
+		displayStand.container.dom.addEventListener( 'resize', function () {
+			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+		});
+		displayStand.closeBtn.dom.addEventListener('click', function() {
+
+		});
+	},
 }
 
 export { iTopoObjectEcologicalFarmHeader };

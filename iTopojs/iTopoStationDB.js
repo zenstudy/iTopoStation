@@ -1,22 +1,23 @@
 import { ajaxPost } from './ajaxPostHelper.js'
 
 var iTopoStationAPI = {
-	WORLD_JSON_FILE: "./iTopoObjects/00_iTopoEarth/Json/world.json",
-	HORIZEN_SUPERNODES_FILE: "./iTopoObjects/00_iTopoEarth/Json/ZenSuperNodes.json",
-	HORIZEN_SECURENODES_FILE: "./iTopoObjects/00_iTopoEarth/Json/ZenSecureNodes.json",
+	WORLD_JSON_FILE: "./iTopoObjects/00_iTopoEarth/world.json",
+	HORIZEN_SUPERNODES_FILE: "./iTopoObjects/00_iTopoEarth/ZenSuperNodes.json",
+	HORIZEN_SECURENODES_FILE: "./iTopoObjects/00_iTopoEarth/ZenSecureNodes.json",
 
-	CANTEEN_YUHUAZHAI_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopoCanteen.json",
-	ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopobase.json",
-	ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/Json/iTopoUser.json",
+	CANTEEN_YUHUAZHAI_FILE: "./iTopoObjects/00_iTopoEarth/iTopoCanteen.json",
+	ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/iTopobase.json",
+	ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/iTopoUser.json",
 
 	iTopoEarthRegister : 'http://127.0.0.1:8081/iTopoEarthRegister',
 	iTopoEarthLogin : 'http://127.0.0.1:8081/iTopoEarthLogin',
 	registerBaseObjectOnEarth:'http://127.0.0.1:8081/registerBaseObjectOnEarth',
 	addTask:'http://127.0.0.1:8081/addTask',
-	moveTaskFromTodoToDone:'http://127.0.0.1:8081/moveTaskFromTodoToDone',
+	updateTask:'http://127.0.0.1:8081/updateTask',
 	fetchUserWithStarUUID:'http://127.0.0.1:8081/fetchUserWithStarUUID',
 	updateStarUser:'http://127.0.0.1:8081/updateStarUser',
 	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
+	addMemberToiTopoSkyCastleTeams: 'http://127.0.0.1:8081/addMemberToiTopoSkyCastleTeams',
 }
 
 function iTopoStationDB() {
@@ -184,11 +185,11 @@ iTopoStationDB.prototype = {
 
 	},
 
-	moveTaskFromTodoToDone: function(taskObject, fnTaskAdded){
+	updateTask: function(taskObject, latestTaskStatus, fnTaskAdded){
 
-		var request = new Request(iTopoStationAPI.moveTaskFromTodoToDone, {
+		var request = new Request(iTopoStationAPI.updateTask, {
 			method: 'POST',
-			body: JSON.stringify(taskObject),
+			body: JSON.stringify({taskObject:taskObject,latestTaskStatus:latestTaskStatus}),
 			headers: new Headers()
 		});
 
@@ -336,9 +337,85 @@ iTopoStationDB.prototype = {
 		})
 	},
 
+	addMemberToiTopoSkyCastleTeams: function(skyCastleUUID, teamUUID, starUserUUID,fnAfterAdd) {
+
+		var request = new Request(iTopoStationAPI.addMemberToiTopoSkyCastleTeams, {
+			method: 'POST',
+			body: JSON.stringify({objectUUID:skyCastleUUID, teamUUID: teamUUID, teamMemberUUID: starUserUUID }),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterAdd();
+			console.log('addMemberToiTopoSkyCastleTeams.post:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
 	fetchiTopoSkyCastleSponsors: function(skyCastleUUID,fnAfterFetch) {
 
 		var taskFile = './iTopoObjects/' + skyCastleUUID + '/sponsorOrgs.json';
+		fetch(taskFile, {
+			method: 'GET',
+			mode: 'cors', // 允许发送跨域请求
+			credentials: 'include'
+		}).then(function(response) {
+			//打印返回的json数据
+			response.json().then(function(json) {
+
+				fnAfterFetch(json);
+
+			})
+		}).catch(function(e) {
+			console.log('error: ' + e.toString());
+		})
+	},
+
+	fetchiTopoBaseObjectAnnouncement: function(baseUUID,fnAfterFetch) {
+
+		var taskFile = './iTopoObjects/' + baseUUID + '/announcement.json';
+		fetch(taskFile, {
+			method: 'GET',
+			mode: 'cors', // 允许发送跨域请求
+			credentials: 'include'
+		}).then(function(response) {
+			//打印返回的json数据
+			response.json().then(function(json) {
+
+				fnAfterFetch(json);
+
+			})
+		}).catch(function(e) {
+			console.log('error: ' + e.toString());
+		})
+	},
+
+	fetchiTopoBaseObjectProductCategorys: function(baseUUID,fnAfterFetch) {
+
+		var taskFile = './iTopoObjects/' + baseUUID + '/productCategorys.json';
+		fetch(taskFile, {
+			method: 'GET',
+			mode: 'cors', // 允许发送跨域请求
+			credentials: 'include'
+		}).then(function(response) {
+			//打印返回的json数据
+			response.json().then(function(json) {
+
+				fnAfterFetch(json);
+
+			})
+		}).catch(function(e) {
+			console.log('error: ' + e.toString());
+		})
+	},
+
+	fetchiTopoBaseObjectProducts: function(baseUUID,fnAfterFetch) {
+
+		var taskFile = './iTopoObjects/' + baseUUID + '/products.json';
 		fetch(taskFile, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求

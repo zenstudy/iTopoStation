@@ -150,6 +150,7 @@ function iTopoStrings( config ) {
 			'iTopoDialog/ok':'确定',
 			'iTopoDialog/cancel':'取消',
 
+
 			'iTopoDialog/login/login' : '登陆',
 			'iTopoDialog/login/cellPhone':'手机',
 			'iTopoDialog/login/longitude': '经度',
@@ -183,8 +184,11 @@ function iTopoStrings( config ) {
 			'iTopoDialog/ApplyToJoining/joiningReason': '描述一下申请加入的原因',
 
 			'iTopoDialog/Sponsor/applyToJoining': '申请加入',
-			
+
 			'iTopoDialog/NotificationDetail/MarkAsRead': '标记成已读',
+
+			'iTopoDialog/NotificationDetail/VoteInFavor': '赞成',
+			'iTopoDialog/NotificationDetail/VoteAgainst': '反对',
 
 			'iTopoTaskDashboard3D/TaskViewTopMenu/AddTask' :'添加任务',
 			'iTopoTaskDashboard3D/TaskViewTopMenu/DeleteTask' :'删除任务',

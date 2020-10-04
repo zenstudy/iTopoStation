@@ -52,7 +52,7 @@ iTopoObjectSharedCanteenLife.prototype = {
 
 			for(var i=0; i < 8; ++i)
 			{
-				var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
+				var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
 				productPanel.addArticleItem(qrcodeURL , '共享食堂' + title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSiteProduct);
 			}
 

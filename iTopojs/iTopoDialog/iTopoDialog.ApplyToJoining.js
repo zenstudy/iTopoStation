@@ -1,7 +1,7 @@
 import { UIElement, UISpan, UIPanel, UIText, UIRow, UITextArea, UIButton } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
 
-function iTopoDialogApplyToJoining( editor, dispalyContext, teamToJoin ) {
+function iTopoDialogApplyToJoining( editor, dispalyContext, fnOK ) {
 	var scope = this;
 	var strings = editor.strings;
 
@@ -78,20 +78,9 @@ function iTopoDialogApplyToJoining( editor, dispalyContext, teamToJoin ) {
 		lightEarth.setLeft( '170px' );
 		lightEarth.onClick( function () {
 
-			var taskObject = {
-				objectUUID : iTopoEarthModel.SkyCastle.info.castleUUID,
-				taskUUID:THREE.MathUtils.generateUUID(),
-				taskTitle:'处理志愿者加入申请',
-				taskCreatedby:'共享地球系统',
-				taskStatus:'待办',
-				taskDescription: editor.starUser.info.userNickname + '想加入志愿者团队-' + teamToJoin + ',因为' + lightWishValueUI.getValue(),
-			};
-
-			editor.stationDB.addTask(JSON.stringify(taskObject), function(){
-			//	editor.stationDB.addNotification();
-			});
-
+			fnOK(lightWishValueUI.getValue());
 			document.body.removeChild(document.getElementById("BluePrint"));
+			
 		} );
 		bottomPanel.add( lightEarth );
 	}

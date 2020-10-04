@@ -5,7 +5,7 @@ import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
-import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
+import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
 
 function iTopoObjectSkyCastleHeader(editor) {
 	var scope = this;
@@ -21,21 +21,26 @@ function iTopoObjectSkyCastleHeader(editor) {
 
 	{
 		// baseUUID
-		var geometryUUIDRow = new UIRow();
-		this.geometryUUID = new UIInput().setWidth('160px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(skyCastleinfo.castleUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/castleUUID')).setWidth('80px'));
-		geometryUUIDRow.add(this.geometryUUID);
+		var baseUUIDRow = new UIRow();
+		baseUUIDRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/castleUUID')).setWidth('270px'));
+		containerParameter.add(baseUUIDRow);
 
-		containerParameter.add(geometryUUIDRow);
+		var baseUUIDValueRow = new UIRow();
+		this.geometryUUID = new UIInput().setWidth('270px').setFontSize('10px').setDisabled(true);
+		this.geometryUUID.setBackground("#ffffff");
+		this.geometryUUID.setValue(skyCastleinfo.castleUUID);
+
+		baseUUIDValueRow.add(this.geometryUUID);
+		containerParameter.add(baseUUIDValueRow);
+
 	}
 
 	{
 		// title
 		var titleRow = new UIRow();
-		titleRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/Title')).setWidth('80px'));
+		titleRow.add(new UIText(strings.getKey('sidebar/SkyCastle/Header/Title')).setWidth('70px'));
 
-		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
+		this.titleInput = new UIInput().setWidth('200px').setFontSize('12px').setDisabled(true);
 		this.titleInput.setValue(skyCastleinfo.title);
 		this.titleInput.onChange(function() {
 			//lightTask.title = this.getValue();
@@ -47,10 +52,9 @@ function iTopoObjectSkyCastleHeader(editor) {
 
 	{
 		var containerBaseModel = new UIPanel();
-		containerBaseModel.setTop('120px');
-		containerBaseModel.setLeft('10px');
-		containerBaseModel.setWidth('220px');
-		containerBaseModel.setHeight('500px');
+		containerBaseModel.setTop('140px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('280px');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
@@ -70,20 +74,26 @@ function iTopoObjectSkyCastleHeader(editor) {
 
 	{
 		var containerAnnouncement = new UIPanel();
-		containerAnnouncement.setTop('640px');
-		containerAnnouncement.setWidth('250px');
-		containerAnnouncement.setHeight('200px');
+		containerAnnouncement.setTop('330px');
+		containerAnnouncement.setWidth('280px');
+		containerAnnouncement.setHeight('400px');
 		container.add(containerAnnouncement);
 
 		var title = editor.strings.getKey( 'sidebar/skyCastle/Header/announcement' ) ;
-		var productPanel = new iTopoArticleManager();
-		productPanel.createDisplayStand(containerAnnouncement.dom);
 
-		for(var i=0; i < 8; ++i)
-		{
-			var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
-			productPanel.addArticleItem(qrcodeURL , title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSelect);
-		}
+		var notificationPanel = new iTopoNotificationManager();
+		scope.notificationPanel = notificationPanel;
+		notificationPanel.createDisplayStand(containerAnnouncement.dom);
+
+		editor.stationDB.fetchiTopoBaseObjectAnnouncement(iTopoEarthModel.SkyCastle.info.castleUUID,function(jsonAnnouncement){
+
+			jsonAnnouncement.forEach(function(announcement){
+			 	notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
+			 	function(){
+			 		scope.onAnnouncement(announcement);
+			 	});
+			 })
+		})
 	}
 
 	return this;
@@ -196,20 +206,47 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 	},
 
+	onAnnouncement: function(announcement){
+
+		var displayStand = new iTopoDisplayStand(announcement.Title);
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay( 'block' );
+		displayStand.container.setPosition('absolate');
+
+		var h1 = document.createElement("h1");
+		var content=document.createTextNode(announcement.Title);
+		h1.appendChild(content);
+		displayStand.container.dom.appendChild(h1);
+
+		var pEle = document.createElement("p");//创建元素节点p
+		var textEle = document.createTextNode(announcement.Description);
+		pEle.appendChild(textEle);//将文本追加到p中
+		displayStand.container.dom.appendChild(pEle);//将p追加到body中
+
+		displayStand.container.dom.addEventListener( 'resize', function () {
+			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+		});
+		displayStand.closeBtn.dom.addEventListener('click', function() {
+
+		});
+	},
+
 	onSelect: function () {
 
-			var displayStand = new iTopoDisplayStand('test');
-			document.body.appendChild(displayStand.container.dom);
-			displayStand.container.setDisplay( 'block' );
+		var displayStand = new iTopoDisplayStand('test');
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay( 'block' );
 
-			var iframe = document.createElement('iframe');
+		var iframe = document.createElement('iframe');
 
-			iframe.src = "./iTopoObjects/3861590E-CB58-48BA-977C-9F9F107B61AD/threejs-primitives.html";
-			iframe.style.width = '100%';
-			iframe.style.height = '100%';
+		iframe.src = "./iTopoObjects/3861590E-CB58-48BA-977C-9F9F107B61AD/threejs-primitives.html";
+		iframe.style.width = '100%';
+		iframe.style.height = '100%';
 
-			displayStand.container.dom.appendChild( iframe );
-		},
+		displayStand.container.dom.appendChild( iframe );
+	},
+
+
 
 	getValue: function () {
 

@@ -5,8 +5,7 @@ const http = require('https');
 const fs = require('fs');
 
 let { iTopoAbsorber } = require('./iTopoAbsorber.js');
-
-/*let {pTopoDataMapEarth} = require('./iTopoStation/dataMap/pTopoDataMapEarth.js');*/
+let { iTopoStationAPI } = require('./iTopoStationAPI.js');
 
 //require的核心概念：在导出的文件中定义module.exports，导出的对象类型不予限定（可为任意类型）。在导入的文件中使用require()引入即可使用。本质上，是将要导出的对象，赋值给module这个对象的exports属性，在其他文件中通过require这个方法来访问exports这个属性。上面b.js中，require(./a.js) = exports 这个对象，然后使用es6取值方式从exports对象中取出test的值。
 
@@ -120,7 +119,7 @@ app.post('/registerBaseObjectOnEarth', function(req, res) {
 		res.write(postData);
 		var newLightTask = JSON.parse(postData);
 		console.log("Received POST data :" + JSON.stringify(newLightTask)) ;
-		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopobase.json';
+		const iTopoJsonFName = iTopoStationAPI.ITOPOBASE_FILE;//'../iTopoObjects/00_iTopoEarth/iTopobase.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -156,7 +155,7 @@ app.post('/iTopoEarthRegister', function(req, res) {
 		res.write(postData);
 		var newUserStarInfo = JSON.parse(postData);
 		console.log("Received POST data :" + JSON.stringify(newUserStarInfo)) ;
-		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;//'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -192,7 +191,7 @@ app.post('/updateStarUser', function(req, res) {
 		res.write(postData);
 		var newUserStarInfo = JSON.parse(postData);
 		console.log("===Received POST data :" + JSON.stringify(newUserStarInfo)) ;
-		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE; //'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -233,7 +232,7 @@ app.post('/iTopoEarthLogin', function(req, res) {
 	req.addListener("end", function() {
 		var loginUser = JSON.parse(postData);
 		console.log("Received POST data :" + JSON.stringify(loginUser)) ;
-		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;//'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -270,7 +269,7 @@ app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 	req.addListener("end", function() {
 		var objectUUID = JSON.parse(postData);
 		console.log("Received POST data :" + JSON.stringify(objectUUID)) ;
-		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopobase.json';
+		const iTopoJsonFName = iTopoStationAPI.ITOPOBASE_FILE; //'../iTopoObjects/00_iTopoEarth/iTopobase.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -309,7 +308,7 @@ app.post('/fetchUserWithStarUUID', function(req, res) {
 	req.addListener("end", function() {
 		var starUUID = JSON.parse(postData);
 		console.log("Received POST data :" + JSON.stringify(starUUID)) ;
-		const iTopoJsonFName = '../iTopoObjects/00_iTopoEarth/json/iTopoUser.json';
+		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;//'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -356,19 +355,46 @@ app.post('/addTask', function(req, res) {
 		else if(taskObject.taskStatus === "已办")
 			taskJsonFileName = "tasksDone.json";
 
-		const jsonFile = '../iTopoObjects/' + taskObject.objectUUID +'/' + taskJsonFileName;
-		fs.readFile(jsonFile, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var taskObjects = JSON.parse(data);
-				console.log(taskObjects);
-				taskObjects.unshift(taskObject);
-
-				fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
-					if (err) console.error(err);
-					console.log('数据已经写入' + jsonFile);
+		const jsonPath = '../iTopoObjects/' + taskObject.objectUUID;
+		fs.exists(jsonPath,function(exists){
+			if(exists)
+				console.log('文件夹存在');
+			else{
+				console.log();
+				fs.mkdir(jsonPath,function(err){
+					if(err)
+						console.error(err);
+					console.log('文件夹不存在'+ jsonPath+'创建目录成功');
 				});
+			}
+		});
+
+		const jsonFile = jsonPath +'/' + taskJsonFileName;
+		fs.exists(jsonFile,function(exists){
+			if(exists){
+				fs.readFile(jsonFile, 'utf-8', function(err, data) {
+					if (err) {
+						console.log(err);
+					} else {
+						var taskObjects = JSON.parse(data);
+						console.log(taskObjects);
+						taskObjects.unshift(taskObject);
+
+						fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
+							if (err) console.error(err);
+							console.log('数据已经写入' + jsonFile);
+						});
+					}
+				});
+			}
+			else{
+				console.log('文件夹不存在');
+				var taskObjects = [];
+				taskObjects.push(taskObject);
+				fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
+				if (err) console.error(err);
+				console.log('数据已经写入' + jsonFile);
+			});
 			}
 		});
 
@@ -376,7 +402,7 @@ app.post('/addTask', function(req, res) {
 	});
 });
 
-app.post('/moveTaskFromTodoToDone', function(req, res) {
+app.post('/updateTask', function(req, res) {
 
 	var postData = "";
 
@@ -389,13 +415,21 @@ app.post('/moveTaskFromTodoToDone', function(req, res) {
 	});
 
 	req.addListener("end", function() {
-		var taskObject = JSON.parse(postData);
-		res.write(taskObject);
-		taskObject = JSON.parse(taskObject);
-		console.log("Received POST data :") ;
-		console.log(taskObject.taskUUID);
+		var postParameter = JSON.parse(postData);
+		console.log(postParameter);
+		res.write(JSON.stringify(postParameter));
+		var taskObject = postParameter.taskObject;
+		console.log("Received POST data :" + taskObject.taskUUID) ;
 
-		const jsonFile = '../iTopoObjects/' + taskObject.objectUUID +'/tasksTodo.json';
+		var taskJsonFileName1;
+		if(taskObject.taskStatus === "待办")
+			taskJsonFileName1 = "tasksTodo.json";
+		else if(taskObject.taskStatus === "在办")
+			taskJsonFileName1 = "tasksInProgress.json";
+		else if(taskObject.taskStatus === "已办")
+			taskJsonFileName1 = "tasksDone.json";
+
+		const jsonFile = '../iTopoObjects/' + taskObject.objectUUID +'/' + taskJsonFileName1;
 		fs.readFile(jsonFile, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -404,7 +438,6 @@ app.post('/moveTaskFromTodoToDone', function(req, res) {
 
 				for(var index = 0; index < taskObjects.length; ++index)
 				{
-					console.log('taskObjects[index].taskUUID:' + taskObjects[index].taskUUID);
 					if(taskObject.taskUUID === taskObjects[index].taskUUID){
 						taskObjects.splice(index, 1);
 						break;
@@ -413,24 +446,104 @@ app.post('/moveTaskFromTodoToDone', function(req, res) {
 
 				fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
 					if (err) console.error(err);
-					console.log('数据已经写入' + jsonFile);
+					console.log('数据已经写入taskJsonFileName1:' + jsonFile);
+
+					var taskJsonFileName2;
+					if(postParameter.latestTaskStatus === "待办")
+						taskJsonFileName2 = "tasksTodo.json";
+					else if(postParameter.latestTaskStatus === "在办")
+						taskJsonFileName2 = "tasksInProgress.json";
+					else if(postParameter.latestTaskStatus === "已办")
+						taskJsonFileName2 = "tasksDone.json";
+
+					const jsonPath2 = '../iTopoObjects/' + taskObject.objectUUID;
+					fs.exists(jsonPath2,function(exists){
+						if(exists)
+							console.log('文件夹存在');
+						else{
+							console.log();
+							fs.mkdir(jsonPath2,function(err){
+								if(err)
+									console.error(err);
+								console.log('文件夹不存在'+ jsonPath2+'创建目录成功');
+							});
+						}
+					});
+
+					const jsonFile2 =  jsonPath2 +'/' + taskJsonFileName2;
+					fs.exists(jsonFile2,function(exists){
+						if(exists){
+							fs.readFile(jsonFile2, 'utf-8', function(err, data) {
+								if (err) {
+									console.log(err);
+								} else {
+									var taskObjects = JSON.parse(data);
+									taskObject.taskStatus = postParameter.latestTaskStatus;
+									taskObjects.unshift(taskObject);
+									console.log(taskObjects);
+
+									fs.writeFile(jsonFile2, JSON.stringify(taskObjects), function(err) {
+										if (err) console.error(err);
+										console.log('数据已经写入taskJsonFileName2' + jsonFile2);
+									});
+								}
+							});
+						}
+						else{
+							console.log('文件夹不存在');
+							var taskObjects = [];
+							taskObjects.push(taskObject);
+							fs.writeFile(jsonFile2, JSON.stringify(taskObjects), function(err) {
+							if (err) console.error(err);
+							console.log('数据已经写入' + jsonFile2);
+						});
+						}
+					});
+
 				});
 			}
 		});
 
-		const jsonFile2 = '../iTopoObjects/' + taskObject.objectUUID +'/tasksDone.json';
-		fs.readFile(jsonFile2, 'utf-8', function(err, data) {
+		res.end();
+	});
+});
+
+app.post('/addMemberToiTopoSkyCastleTeams', function(req, res) {
+
+	var postData = "";
+
+	req.setEncoding("utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "no-cache");
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		var postParameter = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(postParameter)) ;
+		res.write(JSON.stringify(postParameter));
+
+		const jsonFile = '../iTopoObjects/' + postParameter.objectUUID +'/' + "workTeams.json";
+		fs.readFile(jsonFile, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
 			} else {
-				var taskObjects = JSON.parse(data);
-				taskObject.taskStatus = "已办";
-				console.log(taskObjects);
-				taskObjects.unshift(taskObject);
 
-				fs.writeFile(jsonFile2, JSON.stringify(taskObjects), function(err) {
+				var teamObjects = JSON.parse(data);
+				for(var index = 0; index < teamObjects.length; ++index)
+				{
+					console.log(postParameter.teamUUID + ',' + teamObjects[index].teamUUID);
+					if(postParameter.teamUUID === teamObjects[index].teamUUID){
+						teamObjects[index].teamMemberUUIDs.push(postParameter.teamMemberUUID);
+						break;
+					}
+				}
+
+				fs.writeFile(jsonFile, JSON.stringify(teamObjects), function(err) {
 					if (err) console.error(err);
-					console.log('数据已经写入' + jsonFile2);
+					console.log('数据已经写入' + jsonFile);
 				});
 			}
 		});

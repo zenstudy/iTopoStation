@@ -10,17 +10,17 @@ iTopoEarthSettings = {
 
 	EARTH_STYLE: "标准地图", //'粒子地壳'/线框地壳;
 
-	EARTH_PNG_WORLDGEOMETRY:"./iTopoObjects/00_iTopoEarth/earth_worldGeometry.PNG",
+	EARTH_PNG_WORLDGEOMETRY:"./iTopoObjects/00_iTopoEarth/img/earth_worldGeometry.PNG",
 	EARTH_PNG_COUNTRY_INDEX_TEXTURE:"./iTopoObjects/00_Default_Resource/WORLD/country-index-texture.PNG",
 	EARTH_PNG_COUNTRY_OUTLINES:"./iTopoObjects/00_Default_Resource/WORLD/country-outlines-4k.PNG",
-	EARTH_IMG_BLACKANDWIHTE: "./iTopoObjects/00_iTopoEarth/earth.jpg",
-	EARTH_IMG_BLUE: "./iTopoObjects/00_iTopoEarth/earth_atmos_4096.jpg",
+	EARTH_IMG_BLACKANDWIHTE: "./iTopoObjects/00_iTopoEarth/img/earth.jpg",
+	EARTH_IMG_BLUE: "./iTopoObjects/00_iTopoEarth/img/earth_atmos_4096.jpg",
 
-	coludImg: "./iTopoObjects/00_iTopoEarth/clouds.jpg",
-	DOT_PNG_PATH: "./iTopoObjects/00_iTopoEarth/dot.png",
-	LAND_MARK_LIGHTRAY_JPG: "./iTopoObjects/00_iTopoEarth/lightray.jpg",
-	LAND_MARK_LIGHTRAYYELLOW_JPG: "./iTopoObjects/00_iTopoEarth/lightray_yellow.jpg",
-	LAND_MARK_01: "./iTopoObjects/00_iTopoEarth/LAND_MARK_01.jpg",
+	coludImg: "./iTopoObjects/00_iTopoEarth/img/clouds.jpg",
+	DOT_PNG_PATH: "./iTopoObjects/00_iTopoEarth/img/dot.png",
+	LAND_MARK_LIGHTRAY_JPG: "./iTopoObjects/00_iTopoEarth/img/lightray.jpg",
+	LAND_MARK_LIGHTRAYYELLOW_JPG: "./iTopoObjects/00_iTopoEarth/img/lightray_yellow.jpg",
+	LAND_MARK_01: "./iTopoObjects/00_iTopoEarth/img/LAND_MARK_01.jpg",
 
 	// 地图z轴厚度
 	zHeight: 33,

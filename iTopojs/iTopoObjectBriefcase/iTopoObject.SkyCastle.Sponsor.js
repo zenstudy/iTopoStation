@@ -16,18 +16,17 @@ function iTopoObjectSkyCastleSponsor( editor ) {
 
 	var groupPanel = new UIPanel();
 	groupPanel.setWidth('280px');
-	groupPanel.setHeight('250px');
+	groupPanel.setHeight('460px');
 	groupPanel.setOverflow('auto');
 	scope.thumbnailManager = new iTopoThumbnailManager();
-	scope.thumbnailManager.setItemClassName("register-item");
 	scope.thumbnailManager.create(groupPanel.dom);
 
 	container.add(groupPanel);
 
 	var memberDetailPanel = new UIPanel();
-	memberDetailPanel.setTop( '310px' );
-	memberDetailPanel.setWidth('280px');
-	memberDetailPanel.setHeight('680px');
+	memberDetailPanel.setTop( '530px' );
+	memberDetailPanel.setWidth('260px');
+	memberDetailPanel.setHeight('400px');
 	memberDetailPanel.setOverflow('auto');
 
 	var geometryUUIDRow = new UIRow();

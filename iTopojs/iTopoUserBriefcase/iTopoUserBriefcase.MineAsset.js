@@ -20,6 +20,7 @@ function iTopoUserBriefcaseMineAsset(editor) {
 		var containerBaseModel = new UIPanel();
 		containerBaseModel.setBorderTop('0');
 		containerBaseModel.setPaddingTop('10px');
+		containerBaseModel.setWidth('280px');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();

@@ -3,6 +3,8 @@ import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
+import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
+import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 
 function iTopoObjectSharedCanteenHeader(editor) {
 	var scope = this;
@@ -24,8 +26,9 @@ function iTopoObjectSharedCanteenHeader(editor) {
 
 	{
 		var containerBaseModel = new UIPanel();
-		containerBaseModel.setBorderTop('0');
 		containerBaseModel.setPaddingTop('10px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('150px');
 		container.add(containerBaseModel);
 
 		scope.thumbnailManager = new iTopoThumbnailManager();
@@ -43,18 +46,19 @@ function iTopoObjectSharedCanteenHeader(editor) {
 	}
 
 	var containerParameter = new UIPanel();
-	containerParameter.setBorderTop('0');
-	containerParameter.setTop('550px');
+	containerParameter.setTop('220px');
 	container.add(containerParameter);
 	{
 		// baseUUID
-		var geometryUUIDRow = new UIRow();
-		this.geometryUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.geometryUUID.setValue(lightTask.baseUUID);
-		geometryUUIDRow.add(new UIText(strings.getKey('sidebar/SharedCanteen/Header/baseUUID')).setWidth('90px'));
-		geometryUUIDRow.add(this.geometryUUID);
+		var baseUUIDRow = new UIRow();
+		baseUUIDRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/baseUUID')).setWidth('260px'));
+		containerParameter.add(baseUUIDRow);
 
-		containerParameter.add(geometryUUIDRow);
+		var baseUUIDValueRow = new UIRow();
+		this.geometryUUID = new UIInput().setWidth('260px').setFontSize('12px').setDisabled(true);
+		this.geometryUUID.setValue(lightTask.baseUUID);
+		baseUUIDValueRow.add(this.geometryUUID);
+		containerParameter.add(baseUUIDValueRow);
 	}
 
 	{
@@ -161,8 +165,8 @@ function iTopoObjectSharedCanteenHeader(editor) {
 		containerParameter.add(lightWishTitleRow);
 
 		var lightWishTextAreaRow = new UIRow();
-		this.lightWishValueUI = new UITextArea().setWidth('250px').setFontSize('12px') /*.onChange( update )*/ ;
-		this.lightWishValueUI.dom.style.height = '662px';
+		this.lightWishValueUI = new UITextArea().setWidth('280px').setFontSize('12px') /*.onChange( update )*/ ;
+		this.lightWishValueUI.dom.style.height = '120px';
 		this.lightWishValueUI.onKeyUp(function() {
 			lightTask.lightWish = this.getValue();
 
@@ -170,6 +174,19 @@ function iTopoObjectSharedCanteenHeader(editor) {
 		lightWishTextAreaRow.add(this.lightWishValueUI);
 
 		containerParameter.add(lightWishTextAreaRow);
+	}
+
+	{
+		var containerAnnouncement = new UIPanel();
+		containerAnnouncement.setTop('645px');
+		containerAnnouncement.setWidth('275px');
+		containerAnnouncement.setHeight('200px');
+		container.add(containerAnnouncement);
+
+		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
+		var notificationPanel = new iTopoNotificationManager();
+		scope.notificationPanel = notificationPanel;
+		notificationPanel.createDisplayStand(containerAnnouncement.dom);
 	}
 
 	return this;
@@ -257,7 +274,7 @@ iTopoObjectSharedCanteenHeader.prototype = {
 	},
 
 	setValue: function (taskObject) {
-
+		var scope =this;
 		if (editor.selected !== null) {
 		//	containerParameter.setDisplay( 'block' );
 			this.geometryUUID.setValue(taskObject.baseUUID);
@@ -268,10 +285,46 @@ iTopoObjectSharedCanteenHeader.prototype = {
 			this.longitudeValueUI.setValue(taskObject.lng);
 			this.latitudeValueUI.setValue(taskObject.lat);
 			this.lightWishValueUI.setValue(taskObject.lightWish);
+
+			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
+			editor.stationDB.fetchiTopoBaseObjectAnnouncement(taskObject.baseUUID,function(jsonAnnouncement){
+
+				jsonAnnouncement.forEach(function(announcement){
+					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
+				  	function(){
+				  		scope.onAnnouncement(announcement);
+				  	});
+				})
+			})
 		}
 
 		this.taskObject = taskObject;
-	}
+	},
+
+	onAnnouncement: function(announcement){
+
+		var displayStand = new iTopoDisplayStand(announcement.Title);
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay( 'block' );
+		displayStand.container.setPosition('absolate');
+
+		var h1 = document.createElement("h1");
+		var content=document.createTextNode(announcement.Title);
+		h1.appendChild(content);
+		displayStand.container.dom.appendChild(h1);
+
+		var pEle = document.createElement("p");//创建元素节点p
+		var textEle = document.createTextNode(announcement.Description);
+		pEle.appendChild(textEle);//将文本追加到p中
+		displayStand.container.dom.appendChild(pEle);//将p追加到body中
+
+		displayStand.container.dom.addEventListener( 'resize', function () {
+			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+		});
+		displayStand.closeBtn.dom.addEventListener('click', function() {
+
+		});
+	},
 }
 
 export { iTopoObjectSharedCanteenHeader };

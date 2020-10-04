@@ -14,6 +14,8 @@ import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
+
 
 function iTopoObjectStarUserHeader(editor) {
 	var scope = this;
@@ -27,8 +29,9 @@ function iTopoObjectStarUserHeader(editor) {
 
 	{
 		var containerBaseModel = new UIPanel();
-		containerBaseModel.setBorderTop('0');
 		containerBaseModel.setPaddingTop('10px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('150px');
 		container.add(containerBaseModel);
 
 		{
@@ -51,17 +54,19 @@ function iTopoObjectStarUserHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setTop('550px');
+	containerParameter.setTop('220px');
 	container.add(containerParameter);
 	{
 		// starUUID
-		var starUUIDRow = new UIRow();
-		this.starUUID = new UIInput().setWidth('120px').setFontSize('12px').setDisabled(true);
-		this.starUUID.setValue(starUserInfo.starUUID);
-		starUUIDRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starUUID')).setWidth('90px'));
-		starUUIDRow.add(this.starUUID);
+		var baseUUIDRow = new UIRow();
+		baseUUIDRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starUUID')).setWidth('260px'));
+		containerParameter.add(baseUUIDRow);
 
-		containerParameter.add(starUUIDRow);
+		var baseUUIDValueRow = new UIRow();
+		this.starUUID = new UIInput().setWidth('260px').setFontSize('12px').setDisabled(true);
+		this.starUUID.setValue(starUserInfo.starUUID);
+		baseUUIDValueRow.add(this.starUUID);
+		containerParameter.add(baseUUIDValueRow);
 	}
 
 	{
@@ -145,8 +150,8 @@ function iTopoObjectStarUserHeader(editor) {
 		containerParameter.add(starWishTitleRow);
 
 		var starWishTextAreaRow = new UIRow();
-		this.starWishValueUI = new UITextArea().setWidth('250px').setFontSize('12px') /*.onChange( update )*/ ;
-		this.starWishValueUI.dom.style.height = '662px';
+		this.starWishValueUI = new UITextArea().setWidth('280px').setFontSize('12px') /*.onChange( update )*/ ;
+		this.starWishValueUI.dom.style.height = '120px';
 		this.starWishValueUI.onKeyUp(function() {
 			starUserInfo.starWish = this.getValue();
 
@@ -154,6 +159,19 @@ function iTopoObjectStarUserHeader(editor) {
 		starWishTextAreaRow.add(this.starWishValueUI);
 
 		containerParameter.add(starWishTextAreaRow);
+	}
+
+	{
+		var containerAnnouncement = new UIPanel();
+		containerAnnouncement.setTop('600px');
+		containerAnnouncement.setWidth('275px');
+		containerAnnouncement.setHeight('200px');
+		container.add(containerAnnouncement);
+
+		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
+		var notificationPanel = new iTopoNotificationManager();
+		scope.notificationPanel = notificationPanel;
+		notificationPanel.createDisplayStand(containerAnnouncement.dom);
 	}
 
 	return this;
@@ -217,7 +235,7 @@ iTopoObjectStarUserHeader.prototype = {
 	},
 
 	setValue: function (taskObject) {
-
+		var scope = this;
 		if (editor.selected !== null) {
 		//	containerParameter.setDisplay( 'block' );
 			this.starUUID.setValue(taskObject.starUUID);
@@ -228,6 +246,17 @@ iTopoObjectStarUserHeader.prototype = {
 			this.latitudeValueUI.setValue(taskObject.lat);
 			this.starValueUI.setValue(taskObject.starValue);
 			this.starWishValueUI.setValue(taskObject.starWish);
+
+			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
+			editor.stationDB.fetchiTopoBaseObjectAnnouncement(taskObject.starUUID,function(jsonAnnouncement){
+
+				jsonAnnouncement.forEach(function(announcement){
+					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
+				  	function(){
+				  		scope.onAnnouncement(announcement);
+				  	});
+				})
+			})
 		}
 
 		this.taskObject = taskObject;
@@ -280,7 +309,31 @@ iTopoObjectStarUserHeader.prototype = {
 				displayStand.container.dom.appendChild( taskBriefcase.dom );
 			});
 
-		}
+		},
+		onAnnouncement: function(announcement){
+
+			var displayStand = new iTopoDisplayStand(announcement.Title);
+			document.body.appendChild(displayStand.container.dom);
+			displayStand.container.setDisplay( 'block' );
+			displayStand.container.setPosition('absolate');
+
+			var h1 = document.createElement("h1");
+			var content=document.createTextNode(announcement.Title);
+			h1.appendChild(content);
+			displayStand.container.dom.appendChild(h1);
+
+			var pEle = document.createElement("p");//创建元素节点p
+			var textEle = document.createTextNode(announcement.Description);
+			pEle.appendChild(textEle);//将文本追加到p中
+			displayStand.container.dom.appendChild(pEle);//将p追加到body中
+
+			displayStand.container.dom.addEventListener( 'resize', function () {
+				explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+			});
+			displayStand.closeBtn.dom.addEventListener('click', function() {
+
+			});
+		},
 }
 
 export { iTopoObjectStarUserHeader };
