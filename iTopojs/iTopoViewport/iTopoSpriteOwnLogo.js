@@ -17,7 +17,7 @@ var iTopoSpriteOwnLogo = function ( editor ) {
 	scope.thumbnailManager.create(container.dom);
 
 	var originPosition = new THREE.Vector3();
-	editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 1, function(object){
+	editor.resourceTracker.loadiTopoEarthLogo(originPosition, 1, function(object){
 		scope.thumbnailManager.createThumbnailItem( strings.getKey( 'iTopoSpriteOwnLogo/logoCaption' ),
 	 	object , scope.onRegisterEcologicalFarm);
 

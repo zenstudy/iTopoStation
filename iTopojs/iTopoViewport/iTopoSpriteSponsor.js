@@ -1,7 +1,10 @@
+import { UIElement,UISpan ,UIPanel, UIRow, UIText,  } from '../iTopoUI.js';
 import { iTopoDialogRegisterBase } from '../iTopoDialog/iTopoDialog.RegisterBase.js';
-import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
-import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
+import { iTopoStandSponsor } from '../iTopoFrame/iTopoStandSponsor.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js';
+import { iTopoDialogGetSponsors } from '../iTopoDialog/iTopoDialog.GetSponsors.js';
 
+//iTopoStandSponsor
 var iTopoSpriteSponsor = function ( editor ) {
 	var scope = this;
 	var signals = editor.signals;
@@ -13,21 +16,57 @@ var iTopoSpriteSponsor = function ( editor ) {
 
 	// baseUUID
 	var toolHeaderRow = new UIRow();
-	toolHeaderRow.add(new UIText(strings.getKey('iTopoSpriteSponsor/iTopoEarthSponsor')).setWidth('100px'));
+	var labelSponsor = new UIText(strings.getKey('iTopoSpriteSponsor/iTopoEarthSponsor')).setFontSize('10px');
+	labelSponsor.setMarginLeft('5px');
+	toolHeaderRow.add(labelSponsor);
 	container.add(toolHeaderRow);
 
-	scope.thumbnailManager = new iTopoThumbnailManager();
-	scope.thumbnailManager.setItemClassName("register-item");
-	scope.thumbnailManager.create(container.dom);
+	var containerSponsorLogo = new UIPanel();
+	containerSponsorLogo.setTop('12px');
+	containerSponsorLogo.setMarginLeft('2px');
+	containerSponsorLogo.setMarginRight('2px');
+	containerSponsorLogo.setWidth('83px');
+	containerSponsorLogo.setHeight('83px');
+	container.add(containerSponsorLogo);
 
-	var originPosition = new THREE.Vector3();
-	editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 1, function(object){
-		scope.thumbnailManager.createThumbnailItem( strings.getKey( 'iTopoSpriteSponsor/becomeSponsor' ),
-	 	object , scope.onRegisterEcologicalFarm);
+	editor.stationDB.fetchiTopoSkyCastleSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(sponsorsInfo){
+		iTopoEarthModel.SkyCastle.info.sponsors = sponsorsInfo;
 
-		scope.thumbnailManager.updateCanvasSize();
-		scope.thumbnailManager.active();
-	}) ;
+		var tmpSponsors = [];
+		var tmpArray = [];
+		sponsorsInfo.forEach(function(sponsorInfo) {
+			sponsorInfo.teamMemberUUIDs.forEach( function(teamMemberUUID){
+				if( tmpArray.indexOf(teamMemberUUID) < 0){
+					tmpSponsors.push({sponsorUnit: 'starUser' ,objectUUID : teamMemberUUID});
+					tmpArray.push(teamMemberUUID);
+				}
+			})
+
+			sponsorInfo.sponsoredOrganizations.forEach( function(sponsoredOrganizationUUID){
+				if( tmpArray.indexOf( sponsoredOrganizationUUID ) < 0){
+					tmpSponsors.push( {sponsorUnit: 'team' ,objectUUID : sponsoredOrganizationUUID} );
+					tmpArray.push(sponsoredOrganizationUUID);
+				}
+			})
+		})
+
+		var explore = new iTopoStandSponsor.Explore(containerSponsorLogo.dom);
+
+		explore.show3D(null , tmpSponsors );
+		explore.play();
+
+	});
+
+
+
+	var registerSponsor = new UIRow();
+	var becomeSponsorLabel = new UIText(strings.getKey('iTopoSpriteSponsor/becomeSponsor')).setFontSize('10px');
+	becomeSponsorLabel.setMarginLeft('5px');
+	registerSponsor.add(becomeSponsorLabel);
+	container.add(registerSponsor);
+	becomeSponsorLabel.dom.addEventListener('click', function() {
+		scope.onRegisterEcologicalFarm();
+	});
 
 	return container;
 
@@ -40,37 +79,41 @@ iTopoSpriteSponsor.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
-		if(scope.thumbnailManager === null) return;
-		if(scope.thumbnailManager === undefined) return;
+		// if(scope.thumbnailManager === null) return;
+		// if(scope.thumbnailManager === undefined) return;
 
-		scope.thumbnailManager.updateCanvasSize();
-		scope.thumbnailManager.active();
+		// scope.thumbnailManager.updateCanvasSize();
+		// scope.thumbnailManager.active();
 	},
 
 	deactiveTabPanel: function(){
 		var scope = this;
-		if(scope.thumbnailManager === null) return;
-		scope.thumbnailManager.deactive();
+		// if(scope.thumbnailManager === null) return;
+		// scope.thumbnailManager.deactive();
 	},
 
 	dispose: function() {
 		var scope = this;
-		scope.thumbnailManager.dispose();
-		scope.thumbnailManager = null;
+		// scope.thumbnailManager.dispose();
+		// scope.thumbnailManager = null;
 	},
 
 	onRegisterEcologicalFarm: function() {
-		var dlgContainer = new UIPanel();
-		dlgContainer.setId( 'iTopoDialog' );
-		dlgContainer.setDisplay( 'block' );
 
-		var dlg = new UIPanel();
-		dlgContainer.add(dlg);
+		var title = editor.strings.getKey('iTopoDialog/Sponsor/applyToJoining');
+		var sponsorsDlg = new iTopoDialogGetSponsors(editor,title);
+		document.body.appendChild(sponsorsDlg.container.dom);
+		sponsorsDlg.container.setDisplay('block');
+		sponsorsDlg.container.setPosition('absolate');
 
-		var lightEarthDlg = new iTopoDialogRegisterBase( editor, userBriefcase );
-		dlg.add(lightEarthDlg);
+		sponsorsDlg.container.dom.addEventListener('resize', function() {
 
-		document.body.appendChild(dlgContainer.dom);
+		});
+
+		sponsorsDlg.closeBtn.dom.addEventListener('click', function() {
+
+		});
+
 	},
 
 	getValue: function () {

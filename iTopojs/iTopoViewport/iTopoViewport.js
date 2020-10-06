@@ -1,8 +1,6 @@
 import * as THREE from '../../../build/three.module.js';
 
 import { TransformControls } from '../../../examples/jsm/controls/TransformControls.js';
-//import { TrackballControls } from '../../../examples/jsm/controls/TrackballControls.js';
-
 import { UIPanel } from '../iTopoUI.js';
 
 import { EditorControls } from '../../js/EditorControls.js';
@@ -768,6 +766,29 @@ function iTopoViewport( editor ) {
 
 		render();
 
+	} );
+
+	signals.locateiTopoObject.add( function ( userData ) {
+
+		if(userData.sponsorUnit === 'starUser'){
+			editor.stationDB.fetchiTopoStars(function(json){
+				for (var i = 0; i < json.length; i++) {
+					if (json[i].starUUID === userData.objectUUID) {
+						iTopoEarthModel.focusStar(json[i]);
+						break;
+					}
+				}
+			});
+		} else {
+			editor.stationDB.fetchiTopobase(function(json){
+				for (var i = 0; i < json.length; i++) {
+					if (json[i].baseUUID === userData.objectUUID) {
+						iTopoEarthModel.focusObject(json[i]);
+						break;
+					}
+				}
+			});
+		}
 	} );
 
 	signals.cameraResetted.add( updateAspectRatio );

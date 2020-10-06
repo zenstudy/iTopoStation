@@ -1,0 +1,90 @@
+[{
+	"productUUID": "8E59BDD4-25EE-4E90-A612-4537AFAA80FF",
+	"productName": "product1",
+	"productModelURL":"./iTopoObjects/00_Default_Resource/boomBox/glTF-Binary/BoomBox.glb",
+	"Album2DImgs": [{
+			"productImgUUID": "0f9bb19e-e37f-4425-aa7e-25b42f222db2",
+			"productImgDesc": "长白山有机谷0"
+		},{
+			"productImgUUID": "3a241616cbf6355493066af697f0fbe9",
+			"productImgDesc": "长白山有机谷1"
+		},
+		{
+			"productImgUUID": "14a088e668766f58e4633bbcf6752a12",
+			"productImgDesc": "长白山有机谷2"
+		},
+		{
+			"productImgUUID": "22e53c6a3f6043eac6e22e5272b4b032",
+			"productImgDesc": "长白山有机谷3"
+		},
+		{
+			"productImgUUID": "69e9b76c5ed05286ca76979d559a0d77",
+			"productImgDesc": "长白山有机谷4"
+		},
+		{
+			"productImgUUID": "318d2dd9b77d3da507ef2efbfc53e83b",
+			"productImgDesc": "长白山有机谷5"
+		},
+		{
+			"productImgUUID": "830008d2d404f081a4370d11dc6dca22",
+			"productImgDesc": "长白山有机谷6"
+		},
+		{
+			"productImgUUID": "c0f5442216c1944d179e057c981cde4d",
+			"productImgDesc": "长白山有机谷7"
+		},
+		{
+			"productImgUUID": "ea7c7a88f1b29548deb35f4d47f00c47",
+			"productImgDesc": "长白山有机谷8"
+		},
+		{
+			"productImgUUID": "ef067794e2c94af3899012715d990de4",
+			"productImgDesc": "长白山有机谷9"
+		}
+	]
+},{
+	"productUUID": "5E59BDD4-25EE-4E90-A612-4537AFAA80FE",
+	"productName": "product2",
+	"productModelURL":"./iTopoObjects/00_Default_Resource/LittlestTokyo/LittlestTokyo.glb",
+	"Album2DImgs": [{
+			"productImgUUID": "c0984864-6ee2-42fe-b9c2-dcf5dbbcc63c",
+			"productImgDesc": "甘露酵素1"
+		},
+		{
+			"productImgUUID": "2be79eeb-d6ed-4a2f-822c-2c4f2171d510",
+			"productImgDesc": "甘露酵素2"
+		},
+		{
+			"productImgUUID": "5ee18f21-3779-4322-b46e-ae283f8b98b3",
+			"productImgDesc": "甘露酵素3"
+		},
+		{
+			"productImgUUID": "9bc9d83e-6975-49b7-a191-3adb2a0f4961",
+			"productImgDesc": "甘露酵素4"
+		},
+		{
+			"productImgUUID": "0f9bb19e-e37f-4425-aa7e-25b42f222db2",
+			"productImgDesc": "甘露酵素5"
+		},
+		{
+			"productImgUUID": "43671efb-3f5c-4bde-b223-1598ff94cbea",
+			"productImgDesc": "甘露酵素6"
+		},
+		{
+			"productImgUUID": "13dc56ff-f6a7-4db4-8cb9-7fb91a36346a",
+			"productImgDesc": "甘露酵素7"
+		},
+		{
+			"productImgUUID": "b510e507-708a-4258-8fb1-0ed71109567a",
+			"productImgDesc": "甘露酵素8"
+		},
+		{
+			"productImgUUID": "a508bc59-577a-497b-bd50-0b0903bccc73",
+			"productImgDesc": "紫苏泡无筋姜1"
+		},
+		{
+			"productImgUUID": "65363296-f221-47ea-a96e-9756638f73bc",
+			"productImgDesc": "紫苏泡无筋姜2"
+		}
+	]
+}]

@@ -39,10 +39,6 @@ function iTopoObjectSkyCastleSponsor( editor ) {
 	return scope;
 }
 
-function onSelect() {
-		console.log(this);
-	}
-
 iTopoObjectSkyCastleSponsor.prototype = Object.create( UIElement.prototype );
 iTopoObjectSkyCastleSponsor.prototype.constructor = iTopoObjectSkyCastleSponsor;
 
@@ -103,7 +99,7 @@ iTopoObjectSkyCastleSponsor.prototype = {
 			if(taskObject.info.sponsors.length !== 0){
 				 taskObject.info.sponsors.forEach(function(sponsor){
 				 	scope.thumbnailManager.createThumbnailItem( sponsor.teamName ,
-				 	mesh.clone(), function(){scope.onSelectTeam()});
+				 	mesh.clone(), function(){scope.onSelectSponsor(sponsor)});
 				 })
 			}
 
@@ -113,7 +109,7 @@ iTopoObjectSkyCastleSponsor.prototype = {
 		scope.taskObject = taskObject;
 	},
 
-	onSelectTeam: function() {
+	onSelectSponsor: function(sponsor) {
 
 		var scope = this;
 
@@ -130,16 +126,11 @@ iTopoObjectSkyCastleSponsor.prototype = {
 		scope.thumbnailManager2.createThumbnailItem( scope.strings.getKey( 'sidebar/skyCastle/Sponsors/clickToSponsor' ) ,
 		mesh.clone(), function() {
 
-			//iTopoDialogApplyToJoining
-
-			//iTopoEarthModel.SkyCastle.applyToJoining( teamUUID, starUUID );
-
 			var title = editor.strings.getKey('iTopoDialog/Sponsor/applyToJoining');
 			var applyToJoinDlg = new iTopoDialogApplyToJoining(title);
 			document.body.appendChild(applyToJoinDlg.container.dom);
 			applyToJoinDlg.container.setDisplay('block');
 			applyToJoinDlg.container.setPosition('absolate');
-
 
 			applyToJoinDlg.container.dom.addEventListener('resize', function() {
 
@@ -151,20 +142,44 @@ iTopoObjectSkyCastleSponsor.prototype = {
 
 		});
 
-		editor.stationDB.fetchiTopoStars(function(json){
+		editor.stationDB.fetchiTopoStars(function(allUsers){
 
-			json.forEach(function(starUserInfo) {
-				scope.thumbnailManager2.createThumbnailItem( starUserInfo.userNickname ,
-				mesh.clone(), function() {
-					scope.locationStarUser(starUserInfo);
-				});
-			});
+			sponsor.teamMemberUUIDs.forEach(function( teamMemberUUID ){
+				allUsers.forEach(function(starUserInfo) {
+					if( teamMemberUUID === starUserInfo.starUUID ){
+						scope.thumbnailManager2.createThumbnailItem( starUserInfo.userNickname ,
+						mesh.clone(), function() {
+							scope.locationStarUser(starUserInfo);
+						});
+					}
+				})
+			})
 
 			scope.thumbnailManager2.updateCanvasSize();
 			scope.thumbnailManager2.active();
 
 		});
 
+
+
+		editor.stationDB.fetchiTopobase(function(allBases){
+
+			sponsor.sponsoredOrganizations.forEach(function( orginizationUUID ){
+				allBases.forEach(function(baseInfo) {
+						console.log(orginizationUUID + ',' + baseInfo.baseUUID);
+					if( orginizationUUID === baseInfo.baseUUID ){
+						scope.thumbnailManager2.createThumbnailItem( baseInfo.title ,
+						mesh.clone(), function() {
+							iTopoEarthModel.focusObject(baseInfo);
+						});
+					}
+				})
+			})
+
+			scope.thumbnailManager2.updateCanvasSize();
+			scope.thumbnailManager2.active();
+
+		});
 	},
 
 	locationStarUser: function(starUserJson) {

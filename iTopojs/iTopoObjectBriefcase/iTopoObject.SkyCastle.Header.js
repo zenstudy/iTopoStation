@@ -66,7 +66,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 		 	object , scope.onClickSkyCastaleModel);
 		}) ;
 
-		editor.resourceTracker.loadTreeModel(originPosition, 1, function(object){
+		editor.resourceTracker.loadiTopoTasksLogo(originPosition, 0.8, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ),
 			 	object , scope.onTaskCardsClassCSS3D);
 		}) ;

@@ -42,7 +42,7 @@ function iTopoStrings( config ) {
 			'menubar/StarUser/mineStar':'我的信息',
 
 			'iTopoSpriteOwnLogo/logoCaption': ' ≡ 共享地球 ≡ ',
-			'iTopoSpriteSponsor/iTopoEarthSponsor' : '赞助位',
+			'iTopoSpriteSponsor/iTopoEarthSponsor' : '赞助单位',
 			'iTopoSpriteSponsor/becomeSponsor' : '赞助共享地球',
 
 			'iTopoToolbar/translate':'平移',

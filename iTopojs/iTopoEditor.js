@@ -1,7 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import * as THREE from '../../build/three.module.js';
 
 import { iTopoLoader as _Loader } from './iTopoLoader.js';
@@ -61,6 +57,7 @@ function iTopoEditor() {
 		objectArrayAdded: new Signal(),
 
 		taskCardSelected: new Signal(),//important
+		locateiTopoObject: new Signal(),
 
 		cameraAdded: new Signal(),
 		cameraRemoved: new Signal(),

@@ -50,54 +50,7 @@ var iTopoStandPlatform = {
 		scope.dom = container.dom;
 		scope.dom.appendChild( renderer.domElement );
 
-		scope.create2DStandContainer = function(){
-
-			var standContainerInfo = {
-				radius: 300,
-				dividCount: scope.jsonProductInfo.Album2DImgs.length,
-				depth: 5,
-				segmentsCount: 600,
-				height: 150,
-			};
-
-			var boxWidth = standContainerInfo.radius*2*Math.PI / standContainerInfo.dividCount * (standContainerInfo.dividCount-1)/standContainerInfo.dividCount;
-
-			var group = new THREE.Group();
-
-			var geometry = new THREE.BoxGeometry(boxWidth, standContainerInfo.height, standContainerInfo.depth, standContainerInfo.segmentsCount, 1);
-			//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
-			geometry.vertices.forEach(function(item) {
-				item.z += Math.sqrt(standContainerInfo.radius*standContainerInfo.radius - item.x * item.x) - standContainerInfo.radius;
-			});
-
-			var loader =  new THREE.TextureLoader();
-
-			for( var i= 0; i < standContainerInfo.dividCount; ++i){
-				var imgURL = "./iTopoObjects/E7411AF8-DD5B-4863-895A-C1DF80098B7C/Products/" 
-				+ scope.jsonProductInfo.productUUID + "/" + scope.jsonProductInfo.Album2DImgs[i].productImgUUID +	".jpg";
-				var textureImg =loader.load(imgURL);
-				var xxximg = textureImg.image ;
-
-				var material = new THREE.MeshBasicMaterial({
-					map: textureImg,
-					side: THREE.FrontSide,//THREE.DoubleSide, //
-				});
-
-				var mesh = new THREE.Mesh( geometry,material );
-				var x=standContainerInfo.radius*Math.sin(2*Math.PI*i/standContainerInfo.dividCount);
-				var y=0;
-				var z=standContainerInfo.radius*Math.cos(2*Math.PI*i/standContainerInfo.dividCount);
-				mesh.position.set( x, y, z);
-				// mesh.rotation.set( 0, 0, 0 );
-				// mesh.scale.set( 1, 1, 1 );
-				mesh.rotateY(Math.PI*2*i/standContainerInfo.dividCount);
-				group.add( mesh );
-			}
-			scope.standContainer2D = group;
-			scope.scene.add( group );
-		}
-
-		this.show3D = function (background_texture, object, jsonProductInfo ) {
+		this.show3D = function (background_texture, object, baseUUID, jsonProductInfo ) {
 
 			var scene = new THREE.Scene();
 			scene.background = background_texture;
@@ -153,9 +106,57 @@ var iTopoStandPlatform = {
 			scope.createRightMenu();
 
 			this.productModel = object;
+			this.baseUUID = baseUUID;
 			this.jsonProductInfo = jsonProductInfo;
 
 			scope.create2DStandContainer();
+		};
+
+		scope.create2DStandContainer = function(){
+
+			var standContainerInfo = {
+				radius: 300,
+				dividCount: scope.jsonProductInfo.Album2DImgs.length,
+				depth: 5,
+				segmentsCount: 600,
+				height: 150,
+			};
+
+			var boxWidth = standContainerInfo.radius*2*Math.PI / standContainerInfo.dividCount * (standContainerInfo.dividCount-1)/standContainerInfo.dividCount;
+
+			var group = new THREE.Group();
+
+			var geometry = new THREE.BoxGeometry(boxWidth, standContainerInfo.height, standContainerInfo.depth, standContainerInfo.segmentsCount, 1);
+			//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
+			geometry.vertices.forEach(function(item) {
+				item.z += Math.sqrt(standContainerInfo.radius*standContainerInfo.radius - item.x * item.x) - standContainerInfo.radius;
+			});
+
+			var loader =  new THREE.TextureLoader();
+
+			var baseURL = "./iTopoObjects/" + this.baseUUID + "/Products/";
+			for( var i= 0; i < standContainerInfo.dividCount; ++i){
+				var imgURL = baseURL + scope.jsonProductInfo.productUUID + "/" + scope.jsonProductInfo.Album2DImgs[i].productImgUUID +	".jpg";
+				var textureImg =loader.load(imgURL);
+				var xxximg = textureImg.image ;
+
+				var material = new THREE.MeshBasicMaterial({
+					map: textureImg,
+					side: THREE.FrontSide,//THREE.DoubleSide, //
+				});
+
+				var mesh = new THREE.Mesh( geometry,material );
+				var x=standContainerInfo.radius*Math.sin(2*Math.PI*i/standContainerInfo.dividCount);
+				var y=0;
+				var z=standContainerInfo.radius*Math.cos(2*Math.PI*i/standContainerInfo.dividCount);
+				mesh.position.set( x, y, z);
+				// mesh.rotation.set( 0, 0, 0 );
+				// mesh.scale.set( 1, 1, 1 );
+				mesh.rotateY(Math.PI*2*i/standContainerInfo.dividCount);
+				group.add( mesh );
+			}
+			scope.standContainer2D = group;
+			scope.scene.add( group );
 		};
 
 		this.createTopMenu = function(){

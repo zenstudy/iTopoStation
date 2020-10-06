@@ -99,7 +99,7 @@ iTopoResourceTracker.prototype = {
 	loadModel: function(resourcType, originPosition, modelSize, fnAfterLoadModel) {
 		switch (resourcType) {
 			case "iTopoType/TaskObject/EcologicalFarm":
-				this.loadTreeModel(originPosition, modelSize, fnAfterLoadModel);
+				this.loadMountainLandscape(originPosition, modelSize, fnAfterLoadModel);
 				break;
 			case "iTopoType/TaskObject/SharedCanteen":
 				this.loadSmallCityModel(originPosition, modelSize, fnAfterLoadModel);
@@ -122,28 +122,53 @@ iTopoResourceTracker.prototype = {
 		}
 	},
 
-	loadTreeModel: function(originPosition, modelSize, fnAfterLoadModel) {
-		var loader = new OBJLoader(this.manager);
-		loader.load('./iTopoObjects/00_Default_Resource/tree/tree.obj', function(object) {
+	loadiTopoEarthLogo: function(originPosition, modelSize, fnAfterLoadModel) {
+		var scope = this;
+		const track = scope.track.bind(scope);
 
-			object.traverse(function(child) {
-				if (child instanceof THREE.Mesh) {
-					var phongMaterial = new THREE.MeshPhongMaterial({
-						color: 0x00ff00,
-						specular: 0x111111,
-						shininess: 5
-					});
-					child.material = phongMaterial;
-					child.receiveShadow = true;
+		const loader = new GLTFLoader();
+		loader.setDRACOLoader(this.dracoLoader);
+		loader.load('./iTopoObjects/00_Default_Resource/iTopoEarthLogo/iTopoEarthLogo.glb', (gltf) => {
+
+			var baseModel = track(gltf.scene);
+			this.box = new THREE.Box3().setFromObject(baseModel);
+			baseModel.traverse((child) => {
+				if (child.isMesh) {
 					child.castShadow = true;
+					child.receiveShadow = true;
 				}
 			});
-			var box = new THREE.Box3().setFromObject(object);
-			var scale = modelSize / Math.max(box.max.x, box.max.y, box.max.z);
 
-			object.position.copy(originPosition);
-			object.scale.set(scale, scale, scale);
-			fnAfterLoadModel(object);
+			var box = new THREE.Box3().setFromObject(baseModel);
+			var scale = modelSize / Math.max(box.max.x, box.max.y, box.max.z);
+			baseModel.position.copy(originPosition);
+			baseModel.scale.set(scale, scale, scale);
+			fnAfterLoadModel(baseModel);
+		});
+	},
+
+	loadiTopoTasksLogo: function(originPosition, modelSize, fnAfterLoadModel) {
+		var scope = this;
+		const track = scope.track.bind(scope);
+
+		const loader = new GLTFLoader();
+		loader.setDRACOLoader(this.dracoLoader);
+		loader.load('./iTopoObjects/00_Default_Resource/iTopoTasksLogo/iTopoTasksLogo.glb', (gltf) => {
+
+			var baseModel = track(gltf.scene);
+			this.box = new THREE.Box3().setFromObject(baseModel);
+			baseModel.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+
+			var box = new THREE.Box3().setFromObject(baseModel);
+			var scale = modelSize / Math.max(box.max.x, box.max.y, box.max.z);
+			baseModel.position.copy(originPosition);
+			baseModel.scale.set(scale, scale, scale);
+			fnAfterLoadModel(baseModel);
 		});
 	},
 
@@ -193,6 +218,31 @@ iTopoResourceTracker.prototype = {
 		});
 	},
 
+	loadTreeModel: function(originPosition, modelSize, fnAfterLoadModel) {
+		var loader = new OBJLoader(this.manager);
+		loader.load('./iTopoObjects/00_Default_Resource/tree/tree.obj', function(object) {
+
+			object.traverse(function(child) {
+				if (child instanceof THREE.Mesh) {
+					var phongMaterial = new THREE.MeshPhongMaterial({
+						color: 0x00ff00,
+						specular: 0x111111,
+						shininess: 5
+					});
+					child.material = phongMaterial;
+					child.receiveShadow = true;
+					child.castShadow = true;
+				}
+			});
+			var box = new THREE.Box3().setFromObject(object);
+			var scale = modelSize / Math.max(box.max.x, box.max.y, box.max.z);
+
+			object.position.copy(originPosition);
+			object.scale.set(scale, scale, scale);
+			fnAfterLoadModel(object);
+		});
+	},
+
 	loadLittlestTokyo: function(originPosition, modelSize, fnAfterLoadModel) {
 		var scope = this;
 		const track = scope.track.bind(scope);
@@ -239,6 +289,27 @@ iTopoResourceTracker.prototype = {
 			//boomBox.add( positionalAudio );//可以添加背景音乐
 
 			fnAfterLoadProduct(boomBox);
+		});
+	},
+
+	loadWindmill : function(originPosition, modelSize, fnAfterLoad) {
+		const mtlLoader = new MTLLoader();
+		mtlLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill-fixed.mtl', (mtlParseResult) => {
+			console.log(mtlParseResult);
+			const objLoader = new OBJLoader2();
+			const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+			materials.Material.side = THREE.DoubleSide;
+			objLoader.addMaterials(materials);
+			objLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill.obj', (windMill) => {
+
+				var box = new THREE.Box3().setFromObject(windMill);
+				var scale = modelSize / Math.max(box.max.x, box.max.y, box.max.z );
+				windMill.scale.set(scale,scale,scale);
+				windMill.position.copy(originPosition);
+				//boomBox.add( positionalAudio );//可以添加背景音乐
+
+				fnAfterLoad(windMill);
+			});
 		});
 	},
 
@@ -302,29 +373,6 @@ iTopoResourceTracker.prototype = {
 		displayStand.container.setDisplay('block');
 		displayStand.container.setPosition('absolate');
 
-		//	var dom = document.createElement( 'div' );
-		//	displayStand.container.dom.appendChild( dom );
-
-		// var items = [
-		// 	{ title: 'menubar/examples/Arkanoid', file: 'arkanoid.app.json' },
-		// 	{ title: 'menubar/examples/Camera', file: 'camera.app.json' },
-		// 	{ title: 'menubar/examples/Particles', file: 'particles.app.json' },
-		// 	{ title: 'menubar/examples/Pong', file: 'pong.app.json' },
-		// 	{ title: 'menubar/examples/Shaders', file: 'shaders.app.json' }
-		// ];
-
-		// var loader = new THREE.FileLoader();// 以Index.html为根路径
-		// loader.load( 'examples/camera.app.json', function ( text ) {
-		// 	var player = new iTopo3dExplore.Player();
-		// 	player.load( JSON.parse( text ) );
-		// 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight  );
-		// 	player.play();
-		// 	displayStand.container.dom.appendChild( player.dom );
-		// 	displayStand.container.dom.addEventListener( 'resize', function () {
-		// 	 	player.setSize( displayStand.container.dom.offsetWidth, displayStand.container.dom.offsetHeight );
-		// 	} );
-		// } );
-
 		{
 			var sphereGeometry = new THREE.SphereGeometry(2, 20, 20);
 			var sphereMateial = new THREE.MeshBasicMaterial({
@@ -373,59 +421,7 @@ iTopoResourceTracker.prototype = {
 		displayStand.container.dom.addEventListener('resize', function() {
 			explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 		});
-	},
-
-	// iTopoBaseHelper.prototype.loadiTopoObjModel = function() {
-	// 	baseModel = {};
-	// 	const mtlLoader = new MTLLoader();
-	// 	mtlLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill-fixed.mtl', (mtlParseResult) => {
-	// 		console.log(mtlParseResult);
-	// 		const objLoader = new OBJLoader2();
-	// 		const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-	// 		materials.Material.side = THREE.DoubleSide;
-	// 		objLoader.addMaterials(materials);
-	// 		objLoader.load('./iTopoObjects/00_Default_Resource/windmill/windmill.obj', (root) => {
-	// 			let matrix2 = new THREE.Matrix4;
-	// 			matrix2.makeRotationX(-Math.PI / 2);
-	// 			let matrix3 = new THREE.Matrix4;
-	// 			matrix3.makeRotationY(Math.PI);
-	// 			matrix2.multiply(matrix3);
-	// 			matrix2.setPosition(new THREE.Vector3(0, 0, 0));
-	// 			root.applyMatrix4(matrix2);
-	// 			console.log(root);
-	// 			root.scale.set(5, 5, 5);
-	// 			baseModel = root;
-	// 			this.add(baseModel);
-	// 		});
-	// 	});
-	// }
-
-	// const glftloader = new GLTFLoader();
-	// glftloader.load('./iTopoObjects/00_Default_Resource/simple_house_scene/scene.gltf', (gltf) => {
-
-	// 	var baseModel = gltf.scene;
-	// 	baseModel.traverse((child) => {
-	// 		if (child.isMesh) {
-	// 			child.castShadow = true;
-	// 			child.receiveShadow = true;
-	// 		}
-	// 	});
-
-	// 	var box = new THREE.Box3().setFromObject(baseModel);
-	// 	var scale =0.81 / Math.max(box.max.x,box.max.y, box.max.z );
-
-	// 	baseModel.scale.set(scale,scale,scale);
-
-	// 	var thumbnailManager = new iTopoThumbnailManager();
-	// 	thumbnailManager.create(containerBaseModel.dom);
-	// 	thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ), baseModel , this.onClickBaseModel);
-	// 	thumbnailManager.updateCanvasSize();
-
-	// 	editor.signals.sceneRendering.add( function ( ) {
-	// 		thumbnailManager.updateCanvasSize();
-	// 		thumbnailManager.render();
-	// 	} );
-	// });
+	}
 }
 
 export { iTopoResourceTracker };
