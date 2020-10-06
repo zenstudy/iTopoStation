@@ -126,7 +126,7 @@ function iTopoStrings( config ) {
 			'sidebar/SharedCanteen/Header/iTopoTaskCards': '任务空间',
 			'sidebar/SharedCanteen/Header/newUUID':'换UUID',
 			'sidebar/SharedCanteen/Header/baseUUID':'基地UUID',
-			'sidebar/SharedCanteen/Header/taskType' : '任务类型',
+			'sidebar/SharedCanteen/Header/taskType' : '类型',
 			'sidebar/SharedCanteen/Header/longitude' : '经度',
 			'sidebar/SharedCanteen/Header/latitude' : '纬度',
 			'sidebar/SharedCanteen/Header/lightWish' : '基地心愿',
@@ -173,7 +173,7 @@ function iTopoStrings( config ) {
 
 			'iTopoDialog/lightEarth/newUUID':'换UUID',
 			'iTopoDialog/lightEarth/baseUUID':'基地UUID',
-			'iTopoDialog/lightEarth/taskType' : '任务类型',
+			'iTopoDialog/lightEarth/taskType' : '类型',
 			'iTopoDialog/lightEarth/longitude' : '经度',
 			'iTopoDialog/lightEarth/latitude' : '纬度',
 			'iTopoDialog/lightEarth/lightWish' : '基地心愿',
@@ -201,6 +201,7 @@ function iTopoStrings( config ) {
 
 			'iTopoStandPlatform/TaskViewTopMenu/2DAlbum': '2D产品图集',
 			'iTopoStandPlatform/TaskViewTopMenu/3DModel': '3D产品模型',
+			'iTopoStandPlatform/TaskViewTopMenu/AllStand': '全集展示',
 			'iTopoStandPlatform/TaskViewTopMenu/TDB': '待定',
 
 			'taskbar/Header': '任务描述',

@@ -5,6 +5,7 @@ import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
+import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 
 function iTopoObjectEcologicalFarmHeader(editor) {
 	var scope = this;
@@ -24,30 +25,8 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 	var container = new UISpan();
 	this.container = container;
 
-	{
-		var containerBaseModel = new UIPanel();
-		containerBaseModel.setPaddingTop('10px');
-		containerBaseModel.setWidth('280px');
-		containerBaseModel.setHeight('150px');
-		container.add(containerBaseModel);
-
-		scope.thumbnailManager = new iTopoThumbnailManager();
-		scope.thumbnailManager.create(containerBaseModel.dom);
-
-		var originPosition = new THREE.Vector3();
-		editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 1, function(object){
-			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ),
-		 	object , scope.onClickThumbnail);
-		}) ;
-
-		editor.resourceTracker.loadModel("iTopoType/TaskObject/SharedCanteen", originPosition, 1, function(object){
-			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/iTopoTaskCards' ),
-			 	object , scope.onTaskCardsClassCSS3D);
-		}) ;
-	}
-
 	var containerParameter = new UIPanel();
-	containerParameter.setTop('220px');
+	containerParameter.setBorderTop('0');
 	container.add(containerParameter);
 
 	{
@@ -61,36 +40,12 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		this.geometryUUID.setValue(lightTask.baseUUID);
 		baseUUIDValueRow.add(this.geometryUUID);
 		containerParameter.add(baseUUIDValueRow);
-	}
 
-	{
-		var options = {
-			'iTopoType/TaskObject/SharedCanteen': strings.getKey( 'iTopoType/TaskObject/SharedCanteen' ),
-			'iTopoType/TaskObject/EcologicalFarm': strings.getKey( 'iTopoType/TaskObject/EcologicalFarm' ),
-		};
-
-		var taskTypeRow = new UIRow();
-		taskTypeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/taskType')).setWidth('90px'));
-		this.taskTypeSelect = new UISelect().setWidth('150px');
-		this.taskTypeSelect.setOptions(options);
-		this.taskTypeSelect.setValue(strings.getKey(lightTask.taskType));
-		this.taskTypeSelect.onChange(function() {
-			var value = this.getValue();
-			console.log(value);
-			lightTask.taskType = value;
-		});
-
-		taskTypeRow.add(this.taskTypeSelect);
-
-		containerParameter.add(taskTypeRow);
-	}
-
-	{
 		// title
 		var titleRow = new UIRow();
-		titleRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/title')).setWidth('90px'));
+		titleRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/title')).setWidth('40px'));
 
-		this.titleInput = new UIInput().setWidth('180px').setFontSize('12px');
+		this.titleInput = new UIInput().setWidth('230px').setFontSize('12px');
 		this.titleInput.setValue(lightTask.title);
 		this.titleInput.onChange(function() {
 			lightTask.title = this.getValue();
@@ -101,9 +56,71 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 	}
 
 	{
+		var containerBaseModel = new UIPanel();
+		containerBaseModel.setTop('140px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('150px');
+		container.add(containerBaseModel);
+
+		scope.thumbnailManager = new iTopoThumbnailManager();
+		scope.thumbnailManager.create(containerBaseModel.dom);
+
+		var originPosition = new THREE.Vector3();
+		editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 0.8, function(object){
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ),
+		 	object , function() { scope.onClickOutlook(); });
+		}) ;
+
+		editor.resourceTracker.loadiTopoTasksLogo(originPosition, 0.8, function(object){
+			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/EcologicalFarm/Header/iTopoTaskCards' ),
+			 	object , scope.onTaskCardsClassCSS3D);
+		}) ;
+	}
+
+	{
+		var containerAnnouncement = new UIPanel();
+		containerAnnouncement.setTop('320px');
+		containerAnnouncement.setWidth('280px');
+		containerAnnouncement.setHeight('380px');
+		container.add(containerAnnouncement);
+
+		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/life' ) ;
+		var notificationPanel = new iTopoNotificationManager();
+		scope.notificationPanel = notificationPanel;
+		notificationPanel.createDisplayStand(containerAnnouncement.dom);
+	}
+
+
+	var containerParameter2 = new UIPanel();
+	containerParameter2.setTop('630px');
+	container.add(containerParameter2);
+
+	{
+		var options = {
+			'iTopoType/TaskObject/SharedCanteen': strings.getKey( 'iTopoType/TaskObject/SharedCanteen' ),
+			'iTopoType/TaskObject/EcologicalFarm': strings.getKey( 'iTopoType/TaskObject/EcologicalFarm' ),
+		};
+
+		var taskTypeRow = new UIRow();
+		taskTypeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/taskType')).setWidth('50px'));
+		this.taskTypeSelect = new UISelect().setWidth('180px');
+		this.taskTypeSelect.setOptions(options);
+		this.taskTypeSelect.setValue(strings.getKey(lightTask.taskType));
+		this.taskTypeSelect.onChange(function() {
+			var value = this.getValue();
+			console.log(value);
+			lightTask.taskType = value;
+		});
+
+		taskTypeRow.add(this.taskTypeSelect);
+
+		containerParameter2.add(taskTypeRow);
+	}
+
+	{
 		// city
 		var cityRow = new UIRow();
-		cityRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/city')).setWidth('90px'));
+		cityRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/city')).setWidth('50px'));
 
 		this.cityInput = new UIInput().setWidth('180px').setFontSize('12px');
 		this.cityInput.setValue(lightTask.city);
@@ -112,13 +129,13 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		});
 		cityRow.add(this.cityInput);
 
-		containerParameter.add(cityRow);
+		containerParameter2.add(cityRow);
 	}
 
 	{
 		// address
 		var addressRow = new UIRow();
-		addressRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/address')).setWidth('90px'));
+		addressRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/address')).setWidth('50px'));
 
 		this.addressInput = new UIInput().setWidth('180px').setFontSize('12px');
 		this.addressInput.setValue(lightTask.address);
@@ -127,42 +144,37 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		});
 		addressRow.add(this.addressInput);
 
-		containerParameter.add(addressRow);
+		containerParameter2.add(addressRow);
 	}
 
 
 	{
-		var longitudeRow = new UIRow();
-		longitudeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/longitude')).setWidth('90px'));
+		var lnglatRow = new UIRow();
+		lnglatRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/longitude')).setWidth('50px'));
 
-		this.longitudeValueUI = new UINumber(lightTask.longitude).setRange(2, Infinity).setWidth('180px');
+		this.longitudeValueUI = new UINumber(lightTask.longitude).setRange(2, Infinity).setWidth('60px');
 		this.longitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
 		});
-		longitudeRow.add(this.longitudeValueUI);
+		lnglatRow.add(this.longitudeValueUI);
 
-		containerParameter.add(longitudeRow);
-	}
+		lnglatRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/latitude')).setWidth('50px'));
 
-	{
-		var latitudeRow = new UIRow();
-		latitudeRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/latitude')).setWidth('90px'));
-
-		this.latitudeValueUI = new UINumber(lightTask.latitude).setRange(2, Infinity).setWidth('180px');
+		this.latitudeValueUI = new UINumber(lightTask.latitude).setRange(2, Infinity).setWidth('60px');
 		this.latitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
 		});
-		latitudeRow.add(this.latitudeValueUI);
+		lnglatRow.add(this.latitudeValueUI);
 
-		containerParameter.add(latitudeRow);
+		containerParameter2.add(lnglatRow);
 	}
 
 	{
 		var lightWishTitleRow = new UIRow();
 		lightWishTitleRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/lightWish')).setWidth('120px'));
-		containerParameter.add(lightWishTitleRow);
+		containerParameter2.add(lightWishTitleRow);
 
 		var lightWishTextAreaRow = new UIRow();
 		this.lightWishValueUI = new UITextArea().setWidth('270px').setFontSize('12px') /*.onChange( update )*/ ;
@@ -173,21 +185,7 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		});
 		lightWishTextAreaRow.add(this.lightWishValueUI);
 
-		containerParameter.add(lightWishTextAreaRow);
-	}
-
-	{
-		var containerAnnouncement = new UIPanel();
-		containerAnnouncement.setTop('645px');
-		containerAnnouncement.setWidth('280px');
-		containerAnnouncement.setHeight('200px');
-		container.add(containerAnnouncement);
-
-		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/life' ) ;
-		var notificationPanel = new iTopoNotificationManager();
-		scope.notificationPanel = notificationPanel;
-		notificationPanel.createDisplayStand(containerAnnouncement.dom);
-
+		containerParameter2.add(lightWishTextAreaRow);
 	}
 
 
@@ -220,52 +218,85 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 		}
 	},
 
-	onClickThumbnail: function() {// this对应一个item
+	onClickOutlook: function() {// this对应一个item
 
-	    var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' ) ;
-		editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm',title);
+		var scope = this;
+		var originPosition = new THREE.Vector3();
+		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/siteOutook' );
+		editor.stationDB.fetchiTopoSkyCastleOutlook(scope.taskObject.baseUUID,function(outlookData){
+
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
+
+				var originPosition = new THREE.Vector3();
+				editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 300, function(baseModel){
+
+					var album2DImgs = [];
+					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/outlook/";
+					outlookData.album2DImgs.forEach(function(imgItem){
+						album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+					});
+
+					var explore = new iTopoStandPlatform.Explore(title);
+					console.log(album2DImgs);
+					explore.show3D(background_outlook , baseModel, album2DImgs);
+					explore.play();
+
+				});
+
+			}) ;
+
+		}) ;
 
 	},
 
 	onTaskCardsClassCSS3D: function() {
-		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-		displayStand.container.setPosition('absolate');
-
-		var explore = new iTopoTaskDashboard3D.Explore(displayStand);
-		explore.initialize();
-
-		for( var i=0; i < 100; i ++)
-		{
-			var taskObject = {
-				taskStatus:"待办",
-				taskDetail:"共享地球任务书" + (i+1),
-				taskCreateBy:"任务创建者:事务中心"
-			};
-			explore.createTaskCardItem(taskObject);
-		}
-
-		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-
-		explore.show3D();
-		explore.play();
-
-		displayStand.container.dom.appendChild( explore.dom );
-		displayStand.container.dom.addEventListener( 'resize', function () {
-		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+	
+		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Todo",function(jsonTodo){
+			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"InProgress",function(jsonInProgress){
+				editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Done",function(jsonDone){
+	
+					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
+					var displayStand = new iTopoDisplayStand(title);
+					document.body.appendChild(displayStand.container.dom);
+					displayStand.container.setDisplay( 'block' );
+					displayStand.container.setPosition('absolate');
+	
+					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
+					explore.initialize();
+	
+					for (var i = 0; i < jsonTodo.length; i++) {
+						explore.appendCardItem(jsonTodo[i]);
+					}
+	
+					for (var i = 0; i < jsonInProgress.length; i++) {
+						explore.appendCardItem(jsonInProgress[i]);
+					}
+	
+					for (var i = 0; i < jsonDone.length; i++) {
+						explore.appendCardItem(jsonDone[i]);
+					}
+	
+					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+	
+					explore.show3D();
+					explore.play();
+	
+					displayStand.container.dom.addEventListener( 'resize', function () {
+						explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					});
+					displayStand.closeBtn.dom.addEventListener('click', function() {
+						explore.stop();
+						explore.dispose();
+						explore = null;
+					});
+	
+					var taskBriefcase = new iTopoTaskBriefcase( editor );
+					displayStand.container.dom.appendChild( taskBriefcase.dom );
+	
+				})
+			})
 		});
-
-		displayStand.closeBtn.dom.addEventListener('click', function() {
-			explore.stop();
-			explore.dispose();
-			explore = null;
-		});
-
-		var taskBriefcase = new iTopoTaskBriefcase( editor );
-		displayStand.container.dom.appendChild( taskBriefcase.dom );
+	
 	},
 
 	getValue: function () {

@@ -1,0 +1,52 @@
+{
+	"3dModelURL":"./iTopoObjects/00_Default_Resource/cartoon_lowpoly_small_city_free_pack/scene.gltf",
+	"album2DImgs": [{
+			"imgFilenName": "castle (1).jpg",
+			"imgDesc": "castle model example1"
+		},
+		{
+			"imgFilenName": "castle (2).jpg",
+			"imgDesc": "castle model example2"
+		},
+		{
+			"imgFilenName": "castle (3).jpg",
+			"imgDesc": "castle model example3"
+		},
+		{
+			"imgFilenName": "castle (4).jpg",
+			"imgDesc": "castle model example4"
+		},
+		{
+			"imgFilenName": "castle (5).jpg",
+			"imgDesc": "castle model example5"
+		},
+		{
+			"imgFilenName": "castle (6).jpg",
+			"imgDesc": "castle model example6"
+		},
+		{
+			"imgFilenName": "castle (7).jpg",
+			"imgDesc": "castle model example7"
+		},
+		{
+			"imgFilenName": "castle (8).jpg",
+			"imgDesc": "castle model example8"
+		},
+		{
+			"imgFilenName": "castle (9).jpg",
+			"imgDesc": "castle model example9"
+		},
+		{
+			"imgFilenName": "castle (10).jpg",
+			"imgDesc": "castle model example10"
+		},
+		{
+			"imgFilenName": "castle (11).jpg",
+			"imgDesc": "castle model example11"
+		},
+		{
+			"imgFilenName": "castle (12).png",
+			"imgDesc": "castle model example12"
+		}
+	]
+}

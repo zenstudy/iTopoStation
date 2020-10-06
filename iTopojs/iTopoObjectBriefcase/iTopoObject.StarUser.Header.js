@@ -1,7 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 import { UIElement, UISpan , UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
@@ -11,7 +7,7 @@ import { MTLLoader } from '../../../examples/jsm/loaders/MTLLoader.js';
 import { MtlObjBridge } from '../../../examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
 import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
-import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
+import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
@@ -27,34 +23,8 @@ function iTopoObjectStarUserHeader(editor) {
 	var container = new UISpan();
 	this.container = container;
 
-	{
-		var containerBaseModel = new UIPanel();
-		containerBaseModel.setPaddingTop('10px');
-		containerBaseModel.setWidth('280px');
-		containerBaseModel.setHeight('150px');
-		container.add(containerBaseModel);
-
-		{
-			scope.thumbnailManager = new iTopoThumbnailManager();
-			scope.thumbnailManager.create(containerBaseModel.dom);
-
-			var originPosition = new THREE.Vector3();
-			originPosition.set(0,-1.0,0);
-			editor.resourceTracker.loadiTopoUser(starUserInfo.gender, originPosition, 2, function(object){
-				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ),
-			 	object , function() {scope.onClickThumbnail()});
-			}) ;
-
-			editor.resourceTracker.loadiTopoUser(starUserInfo.gender, originPosition, 2, function(object){
-				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/iTopoTaskCards' ),
-				 	object , function(){scope.onTaskCardsClassCSS3D()});
-			}) ;
-		}
-	}
-
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setTop('220px');
 	container.add(containerParameter);
 	{
 		// starUUID
@@ -67,12 +37,67 @@ function iTopoObjectStarUserHeader(editor) {
 		this.starUUID.setValue(starUserInfo.starUUID);
 		baseUUIDValueRow.add(this.starUUID);
 		containerParameter.add(baseUUIDValueRow);
+
+		// nickName
+		var nickNameRow = new UIRow();
+		nickNameRow.add(new UIText(strings.getKey('iTopoDialog/lightEarth/title')).setWidth('40px'));
+
+		this.nickNameInput = new UIInput().setWidth('230px').setFontSize('12px');
+		this.nickNameInput.setValue(starUserInfo.userNickname);
+		this.nickNameInput.onChange(function() {
+			lightTask.title = this.getValue();
+		});
+		nickNameRow.add(this.nickNameInput);
+
+		containerParameter.add(nickNameRow);
 	}
 
 	{
+		var containerBaseModel = new UIPanel();
+		containerBaseModel.setTop('140px');
+		containerBaseModel.setWidth('280px');
+		containerBaseModel.setHeight('150px');
+		container.add(containerBaseModel);
+
+		{
+			scope.thumbnailManager = new iTopoThumbnailManager();
+			scope.thumbnailManager.create(containerBaseModel.dom);
+
+			var originPosition = new THREE.Vector3();
+			originPosition.set(0,-1.0,0);
+			editor.resourceTracker.loadiTopoUser(starUserInfo.gender, originPosition, 2, function(object){
+				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ),
+			 	object , function() {scope.onClickOutlook()});
+			}) ;
+
+			originPosition.set(0,0,0);
+			editor.resourceTracker.loadiTopoTasksLogo( originPosition, 0.8, function(object){
+				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/iTopoTaskCards' ),
+				 	object , function(){scope.onTaskCardsClassCSS3D()});
+			}) ;
+		}
+	}
+
+	{
+		var containerAnnouncement = new UIPanel();
+		containerAnnouncement.setTop('320px');
+		containerAnnouncement.setWidth('280px');
+		containerAnnouncement.setHeight('380px');
+		container.add(containerAnnouncement);
+
+		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
+		var notificationPanel = new iTopoNotificationManager();
+		scope.notificationPanel = notificationPanel;
+		notificationPanel.createDisplayStand(containerAnnouncement.dom);
+	}
+
+	var containerParameter2 = new UIPanel();
+	containerParameter2.setTop('630px');
+	container.add(containerParameter2);
+	{
 		// gender
 		var genderRow = new UIRow();
-		genderRow.add(new UIText(strings.getKey('sidebar/starUser/Header/gender')).setWidth('90px'));
+		genderRow.add(new UIText(strings.getKey('sidebar/starUser/Header/gender')).setWidth('50px'));
 
 		this.genderInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.genderInput.setValue(starUserInfo.gender);
@@ -81,13 +106,13 @@ function iTopoObjectStarUserHeader(editor) {
 		});
 		genderRow.add(this.genderInput);
 
-		containerParameter.add(genderRow);
+		containerParameter2.add(genderRow);
 	}
 
 	{
 		// cellPhone
 		var cellPhoneRow = new UIRow();
-		cellPhoneRow.add(new UIText(strings.getKey('sidebar/starUser/Header/cellPhone')).setWidth('90px'));
+		cellPhoneRow.add(new UIText(strings.getKey('sidebar/starUser/Header/cellPhone')).setWidth('50px'));
 
 		this.cellPhoneInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.cellPhoneInput.setValue(starUserInfo.cellPhone);
@@ -96,43 +121,37 @@ function iTopoObjectStarUserHeader(editor) {
 		});
 		cellPhoneRow.add(this.cellPhoneInput);
 
-		containerParameter.add(cellPhoneRow);
+		containerParameter2.add(cellPhoneRow);
 	}
 
 	{
-		var longitudeRow = new UIRow();
+		var lnglatRow = new UIRow();
 
-		longitudeRow.add(new UIText(strings.getKey('sidebar/starUser/Header/longitude')).setWidth('90px'));
+		lnglatRow.add(new UIText(strings.getKey('sidebar/starUser/Header/longitude')).setWidth('50px'));
 
-		this.longitudeValueUI = new UINumber(starUserInfo.longitude).setRange(2, Infinity);
+		this.longitudeValueUI = new UINumber(starUserInfo.longitude).setWidth('60px').setRange(2, Infinity);
 		this.longitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
 		});
-		longitudeRow.add(this.longitudeValueUI);
+		lnglatRow.add(this.longitudeValueUI);
 
-		containerParameter.add(longitudeRow);
-	}
+		lnglatRow.add(new UIText(strings.getKey('sidebar/starUser/Header/latitude')).setWidth('50px'));
 
-	{
-		var latitudeRow = new UIRow();
-
-		latitudeRow.add(new UIText(strings.getKey('sidebar/starUser/Header/latitude')).setWidth('90px'));
-
-		this.latitudeValueUI = new UINumber(starUserInfo.latitude).setRange(2, Infinity);
+		this.latitudeValueUI = new UINumber(starUserInfo.latitude).setWidth('60px').setRange(2, Infinity);
 		this.latitudeValueUI.onChange(function() {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
 		});
-		latitudeRow.add(this.latitudeValueUI);
+		lnglatRow.add(this.latitudeValueUI);
 
-		containerParameter.add(latitudeRow);
+		containerParameter2.add(lnglatRow);
 	}
 
 	{
 		var starValueRow = new UIRow();
 
-		starValueRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starValue')).setWidth('90px'));
+		starValueRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starValue')).setWidth('50px'));
 
 		this.starValueUI = new UINumber(starUserInfo.starValue).setRange(2, Infinity);
 		this.starValueUI.onChange(function() {
@@ -141,16 +160,16 @@ function iTopoObjectStarUserHeader(editor) {
 		});
 		starValueRow.add(this.starValueUI);
 
-		containerParameter.add(starValueRow);
+		containerParameter2.add(starValueRow);
 	}
 
 	{
 		var starWishTitleRow = new UIRow();
 		starWishTitleRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starWish')).setWidth('90px'));
-		containerParameter.add(starWishTitleRow);
+		containerParameter2.add(starWishTitleRow);
 
 		var starWishTextAreaRow = new UIRow();
-		this.starWishValueUI = new UITextArea().setWidth('280px').setFontSize('12px') /*.onChange( update )*/ ;
+		this.starWishValueUI = new UITextArea().setWidth('270px').setFontSize('12px') /*.onChange( update )*/ ;
 		this.starWishValueUI.dom.style.height = '120px';
 		this.starWishValueUI.onKeyUp(function() {
 			starUserInfo.starWish = this.getValue();
@@ -158,20 +177,7 @@ function iTopoObjectStarUserHeader(editor) {
 		});
 		starWishTextAreaRow.add(this.starWishValueUI);
 
-		containerParameter.add(starWishTextAreaRow);
-	}
-
-	{
-		var containerAnnouncement = new UIPanel();
-		containerAnnouncement.setTop('600px');
-		containerAnnouncement.setWidth('275px');
-		containerAnnouncement.setHeight('200px');
-		container.add(containerAnnouncement);
-
-		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
-		var notificationPanel = new iTopoNotificationManager();
-		scope.notificationPanel = notificationPanel;
-		notificationPanel.createDisplayStand(containerAnnouncement.dom);
+		containerParameter2.add(starWishTextAreaRow);
 	}
 
 	return this;
@@ -203,29 +209,36 @@ iTopoObjectStarUserHeader.prototype = {
 			this.thumbnailManager = null;
 		}
 	},
+	onClickOutlook: function() {// this对应一个item
 
-	onClickThumbnail: function() {// this对应一个item
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/StarUser/Header/Outlook' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-		displayStand.container.setPosition('absolate');
-
 		var originPosition = new THREE.Vector3();
-		editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, 100, function(object){
+		var title = editor.strings.getKey( 'sidebar/StarUser/Header/Outlook' ) ;
+		editor.stationDB.fetchiTopoSkyCastleOutlook(scope.taskObject.starUUID,function(outlookData){
 
-			var explore = new iTopo3dExplore.Explore();
-			explore.show3D( null , object);
-			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight()  );
-			explore.play();
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
 
-			displayStand.container.dom.appendChild( explore.dom );
-			displayStand.container.dom.addEventListener( 'resize', function () {
-				explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-			} );
+				var statureHeight = 800;
+				var originPosition = new THREE.Vector3(0,-statureHeight/2,0);
+				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, statureHeight, function(baseModel){
+
+					var album2DImgs = [];
+					var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/outlook/";
+					outlookData.album2DImgs.forEach(function(imgItem){
+						album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+					});
+
+					var explore = new iTopoStandPlatform.Explore(title);
+					console.log(album2DImgs);
+					explore.show3D(background_outlook , baseModel, album2DImgs);
+					explore.play();
+
+				});
+
+			}) ;
 
 		}) ;
+
 	},
 
 	getValue: function () {
@@ -273,43 +286,55 @@ iTopoObjectStarUserHeader.prototype = {
 		}) ;
 	},
 
-	onTaskCardsClassCSS3D: function() {
+onTaskCardsClassCSS3D: function() {
 
-			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.castleUUID,function(json){
-				var title = editor.strings.getKey( 'sidebar/StarUser/Header/iTopoTaskCards' ) ;
-				var displayStand = new iTopoDisplayStand(title);
-				document.body.appendChild(displayStand.container.dom);
-				displayStand.container.setDisplay( 'block' );
-				displayStand.container.setPosition('absolate');
+		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Todo",function(jsonTodo){
+			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"InProgress",function(jsonInProgress){
+				editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Done",function(jsonDone){
 
-				var explore = new iTopoTaskDashboard3D.Explore(displayStand);
-				explore.initialize();
+					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
+					var displayStand = new iTopoDisplayStand(title);
+					document.body.appendChild(displayStand.container.dom);
+					displayStand.container.setDisplay( 'block' );
+					displayStand.container.setPosition('absolate');
 
-				for (var i = 0; i < json.length; i++) {
-					explore.appendCardItem(json[i]);
-				}
+					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
+					explore.initialize();
 
-				explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					for (var i = 0; i < jsonTodo.length; i++) {
+						explore.appendCardItem(jsonTodo[i]);
+					}
 
-				explore.show3D();
-				explore.play();
+					for (var i = 0; i < jsonInProgress.length; i++) {
+						explore.appendCardItem(jsonInProgress[i]);
+					}
 
-				displayStand.container.dom.appendChild( explore.dom );
-				displayStand.container.dom.addEventListener( 'resize', function () {
+					for (var i = 0; i < jsonDone.length; i++) {
+						explore.appendCardItem(jsonDone[i]);
+					}
+
 					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-				});
 
-				displayStand.closeBtn.dom.addEventListener('click', function() {
-					explore.stop();
-					explore.dispose();
-					explore = null;
-				});
+					explore.show3D();
+					explore.play();
 
-				var taskBriefcase = new iTopoTaskBriefcase( editor );
-				displayStand.container.dom.appendChild( taskBriefcase.dom );
-			});
+					displayStand.container.dom.addEventListener( 'resize', function () {
+						explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					});
+					displayStand.closeBtn.dom.addEventListener('click', function() {
+						explore.stop();
+						explore.dispose();
+						explore = null;
+					});
 
-		},
+					var taskBriefcase = new iTopoTaskBriefcase( editor );
+					displayStand.container.dom.appendChild( taskBriefcase.dom );
+
+				})
+			})
+		});
+
+	},
 		onAnnouncement: function(announcement){
 
 			var displayStand = new iTopoDisplayStand(announcement.Title);

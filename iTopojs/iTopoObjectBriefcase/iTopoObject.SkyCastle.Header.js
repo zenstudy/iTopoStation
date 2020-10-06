@@ -74,7 +74,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 
 	{
 		var containerAnnouncement = new UIPanel();
-		containerAnnouncement.setTop('330px');
+		containerAnnouncement.setTop('320px');
 		containerAnnouncement.setWidth('280px');
 		containerAnnouncement.setHeight('400px');
 		container.add(containerAnnouncement);
@@ -129,14 +129,26 @@ iTopoObjectSkyCastleHeader.prototype = {
 	onClickSkyCastaleModel: function() {// this对应一个item
 
 		var scope = this;
+		var skyCastleinfo=iTopoEarthModel.SkyCastle.info;
 
 		var originPosition = new THREE.Vector3();
 		var title = editor.strings.getKey( 'sidebar/skyCastle/Header/Outlook' ) ;
-		editor.resourceTracker.loadSmallCityModel(originPosition, 30, function(baseModel){
+		editor.resourceTracker.loadSmallCityModel(originPosition, 280, function(baseModel){
 
-			var explore = new iTopoStandPlatform.Explore(title);
-			explore.show3D(null , baseModel);
-			explore.play();
+			editor.stationDB.fetchiTopoSkyCastleOutlook(skyCastleinfo.castleUUID,function(outlookData){
+
+				var album2DImgs = [];
+				var baseURL = "./iTopoObjects/" + skyCastleinfo.castleUUID + "/outlook/";
+				outlookData.album2DImgs.forEach(function(imgItem){
+					album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+				});
+
+				var explore = new iTopoStandPlatform.Explore(title);
+				console.log(album2DImgs);
+				explore.show3D(null , baseModel, album2DImgs);
+				explore.play();
+
+			});
 
 		}) ;
 

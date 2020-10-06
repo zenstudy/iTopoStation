@@ -2,44 +2,44 @@
 	"productUUID": "8E59BDD4-25EE-4E90-A612-4537AFAA80FF",
 	"productName": "product1",
 	"productModelURL":"./iTopoObjects/00_Default_Resource/boomBox/glTF-Binary/BoomBox.glb",
-	"Album2DImgs": [{
-			"productImgUUID": "c0984864-6ee2-42fe-b9c2-dcf5dbbcc63c",
+	"album2DImgs": [{
+			"productImgFileName": "c0984864-6ee2-42fe-b9c2-dcf5dbbcc63c.jpg",
 			"productImgDesc": "甘露酵素1"
 		},
 		{
-			"productImgUUID": "2be79eeb-d6ed-4a2f-822c-2c4f2171d510",
+			"productImgFileName": "2be79eeb-d6ed-4a2f-822c-2c4f2171d510.jpg",
 			"productImgDesc": "甘露酵素2"
 		},
 		{
-			"productImgUUID": "5ee18f21-3779-4322-b46e-ae283f8b98b3",
+			"productImgFileName": "5ee18f21-3779-4322-b46e-ae283f8b98b3.jpg",
 			"productImgDesc": "甘露酵素3"
 		},
 		{
-			"productImgUUID": "9bc9d83e-6975-49b7-a191-3adb2a0f4961",
+			"productImgFileName": "9bc9d83e-6975-49b7-a191-3adb2a0f4961.jpg",
 			"productImgDesc": "甘露酵素4"
 		},
 		{
-			"productImgUUID": "0f9bb19e-e37f-4425-aa7e-25b42f222db2",
+			"productImgFileName": "0f9bb19e-e37f-4425-aa7e-25b42f222db2.jpg",
 			"productImgDesc": "甘露酵素5"
 		},
 		{
-			"productImgUUID": "43671efb-3f5c-4bde-b223-1598ff94cbea",
+			"productImgFileName": "43671efb-3f5c-4bde-b223-1598ff94cbea.jpg",
 			"productImgDesc": "甘露酵素6"
 		},
 		{
-			"productImgUUID": "13dc56ff-f6a7-4db4-8cb9-7fb91a36346a",
+			"productImgFileName": "13dc56ff-f6a7-4db4-8cb9-7fb91a36346a.jpg",
 			"productImgDesc": "甘露酵素7"
 		},
 		{
-			"productImgUUID": "b510e507-708a-4258-8fb1-0ed71109567a",
+			"productImgFileName": "b510e507-708a-4258-8fb1-0ed71109567a.jpg",
 			"productImgDesc": "甘露酵素8"
 		},
 		{
-			"productImgUUID": "a508bc59-577a-497b-bd50-0b0903bccc73",
+			"productImgFileName": "a508bc59-577a-497b-bd50-0b0903bccc73.jpg",
 			"productImgDesc": "紫苏泡无筋姜1"
 		},
 		{
-			"productImgUUID": "65363296-f221-47ea-a96e-9756638f73bc",
+			"productImgFileName": "65363296-f221-47ea-a96e-9756638f73bc.jpg",
 			"productImgDesc": "紫苏泡无筋姜2"
 		}
 	]
@@ -47,44 +47,44 @@
 	"productUUID": "5E59BDD4-25EE-4E90-A612-4537AFAA80FE",
 	"productName": "product2",
 	"productModelURL":"./iTopoObjects/00_Default_Resource/LittlestTokyo/LittlestTokyo.glb",
-	"Album2DImgs": [{
-			"productImgUUID": "c0984864-6ee2-42fe-b9c2-dcf5dbbcc63c",
+	"album2DImgs": [{
+			"productImgFileName": "c0984864-6ee2-42fe-b9c2-dcf5dbbcc63c.jpg",
 			"productImgDesc": "甘露酵素1"
 		},
 		{
-			"productImgUUID": "2be79eeb-d6ed-4a2f-822c-2c4f2171d510",
+			"productImgFileName": "2be79eeb-d6ed-4a2f-822c-2c4f2171d510.jpg",
 			"productImgDesc": "甘露酵素2"
 		},
 		{
-			"productImgUUID": "5ee18f21-3779-4322-b46e-ae283f8b98b3",
+			"productImgFileName": "5ee18f21-3779-4322-b46e-ae283f8b98b3.jpg",
 			"productImgDesc": "甘露酵素3"
 		},
 		{
-			"productImgUUID": "9bc9d83e-6975-49b7-a191-3adb2a0f4961",
+			"productImgFileName": "9bc9d83e-6975-49b7-a191-3adb2a0f4961.jpg",
 			"productImgDesc": "甘露酵素4"
 		},
 		{
-			"productImgUUID": "0f9bb19e-e37f-4425-aa7e-25b42f222db2",
+			"productImgFileName": "0f9bb19e-e37f-4425-aa7e-25b42f222db2.jpg",
 			"productImgDesc": "甘露酵素5"
 		},
 		{
-			"productImgUUID": "43671efb-3f5c-4bde-b223-1598ff94cbea",
+			"productImgFileName": "43671efb-3f5c-4bde-b223-1598ff94cbea.jpg",
 			"productImgDesc": "甘露酵素6"
 		},
 		{
-			"productImgUUID": "13dc56ff-f6a7-4db4-8cb9-7fb91a36346a",
+			"productImgFileName": "13dc56ff-f6a7-4db4-8cb9-7fb91a36346a.jpg",
 			"productImgDesc": "甘露酵素7"
 		},
 		{
-			"productImgUUID": "b510e507-708a-4258-8fb1-0ed71109567a",
+			"productImgFileName": "b510e507-708a-4258-8fb1-0ed71109567a.jpg",
 			"productImgDesc": "甘露酵素8"
 		},
 		{
-			"productImgUUID": "a508bc59-577a-497b-bd50-0b0903bccc73",
+			"productImgFileName": "a508bc59-577a-497b-bd50-0b0903bccc73.jpg",
 			"productImgDesc": "紫苏泡无筋姜1"
 		},
 		{
-			"productImgUUID": "65363296-f221-47ea-a96e-9756638f73bc",
+			"productImgFileName": "65363296-f221-47ea-a96e-9756638f73bc.jpg",
 			"productImgDesc": "紫苏泡无筋姜2"
 		}
 	]

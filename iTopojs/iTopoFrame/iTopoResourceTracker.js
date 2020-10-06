@@ -5,8 +5,6 @@ import { OBJLoader2 } from '../../../examples/jsm/loaders/OBJLoader2.js';
 import { DRACOLoader } from '../../../examples/jsm/loaders/DRACOLoader.js';
 import { MTLLoader } from '../../../examples/jsm/loaders/MTLLoader.js';
 import { MtlObjBridge } from '../../../examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
-import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
-import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
 
 function iTopoResourceTracker() {
 
@@ -367,20 +365,7 @@ iTopoResourceTracker.prototype = {
 		});
 	},
 
-	loadOutlook: function( objectType, title) {
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay('block');
-		displayStand.container.setPosition('absolate');
-
-		{
-			var sphereGeometry = new THREE.SphereGeometry(2, 20, 20);
-			var sphereMateial = new THREE.MeshBasicMaterial({
-				color: 0x7777ff,
-				wireframe: true
-			});
-			var sphere = new THREE.Mesh(sphereGeometry, sphereMateial);
-		}
+	loadOutlook: function( objectType, fnAfterLoadOutLook) {
 
 		function random(min, max) {
 			return Math.floor(Math.random() * (max - min)) + min;
@@ -412,15 +397,7 @@ iTopoResourceTracker.prototype = {
 			texturePath + 'negz.jpg',
 		]);
 
-		var explore = new iTopo3dExplore.Explore();
-		explore.show3D(texture, sphere);
-		explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-		explore.play();
-
-		displayStand.container.dom.appendChild(explore.dom);
-		displayStand.container.dom.addEventListener('resize', function() {
-			explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-		});
+		fnAfterLoadOutLook(texture);
 	}
 }
 

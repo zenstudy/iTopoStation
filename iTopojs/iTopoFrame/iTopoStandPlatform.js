@@ -50,7 +50,8 @@ var iTopoStandPlatform = {
 		scope.dom = container.dom;
 		scope.dom.appendChild( renderer.domElement );
 
-		this.show3D = function (background_texture, object, baseUUID, jsonProductInfo ) {
+		// album2DImgs = [{imgURL: "" , imgDesc: ""}]
+		this.show3D = function (background_texture, objectModel, album2DImgs ) {
 
 			var scene = new THREE.Scene();
 			scene.background = background_texture;
@@ -105,18 +106,20 @@ var iTopoStandPlatform = {
 			scope.createLeftMenu();
 			scope.createRightMenu();
 
-			this.productModel = object;
-			this.baseUUID = baseUUID;
-			this.jsonProductInfo = jsonProductInfo;
+			this.objectModel = objectModel;
+			this.album2DImgs = album2DImgs;
 
-			scope.create2DStandContainer();
+			if(album2DImgs !== null && album2DImgs !== undefined){
+				scope.create2DStandContainer();
+			}
+
 		};
 
 		scope.create2DStandContainer = function(){
 
 			var standContainerInfo = {
 				radius: 300,
-				dividCount: scope.jsonProductInfo.Album2DImgs.length,
+				dividCount: scope.album2DImgs.length,
 				depth: 5,
 				segmentsCount: 600,
 				height: 150,
@@ -134,11 +137,9 @@ var iTopoStandPlatform = {
 
 			var loader =  new THREE.TextureLoader();
 
-			var baseURL = "./iTopoObjects/" + this.baseUUID + "/Products/";
 			for( var i= 0; i < standContainerInfo.dividCount; ++i){
-				var imgURL = baseURL + scope.jsonProductInfo.productUUID + "/" + scope.jsonProductInfo.Album2DImgs[i].productImgUUID +	".jpg";
-				var textureImg =loader.load(imgURL);
-				var xxximg = textureImg.image ;
+
+				var textureImg =loader.load(scope.album2DImgs[i].imgURL);
 
 				var material = new THREE.MeshBasicMaterial({
 					map: textureImg,
@@ -150,6 +151,7 @@ var iTopoStandPlatform = {
 				var y=0;
 				var z=standContainerInfo.radius*Math.cos(2*Math.PI*i/standContainerInfo.dividCount);
 				mesh.position.set( x, y, z);
+				mesh.userData = scope.album2DImgs[i];
 				// mesh.rotation.set( 0, 0, 0 );
 				// mesh.scale.set( 1, 1, 1 );
 				mesh.rotateY(Math.PI*2*i/standContainerInfo.dividCount);
@@ -169,9 +171,9 @@ var iTopoStandPlatform = {
 			tableButton.value = editor.strings.getKey( 'iTopoStandPlatform/TaskViewTopMenu/2DAlbum' );
 			tableButton.addEventListener('click', function()
 			{
-				if(scope.productModel !== null || scope.productModel !== undefined){
+				if(scope.objectModel !== null || scope.objectModel !== undefined){
 					scope.scene.remove(scope.standContainer2D);
-					scope.scene.remove(scope.productModel);
+					scope.scene.remove(scope.objectModel);
 					scope.create2DStandContainer();
 				}
 			} );
@@ -182,10 +184,21 @@ var iTopoStandPlatform = {
 			sphereButton.value = editor.strings.getKey( 'iTopoStandPlatform/TaskViewTopMenu/3DModel' );
 			sphereButton.addEventListener('click', function(){
 				scope.scene.remove(scope.standContainer2D);
-				scope.scene.remove(scope.productModel);
-				scope.addObject(scope.productModel);
+				scope.scene.remove(scope.objectModel);
+				scope.addObject(scope.objectModel);
 			} );
 			css3dMenu.appendChild( sphereButton );
+
+			var modelAndAlbumButton = document.createElement( 'input' );
+			modelAndAlbumButton.type="button";
+			modelAndAlbumButton.value = editor.strings.getKey( 'iTopoStandPlatform/TaskViewTopMenu/AllStand' );
+			modelAndAlbumButton.addEventListener('click', function(){
+				scope.scene.remove(scope.standContainer2D);
+				scope.scene.remove(scope.objectModel);
+				scope.create2DStandContainer();
+				scope.addObject(scope.objectModel);
+			} );
+			css3dMenu.appendChild( modelAndAlbumButton );
 
 			scope.dom.appendChild(css3dMenu);
 		};

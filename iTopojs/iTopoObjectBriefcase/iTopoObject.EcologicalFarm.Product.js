@@ -145,9 +145,18 @@ iTopoObjectEcologicalFarmProduct.prototype = {
 		var scope = this;
 		var originPosition = new THREE.Vector3();
 		editor.resourceTracker.loadProductModel(jsonProductInfo.productModelURL,originPosition, 300, function(baseModel){
-			var explore = new iTopoStandPlatform.Explore(jsonProductInfo.productName);
-			explore.show3D(null , baseModel, scope.taskObject.baseUUID, jsonProductInfo);
-			explore.play();
+
+				var album2DImgs = [];
+				var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/Products/" + jsonProductInfo.productUUID + "/";
+				jsonProductInfo.album2DImgs.forEach(function(imgItem){
+					album2DImgs.push({ imgURL: baseURL + imgItem.productImgFileName , imgDesc: imgItem.productImgDesc });
+				});
+
+				var explore = new iTopoStandPlatform.Explore(jsonProductInfo.productName);
+				console.log(album2DImgs);
+				explore.show3D(null , baseModel, album2DImgs);
+				explore.play();
+
 		}) ;
 	}
 }

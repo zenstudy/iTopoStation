@@ -3,7 +3,6 @@ import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
-import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 
