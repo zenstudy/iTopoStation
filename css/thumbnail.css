@@ -201,7 +201,7 @@
 
 #TaskViewTopMenu {
 	position: absolute;
-	top: 50px;
+	top: 1px;
 	width: 100%;
 	text-align: center;
 }
@@ -226,7 +226,7 @@
 
 #TaskViewBottomMenu {
 	position: absolute;
-	bottom: 50px;
+	bottom: 1px;
 	width: 100%;
 	text-align: center;
 }
@@ -245,6 +245,62 @@
 }
 
 #TaskViewBottomMenu input:active {
+	color: #000000;
+	background-color: rgba(0, 255, 255, 0.75);
+}
+
+#TaskViewLeftMenu {
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	height: 100%;
+	text-align: center;
+	writing-mode: vertical-lr;/*从左向右 从右向左是 writing-mode: vertical-rl;*/  
+	writing-mode: tb-lr;/*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/ 
+}
+
+#TaskViewLeftMenu input {
+	color: rgba(127, 255, 255, 0.75);
+	background: transparent;
+	outline: 1px solid rgba(127, 255, 255, 0.75);
+	border: 0px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+#TaskViewLeftMenu input:hover {
+	background-color: rgba(0, 255, 255, 0.5);
+}
+
+#TaskViewLeftMenu input:active {
+	color: #000000;
+	background-color: rgba(0, 255, 255, 0.75);
+}
+
+#TaskViewRightMenu {
+	position: absolute;
+	right: 1px;
+	top: 1px;
+	height: 100%;
+	text-align: center;
+	writing-mode: vertical-lr;/*从左向右 从右向左是 writing-mode: vertical-rl;*/  
+    writing-mode: tb-lr;/*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/ 
+}
+
+#TaskViewRightMenu input {
+	color: rgba(127, 255, 255, 0.75);
+	background: transparent;
+	outline: 1px solid rgba(127, 255, 255, 0.75);
+	border: 0px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+#TaskViewRightMenu input:hover {
+	background-color: rgba(0, 255, 255, 0.5);
+}
+
+#TaskViewRightMenu input:active {
 	color: #000000;
 	background-color: rgba(0, 255, 255, 0.75);
 }

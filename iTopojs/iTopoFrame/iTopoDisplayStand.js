@@ -1,8 +1,5 @@
 import { UIElement, UIPanel, UIText } from '../iTopoUI.js';
 
-import { SetScriptValueCommand } from '../../js/commands/SetScriptValueCommand.js';
-import { SetMaterialValueCommand } from '../../js/commands/SetMaterialValueCommand.js';
-
 function iTopoDisplayStand( dispalyContext ) {
 	var scope = this;
 

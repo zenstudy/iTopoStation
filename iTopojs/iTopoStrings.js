@@ -199,6 +199,10 @@ function iTopoStrings( config ) {
 			'iTopoTaskDashboard3D/TaskViewBottomMenu/Grid' :'阵列样式',
 			'iTopoTaskDashboard3D/TaskViewBottomMenu/random' :'随机样式',
 
+			'iTopoStandPlatform/TaskViewTopMenu/2DAlbum': '2D产品图集',
+			'iTopoStandPlatform/TaskViewTopMenu/3DModel': '3D产品模型',
+			'iTopoStandPlatform/TaskViewTopMenu/TDB': '待定',
+
 			'taskbar/Header': '任务描述',
 			'taskbar/Header/taskUUID': '任务UUID',
 			'taskbar/Header/taskTitle': '任务标题',

@@ -2,7 +2,7 @@ import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, U
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
-import { iTopo3dExplore } from '../iTopoFrame/iTopo3dExplore.js';
+import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
@@ -63,7 +63,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 		var originPosition = new THREE.Vector3();
 		editor.resourceTracker.loadSmallCityModel(originPosition, 1, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ),
-		 	object , scope.onClickThumbnail);
+		 	object , scope.onClickSkyCastaleModel);
 		}) ;
 
 		editor.resourceTracker.loadTreeModel(originPosition, 1, function(object){
@@ -126,34 +126,20 @@ iTopoObjectSkyCastleHeader.prototype = {
 		}
 	},
 
-	onClickThumbnail: function() {// this对应一个item
+	onClickSkyCastaleModel: function() {// this对应一个item
+
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/skyCastle/Header/Outlook' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-		displayStand.container.setPosition('absolate');
 
 		var originPosition = new THREE.Vector3();
+		var title = editor.strings.getKey( 'sidebar/skyCastle/Header/Outlook' ) ;
 		editor.resourceTracker.loadSmallCityModel(originPosition, 30, function(baseModel){
 
-			var explore = new iTopo3dExplore.Explore();
+			var explore = new iTopoStandPlatform.Explore(title);
 			explore.show3D(null , baseModel);
-			explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
 			explore.play();
 
-			displayStand.container.dom.appendChild( explore.dom );
-			displayStand.container.dom.addEventListener( 'resize', function () {
-			 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight() );
-			} );
-
-			displayStand.closeBtn.dom.addEventListener('click', function() {
-				explore.stop();
-				explore.dispose();
-				explore = null;
-			});
-
 		}) ;
+
 	},
 
 	onTaskCardsClassCSS3D: function() {

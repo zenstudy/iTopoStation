@@ -1,52 +1,91 @@
 [{
-	"starUUID": "8E59BDD4-25EE-4E90-A612-4537AFAA80FF",
-	"starType": "iTopoType/TaskObject/Star",
+	"productUUID": "8E59BDD4-25EE-4E90-A612-4537AFAA80FF",
 	"productName": "product1",
-	"gender": "female",
-	"cellPhone": 13688888888,
-	"password": "lightstar",
-	"lng": 0,
-	"lat": 90,
-	"starValue":300,
-	"starWish": "star wish",
-	"wxQRcode": "",
-	"teamJoined":"",
-	"userRegisteredBases": ["A0F9D623-397B-4ADB-9DF2-300EBAB91208", "E8E62319-D53E-4698-BD24-88DE59B2626B",
-		"AE55F7C6-A685-4422-8947-B8008A507B67", "1E456DBC-4E47-4076-9F48-CD9A20D0E1FC"],
-	"fellowerUUIDs": ["8E59BDD4-25EE-4E90-A612-4537AFAA80FF", "5E59BDD4-25EE-4E90-A612-4537AFAA80FE",
-		"8858BDD4-25EE-4E90-A612-4537AFAA80FE"]
+	"productModelURL":"./iTopoObjects/00_Default_Resource/boomBox/glTF-Binary/BoomBox.glb",
+	"Album2DImgs": [{
+			"productImgUUID": "c0984864-6ee2-42fe-b9c2-dcf5dbbcc63c",
+			"productImgDesc": "甘露酵素1"
+		},
+		{
+			"productImgUUID": "2be79eeb-d6ed-4a2f-822c-2c4f2171d510",
+			"productImgDesc": "甘露酵素2"
+		},
+		{
+			"productImgUUID": "5ee18f21-3779-4322-b46e-ae283f8b98b3",
+			"productImgDesc": "甘露酵素3"
+		},
+		{
+			"productImgUUID": "9bc9d83e-6975-49b7-a191-3adb2a0f4961",
+			"productImgDesc": "甘露酵素4"
+		},
+		{
+			"productImgUUID": "0f9bb19e-e37f-4425-aa7e-25b42f222db2",
+			"productImgDesc": "甘露酵素5"
+		},
+		{
+			"productImgUUID": "43671efb-3f5c-4bde-b223-1598ff94cbea",
+			"productImgDesc": "甘露酵素6"
+		},
+		{
+			"productImgUUID": "13dc56ff-f6a7-4db4-8cb9-7fb91a36346a",
+			"productImgDesc": "甘露酵素7"
+		},
+		{
+			"productImgUUID": "b510e507-708a-4258-8fb1-0ed71109567a",
+			"productImgDesc": "甘露酵素8"
+		},
+		{
+			"productImgUUID": "a508bc59-577a-497b-bd50-0b0903bccc73",
+			"productImgDesc": "紫苏泡无筋姜1"
+		},
+		{
+			"productImgUUID": "65363296-f221-47ea-a96e-9756638f73bc",
+			"productImgDesc": "紫苏泡无筋姜2"
+		}
+	]
 },{
-	"starUUID": "5E59BDD4-25EE-4E90-A612-4537AFAA80FE",
-	"starType": "iTopoType/TaskObject/Star",
+	"productUUID": "5E59BDD4-25EE-4E90-A612-4537AFAA80FE",
 	"productName": "product2",
-	"gender": "male",
-	"cellPhone": 13688888888,
-	"password": "lightstar",
-	"lng": 0,
-	"lat": 0,
-	"starValue":200,
-	"starWish": "star wish",
-	"wxQRcode": "",
-	"teamJoined":"",
-	"userRegisteredBases": ["A0F9D623-397B-4ADB-9DF2-300EBAB91208", "E8E62319-D53E-4698-BD24-88DE59B2626B",
-		"AE55F7C6-A685-4422-8947-B8008A507B67", "1E456DBC-4E47-4076-9F48-CD9A20D0E1FC"],
-	"fellowerUUIDs": ["8E59BDD4-25EE-4E90-A612-4537AFAA80FF", "5E59BDD4-25EE-4E90-A612-4537AFAA80FE",
-		"8858BDD4-25EE-4E90-A612-4537AFAA80FE"]
-},{
-	"starUUID": "8858BDD4-25EE-4E90-A612-4537AFAA80FE",
-	"starType": "iTopoType/TaskObject/Star",
-	"productName": "product3",
-	"gender": "female",
-	"cellPhone": 13688888888,
-	"password": "lightstar",
-	"lng": 0,
-	"lat": -90,
-	"starValue":100,
-	"starWish": "star wish",
-	"wxQRcode": "",
-	"teamJoined":"",
-	"userRegisteredBases": ["A0F9D623-397B-4ADB-9DF2-300EBAB91208", "E8E62319-D53E-4698-BD24-88DE59B2626B",
-		"AE55F7C6-A685-4422-8947-B8008A507B67", "1E456DBC-4E47-4076-9F48-CD9A20D0E1FC"],
-	"fellowerUUIDs": ["8E59BDD4-25EE-4E90-A612-4537AFAA80FF", "5E59BDD4-25EE-4E90-A612-4537AFAA80FE",
-		"8858BDD4-25EE-4E90-A612-4537AFAA80FE"]
+	"productModelURL":"./iTopoObjects/00_Default_Resource/LittlestTokyo/LittlestTokyo.glb",
+	"Album2DImgs": [{
+			"productImgUUID": "c0984864-6ee2-42fe-b9c2-dcf5dbbcc63c",
+			"productImgDesc": "甘露酵素1"
+		},
+		{
+			"productImgUUID": "2be79eeb-d6ed-4a2f-822c-2c4f2171d510",
+			"productImgDesc": "甘露酵素2"
+		},
+		{
+			"productImgUUID": "5ee18f21-3779-4322-b46e-ae283f8b98b3",
+			"productImgDesc": "甘露酵素3"
+		},
+		{
+			"productImgUUID": "9bc9d83e-6975-49b7-a191-3adb2a0f4961",
+			"productImgDesc": "甘露酵素4"
+		},
+		{
+			"productImgUUID": "0f9bb19e-e37f-4425-aa7e-25b42f222db2",
+			"productImgDesc": "甘露酵素5"
+		},
+		{
+			"productImgUUID": "43671efb-3f5c-4bde-b223-1598ff94cbea",
+			"productImgDesc": "甘露酵素6"
+		},
+		{
+			"productImgUUID": "13dc56ff-f6a7-4db4-8cb9-7fb91a36346a",
+			"productImgDesc": "甘露酵素7"
+		},
+		{
+			"productImgUUID": "b510e507-708a-4258-8fb1-0ed71109567a",
+			"productImgDesc": "甘露酵素8"
+		},
+		{
+			"productImgUUID": "a508bc59-577a-497b-bd50-0b0903bccc73",
+			"productImgDesc": "紫苏泡无筋姜1"
+		},
+		{
+			"productImgUUID": "65363296-f221-47ea-a96e-9756638f73bc",
+			"productImgDesc": "紫苏泡无筋姜2"
+		}
+	]
 }]

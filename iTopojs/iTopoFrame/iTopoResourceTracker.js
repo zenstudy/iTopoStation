@@ -217,6 +217,55 @@ iTopoResourceTracker.prototype = {
 			fnAfterLoadModel(baseModel);
 		});
 	},
+
+	loadDefaultProduct: function(originPosition, modelSize, fnAfterLoadProduct) {
+		var modelURL = "./iTopoObjects/00_Default_Resource/boomBox/glTF-Binary/BoomBox.glb";
+		var gltfLoader = new GLTFLoader();
+		gltfLoader.load( modelURL, function ( gltf ) {
+			var boomBox = gltf.scene;
+			boomBox.traverse( function ( object ) {
+				if ( object.isMesh ) {
+					//object.material.envMap = reflectionCube;
+					//object.material = material;
+					object.geometry.rotateY( - Math.PI );
+					object.castShadow = true;
+				}
+			} );
+
+			var box = new THREE.Box3().setFromObject(boomBox);
+			var scale = modelSize / Math.max(box.max.x, box.max.y, box.max.z );
+			boomBox.scale.set(scale,scale,scale);
+			boomBox.position.copy(originPosition);
+			//boomBox.add( positionalAudio );//可以添加背景音乐
+
+			fnAfterLoadProduct(boomBox);
+		});
+	},
+
+	loadProductModel: function(modelURL,originPosition, modelSize, fnAfterLoadProduct) {
+		var gltfLoader = new GLTFLoader();
+		gltfLoader.setDRACOLoader(this.dracoLoader);
+		gltfLoader.load( modelURL, function ( gltf ) {
+			var boomBox = gltf.scene;
+			boomBox.traverse( function ( object ) {
+				if ( object.isMesh ) {
+					//object.material.envMap = reflectionCube;
+					//object.material = material;
+					object.geometry.rotateY( - Math.PI );
+					object.castShadow = true;
+				}
+			} );
+
+			var box = new THREE.Box3().setFromObject(boomBox);
+			var scale = modelSize / Math.max(box.max.x, box.max.y, box.max.z );
+			boomBox.scale.set(scale,scale,scale);
+			boomBox.position.copy(originPosition);
+			//boomBox.add( positionalAudio );//可以添加背景音乐
+
+			fnAfterLoadProduct(boomBox);
+		});
+	},
+
 	loadiTopoUser: function(gender, originPosition, modelSize, fnAfterLoadModel) {
 		var female = {
 			mtl: './iTopoObjects/00_Default_Resource/female02/female02.mtl',
@@ -246,6 +295,7 @@ iTopoResourceTracker.prototype = {
 			});
 		});
 	},
+
 	loadOutlook: function( objectType, title) {
 		var displayStand = new iTopoDisplayStand(title);
 		document.body.appendChild(displayStand.container.dom);
@@ -323,7 +373,7 @@ iTopoResourceTracker.prototype = {
 		displayStand.container.dom.addEventListener('resize', function() {
 			explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 		});
-	}
+	},
 
 	// iTopoBaseHelper.prototype.loadiTopoObjModel = function() {
 	// 	baseModel = {};

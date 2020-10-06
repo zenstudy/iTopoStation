@@ -42,7 +42,6 @@ var iTopoTaskDashboard3D = {
 		//renderer.domElement.id = 'taskView';
 		scope.dom.appendChild( renderer.domElement );
 
-
 		scope.width = 500;
 		scope.height = 500;
 
@@ -103,8 +102,8 @@ var iTopoTaskDashboard3D = {
 
 		this.show3D = function ( ) {
 
-			this.createTaskMenu();
-			this.createLayoutMenu();
+			this.createTopMenu();
+			this.createBottomMenu();
 
 			this.generateTaskLayouts();
 			this.transformWithOutAnimate( this.targets.table, 2000 );
@@ -165,7 +164,7 @@ var iTopoTaskDashboard3D = {
 				.start();
 		};
 
-		this.createTaskMenu = function(){
+		this.createTopMenu = function(){
 			var scope = this;
 			var css3dMenu = document.createElement( 'div' );
 			css3dMenu.id = 'TaskViewTopMenu';
@@ -174,7 +173,7 @@ var iTopoTaskDashboard3D = {
 			tableButton.type="button";
 			tableButton.value = editor.strings.getKey( 'iTopoTaskDashboard3D/TaskViewTopMenu/AddTask' );
 			tableButton.addEventListener('click', function(){
-				
+
 				var taskObject = {
 					objectUUID : editor.selected.userData.objectUUID,
 					taskUUID:THREE.MathUtils.generateUUID(),
@@ -205,7 +204,7 @@ var iTopoTaskDashboard3D = {
 			scope.dom.appendChild(css3dMenu);
 		};
 
-		this.createLayoutMenu = function(){
+		this.createBottomMenu = function(){
 			var scope =this;
 			var css3dMenu = document.createElement( 'div' );
 			css3dMenu.id = 'TaskViewBottomMenu';
