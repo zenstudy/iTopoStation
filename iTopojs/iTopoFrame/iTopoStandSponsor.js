@@ -1,6 +1,7 @@
 import { iTopoOrbitControls } from './iTopoOrbitControls.js';
-import { UIPanel } from '../iTopoUI.js';
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
+import { iTopoEarthBuilder } from '../iTopoEarthBuilder.js';
+import { UIPanel } from '../iTopoUI.js';
 
 var iTopoStandSponsor = {
 
@@ -37,7 +38,7 @@ var iTopoStandSponsor = {
 		var onUpPosition = new THREE.Vector2();
 
 
-		this.show3D = function (background_texture, sponsorInfo ) {
+		this.show3D = function (background_texture, album2DImgs ) {
 
 			scene = new THREE.Scene();
 			scene.background = background_texture;
@@ -61,8 +62,8 @@ var iTopoStandSponsor = {
 			this.setCamera(camera);
 
 			controls = new iTopoOrbitControls(camera, renderer.domElement);
-			controls.minDistance = 2;
-			controls.maxDistance = 600;
+			controls.minDistance = 1;
+			controls.maxDistance = 888;
 			controls.enablePan = true;
 			controls.enableZoom = true;
 			renderer.domElement.removeAttribute("tabindex");
@@ -87,56 +88,20 @@ var iTopoStandSponsor = {
 
 			dispatch( events.init, arguments );
 
-			this.sponsorInfo = sponsorInfo;
+			scope.album2DImgs = album2DImgs;
 
 			scope.create2DStandContainer();
 		};
 
 		scope.create2DStandContainer = function(){
 
-			var standContainerInfo = {
-				radius: 300,
-				dividCount: scope.sponsorInfo.length,
-				depth: 5,
-				segmentsCount: 600,
-				height: 150,
-			};
-
-			var boxWidth = standContainerInfo.radius*2*Math.PI / standContainerInfo.dividCount * (standContainerInfo.dividCount-1)/standContainerInfo.dividCount;
-
-			var group = new THREE.Group();
-
-			var geometry = new THREE.BoxGeometry(boxWidth, standContainerInfo.height, standContainerInfo.depth, standContainerInfo.segmentsCount, 1);
-			//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
-			geometry.vertices.forEach(function(item) {
-				item.z += Math.sqrt(standContainerInfo.radius*standContainerInfo.radius - item.x * item.x) - standContainerInfo.radius;
-			});
-
-			var loader =  new THREE.TextureLoader();
-
-			for( var i= 0; i < standContainerInfo.dividCount; ++i ){
-				var imgURL = "./iTopoObjects/"  + scope.sponsorInfo[i].objectUUID + "/myiTopoLogo.jpg";
-				console.log(imgURL);
-
-				var textureImg =loader.load(imgURL);
-				var xxximg = textureImg.image ;
-
-				var material = new THREE.MeshBasicMaterial({
-					map: textureImg,
-					side: THREE.FrontSide,//THREE.DoubleSide, //
-				});
-
-				var mesh = new THREE.Mesh( geometry,material );
-				var x=standContainerInfo.radius*Math.sin(2*Math.PI*i/standContainerInfo.dividCount);
-				var y=0;
-				var z=standContainerInfo.radius*Math.cos(2*Math.PI*i/standContainerInfo.dividCount);
-				mesh.position.set( x, y, z);
-				// mesh.rotation.set( 0, 0, 0 );
-				// mesh.scale.set( 1, 1, 1 );
-				mesh.rotateY(Math.PI*2*i/standContainerInfo.dividCount);
-				mesh.userData = scope.sponsorInfo[i];
-				scope.scene.add( mesh );
+			if (scope.album2DImgs !== null && scope.album2DImgs !== undefined) {
+				var albumMeshObjects = iTopoEarthBuilder.create2DStandContainer(scope.album2DImgs);
+				albumMeshObjects.forEach(function(mesh){
+					scene.add(mesh);
+				})
 			}
+
 		};
 
 		this.setCamera = function ( value ) {
@@ -188,7 +153,7 @@ var iTopoStandSponsor = {
 			} catch ( e ) {
 				console.error( ( e.message || e ), ( e.stack || "" ) );
 			}
-			console.log('animate..........');
+			//console.log('animate..........');
 			//console.log(controls.noRotate+ ',' + controls.noZoom + ',' + controls.noPan);
 			controls.update();
 			scope.scene.rotation.y += 0.001;

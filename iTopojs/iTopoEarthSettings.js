@@ -51,5 +51,9 @@ iTopoEarthSettings = {
 	markingSymbolColor: '#004cff',
 	markingPlaneColor: '#ffffff',
 	topicFontSize:60,
-	markingFontSize:5
+	markingFontSize:5,
+
+	//展示空间最大包围盒的长和宽
+	standMaxBoxW: 800,
+	standMaxBoxH: 800,
 }

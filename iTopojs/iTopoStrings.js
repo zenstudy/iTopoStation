@@ -13,12 +13,12 @@ function iTopoStrings( config ) {
 			'iTopoType/TaskObject/Star':'星体',
 			'iTopoType/TaskObject/EcologicalFarm':'生态基地',
 			'iTopoType/TaskObject/SharedCanteen':'共享食堂',
-			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球事务大厅',
+			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球协作中心',
 			'iTopoType/TaskObject/iTopoInnerEarth':'地心门户',
 			'iTopoType/TaskObject/iTopoLunarMoon': '月球',
 
 			'menubar/iTopoEarthHub': '共享地球首页',
-			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球事务大厅',
+			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球协作中心',
 			'menubar/iTopoEarthHub/iTopoInnerEarth' : '地心门户',
 			'menubar/iTopoEarthHub/iTopoLunarMoon' : '月球',
 
@@ -60,10 +60,10 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/frametime' : '帧数',
 
 			'sidebar/skyCastle/Header' : '事务大厅',
-			'sidebar/skyCastle/Header/Outlook' : '事务大厅模型空间',
-			'sidebar/skyCastle/Header/iTopoTaskCards' : '公众任务空间',
+			'sidebar/skyCastle/Header/Outlook' : '协作中心模型空间',
+			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务协作空间',
 			'sidebar/SkyCastle/Header/Title': '名称',
-			'sidebar/SkyCastle/Header/castleUUID': '事务大厅UUID',
+			'sidebar/SkyCastle/Header/castleUUID': '协作中心UUID',
 			'sidebar/skyCastle/Header/announcement' : '公告',
 
 			'sidebar/skyCastle/iTopoItems' : '详情',
@@ -83,7 +83,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/InnerEarth/Header':'地心门户',
 			'sidebar/InnerEarth/Header/Outlook':'地心概貌',
-			'sidebar/InnerEarth/Header/iTopoTaskCards':'任务空间',
+			'sidebar/InnerEarth/Header/iTopoTaskCards':'任务协作空间',
 			'sidebar/InnerEarth/Header/innerEarthUUID':'地心UUID',
 			'sidebar/InnerEarth/Header/Title':'名称',
 
@@ -92,7 +92,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/StarUser/Header': '星民信息',
 			'sidebar/StarUser/Header/Outlook': '头像',
-			'sidebar/StarUser/Header/iTopoTaskCards': '公开的任务',
+			'sidebar/StarUser/Header/iTopoTaskCards': '任务协作空间',
 			'sidebar/starUser/Header/starUUID':'starUUID',
 			'sidebar/starUser/Header/gender':'性别',
 			'sidebar/starUser/Header/cellPhone':'手机',
@@ -106,10 +106,10 @@ function iTopoStrings( config ) {
 
 			'sidebar/EcologicalFarm/Header' : '生态基地',
 			'sidebar/EcologicalFarm/Header/siteOutook': '农场概貌',
-			'sidebar/EcologicalFarm/Header/iTopoTaskCards': '任务空间',
+			'sidebar/EcologicalFarm/Header/iTopoTaskCards': '任务协作空间',
 			'sidebar/EcologicalFarm/Header/newUUID':'换UUID',
 			'sidebar/EcologicalFarm/Header/baseUUID':'基地UUID',
-			'sidebar/EcologicalFarm/Header/taskType' : '任务类型',
+			'sidebar/EcologicalFarm/Header/taskType' : '类型',
 			'sidebar/EcologicalFarm/Header/longitude' : '经度',
 			'sidebar/EcologicalFarm/Header/latitude' : '纬度',
 			'sidebar/EcologicalFarm/Header/lightWish' : '基地心愿',
@@ -123,7 +123,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/SharedCanteen/Header':'共享食堂',
 			'sidebar/SharedCanteen/Header/outook': '食堂外观',
-			'sidebar/SharedCanteen/Header/iTopoTaskCards': '任务空间',
+			'sidebar/SharedCanteen/Header/iTopoTaskCards': '任务协作空间',
 			'sidebar/SharedCanteen/Header/newUUID':'换UUID',
 			'sidebar/SharedCanteen/Header/baseUUID':'基地UUID',
 			'sidebar/SharedCanteen/Header/taskType' : '类型',

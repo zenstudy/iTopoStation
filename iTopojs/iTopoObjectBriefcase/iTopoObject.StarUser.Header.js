@@ -11,7 +11,7 @@ import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
-
+import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 
 function iTopoObjectStarUserHeader(editor) {
 	var scope = this;
@@ -82,7 +82,8 @@ function iTopoObjectStarUserHeader(editor) {
 		var containerAnnouncement = new UIPanel();
 		containerAnnouncement.setTop('320px');
 		containerAnnouncement.setWidth('280px');
-		containerAnnouncement.setHeight('380px');
+		containerAnnouncement.setHeight('280px');
+		containerAnnouncement.setOverflow('auto');
 		container.add(containerAnnouncement);
 
 		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
@@ -218,9 +219,8 @@ iTopoObjectStarUserHeader.prototype = {
 
 			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
 
-				var statureHeight = 800;
-				var originPosition = new THREE.Vector3(0,-statureHeight/2,0);
-				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, statureHeight, function(baseModel){
+				var originPosition = new THREE.Vector3(0,-iTopoEarthSettings.standMaxBoxH/2,0);
+				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, iTopoEarthSettings.standMaxBoxH, function(baseModel){
 
 					var album2DImgs = [];
 					var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/outlook/";

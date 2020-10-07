@@ -6,6 +6,7 @@ import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
+import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 
 function iTopoObjectSkyCastleHeader(editor) {
 	var scope = this;
@@ -76,7 +77,8 @@ function iTopoObjectSkyCastleHeader(editor) {
 		var containerAnnouncement = new UIPanel();
 		containerAnnouncement.setTop('320px');
 		containerAnnouncement.setWidth('280px');
-		containerAnnouncement.setHeight('400px');
+		containerAnnouncement.setHeight('280px');
+		containerAnnouncement.setOverflow('auto');
 		container.add(containerAnnouncement);
 
 		var title = editor.strings.getKey( 'sidebar/skyCastle/Header/announcement' ) ;
@@ -130,10 +132,10 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 		var scope = this;
 		var skyCastleinfo=iTopoEarthModel.SkyCastle.info;
-
-		var originPosition = new THREE.Vector3();
 		var title = editor.strings.getKey( 'sidebar/skyCastle/Header/Outlook' ) ;
-		editor.resourceTracker.loadSmallCityModel(originPosition, 280, function(baseModel){
+		var originPosition = new THREE.Vector3();
+		originPosition.set(0.15*iTopoEarthSettings.standMaxBoxW,0,0.16*iTopoEarthSettings.standMaxBoxW);
+		editor.resourceTracker.loadSmallCityModel(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
 
 			editor.stationDB.fetchiTopoSkyCastleOutlook(skyCastleinfo.castleUUID,function(outlookData){
 

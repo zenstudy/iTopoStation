@@ -8,7 +8,7 @@ class iTopoSkyCastle {
 
 		this.info = {
 			castleUUID: '3861590E-CB58-48BA-977C-9F9F107B61AD',
-			title: '共享地球事务中心',
+			title: '共享地球协作中心',
 			lng: 0,
 			lat: 90,
 			size: 100,

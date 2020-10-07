@@ -6,6 +6,7 @@ import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js'
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
+import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 
 function iTopoObjectEcologicalFarmHeader(editor) {
 	var scope = this;
@@ -81,7 +82,8 @@ function iTopoObjectEcologicalFarmHeader(editor) {
 		var containerAnnouncement = new UIPanel();
 		containerAnnouncement.setTop('320px');
 		containerAnnouncement.setWidth('280px');
-		containerAnnouncement.setHeight('380px');
+		containerAnnouncement.setHeight('280px');
+		containerAnnouncement.setOverflow('auto');
 		container.add(containerAnnouncement);
 
 		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/life' ) ;
@@ -228,7 +230,8 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
 
 				var originPosition = new THREE.Vector3();
-				editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 300, function(baseModel){
+				editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm",
+					originPosition,iTopoEarthSettings.standMaxBoxW/3, function(baseModel){
 
 					var album2DImgs = [];
 					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/outlook/";
@@ -250,37 +253,37 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 	},
 
 	onTaskCardsClassCSS3D: function() {
-	
+
 		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Todo",function(jsonTodo){
 			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"InProgress",function(jsonInProgress){
 				editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Done",function(jsonDone){
-	
+
 					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
 					var displayStand = new iTopoDisplayStand(title);
 					document.body.appendChild(displayStand.container.dom);
 					displayStand.container.setDisplay( 'block' );
 					displayStand.container.setPosition('absolate');
-	
+
 					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
 					explore.initialize();
-	
+
 					for (var i = 0; i < jsonTodo.length; i++) {
 						explore.appendCardItem(jsonTodo[i]);
 					}
-	
+
 					for (var i = 0; i < jsonInProgress.length; i++) {
 						explore.appendCardItem(jsonInProgress[i]);
 					}
-	
+
 					for (var i = 0; i < jsonDone.length; i++) {
 						explore.appendCardItem(jsonDone[i]);
 					}
-	
+
 					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-	
+
 					explore.show3D();
 					explore.play();
-	
+
 					displayStand.container.dom.addEventListener( 'resize', function () {
 						explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 					});
@@ -289,14 +292,14 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 						explore.dispose();
 						explore = null;
 					});
-	
+
 					var taskBriefcase = new iTopoTaskBriefcase( editor );
 					displayStand.container.dom.appendChild( taskBriefcase.dom );
-	
+
 				})
 			})
 		});
-	
+
 	},
 
 	getValue: function () {

@@ -37,14 +37,26 @@ var iTopoSpriteSponsor = function ( editor ) {
 		sponsorsInfo.forEach(function(sponsorInfo) {
 			sponsorInfo.teamMemberUUIDs.forEach( function(teamMemberUUID){
 				if( tmpArray.indexOf(teamMemberUUID) < 0){
-					tmpSponsors.push({sponsorUnit: 'starUser' ,objectUUID : teamMemberUUID});
+					var imgURL = "./iTopoObjects/" + teamMemberUUID + "/myiTopoLogo.jpg";
+					tmpSponsors.push({
+						sponsorUnit: 'starUser',
+						objectUUID : teamMemberUUID,
+						imgURL: imgURL,
+						imgDesc: teamMemberUUID,
+						});
 					tmpArray.push(teamMemberUUID);
 				}
 			})
 
 			sponsorInfo.sponsoredOrganizations.forEach( function(sponsoredOrganizationUUID){
 				if( tmpArray.indexOf( sponsoredOrganizationUUID ) < 0){
-					tmpSponsors.push( {sponsorUnit: 'team' ,objectUUID : sponsoredOrganizationUUID} );
+					var imgURL = "./iTopoObjects/" + sponsoredOrganizationUUID + "/myiTopoLogo.jpg";
+					tmpSponsors.push( {
+						sponsorUnit: 'team',
+						objectUUID : sponsoredOrganizationUUID,
+						imgURL: imgURL,
+						imgDesc: sponsoredOrganizationUUID,
+						});
 					tmpArray.push(sponsoredOrganizationUUID);
 				}
 			})
