@@ -376,11 +376,12 @@ iTopoResourceTracker.prototype = {
 		var texturePath;
 		if(objectType === "iTopoType/TaskObject/EcologicalFarm"){
 			var texturePaths = [
-				'iTopoObjects/00_Default_Resource/FishPond/',
+				'iTopoObjects/00_Default_Resource/cosmos/',
 				'iTopoObjects/00_Default_Resource/Footballfield/',
-				'iTopoObjects/00_Default_Resource/Park/'
+				'iTopoObjects/00_Default_Resource/Park/',
+				'iTopoObjects/00_Default_Resource/FishPond/',
 			];
-			var index = random(0, 2);
+			var index = random(0, 3);
 			texturePath = texturePaths[index] ;
 		} else if(objectType === "iTopoType/TaskObject/SharedCanteen"){
 			texturePath = 'iTopoObjects/00_Default_Resource/computer-history-museum/';

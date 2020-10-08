@@ -25,35 +25,63 @@ var iTopoStandPlatform = {
 			scope = null;
 		});
 
-		var renderer = new THREE.WebGLRenderer({
-			alpha: true,
-			antialias: true
-		});
-		renderer.setPixelRatio(this.width / this.height);
-		renderer.setSize(this.width, this.height);
-		//renderer.outputEncoding = THREE.sRGBEncoding;
-		renderer.setClearColor('#86c9c9');
+		var camera, controls, scene, renderer, events = {};
 
-		// var project = json.project;
-		// if ( project.vr !== undefined ) renderer.xr.enabled = project.vr;
-		// if ( project.shadows !== undefined ) renderer.shadowMap.enabled = project.shadows;
-		// if ( project.shadowType !== undefined ) renderer.shadowMap.type = project.shadowType;
-		// if ( project.toneMapping !== undefined ) renderer.toneMapping = project.toneMapping;
-		// if ( project.toneMappingExposure !== undefined ) renderer.toneMappingExposure = project.toneMappingExposure;
-		// if ( project.physicallyCorrectLights !== undefined ) renderer.physicallyCorrectLights = project.physicallyCorrectLights;
+		/* 渲染器 */
+		function initRender() {
+			renderer = new THREE.WebGLRenderer({
+				alpha: true,
+				antialias: true
+			});
+			renderer.setPixelRatio(scope.width / scope.height);
+			renderer.setSize(scope.width, scope.height);
+			//renderer.outputEncoding = THREE.sRGBEncoding;
+			renderer.setClearColor('#86c9c9');
+			renderer.setClearAlpha(0.5);
 
-		var camera, controls, scene;
+			// var project = json.project;
+			// if ( project.vr !== undefined ) renderer.xr.enabled = project.vr;
+			// if ( project.shadows !== undefined ) renderer.shadowMap.enabled = project.shadows;
+			// if ( project.shadowType !== undefined ) renderer.shadowMap.type = project.shadowType;
+			// if ( project.toneMapping !== undefined ) renderer.toneMapping = project.toneMapping;
+			// if ( project.toneMappingExposure !== undefined ) renderer.toneMappingExposure = project.toneMappingExposure;
+			// if ( project.physicallyCorrectLights !== undefined ) renderer.physicallyCorrectLights = project.physicallyCorrectLights;
+		}
+
+		initRender();
+
 		var vrButton = VRButton.createButton(renderer);
-		var events = {};
+
 		var onDownPosition = new THREE.Vector2();
 		var onUpPosition = new THREE.Vector2();
 
 		var container = new UIPanel();
 		container.setPosition('absolute');
+	//	container.setOverflow('hidden');
 
 		displayStand.container.dom.appendChild(container.dom);
 		scope.dom = container.dom;
 		scope.dom.appendChild(renderer.domElement);
+
+		/* 灯光 */
+		function initLight() {
+			scene.add(new THREE.AmbientLight(0x0c0c0c));
+
+			let spotLight = new THREE.SpotLight(0xffffff);
+			spotLight.position.set(-1800, -1800, -1800);
+
+			let spotLight2 = new THREE.SpotLight(0xffffff);
+			spotLight2.position.set(1800, 1800, 1800);
+
+			scene.add(spotLight);
+			scene.add(spotLight2);
+
+			const skyColor = 0xB1E1FF;  // light blue
+			const groundColor = 0xB97A20;  // brownish orange
+			const intensity = 1;
+			const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+			scene.add(light);
+		}
 
 		// album2DImgs = [{imgURL: "" , imgDesc: ""}]
 		this.show3D = function(background_texture, objectModel, album2DImgs) {
@@ -62,18 +90,9 @@ var iTopoStandPlatform = {
 			scene.background = background_texture;
 			this.setScene(scene);
 
-			scene.add(new THREE.AmbientLight(0x0c0c0c));
+			initLight();
 
-			let spotLight = new THREE.SpotLight(0xffffff);
-			spotLight.position.set(-400, -400, -400);
-
-			let spotLight2 = new THREE.SpotLight(0xffffff);
-			spotLight2.position.set(400, 800, 400);
-
-			scene.add(spotLight);
-			scene.add(spotLight2);
-
-			var camera = new THREE.PerspectiveCamera(50, this.width / this.height, 1, 5000);
+			var camera = new THREE.PerspectiveCamera(50, this.width / this.height, 1, 10000);
 			camera.name = 'Camera';
 			camera.position.set(0, 0, 2000);
 			camera.lookAt(0, 0, 0);
@@ -121,7 +140,6 @@ var iTopoStandPlatform = {
 					scene.add(mesh);
 				})
 			}
-
 		};
 
 		this.createTopMenu = function() {

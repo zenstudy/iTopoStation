@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<body>
+
+		<h3>演示如何创建 VIDEO 元素</h3>
+
+		<p>请点击按钮来创建 VIDEO 元素，该元素将播放 .ogg 文件格式的影片。</p>
+
+		<button οnclick="myFunction()">试一下</button>
+
+		<p id="demo"></p>
+
+		<script>
+			function myFunction() {
+				//创建video对象
+				let video = document.createElement('video');
+				video.src = './farm1.mp4'; // 设置视频地址
+				video.autoplay = "autoplay"; //要设置播放
+				document.body.appendChild(video);
+				
+				// var x = document.createElement("VIDEO");
+				// x.setAttribute("width", "320");
+				// x.setAttribute("height", "240");
+				// x.setAttribute("controls", "controls");
+				// x.setAttribute("src", "./farm1.mp4");
+				// document.body.appendChild(x);
+				document.getElementById("demo").innerHTML =
+					"<b>注释：</b>IE 和 Safari 不支持 .ogg 文件格式。这只是一个例子。如需使其在所有浏览器中运行，您应该在 video 元素中使用 source 元素。";
+			}
+			myFunction();
+		</script>
+
+	</body>
+</html>

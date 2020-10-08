@@ -1042,9 +1042,6 @@ iTopoEarthBuilder.create2DStandContainer = function( album2DImgs ) {
 	});
 
 	var loader = new THREE.TextureLoader();
-	// 创建video对象
-	let video = document.createElement('video');
-	video.autoplay = "autoplay"; //要设置播放
 
 	for (var i = 0; i < standContainerInfo.dividCount; ++i) {
 
@@ -1054,13 +1051,30 @@ iTopoEarthBuilder.create2DStandContainer = function( album2DImgs ) {
 
 		var textureImg, material;
 		var pos=album2DImgs[i].imgURL.search(/.mp4/);
-		console.log(pos);
+
 		if( pos >= 0 ){
+			// 创建video对象
+			let video = document.createElement('video');
+			video.id = 'video' + i;
 			video.src = album2DImgs[i].imgURL; // 设置视频地址
+			video.setAttribute("width", "0");
+			video.setAttribute("height", "0");
+			//video.setAttribute("overflow", "hidden");
+			video.style.position = 'absolute';
+			video.autoplay = "true"; //要设置播放
+			video.loop = "true"; //要设置播放
+			video.muted = "true"; //要设置播放
+			document.body.appendChild(video);
+
 			textureImg = new THREE.VideoTexture(video);
+			textureImg.minFilter = THREE.LinearFilter;
+			textureImg.magFilter = THREE.LinearFilter;
+			textureImg.format = THREE.RGBFormat;
+
 			material = new THREE.MeshPhongMaterial({
 			  map: textureImg, // 设置纹理贴图
 			}); //材质对象Material
+
 		} else {
 			textureImg = loader.load(album2DImgs[i].imgURL);
 			material = new THREE.MeshBasicMaterial({
@@ -1098,3 +1112,48 @@ iTopoEarthBuilder.create2DStandContainer = function( album2DImgs ) {
 
 	return albumMeshObjects;
 };
+
+
+iTopoEarthBuilder.createVideoBox = function () {
+
+
+  var planeGeometry = new THREE.BoxGeometry(380, 380, 380);
+  let material = new THREE.MeshPhongMaterial();
+  //material.side = THREE.DoubleSide;
+
+  let mesh = new THREE.Mesh(planeGeometry, material);
+
+  // 创建video对象
+  let video = document.createElement("video");
+  //video.id = 'video';
+  video.src = './iTopoObjects/3861590E-CB58-48BA-977C-9F9F107B61AD/outlook/castle(13).mp4'; // 设置视频地址
+  video.setAttribute("width", "0");
+  video.setAttribute("height", "0");
+  //video.setAttribute("overflow", "hidden");
+  video.style.position = 'absolute';
+  video.autoplay = "true"; //要设置播放
+  video.loop = "true"; //要设置播放
+  video.muted = "true"; //要设置播放
+  document.body.appendChild(video);
+
+  // var video = document.createElement("VIDEO");
+  // video.setAttribute("width", "320");
+  // video.setAttribute("height", "240");
+  // //video.setAttribute("controls", "controls");
+  // video.setAttribute("src", "./farm1.mp4");
+  // 		video.setAttribute("autoplay", "autoplay");
+  // 				video.setAttribute("loop", "loop");
+  // 						video.setAttribute("muted", "muted");
+  // document.body.appendChild(video);
+
+  //let video = document.getElementById('video');
+  console.log(video);
+  let texture = new THREE.VideoTexture(video);
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.format = THREE.RGBFormat;
+
+  material.map = texture;
+
+	return mesh;
+}

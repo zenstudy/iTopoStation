@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" href="../../../three.png">
+    <title>使用videoTexture用视频作为输出纹理</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /*溢出隐藏 */
+            -webkit-background-size: cover;
+            background-size: cover;
+        } 
+
+    </style>
+</head>
+<body>
+
+<script type="module">
+import * as THREE from '../../../build/three.module.js';
+    let scene, camera, renderer;
+    let mouseX = 0, mouseY = 0;
+let planeGeometry;
+    /* 场景 */
+    function initScene() {
+
+        scene = new THREE.Scene();
+
+    }
+
+    /* 相机 */
+    function initCamera() {
+
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+        camera.position.set(0, 0, 800);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    }
+
+    /* 渲染器 */
+    function initRender() {
+
+        renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearAlpha(0.5);
+        document.body.appendChild(renderer.domElement);
+
+    }
+
+    /* 灯光 */
+    function initLight() {
+
+        scene.add(new THREE.AmbientLight(0x0c0c0c));
+
+        let spotLight1 = new THREE.SpotLight(0xffffff);
+        spotLight1.position.set(-400, -400, -400);
+
+        let spotLight2 = new THREE.SpotLight(0xffffff);
+        spotLight2.position.set(400, 400, 400);
+
+        scene.add(spotLight1);
+        scene.add(spotLight2);
+
+    }
+
+    /* 场景中的内容 */
+    function initContent() {
+
+	var standContainerInfo = {
+		radius: 180,
+		dividCount: 8,
+		depth: 50,
+		segmentsCount:100,
+		height: 500,
+	};
+
+        planeGeometry = new THREE.BoxGeometry(300, 300, 5);
+		planeGeometry.vertices.forEach(function(item) {
+			item.z += Math.sqrt(standContainerInfo.radius * standContainerInfo.radius - item.x * item.x) -
+				standContainerInfo.radius;
+		});
+		
+        let material = new THREE.MeshPhongMaterial();
+        //material.side = THREE.DoubleSide;
+
+        let mesh = new THREE.Mesh(planeGeometry, material);
+
+  
+		// 创建video对象
+		let video = document.createElement("video");
+		video.src = './farm1.mp4'; // 设置视频地址
+		//video.id = 'video';
+		video.setAttribute("width", "0");
+		video.setAttribute("height", "0");
+		//video.setAttribute("overflow", "hidden");
+		video.style.position = 'absolute';
+		video.autoplay = "true"; //要设置播放
+		video.loop = "true"; //要设置播放
+		video.muted = "true"; //要设置播放
+		document.body.appendChild(video);
+		
+		// var video = document.createElement("VIDEO");
+		// video.setAttribute("width", "320");
+		// video.setAttribute("height", "240");
+		// //video.setAttribute("controls", "controls");
+		// video.setAttribute("src", "./farm1.mp4");
+		// 		video.setAttribute("autoplay", "autoplay");
+		// 				video.setAttribute("loop", "loop");
+		// 						video.setAttribute("muted", "muted");
+		// document.body.appendChild(video);
+
+		//let video = document.getElementById('video');
+        console.log(video);
+        let texture = new THREE.VideoTexture(video);
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.format = THREE.RGBFormat;
+
+        material.map = texture;
+		
+		      scene.add(mesh);
+
+    }
+
+    /* 窗口变动触发 */
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+    }
+
+    function onDocumentMouseMove(event) {
+
+        mouseX = (event.clientX - window.innerWidth / 2) * 0.01;
+        mouseY = (event.clientY - window.innerHeight / 2) * 0.01;
+
+    }
+
+    /* 数据更新 */
+    function update() {
+
+
+         camera.position.x += (mouseX - camera.position.x) * 0.005;
+         camera.position.y += (-mouseY - camera.position.y) * 0.005;
+        camera.lookAt(scene.position);
+
+
+    }
+
+    /* 初始化 */
+    function init() {
+
+ //       if (!Detector.webgl) Detector.addGetWebGLMessage();
+
+        initScene();
+        initCamera();
+        initRender();
+        initLight();
+        initContent();
+
+        /* 监听事件 */
+        window.addEventListener('resize', onWindowResize, false);
+        document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+    }
+
+    /* 循环渲染 */
+    function animate() {
+		scene.rotation.y += 0.003;
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+        update();
+
+    }
+
+    /* 初始加载 */
+    (function () {
+        console.log("three init start...");
+
+        init();
+        animate();
+
+        console.log("three init end...");
+    })();
+
+</script>
+</body>
+</html>
