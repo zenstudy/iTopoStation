@@ -33,11 +33,11 @@ class iTopoStarUser {
 
 	setStarUserInfo(starUserInfo){
 		this.info = starUserInfo;
-		//console.log('setStarUserInfo');
-		//console.log(starUserInfo);
 	}
 
 	alreadyLoggedIn(){
+		if(this.info === null || this.info === undefined)
+			return false;
 		if(this.info.starUUID === '' )
 			return false;
 		if(this.info.userNickname === '' )

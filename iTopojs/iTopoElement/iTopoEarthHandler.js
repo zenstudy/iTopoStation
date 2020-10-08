@@ -1,5 +1,5 @@
-import { UIElement } from './iTopoUI.js';
-import {iTopoEarthModel} from './iTopoEarthModel.js';
+import { UIElement } from '../iTopoUI.js';
+import {iTopoEarthModel} from '../iTopoEarthModel.js';
 
 function iTopoEarthHandler(editor, sidebar, userBriefcase) {
 

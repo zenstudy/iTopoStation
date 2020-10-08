@@ -1,26 +1,22 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
-function iTopoStorage() {
+function iTopoEarthSociety() {
 
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 
 	if ( indexedDB === undefined ) {
 
 		console.warn( 'Storage: IndexedDB not available.' );
-		return { init: function () {}, get: function () {}, set: function () {}, clear: function () {} };
+		return { initSystem: function () {}, getSystemState: function () {}, setSystemState: function () {}, clearSystemState: function () {} };
 
 	}
 
-	var name = 'iTopoEarth';
+	var name = 'iTopoEarthSociety';
 	var version = 1;
 
 	var database;
 
 	return {
 
-		init: function ( callback ) {
+		initSystem: function ( callback ) {
 
 			var request = indexedDB.open( name, version );
 			request.onupgradeneeded = function ( event ) {
@@ -50,7 +46,7 @@ function iTopoStorage() {
 
 		},
 
-		get: function ( callback ) {
+		getSystemState: function ( callback ) {
 
 			var transaction = database.transaction( [ 'states' ], 'readwrite' );
 			var objectStore = transaction.objectStore( 'states' );
@@ -63,7 +59,7 @@ function iTopoStorage() {
 
 		},
 
-		set: function ( data ) {
+		setSystemState: function ( data ) {
 
 			var start = performance.now();
 
@@ -78,7 +74,7 @@ function iTopoStorage() {
 
 		},
 
-		clear: function () {
+		clearSystemState: function () {
 
 			if ( database === undefined ) return;
 
@@ -90,11 +86,20 @@ function iTopoStorage() {
 				console.log( '[' + /\d\d\:\d\d\:\d\d/.exec( new Date() )[ 0 ] + ']', 'Cleared IndexedDB.' );
 
 			};
+		},
 
-		}
+		loginiTopoEarth: function( fnAfterLogin ){
+
+			editor.starUser.restoreActiveUser(editor);
+				editor.stationDB.fetchUserWithStarUUID(editor.starUser.info.starUUID/*"5E59BDD4-25EE-4E90-A612-4537AFAA80FE"*/, function(starUserInfo){
+				console.log(starUserInfo);
+				editor.starUser.setStarUserInfo(starUserInfo);
+				fnAfterLogin();
+			});
+		},
 
 	};
 
 }
 
-export { iTopoStorage };
+export { iTopoEarthSociety };

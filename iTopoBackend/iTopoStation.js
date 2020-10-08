@@ -308,21 +308,21 @@ app.post('/fetchUserWithStarUUID', function(req, res) {
 	req.addListener("end", function() {
 		var starUUID = JSON.parse(postData);
 		console.log("Received POST data :" + JSON.stringify(starUUID)) ;
-		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;//'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
+		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
 			} else {
 				var allUserInfos = JSON.parse(data);
-
 				for (let i = 0; i < allUserInfos.length; i++) {
 						if(starUUID=== allUserInfos[i].starUUID){
 						res.write(JSON.stringify(allUserInfos[i]));
-						console.log(JSON.stringify(allUserInfos[i]));
 						res.end();
 						break;
 					}
 				}
+				res.json(null);
+				res.end();
 			}
 		});
 	});

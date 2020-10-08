@@ -56,7 +56,7 @@
 			import { iTopoUserBriefcase } from './itopojs/iTopoUserBriefcase/iTopoUserBriefcase.js';
 			import { iTopoMenubar} from './itopojs/iTopoMenubar/iTopoMenubar.js'
 			import { iTopoEarthModel } from './iTopojs/iTopoEarthModel.js';
-			import { iTopoEarthHandler } from './iTopojs/iTopoEarthHandler.js';
+			import { iTopoEarthHandler } from './iTopojs/iTopoElement/iTopoEarthHandler.js';
 			
 			import { VRButton } from '../examples/jsm/webxr/VRButton.js';
 
@@ -70,114 +70,93 @@
 			};
 
 			//
-
 			var editor = new iTopoEditor();
-
 			window.editor = editor; // Expose editor to Console
 			window.THREE = THREE; // Expose THREE to APP Scripts and Console
 			window.VRButton = VRButton; // Expose VRButton to APP Scripts
 			
-			editor.loginiTopoEarth( function afterlogin() {
-				
-				var viewport = new iTopoViewport( editor );
-				document.body.appendChild( viewport.dom );
-				
-				var toolbar = new iTopoToolbar( editor );
-				document.body.appendChild( toolbar.dom );
-				
-				var lightToolbar = new iTopoToolbarLight( editor );
-				document.body.appendChild( lightToolbar.dom );
-				
-				var ownLogoSprite = new iTopoSpriteOwnLogo( editor );
-				document.body.appendChild( ownLogoSprite.dom );
-				
-				var sponsorSprite = new iTopoSpriteSponsor( editor );
-				document.body.appendChild( sponsorSprite.dom );
-				
-				var sidebar = new iTopoObjectBriefcase( editor );
-				document.body.appendChild( sidebar.dom );
-				
-				var userBriefcase = new iTopoUserBriefcase( editor );
-				document.body.appendChild( userBriefcase.container.dom );
-				
-				var menubar = new iTopoMenubar( editor );
-				document.body.appendChild( menubar.dom );
-				
-				var handler = new iTopoEarthHandler(editor, sidebar, userBriefcase);
-				
-				//
-				createRenderer();
-				iTopoEarthModel.ReCreate();
-				iTopoEarthModel.RotateToBeijing(editor.camera);
-				//
-				
-				function createRenderer() {
-					var currentRenderer = new THREE.WebGLRenderer( { antialias: true } );
-					//currentRenderer.outputEncoding = THREE.sRGBEncoding;
-					//currentRenderer.physicallyCorrectLights =true;
-					//currentRenderer.shadowMap.enabled = false;
-					//currentRenderer.shadowMap.type = parseFloat( shadowTypeSelect.getValue() );
-					//currentRenderer.toneMapping = parseFloat( toneMappingSelect.getValue() );
-					//currentRenderer.toneMappingExposure = toneMappingExposure.getValue();
-				
-					editor.signals.rendererChanged.dispatch( currentRenderer );
-				}
-				
-				
-				onWindowResize();
-			})
-			
-			editor.storage.init( function () {
+			editor.society.initSystem( function () {
 
-				editor.storage.get( function ( state ) {
-
-					if ( isLoadingFromHash ) return;
-
-					if ( state !== undefined ) {
-
-						//editor.fromJSON( state );
-
-					}
-
-					var selected = editor.config.getKey( 'selected' );
-
-					if ( selected !== undefined ) {
-
-						//editor.selectByUuid( selected );
-
-					}
+				editor.society.getSystemState( function ( state ) {
+					
+					editor.society.loginiTopoEarth( function afterlogin() {
+						
+						var menubar = new iTopoMenubar( editor );
+						document.body.appendChild( menubar.dom );
+						
+						var viewport = new iTopoViewport( editor );
+						document.body.appendChild( viewport.dom );
+						
+						var toolbar = new iTopoToolbar( editor );
+						document.body.appendChild( toolbar.dom );
+						
+						var lightToolbar = new iTopoToolbarLight( editor );
+						document.body.appendChild( lightToolbar.dom );
+						
+						var ownLogoSprite = new iTopoSpriteOwnLogo( editor );
+						document.body.appendChild( ownLogoSprite.dom );
+						
+						var sponsorSprite = new iTopoSpriteSponsor( editor );
+						document.body.appendChild( sponsorSprite.dom );
+						
+						var sidebar = new iTopoObjectBriefcase( editor );
+						document.body.appendChild( sidebar.dom );
+						
+						var userBriefcase = new iTopoUserBriefcase( editor );
+						document.body.appendChild( userBriefcase.container.dom );
+						
+						var handler = new iTopoEarthHandler(editor, sidebar, userBriefcase);
+						
+						//
+						createRenderer();
+						iTopoEarthModel.ReCreate();
+						iTopoEarthModel.RotateToBeijing(editor.camera);
+						//
+						
+						function createRenderer() {
+							var currentRenderer = new THREE.WebGLRenderer( { antialias: true } );
+							//currentRenderer.outputEncoding = THREE.sRGBEncoding;
+							//currentRenderer.physicallyCorrectLights =true;
+							//currentRenderer.shadowMap.enabled = false;
+							//currentRenderer.shadowMap.type = parseFloat( shadowTypeSelect.getValue() );
+							//currentRenderer.toneMapping = parseFloat( toneMappingSelect.getValue() );
+							//currentRenderer.toneMappingExposure = toneMappingExposure.getValue();
+						
+							editor.signals.rendererChanged.dispatch( currentRenderer );
+						}
+					
+						onWindowResize();
+					})
+					
+					
+					// if ( isLoadingFromHash ) return;
+					// if ( state !== undefined ) {
+					// 	//editor.fromJSON( state );
+					// }
+					// var selected = editor.config.getKey( 'selected' );
+					// if ( selected !== undefined ) {
+					// 	//editor.selectByUuid( selected );
+					// }
 
 				} );
 
 				//
 
-				var timeout;
+				// var timeout;
+				// function saveState() {
+				// 	if ( editor.config.getKey( 'autosave' ) === false ) {
+				// 		return;
+				// 	}
 
-				function saveState() {
-
-					if ( editor.config.getKey( 'autosave' ) === false ) {
-
-						return;
-
-					}
-
-					clearTimeout( timeout );
-
-					timeout = setTimeout( function () {
-
-						editor.signals.savingStarted.dispatch();
-
-						timeout = setTimeout( function () {
-
-							editor.storage.set( editor.toJSON() );
-
-							editor.signals.savingFinished.dispatch();
-
-						}, 1 );
-
-					}, 1 );
-
-				}
+				// 	clearTimeout( timeout );
+				// 	timeout = setTimeout( function () {
+				// 		editor.signals.savingStarted.dispatch();
+				// 		timeout = setTimeout( function () {
+				// 			editor.society.setSystemState( editor.toJSON() );
+				// 			editor.signals.savingFinished.dispatch();
+				// 		}, 1 );
+				// 	}, 1 );
+				// }
 
 				// var signals = editor.signals;
 

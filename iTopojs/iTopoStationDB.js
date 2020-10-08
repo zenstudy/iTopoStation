@@ -133,6 +133,7 @@ iTopoStationDB.prototype = {
 
 			})
 		}).catch(function(e) {
+
 			console.log('error: ' + e.toString());
 		})
 	},
@@ -292,7 +293,7 @@ iTopoStationDB.prototype = {
 		.then(response => response.json())
 		.then(json => {
 			fnAfterFetchedUser(json);
-			console.log('iTopoStationAPI.fetchUserWithStarUUID user:' + JSON.stringify(json));
+			//console.log('iTopoStationAPI.fetchUserWithStarUUID user:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })

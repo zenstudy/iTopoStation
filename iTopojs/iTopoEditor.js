@@ -2,7 +2,7 @@ import * as THREE from '../../build/three.module.js';
 
 import { iTopoLoader as _Loader } from './iTopoLoader.js';
 import { iTopoHistory as _History } from './iTopoHistory.js';
-import { iTopoStorage as _Storage } from './iTopoStorage.js';
+import { iTopoEarthSociety} from './iTopoElement/iTopoEarthSociety.js';
 import { iTopoStrings } from './iTopoStrings.js';
 import { iTopoConfig } from './iTopoConfig.js';
 import { iTopoStationDB } from './iTopoStationDB.js';
@@ -80,14 +80,13 @@ function iTopoEditor() {
 
 	var scope = this;
 	scope.config = new iTopoConfig();
-	scope.history = new _History( scope );
-	scope.storage = new _Storage();
 	scope.strings = new iTopoStrings( scope.config );
+	scope.history = new _History( scope );
+	scope.society = new iTopoEarthSociety();
 	scope.loader = new _Loader( scope );
 	scope.camera = _DEFAULT_CAMERA.clone();
 	scope.stationDB = new iTopoStationDB();
 	scope.starUser = new iTopoStarUser();
-
 	scope.scene = new THREE.Scene();
 	scope.scene.name = 'Scene';
 	scope.sceneHelpers = new THREE.Scene();
@@ -153,16 +152,6 @@ function iTopoEditor() {
 }
 
 iTopoEditor.prototype = {
-
-	loginiTopoEarth: function( fnAfterLogin ){
-		var scope = this;
-		scope.starUser.restoreActiveUser(scope);
-			scope.stationDB.fetchUserWithStarUUID(/*this.starUser.starUUID*/"5E59BDD4-25EE-4E90-A612-4537AFAA80FE", function(starUserInfo){
-			scope.starUser.setStarUserInfo(starUserInfo);
-			console.log(starUserInfo);
-			fnAfterLogin();
-		});
-	},
 
 	setScene: function ( scene ) {
 
@@ -685,7 +674,7 @@ iTopoEditor.prototype = {
 	clear: function () {
 
 		this.history.clear();
-		this.storage.clear();
+		this.society.clearSystemState();
 
 		this.camera.copy( _DEFAULT_CAMERA );
 		this.signals.cameraResetted.dispatch();
