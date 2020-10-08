@@ -114,9 +114,10 @@ var iTopoStandPlatform = {
 			scope.objectModel = objectModel;
 			scope.album2DImgs = album2DImgs;
 
+			scope.addObject(scope.objectModel);
 			if (scope.album2DImgs !== null && scope.album2DImgs !== undefined) {
-				var albumMeshObjects = iTopoEarthBuilder.create2DStandContainer(album2DImgs);
-				albumMeshObjects.forEach(function(mesh){
+				scope.albumMeshObjects = iTopoEarthBuilder.create2DStandContainer(album2DImgs);
+				scope.albumMeshObjects.forEach(function(mesh){
 					scene.add(mesh);
 				})
 			}
@@ -133,25 +134,32 @@ var iTopoStandPlatform = {
 			tableButton.value = editor.strings.getKey('iTopoStandPlatform/TaskViewTopMenu/2DAlbum');
 			tableButton.addEventListener('click', function() {
 				if (scope.objectModel !== null || scope.objectModel !== undefined) {
-					scope.clearScene(scene);
 					scope.scene.remove(scope.objectModel);
-
-					if (scope.album2DImgs !== null && scope.album2DImgs !== undefined) {
-						var albumMeshObjects = iTopoEarthBuilder.create2DStandContainer(scope.album2DImgs);
-						albumMeshObjects.forEach(function(mesh){
-							scene.add(mesh);
-						})
-					}
 				}
-			});
+
+				scope.albumMeshObjects.forEach(function(mesh){
+					scene.remove(mesh);
+				})
+
+				scope.albumMeshObjects.forEach(function(mesh){
+					scene.add(mesh);
+				})
+			})
+
 			css3dMenu.appendChild(tableButton);
 
 			var sphereButton = document.createElement('input');
 			sphereButton.type = "button";
 			sphereButton.value = editor.strings.getKey('iTopoStandPlatform/TaskViewTopMenu/3DModel');
 			sphereButton.addEventListener('click', function() {
-				scope.clearScene(scene);
-				scope.scene.remove(scope.objectModel);
+				if (scope.objectModel !== null || scope.objectModel !== undefined) {
+					scope.scene.remove(scope.objectModel);
+				}
+
+				scope.albumMeshObjects.forEach(function(mesh){
+					scene.remove(mesh);
+				})
+
 				scope.addObject(scope.objectModel);
 			});
 			css3dMenu.appendChild(sphereButton);
@@ -160,17 +168,20 @@ var iTopoStandPlatform = {
 			modelAndAlbumButton.type = "button";
 			modelAndAlbumButton.value = editor.strings.getKey('iTopoStandPlatform/TaskViewTopMenu/AllStand');
 			modelAndAlbumButton.addEventListener('click', function() {
-				scope.clearScene(scene);
-				scope.scene.remove(scope.objectModel);
+				if (scope.objectModel !== null || scope.objectModel !== undefined) {
+					scope.scene.remove(scope.objectModel);
+				}
+
+				scope.albumMeshObjects.forEach(function(mesh){
+					scene.remove(mesh);
+				})
+
 				scope.addObject(scope.objectModel);
 
-
-				if (scope.album2DImgs !== null && scope.album2DImgs !== undefined) {
-					var albumMeshObjects = iTopoEarthBuilder.create2DStandContainer(scope.album2DImgs);
-					albumMeshObjects.forEach(function(mesh){
+				scope.albumMeshObjects.forEach(function(mesh){
 						scene.add(mesh);
-					})
-				}
+					});
+
 			});
 			css3dMenu.appendChild(modelAndAlbumButton);
 

@@ -59,7 +59,7 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/triangles' : '三角面片数',
 			'iTopoViewport/info/frametime' : '帧数',
 
-			'sidebar/skyCastle/Header' : '事务大厅',
+			'sidebar/skyCastle/Header' : '共享地球协作中心',
 			'sidebar/skyCastle/Header/Outlook' : '协作中心模型空间',
 			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务协作空间',
 			'sidebar/SkyCastle/Header/Title': '名称',
@@ -91,7 +91,7 @@ function iTopoStrings( config ) {
 			'sidebar/InnerEarth/Life':'生活',
 
 			'sidebar/StarUser/Header': '星民信息',
-			'sidebar/StarUser/Header/Outlook': '头像',
+			'sidebar/StarUser/Header/Outlook': '用户模型空间',
 			'sidebar/StarUser/Header/iTopoTaskCards': '任务协作空间',
 			'sidebar/starUser/Header/starUUID':'starUUID',
 			'sidebar/starUser/Header/gender':'性别',

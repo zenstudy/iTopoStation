@@ -1,41 +1,37 @@
 {
 	"3dModelURL":"./iTopoObjects/00_Default_Resource/cartoon_lowpoly_small_city_free_pack/scene.gltf",
 	"album2DImgs": [{
-			"imgFilenName": "3a241616cbf6355493066af697f0fbe9.jpg",
-			"imgDesc": "长白山有机谷example1"
-		},
-		{
-			"imgFilenName": "14a088e668766f58e4633bbcf6752a12.jpg",
-			"imgDesc": "长白山有机谷example2"
-		},
-		{
-			"imgFilenName": "22e53c6a3f6043eac6e22e5272b4b032.jpg",
-			"imgDesc": "长白山有机谷example3"
-		},
-		{
-			"imgFilenName": "69e9b76c5ed05286ca76979d559a0d77.jpg",
-			"imgDesc": "长白山有机谷example4"
-		},
-		{
-			"imgFilenName": "318d2dd9b77d3da507ef2efbfc53e83b.jpg",
-			"imgDesc": "长白山有机谷example5"
-		},
-		{
-			"imgFilenName": "830008d2d404f081a4370d11dc6dca22.jpg",
-			"imgDesc": "长白山有机谷example6"
-		},
-		{
-			"imgFilenName": "c0f5442216c1944d179e057c981cde4d.jpg",
-			"imgDesc": "长白山有机谷example7"
-		},
-		{
-			"imgFilenName": "ea7c7a88f1b29548deb35f4d47f00c47.jpg",
-			"imgDesc": "长白山有机谷example8"
-		},
-		{
-			"imgFilenName": "ef067794e2c94af3899012715d990de4.jpg",
-			"imgDesc": "长白山有机谷example9"
+			"imgFilenName": "gysxs (1).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (2).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (3).jpg",
+			"imgDesc": "观音山酵素3"
+		},{
+			"imgFilenName": "gysxs (4).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (5).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (6).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (7).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (8).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (9).jpg",
+			"imgDesc": "观音山酵素1"
+		},{
+			"imgFilenName": "gysxs (10).jpg",
+			"imgDesc": "观音山酵素10"
 		}
+		
 		
 	]
 }

@@ -1042,17 +1042,33 @@ iTopoEarthBuilder.create2DStandContainer = function( album2DImgs ) {
 	});
 
 	var loader = new THREE.TextureLoader();
+	// 创建video对象
+	let video = document.createElement('video');
+	video.autoplay = "autoplay"; //要设置播放
+
 	for (var i = 0; i < standContainerInfo.dividCount; ++i) {
 
 		var x = standContainerInfo.radius * Math.sin(2 * Math.PI * i / standContainerInfo.dividCount);
 		var z = standContainerInfo.radius * Math.cos(2 * Math.PI * i / standContainerInfo.dividCount);
 		var y = 0;
 
-		var textureImg = loader.load(album2DImgs[i].imgURL);
-		var material = new THREE.MeshBasicMaterial({
-			map: textureImg,
-			side: THREE.FrontSide, //THREE.DoubleSide, //
-		});
+		var textureImg, material;
+		var pos=album2DImgs[i].imgURL.search(/.mp4/);
+		console.log(pos);
+		if( pos >= 0 ){
+			video.src = album2DImgs[i].imgURL; // 设置视频地址
+			textureImg = new THREE.VideoTexture(video);
+			material = new THREE.MeshPhongMaterial({
+			  map: textureImg, // 设置纹理贴图
+			}); //材质对象Material
+		} else {
+			textureImg = loader.load(album2DImgs[i].imgURL);
+			material = new THREE.MeshBasicMaterial({
+				map: textureImg,
+				side: THREE.FrontSide, //THREE.DoubleSide, //
+			});
+		}
+
 		var mesh = new THREE.Mesh(geometry, material);
 		mesh.position.set(x, y, z);
 		mesh.userData = album2DImgs[i];
