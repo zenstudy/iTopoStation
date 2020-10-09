@@ -89,10 +89,8 @@ function iTopoEarthSociety() {
 		},
 
 		loginiTopoEarth: function( fnAfterLogin ){
-
 			editor.starUser.restoreActiveUser(editor);
 				editor.stationDB.fetchUserWithStarUUID(editor.starUser.info.starUUID/*"5E59BDD4-25EE-4E90-A612-4537AFAA80FE"*/, function(starUserInfo){
-				console.log(starUserInfo);
 				editor.starUser.setStarUserInfo(starUserInfo);
 				fnAfterLogin();
 			});

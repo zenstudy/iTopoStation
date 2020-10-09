@@ -6,7 +6,7 @@ import { iTopoMenubarStarUser } from '../iTopoMenubar/iTopoMenubar.StarUser.js';
 function iTopoDialogRegister( editor, menubar ) {
 	var strings = editor.strings;
 	var userStar = new iTopoStarUser();
-	var userStarInfo = userStar.info;
+	var registerUserInfo = userStar.info;
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
@@ -27,7 +27,7 @@ function iTopoDialogRegister( editor, menubar ) {
 
 		cellPhoneRow.add( new UIText( strings.getKey( 'iTopoDialog/register/cellPhone' ) ).setWidth( '80px' ) );
 
-		var inputCellPhone = new UIInput( userStarInfo.cellPhone );
+		var inputCellPhone = new UIInput( registerUserInfo.cellPhone );
 		inputCellPhone.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -43,7 +43,7 @@ function iTopoDialogRegister( editor, menubar ) {
 		passwordRow.add( new UIText( strings.getKey( 'iTopoDialog/register/password' ) ).setWidth( '80px' ) );
 
 		var inputPassword = new UIInput();
-		inputPassword.setValue( userStarInfo.password );
+		inputPassword.setValue( registerUserInfo.password );
 		inputPassword.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -59,7 +59,7 @@ function iTopoDialogRegister( editor, menubar ) {
 		longitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/register/longitude' ) ).setWidth( '80px' ) );
 
 		var longitudeValueUI = new UIInput();
-		longitudeValueUI.setValue( userStarInfo.lng );
+		longitudeValueUI.setValue( registerUserInfo.lng );
 		longitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -75,7 +75,7 @@ function iTopoDialogRegister( editor, menubar ) {
 		latitudeRow.add( new UIText( strings.getKey( 'iTopoDialog/register/latitude' ) ).setWidth( '80px' ) );
 
 		var latitudeValueUI = new UIInput();
-		latitudeValueUI.setValue( userStarInfo.lat );
+		latitudeValueUI.setValue( registerUserInfo.lat );
 		latitudeValueUI.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -96,17 +96,18 @@ function iTopoDialogRegister( editor, menubar ) {
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 
-			editor.stationDB.registerUser(userStarInfo, function(){
-				userStarInfo.storeActiveUserInfo2Config(editor);
+			editor.stationDB.registerUser(registerUserInfo, function(){
+				editor.starUser.info = registerUserInfo;
+				editor.starUser.storeActiveUserInfo2Config(editor);
 
-				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, userStarInfo) );
+				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, registerUserInfo) );
 				menubar.removeRegisterMenu();
 				menubar.removeLoginMenu();
 
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
 
-				var star = iTopoEarthModel.lightStars(userStarInfo);
+				var star = iTopoEarthModel.lightStars(registerUserInfo);
 				editor.select(star); // this function will call editor.signals.objectSelected.dispatch(star);
 
 				console.log(star.userData.objectUUID);

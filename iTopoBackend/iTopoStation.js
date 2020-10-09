@@ -4,13 +4,20 @@ var bodyParser = require('body-parser');
 const http = require('https');
 const fs = require('fs');
 
-let { iTopoAbsorber } = require('./iTopoAbsorber.js');
-let { iTopoStationAPI } = require('./iTopoStationAPI.js');
+let {
+	iTopoAbsorber
+} = require('./iTopoAbsorber.js');
+let {
+	iTopoStationAPI
+} = require('./iTopoStationAPI.js');
 
 //require的核心概念：在导出的文件中定义module.exports，导出的对象类型不予限定（可为任意类型）。在导入的文件中使用require()引入即可使用。本质上，是将要导出的对象，赋值给module这个对象的exports属性，在其他文件中通过require这个方法来访问exports这个属性。上面b.js中，require(./a.js) = exports 这个对象，然后使用es6取值方式从exports对象中取出test的值。
 
 var app = express();
 var router = express.Router();
+
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/iTopoEarthSociety";
 
 //这一句中可能要注意一下，express.static()是处理静态请求的，
 //设置了public文件，public下所有文件都会以静态资料文件形式返回
@@ -18,15 +25,16 @@ var router = express.Router();
 app.use(express.static(path.join(__dirname, 'iTopoStation')));
 
 //设置跨域访问
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    if (req.method == 'OPTIONS') {
-        res.send(200); /*让options请求快速返回*/
-    } else {
-        next();
-    }
+app.use(function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers',
+		'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+	res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+	if (req.method == 'OPTIONS') {
+		res.send(200); /*让options请求快速返回*/
+	} else {
+		next();
+	}
 })
 
 /*
@@ -107,58 +115,102 @@ app.get('/SecureNodes', function(req, res) {
 });
 
 // POST method route —— 根据请求路径来处理客户端发出的Post请求。
-app.post('/', function (req, res) {
+app.post('/', function(req, res) {
 	res.send('POST request to the homepage');
 });
 
-app.get('/registerBaseObjectOnEarth', function(req, res) {
-	res.send('the lightEarth page');
+// 获取所有用户信息
+app.get('/fetchiTopoStars', function(req, res) {
+	MongoClient.connect(url, {
+		useUnifiedTopology: true
+	}, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("iTopoEarthSociety");
+		dbo.collection("iTopoUser").find().toArray(function(err, result) { // 返回集合中所有数据
+			if (err) throw err;
+			res.send(result);
+			db.close();
+			res.end();
+		})
+	});
 });
-
-app.post('/registerBaseObjectOnEarth', function(req, res) {
+//根据用户starUUID查询用户信息
+app.post('/fetchUserWithStarUUID', function(req, res) {
 
 	var postData = "";
-
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
 	});
 
 	req.addListener("end", function() {
-		res.write(postData);
-		var newLightTask = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(newLightTask)) ;
-		const iTopoJsonFName = iTopoStationAPI.ITOPOBASE_FILE;//'../iTopoObjects/00_iTopoEarth/iTopobase.json';
-		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var lightTasks = JSON.parse(data);
-				console.log(lightTasks);
-				lightTasks.push(newLightTask);
 
-				fs.writeFile(iTopoJsonFName, JSON.stringify(lightTasks), function(err) {
-					if (err) console.error(err);
-					console.log('数据已经写入' + iTopoJsonFName);
+		var starUUID = JSON.parse(postData);
+		console.log(starUUID);
+		if(starUUID === null || starUUID === undefined || starUUID ===''){
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, db) {
+			if (err) throw err;
+			var dbo = db.db("iTopoEarthSociety");
+			var whereStr = { "starUUID": starUUID }; // 查询条件
+			dbo.collection("iTopoUser").find(whereStr, function(err, cursor) {
+				cursor.each(function(err, result) {
+					if (err) throw err;
+					if (result !== null) {
+						res.send(result);
+						res.end();
+					} else {
+						res.end('null');
+					}
+					db.close();
+					return;
 				});
-			}
+			});
 		});
-
-		res.end();
 	});
+
 });
 
+//根据用户starUUID查询用户信息
 app.post('/iTopoEarthRegister', function(req, res) {
 
 	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
 
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
+	req.addListener("end", function() {
 
+		var newUserStarInfo = JSON.parse(postData);
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, db) {
+			if (err) throw err;
+			var dbo = db.db("iTopoEarthSociety");
+
+			//插入数据
+			dbo.collection("iTopoUser").insertOne(newUserStarInfo, function(err, result) {
+				if (err) throw err;
+				console.log('===begin============');
+				console.log(result);
+				console.log('===end============');
+				res.send(result);
+				db.close();
+			});
+
+		});
+	});
+
+});
+
+app.post('/iTopoEarthRegister1', function(req, res) {
+
+	var postData = "";
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
 	});
@@ -166,8 +218,8 @@ app.post('/iTopoEarthRegister', function(req, res) {
 	req.addListener("end", function() {
 		res.write(postData);
 		var newUserStarInfo = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(newUserStarInfo)) ;
-		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;//'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
+		console.log("Received POST data :" + JSON.stringify(newUserStarInfo));
+		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE; //'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -191,10 +243,6 @@ app.post('/updateStarUser', function(req, res) {
 
 	var postData = "";
 
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
 	});
@@ -202,7 +250,7 @@ app.post('/updateStarUser', function(req, res) {
 	req.addListener("end", function() {
 		res.write(postData);
 		var newUserStarInfo = JSON.parse(postData);
-		console.log("===Received POST data :" + JSON.stringify(newUserStarInfo)) ;
+		console.log("===Received POST data :" + JSON.stringify(newUserStarInfo));
 		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE; //'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
@@ -211,10 +259,10 @@ app.post('/updateStarUser', function(req, res) {
 				var userStarInfos = JSON.parse(data);
 				//console.log(userStarInfos);
 
-				for( var i=0; i < userStarInfos.length; ++i){
-					if(userStarInfos[i].starUUID ===newUserStarInfo.starUUID ){
+				for (var i = 0; i < userStarInfos.length; ++i) {
+					if (userStarInfos[i].starUUID === newUserStarInfo.starUUID) {
 						userStarInfos[i] = newUserStarInfo;
-						console.log('===update star user:' + JSON.stringify(userStarInfos[i]) );
+						console.log('===update star user:' + JSON.stringify(userStarInfos[i]));
 					}
 				}
 
@@ -233,18 +281,14 @@ app.post('/iTopoEarthLogin', function(req, res) {
 
 	var postData = "";
 
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
 	});
 
 	req.addListener("end", function() {
 		var loginUser = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(loginUser)) ;
-		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;//'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
+		console.log("Received POST data :" + JSON.stringify(loginUser));
+		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE; //'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
@@ -252,7 +296,7 @@ app.post('/iTopoEarthLogin', function(req, res) {
 				var allUserInfos = JSON.parse(data);
 
 				for (let i = 0; i < allUserInfos.length; i++) {
-						if(loginUser.cellPhone === allUserInfos[i].cellPhone){
+					if (loginUser.cellPhone === allUserInfos[i].cellPhone) {
 						res.write(JSON.stringify(allUserInfos[i]));
 						res.end();
 						break;
@@ -265,14 +309,42 @@ app.post('/iTopoEarthLogin', function(req, res) {
 	});
 });
 
+app.post('/registerBaseObjectOnEarth', function(req, res) {
+
+	var postData = "";
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		res.write(postData);
+		var newLightTask = JSON.parse(postData);
+		console.log("Received POST data :" + JSON.stringify(newLightTask));
+		const iTopoJsonFName = iTopoStationAPI.ITOPOBASE_FILE; //'../iTopoObjects/00_iTopoEarth/iTopobase.json';
+		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
+			if (err) {
+				console.log(err);
+			} else {
+				var lightTasks = JSON.parse(data);
+				console.log(lightTasks);
+				lightTasks.push(newLightTask);
+
+				fs.writeFile(iTopoJsonFName, JSON.stringify(lightTasks), function(err) {
+					if (err) console.error(err);
+					console.log('数据已经写入' + iTopoJsonFName);
+				});
+			}
+		});
+
+		res.end();
+	});
+});
+
 app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 
 	console.log("app.post.fetchBaseObjectWithObjectUUID");
 	var postData = "";
-
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
 
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
@@ -280,7 +352,7 @@ app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 
 	req.addListener("end", function() {
 		var objectUUID = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(objectUUID)) ;
+		console.log("Received POST data :" + JSON.stringify(objectUUID));
 		const iTopoJsonFName = iTopoStationAPI.ITOPOBASE_FILE; //'../iTopoObjects/00_iTopoEarth/iTopobase.json';
 		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
 			if (err) {
@@ -289,9 +361,9 @@ app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 				var allBaseObjectInfos = JSON.parse(data);
 
 				for (let i = 0; i < allBaseObjectInfos.length; i++) {
-						console.log(allBaseObjectInfos[i].objectUUID);
-						console.log(objectUUID);
-						if(objectUUID === allBaseObjectInfos[i].baseUUID){
+					console.log(allBaseObjectInfos[i].objectUUID);
+					console.log(objectUUID);
+					if (objectUUID === allBaseObjectInfos[i].baseUUID) {
 						res.write(JSON.stringify(allBaseObjectInfos[i]));
 						console.log(JSON.stringify(allBaseObjectInfos[i]));
 						res.end();
@@ -303,50 +375,9 @@ app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 	});
 });
 
-
-app.post('/fetchUserWithStarUUID', function(req, res) {
-
-	console.log("app.post.fetchUserWithStarUUID");
-	var postData = "";
-
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
-
-	req.addListener("data", function(postDataChunk) {
-		postData += postDataChunk;
-	});
-
-	req.addListener("end", function() {
-		var starUUID = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(starUUID)) ;
-		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE;
-		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var allUserInfos = JSON.parse(data);
-				for (let i = 0; i < allUserInfos.length; i++) {
-						if(starUUID=== allUserInfos[i].starUUID){
-						res.write(JSON.stringify(allUserInfos[i]));
-						res.end();
-						break;
-					}
-				}
-				res.json(null);
-				res.end();
-			}
-		});
-	});
-});
-
 app.post('/addTask', function(req, res) {
 
 	var postData = "";
-
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
 
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
@@ -356,34 +387,34 @@ app.post('/addTask', function(req, res) {
 		var taskObject = JSON.parse(postData);
 		res.write(taskObject);
 		taskObject = JSON.parse(taskObject);
-		console.log("Received POST data :") ;
+		console.log("Received POST data :");
 		console.log(taskObject.objectUUID);
 
 		var taskJsonFileName;
-		if(taskObject.taskStatus === "待办")
+		if (taskObject.taskStatus === "待办")
 			taskJsonFileName = "tasksTodo.json";
-		else if(taskObject.taskStatus === "在办")
+		else if (taskObject.taskStatus === "在办")
 			taskJsonFileName = "tasksInProgress.json";
-		else if(taskObject.taskStatus === "已办")
+		else if (taskObject.taskStatus === "已办")
 			taskJsonFileName = "tasksDone.json";
 
 		const jsonPath = '../iTopoObjects/' + taskObject.objectUUID;
-		fs.exists(jsonPath,function(exists){
-			if(exists)
+		fs.exists(jsonPath, function(exists) {
+			if (exists)
 				console.log('文件夹存在');
-			else{
+			else {
 				console.log();
-				fs.mkdir(jsonPath,function(err){
-					if(err)
+				fs.mkdir(jsonPath, function(err) {
+					if (err)
 						console.error(err);
-					console.log('文件夹不存在'+ jsonPath+'创建目录成功');
+					console.log('文件夹不存在' + jsonPath + '创建目录成功');
 				});
 			}
 		});
 
-		const jsonFile = jsonPath +'/' + taskJsonFileName;
-		fs.exists(jsonFile,function(exists){
-			if(exists){
+		const jsonFile = jsonPath + '/' + taskJsonFileName;
+		fs.exists(jsonFile, function(exists) {
+			if (exists) {
 				fs.readFile(jsonFile, 'utf-8', function(err, data) {
 					if (err) {
 						console.log(err);
@@ -398,15 +429,14 @@ app.post('/addTask', function(req, res) {
 						});
 					}
 				});
-			}
-			else{
+			} else {
 				console.log('文件夹不存在');
 				var taskObjects = [];
 				taskObjects.push(taskObject);
 				fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
-				if (err) console.error(err);
-				console.log('数据已经写入' + jsonFile);
-			});
+					if (err) console.error(err);
+					console.log('数据已经写入' + jsonFile);
+				});
 			}
 		});
 
@@ -418,10 +448,6 @@ app.post('/updateTask', function(req, res) {
 
 	var postData = "";
 
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
 	});
@@ -431,26 +457,25 @@ app.post('/updateTask', function(req, res) {
 		console.log(postParameter);
 		res.write(JSON.stringify(postParameter));
 		var taskObject = postParameter.taskObject;
-		console.log("Received POST data :" + taskObject.taskUUID) ;
+		console.log("Received POST data :" + taskObject.taskUUID);
 
 		var taskJsonFileName1;
-		if(taskObject.taskStatus === "待办")
+		if (taskObject.taskStatus === "待办")
 			taskJsonFileName1 = "tasksTodo.json";
-		else if(taskObject.taskStatus === "在办")
+		else if (taskObject.taskStatus === "在办")
 			taskJsonFileName1 = "tasksInProgress.json";
-		else if(taskObject.taskStatus === "已办")
+		else if (taskObject.taskStatus === "已办")
 			taskJsonFileName1 = "tasksDone.json";
 
-		const jsonFile = '../iTopoObjects/' + taskObject.objectUUID +'/' + taskJsonFileName1;
+		const jsonFile = '../iTopoObjects/' + taskObject.objectUUID + '/' + taskJsonFileName1;
 		fs.readFile(jsonFile, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
 			} else {
 				var taskObjects = JSON.parse(data);
 
-				for(var index = 0; index < taskObjects.length; ++index)
-				{
-					if(taskObject.taskUUID === taskObjects[index].taskUUID){
+				for (var index = 0; index < taskObjects.length; ++index) {
+					if (taskObject.taskUUID === taskObjects[index].taskUUID) {
 						taskObjects.splice(index, 1);
 						break;
 					}
@@ -461,30 +486,30 @@ app.post('/updateTask', function(req, res) {
 					console.log('数据已经写入taskJsonFileName1:' + jsonFile);
 
 					var taskJsonFileName2;
-					if(postParameter.latestTaskStatus === "待办")
+					if (postParameter.latestTaskStatus === "待办")
 						taskJsonFileName2 = "tasksTodo.json";
-					else if(postParameter.latestTaskStatus === "在办")
+					else if (postParameter.latestTaskStatus === "在办")
 						taskJsonFileName2 = "tasksInProgress.json";
-					else if(postParameter.latestTaskStatus === "已办")
+					else if (postParameter.latestTaskStatus === "已办")
 						taskJsonFileName2 = "tasksDone.json";
 
 					const jsonPath2 = '../iTopoObjects/' + taskObject.objectUUID;
-					fs.exists(jsonPath2,function(exists){
-						if(exists)
+					fs.exists(jsonPath2, function(exists) {
+						if (exists)
 							console.log('文件夹存在');
-						else{
+						else {
 							console.log();
-							fs.mkdir(jsonPath2,function(err){
-								if(err)
+							fs.mkdir(jsonPath2, function(err) {
+								if (err)
 									console.error(err);
-								console.log('文件夹不存在'+ jsonPath2+'创建目录成功');
+								console.log('文件夹不存在' + jsonPath2 + '创建目录成功');
 							});
 						}
 					});
 
-					const jsonFile2 =  jsonPath2 +'/' + taskJsonFileName2;
-					fs.exists(jsonFile2,function(exists){
-						if(exists){
+					const jsonFile2 = jsonPath2 + '/' + taskJsonFileName2;
+					fs.exists(jsonFile2, function(exists) {
+						if (exists) {
 							fs.readFile(jsonFile2, 'utf-8', function(err, data) {
 								if (err) {
 									console.log(err);
@@ -500,15 +525,14 @@ app.post('/updateTask', function(req, res) {
 									});
 								}
 							});
-						}
-						else{
+						} else {
 							console.log('文件夹不存在');
 							var taskObjects = [];
 							taskObjects.push(taskObject);
 							fs.writeFile(jsonFile2, JSON.stringify(taskObjects), function(err) {
-							if (err) console.error(err);
-							console.log('数据已经写入' + jsonFile2);
-						});
+								if (err) console.error(err);
+								console.log('数据已经写入' + jsonFile2);
+							});
 						}
 					});
 
@@ -524,30 +548,25 @@ app.post('/addMemberToiTopoSkyCastleTeams', function(req, res) {
 
 	var postData = "";
 
-	req.setEncoding("utf8");
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Cache-Control", "no-cache");
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
 	});
 
 	req.addListener("end", function() {
 		var postParameter = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(postParameter)) ;
+		console.log("Received POST data :" + JSON.stringify(postParameter));
 		res.write(JSON.stringify(postParameter));
 
-		const jsonFile = '../iTopoObjects/' + postParameter.objectUUID +'/' + "workTeams.json";
+		const jsonFile = '../iTopoObjects/' + postParameter.objectUUID + '/' + "workTeams.json";
 		fs.readFile(jsonFile, 'utf-8', function(err, data) {
 			if (err) {
 				console.log(err);
 			} else {
 
 				var teamObjects = JSON.parse(data);
-				for(var index = 0; index < teamObjects.length; ++index)
-				{
+				for (var index = 0; index < teamObjects.length; ++index) {
 					console.log(postParameter.teamUUID + ',' + teamObjects[index].teamUUID);
-					if(postParameter.teamUUID === teamObjects[index].teamUUID){
+					if (postParameter.teamUUID === teamObjects[index].teamUUID) {
 						teamObjects[index].teamMemberUUIDs.push(postParameter.teamMemberUUID);
 						break;
 					}
@@ -563,32 +582,6 @@ app.post('/addMemberToiTopoSkyCastleTeams', function(req, res) {
 		res.end();
 	});
 });
-
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/runoob";
-
-// 获取信息列表
-app.get('/shujutongji', function (req, res) {
-
-	req.setEncoding("utf8");
-	res.setHeader("Cache-Control", "no-cache");
-	res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-
-    var data = [];
-    MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
-        if (err) throw err;
-        var dbo = db.db("runoob");
-        // var whereStr = {"name":'菜鸟教程'};  // 查询条件
-        dbo.collection("CarList").find().toArray(function (err, result) { // 返回集合中所有数据
-            if (err) throw err;
-            res.send(result);
-            db.close();
-        })
-    });
-});
-
 
 var server = app.listen(8081, function() {
 	var host = server.address().address;

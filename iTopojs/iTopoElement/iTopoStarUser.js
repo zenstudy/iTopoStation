@@ -36,7 +36,7 @@ class iTopoStarUser {
 	}
 
 	alreadyLoggedIn(){
-		if(this.info === null || this.info === undefined)
+		if(this.info === null || this.info === undefined || this.info === {} || this.info === [])
 			return false;
 		if(this.info.starUUID === '' )
 			return false;

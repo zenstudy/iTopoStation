@@ -6,7 +6,7 @@ import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 function iTopoDialogLogin( editor, menubar ) {
 
 	var strings = editor.strings;
-	var starUserInfo = editor.starUser.info;
+	var loginUserInfo = editor.starUser.info;
 
 	var container = new UISpan();
 	var dlgTitleRow = new UIRow();
@@ -27,7 +27,7 @@ function iTopoDialogLogin( editor, menubar ) {
 
 		cellPhoneRow.add( new UIText( strings.getKey( 'iTopoDialog/login/cellPhone' ) ).setWidth( '80px' ) );
 
-		var inputCellPhone = new UIInput( starUserInfo.cellPhone );
+		var inputCellPhone = new UIInput( loginUserInfo.cellPhone );
 		inputCellPhone.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -43,7 +43,7 @@ function iTopoDialogLogin( editor, menubar ) {
 		passwordRow.add( new UIText( strings.getKey( 'iTopoDialog/login/password' ) ).setWidth( '80px' ) );
 
 		var inputPassword = new UIInput();
-		inputPassword.setValue( starUserInfo.password );
+		inputPassword.setValue( loginUserInfo.password );
 		inputPassword.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
@@ -63,9 +63,9 @@ function iTopoDialogLogin( editor, menubar ) {
 		var lightStars = new UIButton( strings.getKey( 'iTopoDialog/login/login' ) );
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
-			console.log('login ');
+
 			editor.stationDB.userLogin( editor.starUser, function(detailUserInfo){
-				console.log(detailUserInfo);
+				editor.starUser.info = detailUserInfo;
 				editor.starUser.storeActiveUserInfo2Config();
 
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, detailUserInfo ) );

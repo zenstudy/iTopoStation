@@ -7,7 +7,7 @@ var iTopoStationAPI = {
 
 	CANTEEN_YUHUAZHAI_FILE: "./iTopoObjects/00_iTopoEarth/iTopoCanteen.json",
 	ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/iTopobase.json",
-	ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/iTopoUser.json",
+	//ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/iTopoUser.json",
 
 	iTopoEarthRegister : 'http://127.0.0.1:8081/iTopoEarthRegister',
 	iTopoEarthLogin : 'http://127.0.0.1:8081/iTopoEarthLogin',
@@ -19,7 +19,7 @@ var iTopoStationAPI = {
 	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
 	addMemberToiTopoSkyCastleTeams: 'http://127.0.0.1:8081/addMemberToiTopoSkyCastleTeams',
 
-	shujutongji: 'http://127.0.0.1:8081/shujutongji',
+	fetchiTopoStars: 'http://127.0.0.1:8081/fetchiTopoStars',
 }
 
 function iTopoStationDB() {
@@ -123,21 +123,39 @@ iTopoStationDB.prototype = {
 	},
 
 	fetchiTopoStars: function(fnAfterFetch) {
-		fetch(iTopoStationAPI.ITOPOUSER_FILE, {
-			method: 'GET',
+
+		var request = new Request(iTopoStationAPI.fetchiTopoStars, {
+			method: 'Get',
 			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
+			//credentials: 'include'
+		});
 
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-
-			console.log('error: ' + e.toString());
-		})
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterFetch(json);
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+	},
+	
+	fetchUserWithStarUUID: function(starUUID, fnAfterFetchedUser){
+	
+		var request = new Request(iTopoStationAPI.fetchUserWithStarUUID, {
+			method: 'POST',
+			body: JSON.stringify(starUUID),
+		//	headers: new Headers()
+		});
+	
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterFetchedUser(json);
+			//console.log('iTopoStationAPI.fetchUserWithStarUUID user:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+	
 	},
 
 	fetchiTopoTaskCards: function(objectUUID, taskStatus, fnAfterFetch) {
@@ -277,25 +295,6 @@ iTopoStationDB.prototype = {
 		.then(json => {
 			fnAfterFetchedBaseObject(json);
 			console.log('iTopoStationAPI.fetchBaseObjectWithObjectUUID baseObject:' + JSON.stringify(json));
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
-	},
-
-	fetchUserWithStarUUID: function(starUUID, fnAfterFetchedUser){
-
-		var request = new Request(iTopoStationAPI.fetchUserWithStarUUID, {
-			method: 'POST',
-			body: JSON.stringify(starUUID),
-			headers: new Headers()
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnAfterFetchedUser(json);
-			//console.log('iTopoStationAPI.fetchUserWithStarUUID user:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
@@ -452,24 +451,6 @@ iTopoStationDB.prototype = {
 		}).catch(function(e) {
 			console.log('error: ' + e.toString());
 		})
-	},
-
-	shujutongji: function(fnGetDataFromDB) {
-
-		var request = new Request(iTopoStationAPI.shujutongji, {
-			method: 'Get',
-			mode: 'cors', // 允许发送跨域请求
-			//credentials: 'include'
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnGetDataFromDB(json);
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
 	},
 }
 

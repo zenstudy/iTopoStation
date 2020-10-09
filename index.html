@@ -81,10 +81,6 @@
 					
 					editor.society.loginiTopoEarth( function afterlogin() {
 						
-						editor.stationDB.shujutongji(function(aaa){
-							alert('mangodb.success to get data:' + aaa);
-						})
-						
 						var menubar = new iTopoMenubar( editor );
 						document.body.appendChild( menubar.dom );
 						
