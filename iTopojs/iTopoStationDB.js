@@ -18,6 +18,8 @@ var iTopoStationAPI = {
 	updateStarUser:'http://127.0.0.1:8081/updateStarUser',
 	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
 	addMemberToiTopoSkyCastleTeams: 'http://127.0.0.1:8081/addMemberToiTopoSkyCastleTeams',
+
+	shujutongji: 'http://127.0.0.1:8081/shujutongji',
 }
 
 function iTopoStationDB() {
@@ -450,6 +452,24 @@ iTopoStationDB.prototype = {
 		}).catch(function(e) {
 			console.log('error: ' + e.toString());
 		})
+	},
+
+	shujutongji: function(fnGetDataFromDB) {
+
+		var request = new Request(iTopoStationAPI.shujutongji, {
+			method: 'Get',
+			mode: 'cors', // 允许发送跨域请求
+			//credentials: 'include'
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnGetDataFromDB(json);
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
 	},
 }
 

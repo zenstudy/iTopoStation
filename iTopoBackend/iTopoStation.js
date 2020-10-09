@@ -17,6 +17,18 @@ var router = express.Router();
 //（如样式、脚本、图片素材等文件）
 app.use(express.static(path.join(__dirname, 'iTopoStation')));
 
+//设置跨域访问
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    if (req.method == 'OPTIONS') {
+        res.send(200); /*让options请求快速返回*/
+    } else {
+        next();
+    }
+})
+
 /*
 //下面代码表示当用户使用/访问时，调用routes，即routes目录下的index.js文件，
 //其中.js后缀省略，用/users访问时，调用routes目录下users.js文件
@@ -551,6 +563,32 @@ app.post('/addMemberToiTopoSkyCastleTeams', function(req, res) {
 		res.end();
 	});
 });
+
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/runoob";
+
+// 获取信息列表
+app.get('/shujutongji', function (req, res) {
+
+	req.setEncoding("utf8");
+	res.setHeader("Cache-Control", "no-cache");
+	res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+
+    var data = [];
+    MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("runoob");
+        // var whereStr = {"name":'菜鸟教程'};  // 查询条件
+        dbo.collection("CarList").find().toArray(function (err, result) { // 返回集合中所有数据
+            if (err) throw err;
+            res.send(result);
+            db.close();
+        })
+    });
+});
+
 
 var server = app.listen(8081, function() {
 	var host = server.address().address;

@@ -20,5 +20,8 @@
     "express": "^4.17.1",
     "express-generator": "^4.16.1",
     "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {
+    "mongodb": "^3.6.2"
   }
 }
