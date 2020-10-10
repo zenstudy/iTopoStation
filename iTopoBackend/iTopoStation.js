@@ -11,7 +11,10 @@ let {
 	iTopoStationAPI
 } = require('./iTopoStationAPI.js');
 
-//require的核心概念：在导出的文件中定义module.exports，导出的对象类型不予限定（可为任意类型）。在导入的文件中使用require()引入即可使用。本质上，是将要导出的对象，赋值给module这个对象的exports属性，在其他文件中通过require这个方法来访问exports这个属性。上面b.js中，require(./a.js) = exports 这个对象，然后使用es6取值方式从exports对象中取出test的值。
+//require的核心概念：在导出的文件中定义module.exports，导出的对象类型不予限定（可为任意类型）。
+//在导入的文件中使用require()引入即可使用。本质上，是将要导出的对象，赋值给module这个对象的exports属性，
+//在其他文件中通过require这个方法来访问exports这个属性。上面b.js中，require(./a.js) = exports 这个对象，
+//然后使用es6取值方式从exports对象中取出test的值。
 
 var app = express();
 var router = express.Router();
@@ -123,17 +126,18 @@ app.post('/', function(req, res) {
 app.get('/fetchiTopoStars', function(req, res) {
 	MongoClient.connect(url, {
 		useUnifiedTopology: true
-	}, function(err, db) {
+	}, function(err, dbClient) {
 		if (err) throw err;
-		var dbo = db.db("iTopoEarthSociety");
+		var dbo = dbClient.db("iTopoEarthSociety");
 		dbo.collection("iTopoUser").find().toArray(function(err, result) { // 返回集合中所有数据
 			if (err) throw err;
 			res.send(result);
-			db.close();
+			dbClient.close();
 			res.end();
 		})
 	});
 });
+
 //根据用户starUUID查询用户信息
 app.post('/fetchUserWithStarUUID', function(req, res) {
 
@@ -145,18 +149,19 @@ app.post('/fetchUserWithStarUUID', function(req, res) {
 	req.addListener("end", function() {
 
 		var starUUID = JSON.parse(postData);
-		console.log(starUUID);
-		if(starUUID === null || starUUID === undefined || starUUID ===''){
+		if (starUUID === null || starUUID === undefined || starUUID === '') {
 			res.end('null');
 			return;
 		}
 
 		MongoClient.connect(url, {
 			useUnifiedTopology: true
-		}, function(err, db) {
+		}, function(err, dbClient) {
 			if (err) throw err;
-			var dbo = db.db("iTopoEarthSociety");
-			var whereStr = { "starUUID": starUUID }; // 查询条件
+			var dbo = dbClient.db("iTopoEarthSociety");
+			var whereStr = {
+				"starUUID": starUUID
+			}; // 查询条件
 			dbo.collection("iTopoUser").find(whereStr, function(err, cursor) {
 				cursor.each(function(err, result) {
 					if (err) throw err;
@@ -166,7 +171,7 @@ app.post('/fetchUserWithStarUUID', function(req, res) {
 					} else {
 						res.end('null');
 					}
-					db.close();
+					dbClient.close();
 					return;
 				});
 			});
@@ -175,7 +180,46 @@ app.post('/fetchUserWithStarUUID', function(req, res) {
 
 });
 
-//根据用户starUUID查询用户信息
+app.post('/iTopoEarthLogin', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var loginUser = JSON.parse(postData);
+		if (starUUID === null || starUUID === undefined || starUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoEarthSociety");
+			var whereStr = loginUser; // 查询条件
+			dbo.collection("iTopoUser").find(whereStr, function(err, cursor) {
+				cursor.each(function(err, result) {
+					if (err) throw err;
+					if (result !== null) {
+						res.send(result);
+						res.end();
+					} else {
+						res.end('null');
+					}
+					dbClient.close();
+					return;
+				});
+			});
+		});
+	});
+
+});
+
+//注册用户，并在数据库中添加之
 app.post('/iTopoEarthRegister', function(req, res) {
 
 	var postData = "";
@@ -189,54 +233,21 @@ app.post('/iTopoEarthRegister', function(req, res) {
 
 		MongoClient.connect(url, {
 			useUnifiedTopology: true
-		}, function(err, db) {
+		}, function(err, dbClient) {
 			if (err) throw err;
-			var dbo = db.db("iTopoEarthSociety");
+			var dbo = dbClient.db("iTopoEarthSociety");
 
 			//插入数据
 			dbo.collection("iTopoUser").insertOne(newUserStarInfo, function(err, result) {
 				if (err) throw err;
-				console.log('===begin============');
-				console.log(result);
-				console.log('===end============');
+				//				console.log(result);
 				res.send(result);
-				db.close();
+				dbClient.close();
 			});
 
 		});
 	});
 
-});
-
-app.post('/iTopoEarthRegister1', function(req, res) {
-
-	var postData = "";
-	req.addListener("data", function(postDataChunk) {
-		postData += postDataChunk;
-	});
-
-	req.addListener("end", function() {
-		res.write(postData);
-		var newUserStarInfo = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(newUserStarInfo));
-		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE; //'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
-		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var userStarInfos = JSON.parse(data);
-				console.log(userStarInfos);
-				userStarInfos.push(newUserStarInfo);
-
-				fs.writeFile(iTopoJsonFName, JSON.stringify(userStarInfos), function(err) {
-					if (err) console.error(err);
-					console.log('数据已经写入' + iTopoJsonFName);
-				});
-			}
-		});
-
-		res.end();
-	});
 });
 
 app.post('/updateStarUser', function(req, res) {
@@ -248,64 +259,27 @@ app.post('/updateStarUser', function(req, res) {
 	});
 
 	req.addListener("end", function() {
-		res.write(postData);
+
 		var newUserStarInfo = JSON.parse(postData);
-		console.log("===Received POST data :" + JSON.stringify(newUserStarInfo));
-		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE; //'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
-		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var userStarInfos = JSON.parse(data);
-				//console.log(userStarInfos);
 
-				for (var i = 0; i < userStarInfos.length; ++i) {
-					if (userStarInfos[i].starUUID === newUserStarInfo.starUUID) {
-						userStarInfos[i] = newUserStarInfo;
-						console.log('===update star user:' + JSON.stringify(userStarInfos[i]));
-					}
-				}
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoEarthSociety");
 
-				fs.writeFile(iTopoJsonFName, JSON.stringify(userStarInfos), function(err) {
-					if (err) console.error(err);
-					console.log('===数据已经写入' + iTopoJsonFName);
-				});
-			}
+			//插入数据
+			var whereStr = {
+				"starUUID": starUUID
+			}; // 查询条件
+			dbo.collection("iTopoUser").updateOne(whereStr, newUserStarInfo, function(err, result) {
+				if (err) throw err;
+				//				console.log(result);
+				res.send(result);
+				dbClient.close();
+			});
+
 		});
-
-		res.end();
-	});
-});
-
-app.post('/iTopoEarthLogin', function(req, res) {
-
-	var postData = "";
-
-	req.addListener("data", function(postDataChunk) {
-		postData += postDataChunk;
-	});
-
-	req.addListener("end", function() {
-		var loginUser = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(loginUser));
-		const iTopoJsonFName = iTopoStationAPI.ITOPOUSER_FILE; //'../iTopoObjects/00_iTopoEarth/iTopoUser.json';
-		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var allUserInfos = JSON.parse(data);
-
-				for (let i = 0; i < allUserInfos.length; i++) {
-					if (loginUser.cellPhone === allUserInfos[i].cellPhone) {
-						res.write(JSON.stringify(allUserInfos[i]));
-						res.end();
-						break;
-					}
-				}
-			}
-		});
-
-		//console.log(userDetailInfoToReturn);
 	});
 });
 
