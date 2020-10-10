@@ -23,11 +23,18 @@ function iTopoMenubarStarUser( editor , menubar) {
 	starInfoMenu.setClass('option');
 	starInfoMenu.setTextContent(strings.getKey('menubar/StarUser/mineStar'));
 	starInfoMenu.onClick(function() {
+
 		var starUUID = editor.config.getKey( 'activedStarUserUUID');
 		var star = editor.objectByiTopoUUID(starUUID);
 		if(star !== undefined && star !== null){
 			editor.select(star);// this function will call editor.signals.objectSelected.dispatch(star);
 		}
+		editor.stationDB.fetchUserWithStarUUID( starUUID, function(starUserJson){
+			editor.scene.rotation.y = 0;
+			editor.sceneHelpers.rotation.y = 0;
+			iTopoEarthModel.focusStar(starUserJson);
+		} )
+
 	});
 	options.add(starInfoMenu);
 
@@ -35,10 +42,19 @@ function iTopoMenubarStarUser( editor , menubar) {
 	exitMenu.setClass('option');
 	exitMenu.setTextContent(strings.getKey('menubar/StarUser/exit'));
 	exitMenu.onClick(function() {
+
+		if(menubar === null || menubar === undefined){
+			alert(menubar);
+		}
+
 		menubar.addMenubarRegisterMenu();
 		menubar.addMenubarLoginMenu();
 		menubar.removeMenubarStarUser();
+		
+		editor.starUser.info = null;
+		editor.starUser.storeActiveUserInfo2Config(editor);
 		editor.signals.userLogoff.dispatch();
+
 	});
 	options.add(exitMenu);
 

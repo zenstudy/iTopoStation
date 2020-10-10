@@ -6,20 +6,23 @@ var iTopoStationAPI = {
 	HORIZEN_SECURENODES_FILE: "./iTopoObjects/00_iTopoEarth/ZenSecureNodes.json",
 
 	CANTEEN_YUHUAZHAI_FILE: "./iTopoObjects/00_iTopoEarth/iTopoCanteen.json",
-	ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/iTopobase.json",
+	//ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/iTopobase.json",
 	//ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/iTopoUser.json",
 
+	fetchiTopoStars: 'http://127.0.0.1:8081/fetchiTopoStars',
 	iTopoEarthRegister : 'http://127.0.0.1:8081/iTopoEarthRegister',
 	iTopoEarthLogin : 'http://127.0.0.1:8081/iTopoEarthLogin',
-	registerBaseObjectOnEarth:'http://127.0.0.1:8081/registerBaseObjectOnEarth',
-	addTask:'http://127.0.0.1:8081/addTask',
-	updateTask:'http://127.0.0.1:8081/updateTask',
 	fetchUserWithStarUUID:'http://127.0.0.1:8081/fetchUserWithStarUUID',
 	updateStarUser:'http://127.0.0.1:8081/updateStarUser',
-	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
-	addMemberToiTopoSkyCastleTeams: 'http://127.0.0.1:8081/addMemberToiTopoSkyCastleTeams',
 
-	fetchiTopoStars: 'http://127.0.0.1:8081/fetchiTopoStars',
+	fetchiTopobase: 'http://127.0.0.1:8081/fetchiTopobase',
+	registerBaseObjectOnEarth:'http://127.0.0.1:8081/registerBaseObjectOnEarth',
+	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
+
+	addTask:'http://127.0.0.1:8081/addTask',
+	updateTask:'http://127.0.0.1:8081/updateTask',
+
+	addMemberToiTopoSkyCastleTeams: 'http://127.0.0.1:8081/addMemberToiTopoSkyCastleTeams',
 }
 
 function iTopoStationDB() {
@@ -39,23 +42,6 @@ iTopoStationDB.prototype = {
 
 	fetchiWorldGeo: function(fnAfterFetch) {
 		fetch(iTopoStationAPI.WORLD_JSON_FILE, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	},
-
-	fetchiTopobase: function(fnAfterFetch) {
-		fetch(iTopoStationAPI.ITOPOBASE_FILE, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求
 			credentials: 'include'
@@ -138,15 +124,15 @@ iTopoStationDB.prototype = {
 		  	console.log('error: ' + e.toString());
 		 })
 	},
-	
+
 	fetchUserWithStarUUID: function(starUUID, fnAfterFetchedUser){
-	
+
 		var request = new Request(iTopoStationAPI.fetchUserWithStarUUID, {
 			method: 'POST',
 			body: JSON.stringify(starUUID),
 		//	headers: new Headers()
 		});
-	
+
 		fetch(request)
 		.then(response => response.json())
 		.then(json => {
@@ -155,7 +141,119 @@ iTopoStationDB.prototype = {
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
-	
+
+	},
+
+	registerUser: function(userStarInfo, fnUserRegistered){
+
+		var request = new Request(iTopoStationAPI.iTopoEarthRegister, {
+			method: 'POST',
+			body: JSON.stringify(userStarInfo),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnUserRegistered();
+			console.log('fetch.post:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	userLogin: function(userStarInfo, fnUserLogin){
+
+		var request = new Request(iTopoStationAPI.iTopoEarthLogin, {
+			method: 'POST',
+			body: JSON.stringify(userStarInfo),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnUserLogin(json);
+			console.log('iTopoStationAPI.iTopoEarthLogin user:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	updateStarUser: function(starUser, fnAfterUpdate){
+
+		var request = new Request(iTopoStationAPI.updateStarUser, {
+			method: 'POST',
+			body: JSON.stringify(starUser),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterUpdate();
+			console.log('updateStarUser.post:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+
+	fetchiTopobase: function(fnAfterFetch) {
+		var request = new Request(iTopoStationAPI.fetchiTopobase, {
+			method: 'Get',
+			mode: 'cors', // 允许发送跨域请求
+			//credentials: 'include'
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterFetch(json);
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+	},
+
+	registerBaseObjectOnEarth: function(lightTask, fnAfterLight){
+
+		var request = new Request(iTopoStationAPI.registerBaseObjectOnEarth, {
+			method: 'POST',
+			body: JSON.stringify(lightTask),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterLight();
+			console.log('fetch.post:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	fetchBaseObjectWithObjectUUID: function(objectUUID, fnAfterFetchedBaseObject){
+
+		var request = new Request(iTopoStationAPI.fetchBaseObjectWithObjectUUID, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterFetchedBaseObject(json);
+			console.log('iTopoStationAPI.fetchBaseObjectWithObjectUUID baseObject:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
 	},
 
 	fetchiTopoTaskCards: function(objectUUID, taskStatus, fnAfterFetch) {
@@ -219,101 +317,6 @@ iTopoStationDB.prototype = {
 		.then(json => {
 			fnTaskAdded();
 			console.log('fetch.post:' + JSON.stringify(json));
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
-	},
-
-	registerUser: function(userStarInfo, fnUserRegistered){
-
-		var request = new Request(iTopoStationAPI.iTopoEarthRegister, {
-			method: 'POST',
-			body: JSON.stringify(userStarInfo),
-			headers: new Headers()
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnUserRegistered();
-			console.log('fetch.post:' + JSON.stringify(json));
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
-	},
-
-	userLogin: function(userStarInfo, fnUserLogin){
-
-		var request = new Request(iTopoStationAPI.iTopoEarthLogin, {
-			method: 'POST',
-			body: JSON.stringify(userStarInfo),
-			headers: new Headers()
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnUserLogin(json);
-			console.log('iTopoStationAPI.iTopoEarthLogin user:' + JSON.stringify(json));
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
-	},
-
-	registerBaseObjectOnEarth: function(lightTask, fnAfterLight){
-
-		var request = new Request(iTopoStationAPI.registerBaseObjectOnEarth, {
-			method: 'POST',
-			body: JSON.stringify(lightTask),
-			headers: new Headers()
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnAfterLight();
-			console.log('fetch.post:' + JSON.stringify(json));
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
-	},
-
-	fetchBaseObjectWithObjectUUID: function(objectUUID, fnAfterFetchedBaseObject){
-
-		var request = new Request(iTopoStationAPI.fetchBaseObjectWithObjectUUID, {
-			method: 'POST',
-			body: JSON.stringify(objectUUID),
-			headers: new Headers()
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnAfterFetchedBaseObject(json);
-			console.log('iTopoStationAPI.fetchBaseObjectWithObjectUUID baseObject:' + JSON.stringify(json));
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
-	},
-
-	updateStarUser: function(starUser, fnAfterUpdate){
-
-		var request = new Request(iTopoStationAPI.updateStarUser, {
-			method: 'POST',
-			body: JSON.stringify(starUser),
-			headers: new Headers()
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnAfterUpdate();
-			console.log('updateStarUser.post:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })

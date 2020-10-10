@@ -70,7 +70,6 @@ iTopoToolbarLight.prototype = {
 	onRegisterEcologicalFarm: function() {
 			var title = editor.strings.getKey('iTopoToolbarLight/RegisterEcologicalFarm');
 			var applyDlg = new iTopoDialogRegisterBase(editor,title);
-			console.log(applyDlg);
 			document.body.appendChild(applyDlg.container.dom);
 			applyDlg.container.setDisplay('block');
 			applyDlg.container.setPosition('absolate');

@@ -50,10 +50,18 @@ class iTopoStarUser {
 	}
 
 	storeActiveUserInfo2Config(editor) {
-		editor.config.setKey('activedStarUserUUID', this.info.starUUID);
-		editor.config.setKey('activedStarUserNickname', this.info.userNickname);
-		editor.config.setKey('activedStarUserCellPhone', this.info.cellPhone);
-		editor.config.setKey('activedStarUserToken', this.info.password);
+		if( this.info === null ){
+			editor.config.setKey('activedStarUserUUID', '');
+			editor.config.setKey('activedStarUserNickname', '');
+			editor.config.setKey('activedStarUserCellPhone', '');
+			editor.config.setKey('activedStarUserToken', '');
+		} else {
+			editor.config.setKey('activedStarUserUUID', this.info.starUUID);
+			editor.config.setKey('activedStarUserNickname', this.info.userNickname);
+			editor.config.setKey('activedStarUserCellPhone', this.info.cellPhone);
+			editor.config.setKey('activedStarUserToken', this.info.password);
+		}
+
 	}
 
 	restoreActiveUser(editor) {

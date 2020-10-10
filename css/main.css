@@ -423,7 +423,7 @@ select {
 
 	#sidebar .Row {
 		min-height: 18px;
-		margin-bottom: 10px;
+		margin-bottom: 5px;
 	}
 
 #tabs {
@@ -441,6 +441,19 @@ select {
 		color: #888;
 		background-color: #eee;
 	}
+
+#iTopoDialog {
+	position: absolute;
+	left: calc(50% - 290px); /* ( ( 100% - 300px ) / 2.0 ) - 140px */
+	top:  calc(50% - 290px);
+	background: #eee;
+	color: #333;
+}
+	#iTopoDialog .Row {
+		min-height: 18px;
+		margin-bottom: 5px;
+	}
+
 
 #toolbar {
 	position: absolute;
@@ -504,14 +517,6 @@ select {
 		padding: 1px;
 		color: #888;
 	}
-
-#iTopoDialog {
-	position: absolute;
-	left: calc(50% - 290px); /* ( ( 100% - 300px ) / 2.0 ) - 140px */
-	top:  calc(50% - 290px);
-	background: #eee;
-	color: #333;
-}
 
 .Outliner {
 	color: #444;

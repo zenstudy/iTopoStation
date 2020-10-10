@@ -1,11 +1,15 @@
 import { UIPanel, UIButton,UIInput, UIRow, UISelect, UITextArea, UIText, UISpan, UIInteger,UIBreak } from '../iTopoUI.js';
-import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoMenubarStarUser } from '../iTopoMenubar/iTopoMenubar.StarUser.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 
 function iTopoDialogLogin( editor, menubar ) {
 
 	var strings = editor.strings;
+
+	if( editor.starUser.info === null || editor.starUser.info === undefined){
+		editor.starUser.info = { userNickname:"<在这里输入您的用户名>", password:"<在这里输入您的密码>"};
+	}
 	var loginUserInfo = editor.starUser.info;
 
 	var container = new UISpan();
@@ -23,18 +27,18 @@ function iTopoDialogLogin( editor, menubar ) {
 	container.add(dlgBody);
 
 	{
-		var cellPhoneRow = new UIRow();
+		var userNameRow = new UIRow();
 
-		cellPhoneRow.add( new UIText( strings.getKey( 'iTopoDialog/login/cellPhone' ) ).setWidth( '80px' ) );
+		userNameRow.add( new UIText( strings.getKey( 'iTopoDialog/login/userName' ) ).setWidth( '80px' ) );
 
-		var inputCellPhone = new UIInput( loginUserInfo.cellPhone );
-		inputCellPhone.onChange( function () {
+		var inputUserName = new UIInput( loginUserInfo.userNickname );
+		inputUserName.onChange( function () {
 			// var value = this.getValue();
 			// editor.config.setKey( 'exportPrecision', value );
 		} );
-		cellPhoneRow.add( inputCellPhone );
+		userNameRow.add( inputUserName );
 
-		dlgBody.add( cellPhoneRow );
+		dlgBody.add( userNameRow );
 	}
 
 	{
@@ -54,8 +58,8 @@ function iTopoDialogLogin( editor, menubar ) {
 	}
 
 	var buttonPanel = new UIPanel();
-	buttonPanel.setPaddingLeft( '20px' );
-	buttonPanel.setPaddingRight( '20px' );
+	buttonPanel.setPaddingLeft( '170px' );
+	buttonPanel.setPaddingRight( '30px' );
 	buttonPanel.setPaddingBottom( '20px' );
 	container.add( buttonPanel );
 
@@ -64,9 +68,12 @@ function iTopoDialogLogin( editor, menubar ) {
 		lightStars.setMarginRight( '20px' );
 		lightStars.onClick( function () {
 
-			editor.stationDB.userLogin( editor.starUser, function(detailUserInfo){
+			loginUserInfo =	{ userNickname:inputUserName.getValue(), password:inputPassword.getValue()};
+
+			editor.stationDB.userLogin( loginUserInfo , function(detailUserInfo){
+
 				editor.starUser.info = detailUserInfo;
-				editor.starUser.storeActiveUserInfo2Config();
+				editor.starUser.storeActiveUserInfo2Config(editor);
 
 				menubar.addMenubarStarUser( new iTopoMenubarStarUser( editor, menubar, detailUserInfo ) );
 				menubar.removeRegisterMenu();
@@ -80,7 +87,6 @@ function iTopoDialogLogin( editor, menubar ) {
 
 				editor.signals.userRegisteredOrLogin.dispatch(detailUserInfo);
 			});
-
 
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 

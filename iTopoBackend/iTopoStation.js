@@ -190,7 +190,7 @@ app.post('/iTopoEarthLogin', function(req, res) {
 	req.addListener("end", function() {
 
 		var loginUser = JSON.parse(postData);
-		if (starUUID === null || starUUID === undefined || starUUID === '') {
+		if (loginUser === null || loginUser === undefined || loginUser === '') {
 			res.end('null');
 			return;
 		}
@@ -283,70 +283,92 @@ app.post('/updateStarUser', function(req, res) {
 	});
 });
 
-app.post('/registerBaseObjectOnEarth', function(req, res) {
-
-	var postData = "";
-
-	req.addListener("data", function(postDataChunk) {
-		postData += postDataChunk;
-	});
-
-	req.addListener("end", function() {
-		res.write(postData);
-		var newLightTask = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(newLightTask));
-		const iTopoJsonFName = iTopoStationAPI.ITOPOBASE_FILE; //'../iTopoObjects/00_iTopoEarth/iTopobase.json';
-		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var lightTasks = JSON.parse(data);
-				console.log(lightTasks);
-				lightTasks.push(newLightTask);
-
-				fs.writeFile(iTopoJsonFName, JSON.stringify(lightTasks), function(err) {
-					if (err) console.error(err);
-					console.log('数据已经写入' + iTopoJsonFName);
-				});
-			}
-		});
-
-		res.end();
+// 获取所有用户信息
+app.get('/fetchiTopobase', function(req, res) {
+	MongoClient.connect(url, {
+		useUnifiedTopology: true
+	}, function(err, dbClient) {
+		if (err) throw err;
+		var dbo = dbClient.db("iTopoEarthSociety");
+		dbo.collection("iTopobase").find().toArray(function(err, result) { // 返回集合中所有数据
+			if (err) throw err;
+			res.send(result);
+			dbClient.close();
+			res.end();
+		})
 	});
 });
 
-app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
+app.post('/registerBaseObjectOnEarth', function(req, res) {
 
-	console.log("app.post.fetchBaseObjectWithObjectUUID");
 	var postData = "";
-
 	req.addListener("data", function(postDataChunk) {
 		postData += postDataChunk;
 	});
 
 	req.addListener("end", function() {
-		var objectUUID = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(objectUUID));
-		const iTopoJsonFName = iTopoStationAPI.ITOPOBASE_FILE; //'../iTopoObjects/00_iTopoEarth/iTopobase.json';
-		fs.readFile(iTopoJsonFName, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-				var allBaseObjectInfos = JSON.parse(data);
 
-				for (let i = 0; i < allBaseObjectInfos.length; i++) {
-					console.log(allBaseObjectInfos[i].objectUUID);
-					console.log(objectUUID);
-					if (objectUUID === allBaseObjectInfos[i].baseUUID) {
-						res.write(JSON.stringify(allBaseObjectInfos[i]));
-						console.log(JSON.stringify(allBaseObjectInfos[i]));
-						res.end();
-						break;
-					}
-				}
-			}
+		var newBaseInfo = JSON.parse(postData);
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoEarthSociety");
+
+			//插入数据
+			dbo.collection("iTopobase").insertOne(newBaseInfo, function(err, result) {
+				if (err) throw err;
+				//				console.log(result);
+				res.send(result);
+				dbClient.close();
+			});
+
 		});
 	});
+
+});
+
+//根据用户starUUID查询用户信息
+app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var baseUUID = JSON.parse(postData);
+		if (baseUUID === null || baseUUID === undefined || baseUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoEarthSociety");
+			var whereStr = {
+				"baseUUID": baseUUID
+			}; // 查询条件
+			dbo.collection("iTopobase").find(whereStr, function(err, cursor) {
+				cursor.each(function(err, result) {
+					if (err) throw err;
+					if (result !== null) {
+						res.send(result);
+						res.end();
+					} else {
+						res.end('null');
+					}
+					dbClient.close();
+					return;
+				});
+			});
+		});
+	});
+
 });
 
 app.post('/addTask', function(req, res) {

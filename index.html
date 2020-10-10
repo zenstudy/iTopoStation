@@ -81,9 +81,6 @@
 					
 					editor.society.loginiTopoEarth( function afterlogin() {
 						
-						var menubar = new iTopoMenubar( editor );
-						document.body.appendChild( menubar.dom );
-						
 						var viewport = new iTopoViewport( editor );
 						document.body.appendChild( viewport.dom );
 						
@@ -104,6 +101,9 @@
 						
 						var userBriefcase = new iTopoUserBriefcase( editor );
 						document.body.appendChild( userBriefcase.container.dom );
+						
+						var menubar = new iTopoMenubar( editor );//放在头排会被遮挡
+						document.body.appendChild( menubar.dom );
 						
 						var handler = new iTopoEarthHandler(editor, sidebar, userBriefcase);
 						

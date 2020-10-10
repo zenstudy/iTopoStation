@@ -7,7 +7,7 @@ function iTopoDialogRegisterBase( editor, dispalyContext ) {
 	var strings = editor.strings;
 
 	var container = new UISpan();
-	container.setId( 'BluePrint' );
+	container.setId( 'iTopoDialog' );
 	container.setPosition( 'absolute' );
 	scope.container = container;
 
@@ -197,7 +197,7 @@ function iTopoDialogRegisterBase( editor, dispalyContext ) {
 		lightEarth.onClick( function () {
 
 			//editor.signals.baseRegistered.dispatch( editor.starUser.starUUID, baseInfo);
-			document.body.removeChild(document.getElementById("BluePrint"));
+			document.body.removeChild(document.getElementById("iTopoDialog"));
 
 		} );
 		bottomPanel.add( lightEarth );
@@ -207,7 +207,7 @@ function iTopoDialogRegisterBase( editor, dispalyContext ) {
 		var cancelBtn = new UIButton( strings.getKey( 'iTopoDialog/cancel' ) );
 		cancelBtn.setLeft( '180px' );
 		cancelBtn.onClick( function () {
-			document.body.removeChild(document.getElementById("BluePrint"));
+			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
 		bottomPanel.add( cancelBtn );
 	}

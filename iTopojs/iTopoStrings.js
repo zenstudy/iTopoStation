@@ -152,19 +152,13 @@ function iTopoStrings( config ) {
 
 
 			'iTopoDialog/login/login' : '登陆',
-			'iTopoDialog/login/cellPhone':'手机',
-			'iTopoDialog/login/longitude': '经度',
-			'iTopoDialog/login/latitude': '纬度',
-			'iTopoDialog/login/starWish': '星语星愿',
-			'iTopoDialog/login/password':'密码',
+			'iTopoDialog/login/userName':'用户名',
+			'iTopoDialog/login/password':'密  码',
 			'iTopoDialog/login/cancel': '取消',
 
-			'iTopoDialog/register/register' : '注册',
-			'iTopoDialog/register/cellPhone':'手机',
-			'iTopoDialog/register/longitude': '经度',
-			'iTopoDialog/register/latitude': '纬度',
-			'iTopoDialog/register/starWish': '星语星愿',
-			'iTopoDialog/register/password':'密码',
+			'iTopoDialog/register/register': '注册',
+			'iTopoDialog/register/userName': '用户名',
+			'iTopoDialog/register/password': '密  码',
 			'iTopoDialog/register/cancel': '取消',
 
 			'iTopoDialog/lightStars/longitude' : '经度',

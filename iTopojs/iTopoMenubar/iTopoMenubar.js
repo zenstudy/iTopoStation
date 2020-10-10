@@ -42,13 +42,13 @@ iTopoMenubar.prototype = {
 	},
 
 	addMenubarRegisterMenu: function() {
-		if (this.registerMenu === undefined || this.registerMenu === undefined)
+		if (this.registerMenu === undefined || this.registerMenu === null)
 			this.registerMenu = new iTopoMenubarRegister(editor, this);
 		this.container.add(this.registerMenu);
 	},
 
 	addMenubarLoginMenu: function() {
-		if (this.loginMenu === undefined || this.loginMenu === undefined)
+		if (this.loginMenu === undefined || this.loginMenu === null)
 			this.loginMenu = new iTopoMenubarLogin(editor, this);
 		this.container.add(this.loginMenu);
 	},
