@@ -440,6 +440,141 @@ app.post('/fetchiTopoBaseOutlook', function(req, res) {
 
 });
 
+app.post('/fetchiTopobaseWorkTeams', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var baseUUID = JSON.parse(postData);
+		if (baseUUID === null || baseUUID === undefined || baseUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoWorkTeam");
+			var dboCollection = dbo.collection(baseUUID);
+			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
+				if (err) throw err;
+				console.log(result);
+				res.send(result);
+				dbClient.close();
+				res.end();
+			})
+
+		});
+	});
+
+});
+
+app.post('/fetchiTopobaseSponsors', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var baseUUID = JSON.parse(postData);
+		if (baseUUID === null || baseUUID === undefined || baseUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopobaseSponsors");
+			var dboCollection = dbo.collection(baseUUID);
+			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
+				if (err) throw err;
+				console.log(result);
+				res.send(result);
+				dbClient.close();
+				res.end();
+			})
+
+		});
+	});
+
+});
+
+app.post('/fetchiTopoBaseProductCategorys', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var baseUUID = JSON.parse(postData);
+		if (baseUUID === null || baseUUID === undefined || baseUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopobaseProductCategorys");
+			var dboCollection = dbo.collection(baseUUID);
+			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
+				if (err) throw err;
+				console.log(result);
+				res.send(result);
+				dbClient.close();
+				res.end();
+			})
+
+		});
+	});
+
+});
+
+app.post('/fetchiTopoBaseProducts', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var baseUUID = JSON.parse(postData);
+		if (baseUUID === null || baseUUID === undefined || baseUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopobaseProducts");
+			var dboCollection = dbo.collection(baseUUID);
+			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
+				if (err) throw err;
+				console.log(result);
+				res.send(result);
+				dbClient.close();
+				res.end();
+			})
+
+		});
+	});
+
+});
 
 app.post('/addTask', function(req, res) {
 

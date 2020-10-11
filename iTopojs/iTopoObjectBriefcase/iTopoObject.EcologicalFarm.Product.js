@@ -101,7 +101,7 @@ iTopoObjectEcologicalFarmProduct.prototype = {
 			});
 
 			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
-			editor.stationDB.fetchiTopoBaseObjectProductCategorys(taskObject.baseUUID,function(jsonProductCategorys){
+			editor.stationDB.fetchiTopoBaseProductCategorys(taskObject.baseUUID,function(jsonProductCategorys){
 
 				jsonProductCategorys.forEach(function(productCategory){
 					scope.thumbnailManager.createThumbnailItem(productCategory.productCategoryName, mesh.clone(),
@@ -123,7 +123,7 @@ iTopoObjectEcologicalFarmProduct.prototype = {
 
 		scope.thumbnailManager2.clearAllThumbnailItems();
 
-		editor.stationDB.fetchiTopoBaseObjectProducts(baseUUID, function(jsonProducts){
+		editor.stationDB.fetchiTopoBaseProducts(baseUUID, function(jsonProducts){
 
 			jsonProducts.forEach(function(jsonProductInfo) {
 

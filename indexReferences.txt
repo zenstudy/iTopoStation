@@ -1,4 +1,7 @@
 mongoDB= http://127.0.0.1:27017/
+MongoDB下载地址：http://dl.mongodb.org/dl/win32/x86_64
+win32/mongodb-win32-x86_64-2012plus-4.2.10.zip
+
 mongoDB 可视化工具 = 介绍一款好用 mongodb 可视化工具, 启动    npm start
 https://blog.csdn.net/qq_32340877/article/details/79142129?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522160220299819724839233086%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=160220299819724839233086&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v28-1-79142129.pc_first_rank_v2_rank_v28&utm_term=mongodb%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E6%9C%89%E5%93%AA%E4%BA%9B&spm=1018.2118.3001.4187
 

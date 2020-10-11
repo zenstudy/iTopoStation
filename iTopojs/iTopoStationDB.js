@@ -20,6 +20,10 @@ var iTopoStationAPI = {
 	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
 	fetchiTopoBaseAnnouncement:'http://127.0.0.1:8081/fetchiTopoBaseAnnouncement',
 	fetchiTopoBaseOutlook: 'http://127.0.0.1:8081/fetchiTopoBaseOutlook',
+	fetchiTopobaseWorkTeams: 'http://127.0.0.1:8081/fetchiTopobaseWorkTeams',
+	fetchiTopobaseSponsors: 'http://127.0.0.1:8081/fetchiTopobaseSponsors',
+	fetchiTopoBaseProductCategorys:'http://127.0.0.1:8081/fetchiTopoBaseProductCategorys',
+	fetchiTopoBaseProducts:'http://127.0.0.1:8081/fetchiTopoBaseProducts',
 
 	addTask:'http://127.0.0.1:8081/addTask',
 	updateTask:'http://127.0.0.1:8081/updateTask',
@@ -256,15 +260,15 @@ iTopoStationDB.prototype = {
 		 })
 
 	},
-	
+
 	fetchiTopoBaseOutlook: function(objectUUID, fnAfterFetch){
-	
+
 		var request = new Request(iTopoStationAPI.fetchiTopoBaseOutlook, {
 			method: 'POST',
 			body: JSON.stringify(objectUUID),
 			headers: new Headers()
 		});
-	
+
 		fetch(request)
 		.then(response => response.json())
 		.then(json => {
@@ -273,22 +277,22 @@ iTopoStationDB.prototype = {
 			} else {
 				fnAfterFetch(json);
 			}
-			
+
 			//console.log('iTopoStationAPI.fnAfterFetch baseObject:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
-	
+
 	},
-	
+
 	fetchiTopoBaseAnnouncement: function(objectUUID, fnAfterFetchedBaseObject){
-	
+
 		var request = new Request(iTopoStationAPI.fetchiTopoBaseAnnouncement, {
 			method: 'POST',
 			body: JSON.stringify(objectUUID),
 			headers: new Headers()
 		});
-	
+
 		fetch(request)
 		.then(response => response.json())
 		.then(json => {
@@ -297,7 +301,95 @@ iTopoStationDB.prototype = {
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
-	
+
+	},
+
+	fetchiTopobaseWorkTeams: function(objectUUID, fnAfterFetchedWorkTeams){
+
+		var request = new Request(iTopoStationAPI.fetchiTopobaseWorkTeams, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+
+			if(json.length === 1){
+				fnAfterFetchedWorkTeams(json[0]);
+			} else {
+				fnAfterFetchedWorkTeams(json);
+			}
+			//console.log('iTopoStationAPI.fetchiTopobaseWorkTeams baseObject:' + JSON.stringify(json));
+
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	fetchiTopobaseSponsors: function(objectUUID, fetchiTopobaseSponsors){
+
+		var request = new Request(iTopoStationAPI.fetchiTopobaseSponsors, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+
+			fetchiTopobaseSponsors(json);
+			//console.log('iTopoStationAPI.fetchiTopobaseSponsors baseObject:' + JSON.stringify(json));
+
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	fetchiTopoBaseProductCategorys: function(objectUUID,fnAfterFetchProductCategorys) {
+
+		var request = new Request(iTopoStationAPI.fetchiTopoBaseProductCategorys, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+
+			fnAfterFetchProductCategorys(json);
+			//console.log('iTopoStationAPI.fnAfterFetchProductCategorys baseObject:' + JSON.stringify(json));
+
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
+	fetchiTopoBaseProducts: function(objectUUID,fnAfterFetch) {
+
+		var request = new Request(iTopoStationAPI.fetchiTopoBaseProducts, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+
+			fnAfterFetch(json);
+			//console.log('iTopoStationAPI.fetchiTopoBaseProducts baseObject:' + JSON.stringify(json));
+
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
 	},
 
 	fetchiTopoTaskCards: function(objectUUID, taskStatus, fnAfterFetch) {
@@ -367,25 +459,6 @@ iTopoStationDB.prototype = {
 
 	},
 
-	fetchiTopobaseWorkTeams: function(skyCastleUUID,fnAfterFetch) {
-
-		var taskFile = './iTopoObjects/' + skyCastleUUID + '/workTeams.json';
-		fetch(taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	},
-
 	addMemberToiTopoSkyCastleTeams: function(skyCastleUUID, teamUUID, starUserUUID,fnAfterAdd) {
 
 		var request = new Request(iTopoStationAPI.addMemberToiTopoSkyCastleTeams, {
@@ -403,64 +476,7 @@ iTopoStationDB.prototype = {
 		  	console.log('error: ' + e.toString());
 		 })
 
-	},
-
-	fetchiTopoSkyCastleSponsors: function(skyCastleUUID,fnAfterFetch) {
-
-		var taskFile = './iTopoObjects/' + skyCastleUUID + '/sponsorOrgs.json';
-		fetch(taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	},
-
-	fetchiTopoBaseObjectProductCategorys: function(baseUUID,fnAfterFetch) {
-
-		var taskFile = './iTopoObjects/' + baseUUID + '/productCategorys.json';
-		fetch(taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	},
-
-	fetchiTopoBaseObjectProducts: function(baseUUID,fnAfterFetch) {
-
-		var taskFile = './iTopoObjects/' + baseUUID + '/products.json';
-		fetch(taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	},
+	}
 }
 
 export { iTopoStationDB };

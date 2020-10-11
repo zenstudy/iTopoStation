@@ -252,7 +252,7 @@ function iTopoObjectBriefcase(editor) {
 		editor.stationDB.fetchiTopobaseWorkTeams( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
 				iTopoEarthModel.SkyCastle.info.teams = json;
 
-				editor.stationDB.fetchiTopoSkyCastleSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
+				editor.stationDB.fetchiTopobaseSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
 					iTopoEarthModel.SkyCastle.info.sponsors = json;
 					tabs.forEach(function(tab) {
 						tab.panel.setValue(iTopoEarthModel.SkyCastle);
@@ -417,7 +417,7 @@ function iTopoObjectBriefcase(editor) {
 	editor.stationDB.fetchiTopobaseWorkTeams( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
 			iTopoEarthModel.SkyCastle.info.teams = json;
 
-			editor.stationDB.fetchiTopoSkyCastleSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
+			editor.stationDB.fetchiTopobaseSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(json){
 				iTopoEarthModel.SkyCastle.info.sponsors = json;
 				tabs.forEach(function(tab) {
 					tab.panel.setValue(iTopoEarthModel.SkyCastle);

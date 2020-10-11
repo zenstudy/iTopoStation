@@ -1,24 +1,21 @@
 import { UIElement, UISpan , UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
-import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
-
-import { OBJLoader2 } from '../../../examples/jsm/loaders/OBJLoader2.js';
-import { MTLLoader } from '../../../examples/jsm/loaders/MTLLoader.js';
-import { MtlObjBridge } from '../../../examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
-import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
+import { iTopoStarUser } from '../iTopoElement/iTopoStarUser.js';
 
 function iTopoObjectStarUserHeader(editor) {
 	var scope = this;
 
 	var strings = editor.strings;
 
-	var starUserInfo = editor.starUser.info
+	var starUser = new iTopoStarUser();
+	var starUserInfo = starUser.info;
 
 	var container = new UISpan();
 	this.container = container;
@@ -217,7 +214,7 @@ iTopoObjectStarUserHeader.prototype = {
 		var title = editor.strings.getKey( 'sidebar/StarUser/Header/Outlook' ) ;
 		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.starUUID,function(outlookData){
 
-			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/Star', function(background_outlook){
 
 				var originPosition = new THREE.Vector3(0,-iTopoEarthSettings.standMaxBoxH/2,0);
 				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, iTopoEarthSettings.standMaxBoxH, function(baseModel){

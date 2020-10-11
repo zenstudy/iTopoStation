@@ -376,17 +376,16 @@ iTopoResourceTracker.prototype = {
 		var texturePath;
 		if(objectType === "iTopoType/TaskObject/EcologicalFarm"){
 			var texturePaths = [
-				'iTopoObjects/00_Default_Resource/cosmos/',
 				'iTopoObjects/00_Default_Resource/Footballfield/',
 				'iTopoObjects/00_Default_Resource/Park/',
 				'iTopoObjects/00_Default_Resource/FishPond/',
 			];
-			var index = random(0, 3);
+			var index = random(0, 2);
 			texturePath = texturePaths[index] ;
 		} else if(objectType === "iTopoType/TaskObject/SharedCanteen"){
 			texturePath = 'iTopoObjects/00_Default_Resource/computer-history-museum/';
 		} else{
-			texturePath = 'iTopoObjects/00_Default_Resource/computer-history-museum/';
+			texturePath = 'iTopoObjects/00_Default_Resource/cosmos/';
 		}
 
 		const texture = loader.load([
@@ -399,7 +398,7 @@ iTopoResourceTracker.prototype = {
 		]);
 
 		fnAfterLoadOutLook(texture);
-	}
+	},
 }
 
 export { iTopoResourceTracker };

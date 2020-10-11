@@ -37,7 +37,7 @@ var iTopoSpriteSponsor = function ( editor ) {
 	} );
 	container.dom.appendChild(elementListItem);
 
-	editor.stationDB.fetchiTopoSkyCastleSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(sponsorsInfo){
+	editor.stationDB.fetchiTopobaseSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(sponsorsInfo){
 		iTopoEarthModel.SkyCastle.info.sponsors = sponsorsInfo;
 
 		var tmpSponsors = [];
