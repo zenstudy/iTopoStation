@@ -1,6 +1,7 @@
 mongoDB= http://127.0.0.1:27017/
-mongoDB 可视化工具 = 介绍一款好用 mongodb 可视化工具
+mongoDB 可视化工具 = 介绍一款好用 mongodb 可视化工具, 启动    npm start
 https://blog.csdn.net/qq_32340877/article/details/79142129?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522160220299819724839233086%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=160220299819724839233086&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v28-1-79142129.pc_first_rank_v2_rank_v28&utm_term=mongodb%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%E6%9C%89%E5%93%AA%E4%BA%9B&spm=1018.2118.3001.4187
+
 
 1. 给刚注册的用户发一个欢迎的信息
 
@@ -61,6 +62,8 @@ c.地球地理信息录入功能，分公共数据和私有数据两部分。
 23.考虑将用户制作成照片墙
 https://blog.csdn.net/hangGe0111/article/details/88870776?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param
 ===============
+Mongodb亿级数据量的性能测试
+https://blog.csdn.net/zrjdds/article/details/52159936
 
 关于正态分布与上限和下限之间的关系,社区分配方式
 iTopoConfig\iTopoStorage\iTopoLoader的整合

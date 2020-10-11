@@ -12,8 +12,8 @@ var iTopoStandSponsor = {
 		container.setPosition( 'absolute' );
 		scope.dom = container.dom;
 		console.log(parentDom);
-		this.width = 78;
-		this.height = 78;
+		this.width = 72;
+		this.height = 72;
 		parentDom.appendChild( container.dom );
 
 		var renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true } );

@@ -13,7 +13,10 @@ var iTopoToolbarLight = function ( editor ) {
 
 	// baseUUID
 	var toolHeaderRow = new UIRow();
-	toolHeaderRow.add(new UIText(strings.getKey('iTopoToolbarLight/enteriTopoEarth')).setWidth('100px'));
+	var labelEnterEarth = new UIText(strings.getKey('iTopoToolbarLight/enteriTopoEarth')).setWidth('100px');
+	labelEnterEarth.setFontSize('10px');
+	labelEnterEarth.setMarginLeft('5px');
+	toolHeaderRow.add(labelEnterEarth);
 	container.add(toolHeaderRow);
 
 	scope.thumbnailManager = new iTopoThumbnailManager();

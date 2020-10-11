@@ -16,18 +16,26 @@ var iTopoSpriteSponsor = function ( editor ) {
 
 	// baseUUID
 	var toolHeaderRow = new UIRow();
-	var labelSponsor = new UIText(strings.getKey('iTopoSpriteSponsor/iTopoEarthSponsor')).setFontSize('10px');
+	var labelSponsor = new UIText(strings.getKey('iTopoSpriteSponsor/iTopoEarthSponsor'));
+	labelSponsor.setFontSize('10px');
 	labelSponsor.setMarginLeft('5px');
 	toolHeaderRow.add(labelSponsor);
 	container.add(toolHeaderRow);
 
-	var containerSponsorLogo = new UIPanel();
-	containerSponsorLogo.setTop('12px');
-	containerSponsorLogo.setMarginLeft('2px');
-	containerSponsorLogo.setMarginRight('2px');
-	containerSponsorLogo.setWidth('83px');
-	containerSponsorLogo.setHeight('83px');
-	container.add(containerSponsorLogo);
+	var elementListItem = document.createElement('div');
+	elementListItem.className = 'register-item';
+
+	var sceneElement=document.createElement("div");
+	elementListItem.appendChild(sceneElement);
+
+	var descriptionElement = document.createElement('div');
+	descriptionElement.innerText = strings.getKey('iTopoSpriteSponsor/becomeSponsor');
+	elementListItem.appendChild(descriptionElement);
+
+	elementListItem.addEventListener('click', function(){
+		scope.onClickSponsor();
+	} );
+	container.dom.appendChild(elementListItem);
 
 	editor.stationDB.fetchiTopoSkyCastleSponsors( iTopoEarthModel.SkyCastle.info.castleUUID, function(sponsorsInfo){
 		iTopoEarthModel.SkyCastle.info.sponsors = sponsorsInfo;
@@ -62,22 +70,11 @@ var iTopoSpriteSponsor = function ( editor ) {
 			})
 		})
 
-		var explore = new iTopoStandSponsor.Explore(containerSponsorLogo.dom);
+		var explore = new iTopoStandSponsor.Explore(sceneElement);
 
 		explore.show3D(null , tmpSponsors );
 		explore.play();
 
-	});
-
-
-
-	var registerSponsor = new UIRow();
-	var becomeSponsorLabel = new UIText(strings.getKey('iTopoSpriteSponsor/becomeSponsor')).setFontSize('10px');
-	becomeSponsorLabel.setMarginLeft('5px');
-	registerSponsor.add(becomeSponsorLabel);
-	container.add(registerSponsor);
-	becomeSponsorLabel.dom.addEventListener('click', function() {
-		scope.onRegisterEcologicalFarm();
 	});
 
 	return container;
@@ -110,7 +107,7 @@ iTopoSpriteSponsor.prototype = {
 		// scope.thumbnailManager = null;
 	},
 
-	onRegisterEcologicalFarm: function() {
+	onClickSponsor: function() {
 
 		var title = editor.strings.getKey('iTopoDialog/Sponsor/applyToJoining');
 		var sponsorsDlg = new iTopoDialogGetSponsors(editor,title);
