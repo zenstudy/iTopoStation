@@ -200,7 +200,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 				});
 
 			//通知相关人员
-			editor.stationDB.fetchiTopoSkyCastleTeams(taskInCastle.objectUUID, function(teamObjects) {
+			editor.stationDB.fetchiTopobaseWorkTeams(taskInCastle.objectUUID, function(teamObjects) {
 				for (var i = 0; i < teamObjects.length; ++i) {
 					if (teamObjects[i].teamUUID === taskInCastle.applyDetail.teamToJoinUUID) {
 
@@ -249,7 +249,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 		//将任务放入已完成
 		editor.stationDB.updateTask(taskInCastle, "已办", function() {
 
-			editor.stationDB.fetchiTopoSkyCastleTeams(taskInCastle.objectUUID, function(teamObjects) {
+			editor.stationDB.fetchiTopobaseWorkTeams(taskInCastle.objectUUID, function(teamObjects) {
 				for (var i = 0; i < teamObjects.length; ++i) {
 					if (teamObjects[i].teamUUID === taskInCastle.applyDetail.teamToJoinUUID) {
 						alert('info to each related members');

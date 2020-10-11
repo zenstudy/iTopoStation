@@ -215,7 +215,7 @@ iTopoObjectStarUserHeader.prototype = {
 		var scope = this;
 		var originPosition = new THREE.Vector3();
 		var title = editor.strings.getKey( 'sidebar/StarUser/Header/Outlook' ) ;
-		editor.stationDB.fetchiTopoSkyCastleOutlook(scope.taskObject.starUUID,function(outlookData){
+		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.starUUID,function(outlookData){
 
 			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
 
@@ -224,9 +224,11 @@ iTopoObjectStarUserHeader.prototype = {
 
 					var album2DImgs = [];
 					var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/outlook/";
-					outlookData.album2DImgs.forEach(function(imgItem){
-						album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
-					});
+					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
+						outlookData.album2DImgs.forEach(function(imgItem){
+							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+						});
+					}
 
 					var explore = new iTopoStandPlatform.Explore(title);
 					console.log(album2DImgs);
@@ -261,7 +263,7 @@ iTopoObjectStarUserHeader.prototype = {
 			this.starWishValueUI.setValue(taskObject.starWish);
 
 			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
-			editor.stationDB.fetchiTopoBaseObjectAnnouncement(taskObject.starUUID,function(jsonAnnouncement){
+			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.starUUID,function(jsonAnnouncement){
 
 				jsonAnnouncement.forEach(function(announcement){
 					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,

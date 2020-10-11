@@ -87,7 +87,7 @@ function iTopoObjectSkyCastleHeader(editor) {
 		scope.notificationPanel = notificationPanel;
 		notificationPanel.createDisplayStand(containerAnnouncement.dom);
 
-		editor.stationDB.fetchiTopoBaseObjectAnnouncement(iTopoEarthModel.SkyCastle.info.castleUUID,function(jsonAnnouncement){
+		editor.stationDB.fetchiTopoBaseAnnouncement(iTopoEarthModel.SkyCastle.info.castleUUID,function(jsonAnnouncement){
 
 			jsonAnnouncement.forEach(function(announcement){
 			 	notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
@@ -137,13 +137,16 @@ iTopoObjectSkyCastleHeader.prototype = {
 		originPosition.set(0.15*iTopoEarthSettings.standMaxBoxW,0,0.16*iTopoEarthSettings.standMaxBoxW);
 		editor.resourceTracker.loadSmallCityModel(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
 
-			editor.stationDB.fetchiTopoSkyCastleOutlook(skyCastleinfo.castleUUID,function(outlookData){
+			editor.stationDB.fetchiTopoBaseOutlook(skyCastleinfo.castleUUID,function(outlookData){
 
 				var album2DImgs = [];
 				var baseURL = "./iTopoObjects/" + skyCastleinfo.castleUUID + "/outlook/";
-				outlookData.album2DImgs.forEach(function(imgItem){
-					album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
-				});
+				console.log(outlookData);
+				if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
+					outlookData.album2DImgs.forEach(function(imgItem){
+						album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+					});
+				}
 
 				var explore = new iTopoStandPlatform.Explore(title);
 				console.log(album2DImgs);

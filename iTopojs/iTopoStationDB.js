@@ -18,6 +18,8 @@ var iTopoStationAPI = {
 	fetchiTopobase: 'http://127.0.0.1:8081/fetchiTopobase',
 	registerBaseObjectOnEarth:'http://127.0.0.1:8081/registerBaseObjectOnEarth',
 	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
+	fetchiTopoBaseAnnouncement:'http://127.0.0.1:8081/fetchiTopoBaseAnnouncement',
+	fetchiTopoBaseOutlook: 'http://127.0.0.1:8081/fetchiTopoBaseOutlook',
 
 	addTask:'http://127.0.0.1:8081/addTask',
 	updateTask:'http://127.0.0.1:8081/updateTask',
@@ -201,7 +203,6 @@ iTopoStationDB.prototype = {
 
 	},
 
-
 	fetchiTopobase: function(fnAfterFetch) {
 		var request = new Request(iTopoStationAPI.fetchiTopobase, {
 			method: 'Get',
@@ -254,6 +255,49 @@ iTopoStationDB.prototype = {
 		  	console.log('error: ' + e.toString());
 		 })
 
+	},
+	
+	fetchiTopoBaseOutlook: function(objectUUID, fnAfterFetch){
+	
+		var request = new Request(iTopoStationAPI.fetchiTopoBaseOutlook, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+	
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			if(json.length === 1){
+				fnAfterFetch(json[0]);
+			} else {
+				fnAfterFetch(json);
+			}
+			
+			//console.log('iTopoStationAPI.fnAfterFetch baseObject:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+	
+	},
+	
+	fetchiTopoBaseAnnouncement: function(objectUUID, fnAfterFetchedBaseObject){
+	
+		var request = new Request(iTopoStationAPI.fetchiTopoBaseAnnouncement, {
+			method: 'POST',
+			body: JSON.stringify(objectUUID),
+			headers: new Headers()
+		});
+	
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterFetchedBaseObject(json);
+			//console.log('iTopoStationAPI.fetchiTopoBaseAnnouncement baseObject:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+	
 	},
 
 	fetchiTopoTaskCards: function(objectUUID, taskStatus, fnAfterFetch) {
@@ -323,7 +367,7 @@ iTopoStationDB.prototype = {
 
 	},
 
-	fetchiTopoSkyCastleTeams: function(skyCastleUUID,fnAfterFetch) {
+	fetchiTopobaseWorkTeams: function(skyCastleUUID,fnAfterFetch) {
 
 		var taskFile = './iTopoObjects/' + skyCastleUUID + '/workTeams.json';
 		fetch(taskFile, {
@@ -364,44 +408,6 @@ iTopoStationDB.prototype = {
 	fetchiTopoSkyCastleSponsors: function(skyCastleUUID,fnAfterFetch) {
 
 		var taskFile = './iTopoObjects/' + skyCastleUUID + '/sponsorOrgs.json';
-		fetch(taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	},
-
-	fetchiTopoSkyCastleOutlook: function(skyCastleUUID,fnAfterFetch) {
-
-		var taskFile = './iTopoObjects/' + skyCastleUUID + '/outlook.json';
-		fetch(taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
-
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
-	},
-
-	fetchiTopoBaseObjectAnnouncement: function(baseUUID,fnAfterFetch) {
-
-		var taskFile = './iTopoObjects/' + baseUUID + '/announcement.json';
 		fetch(taskFile, {
 			method: 'GET',
 			mode: 'cors', // 允许发送跨域请求

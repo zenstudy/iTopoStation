@@ -329,7 +329,7 @@ app.post('/registerBaseObjectOnEarth', function(req, res) {
 
 });
 
-//根据用户starUUID查询用户信息
+//根据baseUUID查询base信息
 app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 
 	var postData = "";
@@ -370,6 +370,76 @@ app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 	});
 
 });
+
+//根据baseUUID查询baseAnnouncement信息
+app.post('/fetchiTopoBaseAnnouncement', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var baseUUID = JSON.parse(postData);
+		if (baseUUID === null || baseUUID === undefined || baseUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoAnnouncement");
+			var dboCollection = dbo.collection(baseUUID);
+			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
+				if (err) throw err;
+				console.log(result);
+				res.send(result);
+				dbClient.close();
+				res.end();
+			})
+
+		});
+	});
+
+});
+
+app.post('/fetchiTopoBaseOutlook', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var baseUUID = JSON.parse(postData);
+		if (baseUUID === null || baseUUID === undefined || baseUUID === '') {
+			res.end('null');
+			return;
+		}
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoOutlook");
+			var dboCollection = dbo.collection(baseUUID);
+			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
+				if (err) throw err;
+				console.log(result);
+				res.send(result);
+				dbClient.close();
+				res.end();
+			})
+
+		});
+	});
+
+});
+
 
 app.post('/addTask', function(req, res) {
 

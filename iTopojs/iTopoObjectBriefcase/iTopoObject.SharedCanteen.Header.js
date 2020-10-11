@@ -222,7 +222,7 @@ iTopoObjectSharedCanteenHeader.prototype = {
 		var scope = this;
 		var originPosition = new THREE.Vector3();
 		var title = editor.strings.getKey( 'sidebar/SharedCanteen/Header/outook' ) ;
-		editor.stationDB.fetchiTopoSkyCastleOutlook(scope.taskObject.baseUUID,function(outlookData){
+		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.baseUUID,function(outlookData){
 
 			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
 
@@ -231,9 +231,11 @@ iTopoObjectSharedCanteenHeader.prototype = {
 
 					var album2DImgs = [];
 					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/outlook/";
-					outlookData.album2DImgs.forEach(function(imgItem){
-						album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
-					});
+					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
+						outlookData.album2DImgs.forEach(function(imgItem){
+							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+						});
+					}
 
 					var explore = new iTopoStandPlatform.Explore(title);
 					console.log(album2DImgs);
@@ -318,7 +320,7 @@ iTopoObjectSharedCanteenHeader.prototype = {
 			this.lightWishValueUI.setValue(taskObject.lightWish);
 
 			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
-			editor.stationDB.fetchiTopoBaseObjectAnnouncement(taskObject.baseUUID,function(jsonAnnouncement){
+			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.baseUUID,function(jsonAnnouncement){
 
 				jsonAnnouncement.forEach(function(announcement){
 					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
