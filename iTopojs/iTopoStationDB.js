@@ -21,14 +21,13 @@ var iTopoStationAPI = {
 	fetchiTopoBaseAnnouncement:'http://127.0.0.1:8081/fetchiTopoBaseAnnouncement',
 	fetchiTopoBaseOutlook: 'http://127.0.0.1:8081/fetchiTopoBaseOutlook',
 	fetchiTopobaseWorkTeams: 'http://127.0.0.1:8081/fetchiTopobaseWorkTeams',
+	addMemberToiTopobaseTeams: 'http://127.0.0.1:8081/addMemberToiTopobaseTeams',
 	fetchiTopobaseSponsors: 'http://127.0.0.1:8081/fetchiTopobaseSponsors',
 	fetchiTopoBaseProductCategorys:'http://127.0.0.1:8081/fetchiTopoBaseProductCategorys',
 	fetchiTopoBaseProducts:'http://127.0.0.1:8081/fetchiTopoBaseProducts',
 
 	addTask:'http://127.0.0.1:8081/addTask',
 	updateTask:'http://127.0.0.1:8081/updateTask',
-
-	addMemberToiTopoSkyCastleTeams: 'http://127.0.0.1:8081/addMemberToiTopoSkyCastleTeams',
 }
 
 function iTopoStationDB() {
@@ -329,6 +328,25 @@ iTopoStationDB.prototype = {
 
 	},
 
+	addMemberToiTopobaseTeams: function(skyCastleUUID, teamUUID, starUserUUID,fnAfterAdd) {
+
+		var request = new Request(iTopoStationAPI.addMemberToiTopobaseTeams, {
+			method: 'POST',
+			body: JSON.stringify({objectUUID:skyCastleUUID, teamUUID: teamUUID, teamMemberUUID: starUserUUID }),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			fnAfterAdd();
+			console.log('addMemberToiTopobaseTeams.post:' + JSON.stringify(json));
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
+	},
+
 	fetchiTopobaseSponsors: function(objectUUID, fetchiTopobaseSponsors){
 
 		var request = new Request(iTopoStationAPI.fetchiTopobaseSponsors, {
@@ -453,25 +471,6 @@ iTopoStationDB.prototype = {
 		.then(json => {
 			fnTaskAdded();
 			console.log('fetch.post:' + JSON.stringify(json));
-		 }).catch(function(e) {
-		  	console.log('error: ' + e.toString());
-		 })
-
-	},
-
-	addMemberToiTopoSkyCastleTeams: function(skyCastleUUID, teamUUID, starUserUUID,fnAfterAdd) {
-
-		var request = new Request(iTopoStationAPI.addMemberToiTopoSkyCastleTeams, {
-			method: 'POST',
-			body: JSON.stringify({objectUUID:skyCastleUUID, teamUUID: teamUUID, teamMemberUUID: starUserUUID }),
-			headers: new Headers()
-		});
-
-		fetch(request)
-		.then(response => response.json())
-		.then(json => {
-			fnAfterAdd();
-			console.log('addMemberToiTopoSkyCastleTeams.post:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })

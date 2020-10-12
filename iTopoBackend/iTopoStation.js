@@ -474,6 +474,51 @@ app.post('/fetchiTopobaseWorkTeams', function(req, res) {
 
 });
 
+//根据用户starUUID查询用户信息
+app.post('/addMemberToiTopobaseTeams', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var postParameter = JSON.parse(postData);
+//		console.log("Received POST data :" + JSON.stringify(postParameter));
+//		res.write(JSON.stringify(postParameter));
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db("iTopoWorkTeam");
+			var whereStr = { "teamUUID": postParameter.teamUUID }; // 查询条件
+			dbo.collection(postParameter.objectUUID).find(whereStr, function(err, cursor) {
+				cursor.each(function(err, result) {
+					if (err) throw err;
+
+					if (result !== null) {
+						console.log(result);
+						var updatedTeam  = result ;
+						updatedTeam.teamMemberUUIDs.push(postParameter.teamMemberUUID);
+						dbo.collection(postParameter.objectUUID).updateOne(whereStr, updatedTeam, function(err, result) {
+							if (err) throw err;
+							res.send(result);
+							dbClient.close();
+							res.end();
+						});
+					} else {
+						dbClient.close();
+						res.end('null');
+					}
+				});
+			});
+		});
+	});
+
+});
+
 app.post('/fetchiTopobaseSponsors', function(req, res) {
 
 	var postData = "";
@@ -737,45 +782,6 @@ app.post('/updateTask', function(req, res) {
 						}
 					});
 
-				});
-			}
-		});
-
-		res.end();
-	});
-});
-
-app.post('/addMemberToiTopoSkyCastleTeams', function(req, res) {
-
-	var postData = "";
-
-	req.addListener("data", function(postDataChunk) {
-		postData += postDataChunk;
-	});
-
-	req.addListener("end", function() {
-		var postParameter = JSON.parse(postData);
-		console.log("Received POST data :" + JSON.stringify(postParameter));
-		res.write(JSON.stringify(postParameter));
-
-		const jsonFile = '../iTopoObjects/' + postParameter.objectUUID + '/' + "workTeams.json";
-		fs.readFile(jsonFile, 'utf-8', function(err, data) {
-			if (err) {
-				console.log(err);
-			} else {
-
-				var teamObjects = JSON.parse(data);
-				for (var index = 0; index < teamObjects.length; ++index) {
-					console.log(postParameter.teamUUID + ',' + teamObjects[index].teamUUID);
-					if (postParameter.teamUUID === teamObjects[index].teamUUID) {
-						teamObjects[index].teamMemberUUIDs.push(postParameter.teamMemberUUID);
-						break;
-					}
-				}
-
-				fs.writeFile(jsonFile, JSON.stringify(teamObjects), function(err) {
-					if (err) console.error(err);
-					console.log('数据已经写入' + jsonFile);
 				});
 			}
 		});

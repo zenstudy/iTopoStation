@@ -193,7 +193,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 		editor.stationDB.updateTask(taskInCastle, "已办", function() {
 
 			//在team中加入新成员，
-			editor.stationDB.addMemberToiTopoSkyCastleTeams(iTopoEarthModel.SkyCastle.info.castleUUID,
+			editor.stationDB.addMemberToiTopobaseTeams(iTopoEarthModel.SkyCastle.info.castleUUID,
 				taskInCastle.applyDetail.teamToJoinUUID, taskInCastle.applyDetail.applicantUUID,
 				function() {
 					//	editor.stationDB.addNotification();

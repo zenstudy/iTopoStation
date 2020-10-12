@@ -170,6 +170,8 @@ iTopoObjectSkyCastleSponsor.prototype = {
 					if( orginizationUUID === baseInfo.baseUUID ){
 						scope.thumbnailManager2.createThumbnailItem( baseInfo.title ,
 						mesh.clone(), function() {
+							editor.scene.rotation.y = 0;
+							editor.sceneHelpers.rotation.y = 0;
 							iTopoEarthModel.focusObject(baseInfo);
 						});
 					}
@@ -183,6 +185,8 @@ iTopoObjectSkyCastleSponsor.prototype = {
 	},
 
 	locationStarUser: function(starUserJson) {
+		editor.scene.rotation.y = 0;
+		editor.sceneHelpers.rotation.y = 0;
 		iTopoEarthModel.focusStar(starUserJson);
 	}
 }
