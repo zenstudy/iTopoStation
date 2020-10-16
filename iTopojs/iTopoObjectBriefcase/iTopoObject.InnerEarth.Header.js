@@ -1,9 +1,11 @@
 import { UIElement,UISpan ,UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
-import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js';
+import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 
 function iTopoObjectInnerEarthHeader(editor) {
 	var scope = this;
@@ -26,12 +28,12 @@ function iTopoObjectInnerEarthHeader(editor) {
 		var originPosition = new THREE.Vector3();
 		editor.resourceTracker.loadSmallCityModel(originPosition, 1, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/InnerEarth/Header/Outlook' ),
-		 	object , scope.onClickOutlook);
+		 	object , function() { scope.onClickInnerEarthModel(); });
 		}) ;
 
 		editor.resourceTracker.loadiTopoTasksLogo(originPosition, 0.8, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/InnerEarth/Header/iTopoTaskCards' ),
-			 	object , scope.onTaskCardsClassCSS3D);
+			 	object , function() { scope.onTaskCardsClassCSS3D(); });
 		}) ;
 	}
 
@@ -101,49 +103,84 @@ iTopoObjectInnerEarthHeader.prototype = {
 		}
 	},
 
-	onClickOutlook: function() {// this对应一个item
-		
+	onClickInnerEarthModel: function() {// this对应一个item
+
+		var scope = this;
+		var innerEarthInfo=iTopoEarthModel.InnerEarth.info;
+		var title = editor.strings.getKey( 'sidebar/InnerEarth/Header/Outlook' ) ;
+		var originPosition = new THREE.Vector3();
+		originPosition.set(0.15*iTopoEarthSettings.standMaxBoxW,0,0.16*iTopoEarthSettings.standMaxBoxW);
+
+		editor.resourceTracker.loadSmallCityModel(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/InnerEarth', function(background_outlook) {
+				editor.stationDB.fetchiTopoBaseOutlook(innerEarthInfo.innerEarthUUID,function(outlookData){
+
+					var album2DImgs = [];
+					var baseURL = "./iTopoObjects/" + innerEarthInfo.innerEarthUUID + "/outlook/";
+					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
+						outlookData.album2DImgs.forEach(function(imgItem){
+							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+						});
+					}
+
+					var explore = new iTopoStandPlatform.Explore(title);
+					console.log(album2DImgs);
+					explore.show3D(background_outlook , baseModel, album2DImgs);
+					explore.play();
+
+				});
+			});
+		}) ;
+
 	},
 
 	onTaskCardsClassCSS3D: function() {
 		var scope = this;
-	    var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
-		var displayStand = new iTopoDisplayStand(title);
-		document.body.appendChild(displayStand.container.dom);
-		displayStand.container.setDisplay( 'block' );
-		displayStand.container.setPosition('absolate');
+		editor.stationDB.fetchiTopoTasks(scope.taskObject.innerEarthUUID, "Todo", function(jsonTodo) {
+			editor.stationDB.fetchiTopoTasks(scope.taskObject.innerEarthUUID, "InProgress", function(jsonInProgress) {
+				editor.stationDB.fetchiTopoTasks(scope.taskObject.innerEarthUUID, "Done", function(jsonDone) {
 
-		var explore = new iTopoTaskDashboard3D.Explore(displayStand);
-		explore.initialize();
+					var title = editor.strings.getKey('sidebar/InnerEarth/Header/iTopoTaskCards');
+					var displayStand = new iTopoDisplayStand(title);
+					document.body.appendChild(displayStand.container.dom);
+					displayStand.container.setDisplay('block');
+					displayStand.container.setPosition('absolate');
 
-		for( var i=0; i < 100; i ++)
-		{
-			var taskObject = {
-				taskStatus:"待办",
-				taskDetail:"共享地球任务书" + (i+1),
-				taskCreateBy:"任务创建者:事务中心"
-			};
-			explore.createTaskCardItem(taskObject);
-		}
+					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
+					explore.initialize();
 
-		explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					for (var i = 0; i < jsonTodo.length; i++) {
+						explore.appendCardItem(jsonTodo[i]);
+					}
 
-		explore.show3D();
-		explore.play();
+					for (var i = 0; i < jsonInProgress.length; i++) {
+						explore.appendCardItem(jsonInProgress[i]);
+					}
 
-		displayStand.container.dom.appendChild( explore.dom );
-		displayStand.container.dom.addEventListener( 'resize', function () {
-		 	explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					for (var i = 0; i < jsonDone.length; i++) {
+						explore.appendCardItem(jsonDone[i]);
+					}
+
+					explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+
+					explore.show3D();
+					explore.play();
+
+					displayStand.container.dom.addEventListener('resize', function() {
+						explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					});
+					displayStand.closeBtn.dom.addEventListener('click', function() {
+						explore.stop();
+						explore.dispose();
+						explore = null;
+					});
+
+					var taskBriefcase = new iTopoTaskBriefcase(editor);
+					displayStand.container.dom.appendChild(taskBriefcase.dom);
+
+				})
+			})
 		});
-
-		displayStand.closeBtn.dom.addEventListener('click', function() {
-			explore.stop();
-			explore.dispose();
-			explore = null;
-		});
-
-		var taskBriefcase = new iTopoTaskBriefcase( editor );
-		displayStand.container.dom.appendChild( taskBriefcase.dom );
 	},
 
 	getValue: function () {
@@ -154,7 +191,7 @@ iTopoObjectInnerEarthHeader.prototype = {
 
 		if (editor.selected !== null) {
 		//	container.setDisplay( 'block' );
-			this.geometryUUID.setValue(taskObject.castleUUID);
+			this.geometryUUID.setValue(taskObject.innerEarthUUID);
 			this.titleInput.setValue(taskObject.title);
 		}
 

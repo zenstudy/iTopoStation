@@ -2,6 +2,7 @@
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "A0F4C6D4-6F55-4B34-BC5B-143EBE1F45D5",
 	"taskTitle": "处理志愿者的加入申请",
+	"taskImgFileName" : "Task (1).jpg",
 	"taskCreatedby": "共享地球系统",
 	"taskStatus": "待办",
 	"applyDetail": {
@@ -22,6 +23,7 @@
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "16DCEAA8-DCFF-46B5-B745-F7C18F9A3E33",
 	"taskTitle": "处理志愿者的加入申请",
+	"taskImgFileName" : "Task (1).jpg",
 	"taskCreatedby": "共享地球系统",
 	"taskStatus": "待办",
 	"applyDetail": {
@@ -34,6 +36,7 @@
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "72C6232B-468D-46DC-8E46-44B05B6F46C1",
 	"taskTitle": "处理志愿者的加入申请",
+	"taskImgFileName" : "Task (1).jpg",
 	"taskCreatedby": "共享地球系统",
 	"taskStatus": "待办",
 	"applyDetail": {
@@ -51,6 +54,7 @@
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "09E3E05B-2EF1-4943-AEB3-A6AF6F2DA15B",
 	"taskTitle": "处理志愿者的加入申请",
+	"taskImgFileName" : "Task (1).jpg",
 	"taskCreatedby": "共享地球系统",
 	"taskStatus": "待办",
 	"applyDetail": {
@@ -71,6 +75,7 @@
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "F53061AC-DE9C-4B86-A3F5-66985455EAB4",
 	"taskTitle": "共享地球多重签名钱包",
+	"taskImgFileName" : "Task (1).jpg",
 	"taskCreatedby": "亿能",
 	"taskStatus": "待办",
 	"taskDescription": "通过区块链技术解决赞助资金的透明管理功能和安全使用功能。"
@@ -78,6 +83,7 @@
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "7AC30467-8C4B-4CA3-9BAF-E50984BA20E8",
 	"taskTitle": "共享地球的Logo设计",
+	"taskImgFileName" : "Task (1).jpg",
 	"taskCreatedby": "亿能",
 	"taskStatus": "待办",
 	"taskDescription": "设计共享地球的Logo"
@@ -85,6 +91,7 @@
 	"objectUUID": "3861590E-CB58-48BA-977C-9F9F107B61AD",
 	"taskUUID": "107CBF67-4815-4F9E-B817-004184905538",
 	"taskTitle": "民间机构的入驻功能设计",
+	"taskImgFileName" : "Task (1).jpg",
 	"taskCreatedby": "亿能",
 	"taskStatus": "待办",
 	"taskDescription": "考虑民间各类团体入驻的功能，比如民间发明团体、UFO协会、各类艺术团体。"

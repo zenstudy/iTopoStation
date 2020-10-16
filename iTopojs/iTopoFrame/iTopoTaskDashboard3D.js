@@ -189,7 +189,7 @@ var iTopoTaskDashboard3D = {
 				scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
 
 				editor.stationDB.addTask(JSON.stringify(taskObject), function(){
-					editor.signals.taskCardSelected.dispatch(scope.objects[0]);
+					editor.signals.objectInStandPlatformSelected.dispatch(scope.objects[0]);
 				});
 
 			} );
@@ -518,10 +518,10 @@ var iTopoTaskDashboard3D = {
 					var object = intersects[ 0 ].object;
 					console.log(object.userData);
 					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
-					editor.signals.taskCardSelected.dispatch(object);
+					editor.signals.objectInStandPlatformSelected.dispatch(object);
 				} else {
 					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-					editor.signals.taskCardSelected.dispatch(null);
+					editor.signals.objectInStandPlatformSelected.dispatch(null);
 				}
 			}
 		}

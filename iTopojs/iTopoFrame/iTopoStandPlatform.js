@@ -1,7 +1,10 @@
 import { iTopoOrbitControls } from './iTopoOrbitControls.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
-import { iTopoEarthBuilder } from '../iTopoEarthBuilder.js';
+import { iTopoEarthBuilder } from './iTopoEarthBuilder.js';
 import { UIPanel } from '../iTopoUI.js';
+import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
+import { iTopoTrinityHandler } from './iTopoTrinityHandler.js';
 
 var iTopoStandPlatform = {
 
@@ -25,7 +28,11 @@ var iTopoStandPlatform = {
 			scope = null;
 		});
 
+		var taskBriefcase = new iTopoTaskBriefcase( editor );
+		displayStand.container.dom.appendChild( taskBriefcase.dom );
+
 		var camera, controls, scene, renderer, events = {};
+		var trinityHandler = new iTopoTrinityHandler()
 
 		/* 渲染器 */
 		function initRender() {
@@ -84,7 +91,7 @@ var iTopoStandPlatform = {
 		}
 
 		// album2DImgs = [{imgURL: "" , imgDesc: ""}]
-		this.show3D = function(background_texture, objectModel, album2DImgs) {
+		this.show3D = function(background_texture, objectModel, films, filmColCount) {
 
 			scene = new THREE.Scene();
 			scene.background = background_texture;
@@ -131,12 +138,12 @@ var iTopoStandPlatform = {
 			scope.createRightMenu();
 
 			scope.objectModel = objectModel;
-			scope.album2DImgs = album2DImgs;
+			scope.films = films;
 
 			scope.addObject(scope.objectModel);
-			if (scope.album2DImgs !== null && scope.album2DImgs !== undefined) {
-				scope.albumMeshObjects = iTopoEarthBuilder.create2DStandContainer(album2DImgs);
-				scope.albumMeshObjects.forEach(function(mesh){
+			if (scope.films !== null && scope.films !== undefined) {
+				scope.filmObjects = iTopoEarthBuilder.createRollFilmCollection(films, {x:0, y:0, z:0}, filmColCount);
+				scope.filmObjects.forEach(function(mesh){
 					scene.add(mesh);
 				})
 			}
@@ -155,11 +162,11 @@ var iTopoStandPlatform = {
 					scope.scene.remove(scope.objectModel);
 				}
 
-				scope.albumMeshObjects.forEach(function(mesh){
+				scope.filmObjects.forEach(function(mesh){
 					scene.remove(mesh);
 				})
 
-				scope.albumMeshObjects.forEach(function(mesh){
+				scope.filmObjects.forEach(function(mesh){
 					scene.add(mesh);
 				})
 			})
@@ -174,7 +181,7 @@ var iTopoStandPlatform = {
 					scope.scene.remove(scope.objectModel);
 				}
 
-				scope.albumMeshObjects.forEach(function(mesh){
+				scope.filmObjects.forEach(function(mesh){
 					scene.remove(mesh);
 				})
 
@@ -190,13 +197,13 @@ var iTopoStandPlatform = {
 					scope.scene.remove(scope.objectModel);
 				}
 
-				scope.albumMeshObjects.forEach(function(mesh){
+				scope.filmObjects.forEach(function(mesh){
 					scene.remove(mesh);
 				})
 
 				scope.addObject(scope.objectModel);
 
-				scope.albumMeshObjects.forEach(function(mesh){
+				scope.filmObjects.forEach(function(mesh){
 						scene.add(mesh);
 					});
 
@@ -406,7 +413,8 @@ var iTopoStandPlatform = {
 			console.log('animate..........');
 			//console.log(controls.noRotate+ ',' + controls.noZoom + ',' + controls.noPan);
 			controls.update();
-			scope.scene.rotation.y += 0.001;
+			scope.scene.rotation.y -= 0.0002;
+
 			renderer.setViewport(0, 0, renderer.domElement.offsetWidth, renderer.domElement.offsetHeight);
 			renderer.render(scope.scene, camera);
 			prevTime = time;
@@ -487,17 +495,37 @@ var iTopoStandPlatform = {
 
 		function handleClick() {
 
-			if (onUpPosition.x > 1.0 || onUpPosition.y > 1.0)
+			if( onUpPosition.x > 1.0 || onUpPosition.y > 1.0)
 				return;
 
-			if (onDownPosition.distanceTo(onUpPosition) === 0) {
+			if ( onDownPosition.distanceTo( onUpPosition ) === 0 ) {
+				var intersects = getIntersects( onUpPosition, scope.objects);
 
-				var intersects = getIntersects(onUpPosition, scope.objects);
-
-				if (intersects.length > 0) {
-					var userData = intersects[0].object.userData;
-					alert(userData.imgDesc);
+				if ( intersects.length > 0 ) {
+					var SELECTED = intersects[ 0 ].object;
+					trinityHandler.setSelected(SELECTED);
+					//console.log(SELECTED.userData);
+					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
+					editor.signals.objectInStandPlatformSelected.dispatch(SELECTED);
+				} else {
+					scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					editor.signals.objectInStandPlatformSelected.dispatch(null);
+					trinityHandler.setSelected(null);
 				}
+			}
+		}
+
+		function handleMouseMove(mousePosition) {
+
+			if( mousePosition.x > 1.0 || mousePosition.y > 1.0)
+				return;
+
+			var intersects = getIntersects( mousePosition, scope.objects);
+			if ( intersects.length > 0 ) {
+				var HOVERED = intersects[ 0 ].object;
+				trinityHandler.setHovered(HOVERED);
+			} else {
+				trinityHandler.setHovered(null);
 			}
 		}
 
@@ -529,6 +557,12 @@ var iTopoStandPlatform = {
 
 
 		function onDocumentMouseMove(event) {
+
+			var mousePosition = new THREE.Vector2();
+			var array = getMousePosition(renderer.domElement, event.clientX, event.clientY);
+			mousePosition.fromArray(array);
+
+			handleMouseMove(mousePosition);
 			dispatch(events.mousemove, event);
 		}
 

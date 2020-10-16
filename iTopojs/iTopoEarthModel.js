@@ -6,7 +6,7 @@ import {MeshLine,MeshLineMaterial} from './THREE.MeshLine.js';
 import {Editor} from '../js/Editor.js';
 import {AddiTopoObjCommand} from './commands/AddiTopoObjCommand.js';
 import {AddiTopoObjArrayCommand} from './commands/AddiTopoObjArrayCommand.js';
-import {iTopoEarthBuilder} from './iTopoEarthBuilder.js';
+import {iTopoEarthBuilder} from './iTopoFrame/iTopoEarthBuilder.js';
 import {iTopoEarthCache} from './iTopoEarthCache.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
 import {iTopoSkyCastle} from './iTopoElement/iTopoSkyCastle.js';

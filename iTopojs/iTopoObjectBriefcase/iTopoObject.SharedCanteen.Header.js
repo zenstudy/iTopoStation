@@ -67,12 +67,12 @@ function iTopoObjectSharedCanteenHeader(editor) {
 		var originPosition = new THREE.Vector3();
 		editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition, 1, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/SharedCanteen/Header/outook' ),
-		 	object , function() { scope.onClickOutlook();} );
+		 	object , function() { scope.onClickOutlook(); } );
 		}) ;
 
 		editor.resourceTracker.loadiTopoTasksLogo( originPosition, 0.8, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/SharedCanteen/Header/iTopoTaskCards' ),
-			 	object , scope.onTaskCardsClassCSS3D);
+			 	object , function() { scope.onTaskCardsClassCSS3D(); } );
 		}) ;
 	}
 
@@ -251,10 +251,10 @@ iTopoObjectSharedCanteenHeader.prototype = {
 	},
 
 	onTaskCardsClassCSS3D: function() {
-
-		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Todo",function(jsonTodo){
-			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"InProgress",function(jsonInProgress){
-				editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Done",function(jsonDone){
+		var scope = this;
+		editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"Todo",function(jsonTodo){
+			editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"InProgress",function(jsonInProgress){
+				editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"Done",function(jsonDone){
 
 					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
 					var displayStand = new iTopoDisplayStand(title);

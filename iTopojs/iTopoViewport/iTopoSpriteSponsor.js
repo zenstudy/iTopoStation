@@ -71,8 +71,9 @@ var iTopoSpriteSponsor = function ( editor ) {
 		})
 
 		var explore = new iTopoStandSponsor.Explore(sceneElement);
-
-		explore.show3D(null , tmpSponsors );
+		var films=[];
+		films.push({filmTopic:"sponsor",album2DImgs:tmpSponsors});
+		explore.show3D(null , films );
 		explore.play();
 
 	});

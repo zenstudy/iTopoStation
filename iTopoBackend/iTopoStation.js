@@ -350,9 +350,7 @@ app.post('/fetchBaseObjectWithObjectUUID', function(req, res) {
 		}, function(err, dbClient) {
 			if (err) throw err;
 			var dbo = dbClient.db("iTopoEarthSociety");
-			var whereStr = {
-				"baseUUID": baseUUID
-			}; // 查询条件
+			var whereStr = { "baseUUID": baseUUID }; // 查询条件
 			dbo.collection("iTopobase").find(whereStr, function(err, cursor) {
 				cursor.each(function(err, result) {
 					if (err) throw err;
@@ -455,9 +453,7 @@ app.post('/fetchiTopobaseWorkTeams', function(req, res) {
 			return;
 		}
 
-		MongoClient.connect(url, {
-			useUnifiedTopology: true
-		}, function(err, dbClient) {
+		MongoClient.connect(url, { useUnifiedTopology: true }, function(err, dbClient) {
 			if (err) throw err;
 			var dbo = dbClient.db("iTopoWorkTeam");
 			var dboCollection = dbo.collection(baseUUID);
@@ -607,7 +603,53 @@ app.post('/fetchiTopoBaseProducts', function(req, res) {
 		}, function(err, dbClient) {
 			if (err) throw err;
 			var dbo = dbClient.db("iTopobaseProducts");
+			//console.log(baseUUID);
 			var dboCollection = dbo.collection(baseUUID);
+			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
+				if (err) throw err;
+				console.log(result);
+				res.send(result);
+				dbClient.close();
+				res.end();
+			})
+
+		});
+	});
+
+});
+
+function getTaskStatusCollectionName(taskStatus){
+
+	var taskDBName;
+	if (taskStatus === "待办" || taskStatus === "Todo")
+		taskDBName = "iTopoTaskTodo";
+	else if (taskStatus === "在办" || taskStatus === "InProgress")
+		taskDBName = "iTopoTaskInProgress";
+	else if (taskStatus === "已办" || taskStatus === "Done")
+		taskDBName = "iTopoTaskDone";
+
+	return taskDBName;
+}
+app.post('/fetchiTopoTasks', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var postParameter = JSON.parse(postData);
+		console.log(postParameter);
+
+		MongoClient.connect(url, {
+			useUnifiedTopology: true
+		}, function(err, dbClient) {
+			if (err) throw err;
+
+			var taskDBName = getTaskStatusCollectionName(postParameter.taskStatus);
+			var dbo = dbClient.db(taskDBName);
+			var dboCollection = dbo.collection(postParameter.objectUUID);
 			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
 				if (err) throw err;
 				console.log(result);
@@ -630,67 +672,77 @@ app.post('/addTask', function(req, res) {
 	});
 
 	req.addListener("end", function() {
-		var taskObject = JSON.parse(postData);
-		res.write(taskObject);
-		taskObject = JSON.parse(taskObject);
-		console.log("Received POST data :");
-		console.log(taskObject.objectUUID);
+		var postTaskToAdd = JSON.parse(postData);
+		postTaskToAdd = JSON.parse(postTaskToAdd);
 
-		var taskJsonFileName;
-		if (taskObject.taskStatus === "待办")
-			taskJsonFileName = "tasksTodo.json";
-		else if (taskObject.taskStatus === "在办")
-			taskJsonFileName = "tasksInProgress.json";
-		else if (taskObject.taskStatus === "已办")
-			taskJsonFileName = "tasksDone.json";
+		var taskDBName = getTaskStatusCollectionName(postTaskToAdd.taskStatus);
 
-		const jsonPath = '../iTopoObjects/' + taskObject.objectUUID;
-		fs.exists(jsonPath, function(exists) {
-			if (exists)
-				console.log('文件夹存在');
-			else {
-				console.log();
-				fs.mkdir(jsonPath, function(err) {
-					if (err)
-						console.error(err);
-					console.log('文件夹不存在' + jsonPath + '创建目录成功');
-				});
-			}
-		});
+		MongoClient.connect(url, { useUnifiedTopology: true	}, function(err, dbClient) {
+			if (err) throw err;
+			var dbo = dbClient.db(taskDBName);
 
-		const jsonFile = jsonPath + '/' + taskJsonFileName;
-		fs.exists(jsonFile, function(exists) {
-			if (exists) {
-				fs.readFile(jsonFile, 'utf-8', function(err, data) {
-					if (err) {
-						console.log(err);
-					} else {
-						var taskObjects = JSON.parse(data);
-						console.log(taskObjects);
-						taskObjects.unshift(taskObject);
+			//插入数据
+			dbo.collection(postTaskToAdd.objectUUID).insertOne(postTaskToAdd, function(err, result) {
+				if (err) throw err;
+				//console.log(result);
+				res.send(result);
+				dbClient.close();
+			});
 
-						fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
-							if (err) console.error(err);
-							console.log('数据已经写入' + jsonFile);
-						});
-					}
-				});
-			} else {
-				console.log('文件夹不存在');
-				var taskObjects = [];
-				taskObjects.push(taskObject);
-				fs.writeFile(jsonFile, JSON.stringify(taskObjects), function(err) {
-					if (err) console.error(err);
-					console.log('数据已经写入' + jsonFile);
-				});
-			}
 		});
 
 		res.end();
 	});
 });
 
-app.post('/updateTask', function(req, res) {
+app.post('/updateTaskStatus', function(req, res) {
+
+	var postData = "";
+
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+		var postTaskToUpdate = JSON.parse(postData);
+		postTaskToUpdate = JSON.parse(postTaskToUpdate);
+
+		var taskDBName1 = getTaskStatusCollectionName(postTaskToUpdate.taskObject.taskObject);
+		var taskDBName2 = getTaskStatusCollectionName(postTaskToUpdate.latestTaskStatus);
+
+		MongoClient.connect(url, { useUnifiedTopology: true	}, function(err, dbClient) {
+			if (err) throw err;
+
+			var dbo = dbClient.db(taskDBName1);
+			var whereStr = { "baseUUID": baseUUID }; // 查询条件
+			dbo.collection(postTaskToUpdate.objectUUID).remove(whereStr, function(err, cursor) {
+
+				cursor.each(function(err, result) {
+
+					if (err) throw err;
+					var postTaskToUpdate2 = result;
+					postTaskToUpdate2.taskStatus = postTaskToUpdate.latestTaskStatus;
+					var dbo2 = dbClient.db(taskDBName2);
+					dbo2.collection(postTaskToUpdate.objectUUID).insertOne(postTaskToUpdate, function(err, result) {
+						if (err) throw err;
+						console.log(result);
+						dbClient.close();
+					});
+
+					dbClient.close();
+					return;
+
+				});
+			});
+
+		});
+
+		res.end();
+	});
+});
+
+
+app.post('/updateTask2', function(req, res) {
 
 	var postData = "";
 

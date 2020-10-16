@@ -273,10 +273,10 @@ function iTopoObjectBriefcase(editor) {
 		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
 			return;
 
-		if (iTopoEarthModel.InnerEarth.innerEarthUUID === editor.selected.userData.objectUUID) {
+		if (iTopoEarthModel.InnerEarth.info.innerEarthUUID === editor.selected.userData.objectUUID) {
 
 			tabs.forEach(function(tab) {
-				tab.panel.setValue(iTopoEarthModel.InnerEarth);
+				tab.panel.setValue(iTopoEarthModel.InnerEarth.info);
 			});
 
 			return;
@@ -294,10 +294,10 @@ function iTopoObjectBriefcase(editor) {
 		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
 			return;
 
-		if (iTopoEarthModel.LunarMoon.lunarMoonUUID === editor.selected.userData.objectUUID) {
+		if (iTopoEarthModel.LunarMoon.info.lunarMoonUUID === editor.selected.userData.objectUUID) {
 
 			tabs.forEach(function(tab) {
-				tab.panel.setValue(iTopoEarthModel.LunarMoon);
+				tab.panel.setValue(iTopoEarthModel.LunarMoon.info);
 			});
 
 			return;

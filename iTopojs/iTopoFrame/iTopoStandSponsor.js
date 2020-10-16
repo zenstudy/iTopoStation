@@ -1,6 +1,6 @@
 import { iTopoOrbitControls } from './iTopoOrbitControls.js';
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
-import { iTopoEarthBuilder } from '../iTopoEarthBuilder.js';
+import { iTopoEarthBuilder } from './iTopoEarthBuilder.js';
 import { UIPanel } from '../iTopoUI.js';
 
 var iTopoStandSponsor = {
@@ -38,7 +38,7 @@ var iTopoStandSponsor = {
 		var onUpPosition = new THREE.Vector2();
 
 
-		this.show3D = function (background_texture, album2DImgs ) {
+		this.show3D = function (background_texture, films ) {
 
 			scene = new THREE.Scene();
 			scene.background = background_texture;
@@ -88,20 +88,19 @@ var iTopoStandSponsor = {
 
 			dispatch( events.init, arguments );
 
-			scope.album2DImgs = album2DImgs;
+			scope.films = films;
 
-			scope.create2DStandContainer();
+			scope.createRollFilm();
 		};
 
-		scope.create2DStandContainer = function(){
+		scope.createRollFilm = function(){
 
-			if (scope.album2DImgs !== null && scope.album2DImgs !== undefined) {
-				var albumMeshObjects = iTopoEarthBuilder.create2DStandContainer(scope.album2DImgs);
-				albumMeshObjects.forEach(function(mesh){
+			if (scope.films !== null && scope.films !== undefined) {
+				var meshObjects = iTopoEarthBuilder.createRollFilmCollection(scope.films, {x:0,y:0,z:0}, scope.films[0].album2DImgs.length );
+				meshObjects.forEach(function(mesh){
 					scene.add(mesh);
 				})
 			}
-
 		};
 
 		this.setCamera = function ( value ) {

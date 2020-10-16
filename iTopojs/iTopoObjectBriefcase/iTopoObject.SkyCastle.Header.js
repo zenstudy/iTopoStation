@@ -3,7 +3,7 @@ import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
-import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
+//import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
@@ -64,12 +64,12 @@ function iTopoObjectSkyCastleHeader(editor) {
 		var originPosition = new THREE.Vector3();
 		editor.resourceTracker.loadSmallCityModel(originPosition, 1, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/Outlook' ),
-		 	object , scope.onClickSkyCastaleModel);
+		 	object , function() { scope.onClickSkyCastaleModel(); });
 		}) ;
 
 		editor.resourceTracker.loadiTopoTasksLogo(originPosition, 0.8, function(object){
 			scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ),
-			 	object , scope.onTaskCardsClassCSS3D);
+			 	object , function() { scope.onTaskCardsClassCSS3D(); });
 		}) ;
 	}
 
@@ -135,23 +135,28 @@ iTopoObjectSkyCastleHeader.prototype = {
 		var title = editor.strings.getKey( 'sidebar/skyCastle/Header/Outlook' ) ;
 		var originPosition = new THREE.Vector3();
 		originPosition.set(0.15*iTopoEarthSettings.standMaxBoxW,0,0.16*iTopoEarthSettings.standMaxBoxW);
+
 		editor.resourceTracker.loadSmallCityModel(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
 
-			editor.stationDB.fetchiTopoBaseOutlook(skyCastleinfo.castleUUID,function(outlookData){
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/Star', function(background_outlook) {
 
-				var album2DImgs = [];
-				var baseURL = "./iTopoObjects/" + skyCastleinfo.castleUUID + "/outlook/";
-				console.log(outlookData);
-				if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
-					outlookData.album2DImgs.forEach(function(imgItem){
-						album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
-					});
-				}
+				editor.stationDB.fetchiTopoBaseOutlook(skyCastleinfo.castleUUID,function(outlookData){
 
-				var explore = new iTopoStandPlatform.Explore(title);
-				console.log(album2DImgs);
-				explore.show3D(null , baseModel, album2DImgs);
-				explore.play();
+					var album2DImgs = [];
+					var baseURL = "./iTopoObjects/" + skyCastleinfo.castleUUID + "/outlook/";
+					//console.log(outlookData);
+					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
+						outlookData.album2DImgs.forEach(function(imgItem){
+							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+						});
+					}
+
+					var explore = new iTopoStandPlatform.Explore(title);
+					console.log(album2DImgs);
+					explore.show3D(background_outlook , baseModel, album2DImgs);
+					explore.play();
+
+				});
 
 			});
 
@@ -159,55 +164,77 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 	},
 
-	onTaskCardsClassCSS3D: function() {
+	onTaskCardsClassCSS3D: function() {// this对应一个item
 
-		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Todo",function(jsonTodo){
-			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"InProgress",function(jsonInProgress){
-				editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Done",function(jsonDone){
+		var scope = this;
+		var skyCastleinfo=iTopoEarthModel.SkyCastle.info;
+		var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
+		var originPosition = new THREE.Vector3();
+		//originPosition.set(0.15*iTopoEarthSettings.standMaxBoxW,0,0.16*iTopoEarthSettings.standMaxBoxW);
 
-					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
-					var displayStand = new iTopoDisplayStand(title);
-					document.body.appendChild(displayStand.container.dom);
-					displayStand.container.setDisplay( 'block' );
-					displayStand.container.setPosition('absolate');
+		editor.resourceTracker.loadiTopoTasksLogo(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
 
-					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
-					explore.initialize();
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/SkyCastle', function(background_outlook) {
 
-					for (var i = 0; i < jsonTodo.length; i++) {
-						explore.appendCardItem(jsonTodo[i]);
-					}
+				editor.stationDB.fetchiTopoTasks(skyCastleinfo.castleUUID,"Todo",function(jsonTodo){
+					editor.stationDB.fetchiTopoTasks(skyCastleinfo.castleUUID,"InProgress",function(jsonInProgress){
+						editor.stationDB.fetchiTopoTasks(skyCastleinfo.castleUUID,"Done",function(jsonDone){
 
-					for (var i = 0; i < jsonInProgress.length; i++) {
-						explore.appendCardItem(jsonInProgress[i]);
-					}
+								var films = [];
+								var baseURL = "./iTopoObjects/" + skyCastleinfo.castleUUID + "/tasks/";
 
-					for (var i = 0; i < jsonDone.length; i++) {
-						explore.appendCardItem(jsonDone[i]);
-					}
+								var album2DImgs1 = [];
+								for (var i = 0; i < jsonTodo.length; i++) {
+									album2DImgs1.push({
+									objectUUID: skyCastleinfo.castleUUID,
+									standType: 'iTopoType/standObject/task',
+									standUUID: jsonTodo[i].taskUUID,
+									standStatus:jsonTodo[i].taskStatus,
+									imgTitle: jsonTodo[i].taskTitle,
+									imgURL: baseURL + jsonTodo[i].taskImgFileName ,
+									imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby });
+								}
+								films.push({filmTopic:"待办任务栏",album2DImgs:album2DImgs1});
 
-					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+								var album2DImgs2 = [];
+								for (var i = 0; i < jsonInProgress.length; i++) {
+									album2DImgs2.push({
+									objectUUID: skyCastleinfo.castleUUID,
+									standType: 'iTopoType/standObject/task',
+									standUUID: jsonInProgress[i].taskUUID,
+									standStatus:jsonInProgress[i].taskStatus,
+									imgTitle: jsonInProgress[i].taskTitle,
+									imgURL: baseURL + jsonInProgress[i].taskImgFileName ,
+									imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby });
+								}
+								films.push({filmTopic:"在办任务栏",album2DImgs:album2DImgs2});
 
-					explore.show3D();
-					explore.play();
+								var album2DImgs3 = [];
+								for (var i = 0; i < jsonDone.length; i++) {
+									album2DImgs3.push({
+									objectUUID: skyCastleinfo.castleUUID,
+									standType: 'iTopoType/standObject/task',
+									standUUID: jsonDone[i].taskUUID,
+									standStatus:jsonDone[i].taskStatus,
+									imgTitle: jsonDone[i].taskTitle,
+									imgURL: baseURL + jsonDone[i].taskImgFileName ,
+									imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby});
+								}
+								films.push({filmTopic:"已办任务栏",album2DImgs:album2DImgs3});
 
-					displayStand.container.dom.addEventListener( 'resize', function () {
-						explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+								var explore = new iTopoStandPlatform.Explore(title);
+								explore.show3D(background_outlook , baseModel, films, iTopoEarthSettings.standMaxRowItemCount);
+								explore.play();
+
+							})
+						})
 					});
-					displayStand.closeBtn.dom.addEventListener('click', function() {
-						explore.stop();
-						explore.dispose();
-						explore = null;
-					});
 
-					var taskBriefcase = new iTopoTaskBriefcase( editor );
-					displayStand.container.dom.appendChild( taskBriefcase.dom );
-
-				})
-			})
-		});
+			});
+		}) ;
 
 	},
+
 
 	onAnnouncement: function(announcement){
 

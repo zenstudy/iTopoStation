@@ -26,8 +26,9 @@ var iTopoStationAPI = {
 	fetchiTopoBaseProductCategorys:'http://127.0.0.1:8081/fetchiTopoBaseProductCategorys',
 	fetchiTopoBaseProducts:'http://127.0.0.1:8081/fetchiTopoBaseProducts',
 
+	fetchiTopoTasks:'http://127.0.0.1:8081/fetchiTopoTasks',
 	addTask:'http://127.0.0.1:8081/addTask',
-	updateTask:'http://127.0.0.1:8081/updateTask',
+	updateTaskStatus:'http://127.0.0.1:8081/updateTaskStatus',
 }
 
 function iTopoStationDB() {
@@ -347,7 +348,7 @@ iTopoStationDB.prototype = {
 
 	},
 
-	fetchiTopobaseSponsors: function(objectUUID, fetchiTopobaseSponsors){
+	fetchiTopobaseSponsors: function(objectUUID, fnAfterFetch){
 
 		var request = new Request(iTopoStationAPI.fetchiTopobaseSponsors, {
 			method: 'POST',
@@ -359,7 +360,7 @@ iTopoStationDB.prototype = {
 		.then(response => response.json())
 		.then(json => {
 
-			fetchiTopobaseSponsors(json);
+			fnAfterFetch(json);
 			//console.log('iTopoStationAPI.fetchiTopobaseSponsors baseObject:' + JSON.stringify(json));
 
 		 }).catch(function(e) {
@@ -410,33 +411,25 @@ iTopoStationDB.prototype = {
 
 	},
 
-	fetchiTopoTaskCards: function(objectUUID, taskStatus, fnAfterFetch) {
+	fetchiTopoTasks: function(objectUUID, taskStatus, fnAfterFetch) {
 
-		var jsonFileName = "";
+		var request = new Request(iTopoStationAPI.fetchiTopoTasks, {
+			method: 'POST',
+			body: JSON.stringify({ objectUUID:objectUUID, taskStatus:taskStatus }),
+			headers: new Headers()
+		});
 
-		if(taskStatus === "Todo")
-			jsonFileName = 'tasksTodo.json';
-		else if(taskStatus === "InProgress")
-			jsonFileName = 'tasksInProgress.json';
-		else if(taskStatus === "Done")
-			jsonFileName = 'tasksDone.json';
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
 
-		var taskFile = './iTopoObjects/' + objectUUID + '/' + jsonFileName;
+			fnAfterFetch(json);
+			//console.log('iTopoStationAPI.fetchiTopoBaseProducts baseObject:' + JSON.stringify(json));
 
-		fetch(taskFile, {
-			method: 'GET',
-			mode: 'cors', // 允许发送跨域请求
-			credentials: 'include'
-		}).then(function(response) {
-			//打印返回的json数据
-			response.json().then(function(json) {
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
 
-				fnAfterFetch(json);
-
-			})
-		}).catch(function(e) {
-			console.log('error: ' + e.toString());
-		})
 	},
 
 	addTask: function(taskObject, fnTaskAdded){
@@ -458,9 +451,9 @@ iTopoStationDB.prototype = {
 
 	},
 
-	updateTask: function(taskObject, latestTaskStatus, fnTaskAdded){
+	updateTaskStatus: function(taskObject, latestTaskStatus, fnTaskAdded){
 
-		var request = new Request(iTopoStationAPI.updateTask, {
+		var request = new Request(iTopoStationAPI.updateTaskStatus, {
 			method: 'POST',
 			body: JSON.stringify({taskObject:taskObject,latestTaskStatus:latestTaskStatus}),
 			headers: new Headers()

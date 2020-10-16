@@ -384,7 +384,9 @@ iTopoResourceTracker.prototype = {
 			texturePath = texturePaths[index] ;
 		} else if(objectType === "iTopoType/TaskObject/SharedCanteen"){
 			texturePath = 'iTopoObjects/00_Default_Resource/computer-history-museum/';
-		} else{
+		} else if(objectType === "iTopoType/TaskObject/InnerEarth"){
+			texturePath = 'iTopoObjects/00_Default_Resource/WaterWorld/';
+		} else {
 			texturePath = 'iTopoObjects/00_Default_Resource/cosmos/';
 		}
 

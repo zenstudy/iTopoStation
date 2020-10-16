@@ -15,12 +15,12 @@ function iTopoStrings( config ) {
 			'iTopoType/TaskObject/SharedCanteen':'共享食堂',
 			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球协作中心',
 			'iTopoType/TaskObject/iTopoInnerEarth':'地心门户',
-			'iTopoType/TaskObject/iTopoLunarMoon': '月球',
+			'iTopoType/TaskObject/iTopoLunarMoon': '月球门户',
 
 			'menubar/iTopoEarthHub': '共享地球首页',
 			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球协作中心',
 			'menubar/iTopoEarthHub/iTopoInnerEarth' : '地心门户',
-			'menubar/iTopoEarthHub/iTopoLunarMoon' : '月球',
+			'menubar/iTopoEarthHub/iTopoLunarMoon' : '月球门户',
 
 			'menubar/EcologicalFarm':'生态基地',
 			'menubar/EcologicalFarm/itopoBase': '生态农场',
@@ -60,7 +60,7 @@ function iTopoStrings( config ) {
 			'iTopoViewport/info/frametime' : '帧数',
 
 			'sidebar/skyCastle/Header' : '共享地球协作中心',
-			'sidebar/skyCastle/Header/Outlook' : '协作中心模型空间',
+			'sidebar/skyCastle/Header/Outlook' : '协作中心概貌',
 			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务协作空间',
 			'sidebar/SkyCastle/Header/Title': '名称',
 			'sidebar/SkyCastle/Header/castleUUID': '协作中心UUID',
@@ -75,7 +75,9 @@ function iTopoStrings( config ) {
 			'sidebar/skyCastle/Sponsors': '赞助者',
 			'sidebar/skyCastle/Sponsors/clickToSponsor': '点击赞助...',
 
-			'sidebar/LunarMoon/Header':'月球',
+			'sidebar/LunarMoon/Header':'月球门户',
+			'sidebar/LunarMoon/Header/Outlook':'月球概貌',
+			'sidebar/LunarMoon/Header/iTopoTaskCards':'任务协作空间',
 			'sidebar/LunarMoon/Header/lunarMoonUUID': '月球UUID',
 			'sidebar/LunarMoon/Header/Title': '名称',
 			'sidebar/LunarMoon/Parts': '组成',

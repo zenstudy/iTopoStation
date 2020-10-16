@@ -1,7 +1,7 @@
-import * as THREE from '../../build/three.module.js';
-import {iTopoEarthModel} from './iTopoEarthModel.js';
-import {iTopoEarthSettings} from './iTopoEarthSettings.js';
-import {iTopoEarthCache} from './iTopoEarthCache.js';
+import * as THREE from '../../../build/three.module.js';
+import {iTopoEarthModel} from '../iTopoEarthModel.js';
+import {iTopoEarthSettings} from '../iTopoEarthSettings.js';
+import {iTopoEarthCache} from '../iTopoEarthCache.js';
 
 export var iTopoEarthBuilder = iTopoEarthBuilder || {};
 
@@ -564,14 +564,16 @@ iTopoEarthBuilder.createLunarMoon = function(option) {
 	return lunarMoonBuid;
 }
 
-// canvas实现文字函数
-iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
+iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor, bgColor) {
 	var canvas = document.createElement('canvas');
 	canvas.width = w;
 	canvas.height = h;
 	var ctx = canvas.getContext('2d');
-	//ctx.fillStyle = iTopoEarthSettings.markingBackground;
-	//ctx.fillRect(0, 0, w, h);
+	if(bgColor !== undefined && bgColor !== null){
+		ctx.fillStyle = bgColor;
+		ctx.fillRect(0, 0, w, h);
+	}
+
 	ctx.font = h + "px '微软雅黑'";
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
@@ -580,12 +582,28 @@ iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
 	return canvas;
 }
 
+// canvas实现文字函数
+// iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
+// 	var canvas = document.createElement('canvas');
+// 	canvas.width = w;
+// 	canvas.height = h;
+// 	var ctx = canvas.getContext('2d');
+// 	//ctx.fillStyle = '#0fffef';
+// 	//ctx.fillRect(0, 0, w, h);
+// 	ctx.font = h + "px '微软雅黑'";
+// 	ctx.textAlign = 'center';
+// 	ctx.textBaseline = 'middle';
+// 	ctx.fillStyle = fontColor;
+// 	ctx.fillText(textValue, w / 2, h / 2);
+// 	return canvas;
+// }
+
 iTopoEarthBuilder.createVerCanvasFont = function(fontSize, dpi, textValue, fontColor) {
 	var canvas = document.createElement('canvas');
 	canvas.width = fontSize*dpi;
 	canvas.height = fontSize*dpi*(textValue.length+1);
 	var ctx = canvas.getContext('2d');
-	//ctx.fillStyle = iTopoEarthSettings.markingBackground;
+	//ctx.fillStyle = iTopoEarthSettings.BACKGROUND_COLOR;
 	//ctx.fillRect(0, 0, w, h);
 	ctx.font = fontSize*dpi + "px '微软雅黑'";
 	//ctx.font = "Bold " + h + "px Arial";
@@ -1008,106 +1026,190 @@ iTopoEarthBuilder.roundRect = function(ctx, x, y, w, h, r) {
 	ctx.stroke();
 }
 
-iTopoEarthBuilder.create2DStandContainer = function( album2DImgs ) {
+iTopoEarthBuilder.getCirclePointArrayOnXZPlane = function(radius , ptCount ) {
+	var ptArray = []
+	if(ptCount === 1){
+		ptArray.push({ x:0, z:0}) ;
+	} else {
+		for(var col = 0; col < ptCount; ++ col) {
+			var x = radius * Math.sin(2 * Math.PI * col / ptCount);
+			var z = radius * Math.cos(2 * Math.PI * col / ptCount);
+			ptArray.push({ x:x, z:z}) ;
+		}
+	}
+	return ptArray;
+}
+
+iTopoEarthBuilder.createRollFilmCollection = function( films, ptModelOrg, filmColCount) {
 
 	var albumMeshObjects = [];
+	var ptCollectionCenter = ptModelOrg;
 
-	var standContainerInfo = {
-		radius: iTopoEarthSettings.standMaxBoxW / 2 / 0.72,
-		dividCount: album2DImgs.length,
-		depth: iTopoEarthSettings.standMaxBoxW / 100,
-		segmentsCount: iTopoEarthSettings.standMaxBoxW,
-		height: iTopoEarthSettings.standMaxBoxH / 3 * 0.72,
-	};
+	for( var iTopic = 0; iTopic < films.length; ++iTopic){
 
-	var boxWidth = standContainerInfo.radius * 2 * Math.PI / standContainerInfo.dividCount
-	* (standContainerInfo.dividCount - 1) / standContainerInfo.dividCount;
+		var album2DImgs = films[iTopic].album2DImgs;
+		var colCount = filmColCount ;
+		var boxWRemainK = (colCount - 1) / colCount;
+		var radius = iTopoEarthSettings.standMaxBoxW / 2 / 0.72;
+		var boxHeight = 0.618 * radius * 2 * Math.PI / colCount;
+		let fontSize = iTopoEarthSettings.markingFontSize*10;
+		let average = 1;
 
-	var geometry = new THREE.BoxGeometry(boxWidth, standContainerInfo.height, standContainerInfo.depth,
-		standContainerInfo.segmentsCount, 1);
-	//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
-	geometry.vertices.forEach(function(item) {
-		item.z += Math.sqrt(standContainerInfo.radius * standContainerInfo.radius - item.x * item.x) -
-			standContainerInfo.radius;
-	});
+		var standCellSetting = {
+			radius: radius,
+			colCount: colCount,
+			rowCount: Math.ceil(album2DImgs.length / colCount),
+			segmentsCount: iTopoEarthSettings.standMaxBoxW / colCount,
+			cellImgW:  boxWRemainK * radius * 2 * Math.PI / colCount,
+			cellImgH: boxHeight,
+			topicAreaH : 0.25*boxHeight,
+			cellHeaderH : 0.12*boxHeight,
+			cellTailH : 0.12*boxHeight,
+			cellDepth: iTopoEarthSettings.standMaxBoxW / 100,
+			cellGapV: 0.08*boxHeight,
+			topicBGColor:'#16b2e1',
+			cellHeaderBGColor:'#0ba4b5',
+			cellTailBGColor:'#07a0e1',
+		};
+		var rowSpaceHeight = standCellSetting.cellHeaderH+standCellSetting.cellImgH+standCellSetting.cellTailH + standCellSetting.cellGapV;
 
-	let fontSize = iTopoEarthSettings.markingFontSize*10;
-	let txtAreaH = standContainerInfo.height*0.1;
-	let average = 1;
-	var geometryText = new THREE.BoxGeometry(boxWidth,txtAreaH, standContainerInfo.depth, standContainerInfo.segmentsCount, 1);
-	//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
-	geometryText.vertices.forEach(function(item) {
-		item.z += Math.sqrt(standContainerInfo.radius * standContainerInfo.radius - item.x * item.x) -
-			standContainerInfo.radius;
-	});
+		let textLengthTopic = films[iTopic].filmTopic.length*2;
+		let textureTextTopic = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLengthTopic * fontSize * average,
+			fontSize * average, films[iTopic].filmTopic, iTopoEarthSettings.mapTitleColor, standCellSetting.topicBGColor));
+		// 设置阵列模式   默认ClampToEdgeWrapping  RepeatWrapping：阵列  镜像阵列：MirroredRepeatWrapping
+		textureTextTopic.wrapS = THREE.RepeatWrapping;
+		textureTextTopic.wrapT = THREE.RepeatWrapping;
+		textureTextTopic.repeat.set(colCount, 1);
 
-	var loader = new THREE.TextureLoader();
-
-	for (var i = 0; i < standContainerInfo.dividCount; ++i) {
-
-		var x = standContainerInfo.radius * Math.sin(2 * Math.PI * i / standContainerInfo.dividCount);
-		var z = standContainerInfo.radius * Math.cos(2 * Math.PI * i / standContainerInfo.dividCount);
-		var y = 0;
-
-		var textureImg, material;
-		var pos=album2DImgs[i].imgURL.search(/.mp4/);
-
-		if( pos >= 0 ){
-			// 创建video对象
-			let video = document.createElement('video');
-			video.id = 'video' + i;
-			video.src = album2DImgs[i].imgURL; // 设置视频地址
-			video.setAttribute("width", "0");
-			video.setAttribute("height", "0");
-			//video.setAttribute("overflow", "hidden");
-			video.style.position = 'absolute';
-			video.autoplay = "true"; //要设置播放
-			video.loop = "true"; //要设置播放
-			video.muted = "true"; //要设置播放
-			document.body.appendChild(video);
-
-			textureImg = new THREE.VideoTexture(video);
-			textureImg.minFilter = THREE.LinearFilter;
-			textureImg.magFilter = THREE.LinearFilter;
-			textureImg.format = THREE.RGBFormat;
-
-			material = new THREE.MeshPhongMaterial({
-			  map: textureImg, // 设置纹理贴图
-			}); //材质对象Material
-
-		} else {
-			textureImg = loader.load(album2DImgs[i].imgURL);
-			material = new THREE.MeshBasicMaterial({
-				map: textureImg,
-				side: THREE.FrontSide, //THREE.DoubleSide, //
-			});
-		}
-
-		var mesh = new THREE.Mesh(geometry, material);
-		mesh.position.set(x, y, z);
-		mesh.userData = album2DImgs[i];
-		// mesh.rotation.set( 0, 0, 0 );
-		// mesh.scale.set( 1, 1, 1 );
-		mesh.rotateY(Math.PI * 2 * i / standContainerInfo.dividCount);
-
-		albumMeshObjects.push(mesh);
-
-		// 添加文字说明
-		let textLength = album2DImgs[i].imgDesc.length;
-		let textureText = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLength * fontSize * average,
-			fontSize * average, album2DImgs[i].imgDesc, iTopoEarthSettings.mapTitleColor));
-		var materialText = new THREE.MeshBasicMaterial({
-			map: textureText,
+		var topicHeaderMaterial = new THREE.MeshPhongMaterial({
+			color: standCellSetting.topicBGColor,
+			map: textureTextTopic,
 			side: THREE.FrontSide, //THREE.DoubleSide, //
 		});
-		var fontMesh = new THREE.Mesh(geometryText, materialText);
-		fontMesh.position.set(x, y - standContainerInfo.height/2 - txtAreaH/2, z);
-		fontMesh.userData = album2DImgs[i];
-		// fontMesh.rotation.set( 0, 0, 0 );
-		// fontMesh.scale.set( 1, 1, 1 );
-		fontMesh.rotateY(Math.PI * 2 * i / standContainerInfo.dividCount);
 
-		albumMeshObjects.push(fontMesh);
+		var topicHeaderGeometry = new THREE.CylinderGeometry( radius, radius, standCellSetting.topicAreaH, radius, 1, true );
+		var topicHeaderCylinderMesh = new THREE.Mesh( topicHeaderGeometry, topicHeaderMaterial );
+		topicHeaderCylinderMesh.position.set(ptCollectionCenter.x,
+			ptCollectionCenter.y + standCellSetting.cellImgH/2 + standCellSetting.cellHeaderH
+			+ standCellSetting.topicAreaH/2-standCellSetting.cellGapV/2,ptCollectionCenter.z);
+		albumMeshObjects.push(topicHeaderCylinderMesh);
+
+		var geometryTextHeader = new THREE.BoxGeometry(standCellSetting.cellImgW,standCellSetting.cellHeaderH, standCellSetting.cellDepth, standCellSetting.segmentsCount, 1);
+		//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
+		geometryTextHeader.vertices.forEach(function(item) {
+			item.z += Math.sqrt(standCellSetting.radius * standCellSetting.radius - item.x * item.x) -
+				standCellSetting.radius;
+		});
+
+		var geometry = new THREE.BoxGeometry(standCellSetting.cellImgW, standCellSetting.cellImgH, standCellSetting.cellDepth,
+			standCellSetting.segmentsCount, 1);
+		//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
+		geometry.vertices.forEach(function(item) {
+			item.z += Math.sqrt(standCellSetting.radius * standCellSetting.radius - item.x * item.x) -
+				standCellSetting.radius;
+		});
+
+		var geometryTextTail = new THREE.BoxGeometry(standCellSetting.cellImgW,standCellSetting.cellTailH, standCellSetting.cellDepth, standCellSetting.segmentsCount, 1);
+		//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
+		geometryTextTail.vertices.forEach(function(item) {
+			item.z += Math.sqrt(standCellSetting.radius * standCellSetting.radius - item.x * item.x) -
+				standCellSetting.radius;
+		});
+
+		var loader = new THREE.TextureLoader();
+
+		for (var row = 0; row < standCellSetting.rowCount; ++row) {
+			for (var col = 0; col < standCellSetting.colCount; ++col) {
+				var index = row*standCellSetting.colCount + col;
+				if(index >= album2DImgs.length)
+					break;
+
+				var x =ptCollectionCenter.x + standCellSetting.radius * Math.sin(2 * Math.PI * col / standCellSetting.colCount);
+				var z =ptCollectionCenter.z + standCellSetting.radius * Math.cos(2 * Math.PI * col / standCellSetting.colCount);
+				var y =ptCollectionCenter.y + standCellSetting.cellImgH/2 - row * rowSpaceHeight; //竖向坐标
+
+				// 添加头部文字说明
+				let textLengthHeader = (album2DImgs[index].imgTitle === undefined || album2DImgs[index].imgTitle === null)?
+					0 : album2DImgs[index].imgTitle.length;
+				let textureTextHeader = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLengthHeader * fontSize * average,
+					fontSize * average, album2DImgs[index].imgTitle, iTopoEarthSettings.mapTitleColor, standCellSetting.cellHeaderBGColor));
+				var materialTextHeader = new THREE.MeshPhongMaterial({
+					color: standCellSetting.cellHeaderBGColor,
+					map: textureTextHeader,
+					side: THREE.FrontSide, //THREE.DoubleSide, //
+				});
+				var fontMeshHeader = new THREE.Mesh(geometryTextHeader, materialTextHeader);
+				fontMeshHeader.position.set(x, y, z);
+				fontMeshHeader.userData = album2DImgs[index];
+				// fontMesh.rotation.set( 0, 0, 0 );
+				// fontMesh.scale.set( 1, 1, 1 );
+				fontMeshHeader.rotateY(Math.PI * 2 * col / standCellSetting.colCount);
+				albumMeshObjects.push(fontMeshHeader);
+
+				var textureImg, material;
+				var pos=album2DImgs[index].imgURL.search(/.mp4/);
+
+				if( pos >= 0 ){
+					// 创建video对象
+					let video = document.createElement('video');
+					video.id = 'video' + index;
+					video.src = album2DImgs[index].imgURL; // 设置视频地址
+					video.setAttribute("width", "0");
+					video.setAttribute("height", "0");
+					//video.setAttribute("overflow", "hidden");
+					video.style.position = 'absolute';
+					video.autoplay = "true"; //要设置播放
+					video.loop = "true"; //要设置播放
+					video.muted = "true"; //要设置播放
+					document.body.appendChild(video);
+
+					textureImg = new THREE.VideoTexture(video);
+					textureImg.minFilter = THREE.LinearFilter;
+					textureImg.magFilter = THREE.LinearFilter;
+					textureImg.format = THREE.RGBFormat;
+
+					material = new THREE.MeshPhongMaterial({
+					  map: textureImg, // 设置纹理贴图
+					}); //材质对象Material
+
+				} else {
+					textureImg = loader.load(album2DImgs[index].imgURL);
+					material = new THREE.MeshBasicMaterial({
+						map: textureImg,
+						side: THREE.FrontSide, //THREE.DoubleSide, //
+					});
+				}
+
+				var mesh = new THREE.Mesh(geometry, material);
+				mesh.position.set(x, y - standCellSetting.cellHeaderH/2 - standCellSetting.cellImgH/2, z);
+				mesh.userData = album2DImgs[index];
+				// mesh.rotation.set( 0, 0, 0 );
+				// mesh.scale.set( 1, 1, 1 );
+				mesh.rotateY(Math.PI * 2 * col / standCellSetting.colCount);
+
+				albumMeshObjects.push(mesh);
+
+				// 添加底部文字说明
+				let textLengthTail = album2DImgs[index].imgDesc.length;
+				let textureTextTail = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLengthTail * fontSize * average,
+					fontSize * average, album2DImgs[index].imgDesc, iTopoEarthSettings.mapTitleColor, standCellSetting.cellTailBGColor));
+				var materialTextTail = new THREE.MeshPhongMaterial({
+					color:standCellSetting.cellTailBGColor,
+					map: textureTextTail,
+					side: THREE.FrontSide, //THREE.DoubleSide, //
+				});
+				var fontMeshTail = new THREE.Mesh(geometryTextTail, materialTextTail);
+				fontMeshTail.position.set(x, y - standCellSetting.cellImgH - standCellSetting.cellHeaderH/2 - standCellSetting.cellTailH/2, z);
+				fontMeshTail.userData = album2DImgs[index];
+				// fontMeshTail.rotation.set( 0, 0, 0 );
+				// fontMeshTail.scale.set( 1, 1, 1 );
+				fontMeshTail.rotateY(Math.PI * 2 * col / standCellSetting.colCount);
+
+				albumMeshObjects.push(fontMeshTail);
+			}
+		}
+
+		ptCollectionCenter.y -= (standCellSetting.rowCount * rowSpaceHeight + standCellSetting.topicAreaH);
 	}
 
 	return albumMeshObjects;

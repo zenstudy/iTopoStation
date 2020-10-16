@@ -57,7 +57,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 			scope.notificationPanel = notificationPanel;
 			notificationPanel.createDisplayStand(scope.container.dom);
 
-			editor.stationDB.fetchiTopoTaskCards(editor.starUser.info.starUUID, "Todo", function(jsonTodo) {
+			editor.stationDB.fetchiTopoTasks(editor.starUser.info.starUUID, "Todo", function(jsonTodo) {
 
 				jsonTodo.forEach(function(taskTodo) {
 					notificationPanel.addNotificationItem(taskTodo.taskTitle, taskTodo.taskDescription,
@@ -81,7 +81,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 			var notificationDlg = new iTopoDialogNotificationDetail(editor, title, taskForNotification, function fnOK() {
 
 				scope.notificationPanel.removeNotificationItem(taskForNotification.taskTitle);
-				editor.stationDB.updateTask(taskForNotification, "已办",
+				editor.stationDB.updateTaskStatus(taskForNotification, "已办",
 					function() {
 						//editor.stationDB.addNotification();//发送通过的信息，申请者的uuid
 					});
@@ -107,14 +107,14 @@ iTopoUserBriefcaseMineNotification.prototype = {
 				function fnVoteForAgree() {
 					scope.notificationPanel.removeNotificationItem(taskForNotification.taskTitle);
 					scope.fnAfterVote("agree", taskForNotification);
-					editor.stationDB.updateTask(taskForNotification, "已办", function() {});
+					editor.stationDB.updateTaskStatus(taskForNotification, "已办", function() {});
 					//发送通过的信息，申请者的uuid
 				},
 
 				function fnVoteForAgainst() {
 					scope.notificationPanel.removeNotificationItem(taskForNotification.taskTitle);
 					scope.fnAfterVote("against", taskForNotification);
-					editor.stationDB.updateTask(taskForNotification, "已办", function() {});
+					editor.stationDB.updateTaskStatus(taskForNotification, "已办", function() {});
 					//发送通过的信息，申请者的uuid
 				});
 
@@ -134,7 +134,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 
 	fnAfterVote: function(voteResult, taskForNotification) { // voteResult= "agree" or "against"
 		var scope = this;
-		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID, "Todo", function(allTasks) {
+		editor.stationDB.fetchiTopoTasks(iTopoEarthModel.SkyCastle.info.castleUUID, "Todo", function(allTasks) {
 
 			var taskInCastle;
 
@@ -168,7 +168,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 
 				if (totalNumberOfVotes < 3) {
 					taskInCastle.voteResult = 'inprogress';
-					editor.stationDB.updateTask(taskInCastle, "待办",
+					editor.stationDB.updateTaskStatus(taskInCastle, "待办",
 						function() {
 							//editor.stationDB.addNotification();//仅更新状态
 						});
@@ -190,7 +190,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 
 	applyPassed: function(taskInCastle, taskForNotification) {
 		taskInCastle.voteResult = 'passed';
-		editor.stationDB.updateTask(taskInCastle, "已办", function() {
+		editor.stationDB.updateTaskStatus(taskInCastle, "已办", function() {
 
 			//在team中加入新成员，
 			editor.stationDB.addMemberToiTopobaseTeams(iTopoEarthModel.SkyCastle.info.castleUUID,
@@ -247,7 +247,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 
 		taskInCastle.voteResult = 'unpassed';
 		//将任务放入已完成
-		editor.stationDB.updateTask(taskInCastle, "已办", function() {
+		editor.stationDB.updateTaskStatus(taskInCastle, "已办", function() {
 
 			editor.stationDB.fetchiTopobaseWorkTeams(taskInCastle.objectUUID, function(teamObjects) {
 				for (var i = 0; i < teamObjects.length; ++i) {

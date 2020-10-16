@@ -1,6 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
 import { UITabbedPanel, UISpan } from '../iTopoUI.js';
 import { iTopoTaskHeader } from './iTopoTask.Header.js';
 import { iTopoTaskHistory } from './iTopoTask.History.js';
@@ -84,57 +81,59 @@ function iTopoTaskBriefcase(editor) {
 		activeTab( tabs[0] );
 	}
 
-
-	function refreshTaskbar(object) {
-		tabs.forEach(function(tab) {tab.panel.setValue(object);	});
-	}
-
 	var ignoreObjectSelectedSignal = false;
 
-	function refreshObjectUI(object) {
-
-		if (ignoreObjectSelectedSignal === true)
-			return;
-
-		if (object === null) {
-			container.setDisplay( 'none' );
-			return;
-		}
-
-		container.setDisplay( 'inline-block' );
-
-		//to refresh
-		refreshTaskbar(object);
-	}
-
-	signals.taskCardSelected.add(function(object) {
-
-		if(object === null || object === undefined){
-			refreshObjectUI(null);
-			return;
-		}
-
-		if(object.userData === null || object.userData === undefined){
-			refreshObjectUI(null);
-			return;
-		}
+	function refreshTaskUI(standUserData) {
 
 		var taskType = "";
-		if(object.userData.taskStatus === "待办")
+		if(standUserData.standStatus === "待办")
 			taskType = "Todo";
-		if(object.userData.taskStatus === "在办")
+		if(standUserData.standStatus === "在办")
 			taskType = "InProgress";
-		if(object.userData.taskStatus === "已办")
+		if(standUserData.standStatus === "已办")
 			taskType = "Done";
 
-		editor.stationDB.fetchiTopoTaskCards(object.userData.objectUUID, taskType, function(json){
+		editor.stationDB.fetchiTopoTasks(standUserData.objectUUID, taskType, function(json){
 			for (var i = 0; i < json.length; i++) {
-				if (json[i].taskUUID === object.userData.taskUUID) {
-					refreshObjectUI(json[i]);
+				if (json[i].taskUUID === standUserData.standUUID) {
+
+					tabs.forEach(function(tab) { tab.panel.setValue(json[i]); });
 					return;
 				}
 			}
 		});
+	};
+
+	function refreshStandUI(thrObject){
+
+		if (ignoreObjectSelectedSignal === true)
+			return;
+
+		if(thrObject === null || thrObject === undefined){
+			container.setDisplay( 'none' );
+			return;
+		}
+
+		if(thrObject.userData === null || thrObject.userData === undefined){
+			container.setDisplay( 'none' );
+			return;
+		}
+
+	//	removeAllTabs();
+		container.setDisplay( 'inline-block' );
+
+		var standUserData = thrObject.userData;
+
+		if(standUserData.standType === 'iTopoType/standObject/task'){
+			//console.log(standUserData);
+			refreshTaskUI(standUserData);
+		}
+
+	}
+
+	signals.objectInStandPlatformSelected.add(function(thrObject) {
+
+		refreshStandUI(thrObject);
 
 	});
 

@@ -22,8 +22,7 @@ function iTopoObjectStarUserHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	container.add(containerParameter);
-	{
+	container.add(containerParameter); {
 		// starUUID
 		var baseUUIDRow = new UIRow();
 		baseUUIDRow.add(new UIText(strings.getKey('sidebar/starUser/Header/starUUID')).setWidth('260px'));
@@ -61,17 +60,23 @@ function iTopoObjectStarUserHeader(editor) {
 			scope.thumbnailManager.create(containerBaseModel.dom);
 
 			var originPosition = new THREE.Vector3();
-			originPosition.set(0,-1.0,0);
-			editor.resourceTracker.loadiTopoUser(starUserInfo.gender, originPosition, 2, function(object){
-				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/Outlook' ),
-			 	object , function() {scope.onClickOutlook()});
-			}) ;
+			originPosition.set(0, -1.0, 0);
+			editor.resourceTracker.loadiTopoUser(starUserInfo.gender, originPosition, 2, function(object) {
+				scope.thumbnailManager.createThumbnailItem(strings.getKey('sidebar/StarUser/Header/Outlook'),
+					object,
+					function() {
+						scope.onClickOutlook()
+					});
+			});
 
-			originPosition.set(0,0,0);
-			editor.resourceTracker.loadiTopoTasksLogo( originPosition, 0.8, function(object){
-				scope.thumbnailManager.createThumbnailItem( strings.getKey( 'sidebar/StarUser/Header/iTopoTaskCards' ),
-				 	object , function(){scope.onTaskCardsClassCSS3D()});
-			}) ;
+			originPosition.set(0, 0, 0);
+			editor.resourceTracker.loadiTopoTasksLogo(originPosition, 0.8, function(object) {
+				scope.thumbnailManager.createThumbnailItem(strings.getKey('sidebar/StarUser/Header/iTopoTaskCards'),
+					object,
+					function() {
+						scope.onTaskCardsClassCSS3D()
+					});
+			});
 		}
 	}
 
@@ -83,7 +88,7 @@ function iTopoObjectStarUserHeader(editor) {
 		containerAnnouncement.setOverflow('auto');
 		container.add(containerAnnouncement);
 
-		var title = editor.strings.getKey( 'sidebar/SharedCanteen/life' ) ;
+		var title = editor.strings.getKey('sidebar/SharedCanteen/life');
 		var notificationPanel = new iTopoNotificationManager();
 		scope.notificationPanel = notificationPanel;
 		notificationPanel.createDisplayStand(containerAnnouncement.dom);
@@ -91,8 +96,7 @@ function iTopoObjectStarUserHeader(editor) {
 
 	var containerParameter2 = new UIPanel();
 	containerParameter2.setTop('630px');
-	container.add(containerParameter2);
-	{
+	container.add(containerParameter2); {
 		// gender
 		var genderRow = new UIRow();
 		genderRow.add(new UIText(strings.getKey('sidebar/starUser/Header/gender')).setWidth('50px'));
@@ -181,75 +185,79 @@ function iTopoObjectStarUserHeader(editor) {
 	return this;
 }
 
-iTopoObjectStarUserHeader.prototype = Object.create( UIElement.prototype );
+iTopoObjectStarUserHeader.prototype = Object.create(UIElement.prototype);
 iTopoObjectStarUserHeader.prototype.constructor = iTopoObjectStarUserHeader;
 
 iTopoObjectStarUserHeader.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
-		if(scope.thumbnailManager === null) return;
-		if(scope.thumbnailManager === undefined) return;
+		if (scope.thumbnailManager === null) return;
+		if (scope.thumbnailManager === undefined) return;
 
 		scope.thumbnailManager.updateCanvasSize();
 		scope.thumbnailManager.active();
 	},
 
-	deactiveTabPanel: function(){
+	deactiveTabPanel: function() {
 		var scope = this;
-		if(scope.thumbnailManager === null) return;
+		if (scope.thumbnailManager === null) return;
 		scope.thumbnailManager.deactive();
 	},
 
 	dispose: function() {
-		if(this.thumbnailManager !== undefined && this.thumbnailManager !== null){
+		if (this.thumbnailManager !== undefined && this.thumbnailManager !== null) {
 			this.thumbnailManager.dispose();
 			this.thumbnailManager = null;
 		}
 	},
-	onClickOutlook: function() {// this对应一个item
+	onClickOutlook: function() { // this对应一个item
 
 		var scope = this;
 		var originPosition = new THREE.Vector3();
-		var title = editor.strings.getKey( 'sidebar/StarUser/Header/Outlook' ) ;
-		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.starUUID,function(outlookData){
+		var title = editor.strings.getKey('sidebar/StarUser/Header/Outlook');
+		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.starUUID, function(outlookData) {
 
-			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/Star', function(background_outlook){
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/Star', function(background_outlook) {
 
-				var originPosition = new THREE.Vector3(0,-iTopoEarthSettings.standMaxBoxH/2,0);
-				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, iTopoEarthSettings.standMaxBoxH, function(baseModel){
+				var originPosition = new THREE.Vector3(0, -iTopoEarthSettings.standMaxBoxH / 2, 0);
+				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, iTopoEarthSettings.standMaxBoxH,
+					function(baseModel) {
 
-					var album2DImgs = [];
-					var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/outlook/";
-					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
-						outlookData.album2DImgs.forEach(function(imgItem){
-							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
-						});
-					}
+						var album2DImgs = [];
+						var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/outlook/";
+						if (outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined) {
+							outlookData.album2DImgs.forEach(function(imgItem) {
+								album2DImgs.push({
+									imgURL: baseURL + imgItem.imgFilenName,
+									imgDesc: imgItem.imgDesc
+								});
+							});
+						}
 
-					var explore = new iTopoStandPlatform.Explore(title);
-					console.log(album2DImgs);
-					explore.show3D(background_outlook , baseModel, album2DImgs);
-					explore.play();
+						var explore = new iTopoStandPlatform.Explore(title);
+						console.log(album2DImgs);
+						explore.show3D(background_outlook, baseModel, album2DImgs);
+						explore.play();
 
-				});
+					});
 
-			}) ;
+			});
 
-		}) ;
+		});
 
 	},
 
-	getValue: function () {
+	getValue: function() {
 
 		return this.taskObject;
 
 	},
 
-	setValue: function (taskObject) {
+	setValue: function(taskObject) {
 		var scope = this;
 		if (editor.selected !== null) {
-		//	containerParameter.setDisplay( 'block' );
+			//	containerParameter.setDisplay( 'block' );
 			this.starUUID.setValue(taskObject.starUUID);
 			this.genderInput.setValue(taskObject.gender);
 			this.updateOutlook(taskObject.gender);
@@ -260,13 +268,13 @@ iTopoObjectStarUserHeader.prototype = {
 			this.starWishValueUI.setValue(taskObject.starWish);
 
 			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
-			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.starUUID,function(jsonAnnouncement){
+			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.starUUID, function(jsonAnnouncement) {
 
-				jsonAnnouncement.forEach(function(announcement){
+				jsonAnnouncement.forEach(function(announcement) {
 					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
-				  	function(){
-				  		scope.onAnnouncement(announcement);
-				  	});
+						function() {
+							scope.onAnnouncement(announcement);
+						});
 				})
 			})
 		}
@@ -274,27 +282,27 @@ iTopoObjectStarUserHeader.prototype = {
 		this.taskObject = taskObject;
 	},
 
-	updateOutlook: function( gender) {
+	updateOutlook: function(gender) {
 		var scope = this;
 
 		var originPosition = new THREE.Vector3();
-		originPosition.set(0,-1.0,0);
-		var title = editor.strings.getKey( 'sidebar/StarUser/Header/Outlook' );
-		editor.resourceTracker.loadiTopoUser(gender, originPosition, 2, function(object){
-			scope.thumbnailManager.replaceThumbnailItemObject3d(title,object);
-		}) ;
+		originPosition.set(0, -1.0, 0);
+		var title = editor.strings.getKey('sidebar/StarUser/Header/Outlook');
+		editor.resourceTracker.loadiTopoUser(gender, originPosition, 2, function(object) {
+			scope.thumbnailManager.replaceThumbnailItemObject3d(title, object);
+		});
 	},
 
-onTaskCardsClassCSS3D: function() {
+	onTaskCardsClassCSS3D: function() {
+		var scope = this;
+		editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "Todo", function(jsonTodo) {
+			editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "InProgress", function(jsonInProgress) {
+				editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "Done", function(jsonDone) {
 
-		editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Todo",function(jsonTodo){
-			editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"InProgress",function(jsonInProgress){
-				editor.stationDB.fetchiTopoTaskCards(iTopoEarthModel.SkyCastle.info.castleUUID,"Done",function(jsonDone){
-
-					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
+					var title = editor.strings.getKey('sidebar/skyCastle/Header/iTopoTaskCards');
 					var displayStand = new iTopoDisplayStand(title);
 					document.body.appendChild(displayStand.container.dom);
-					displayStand.container.setDisplay( 'block' );
+					displayStand.container.setDisplay('block');
 					displayStand.container.setPosition('absolate');
 
 					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
@@ -312,13 +320,13 @@ onTaskCardsClassCSS3D: function() {
 						explore.appendCardItem(jsonDone[i]);
 					}
 
-					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 
 					explore.show3D();
 					explore.play();
 
-					displayStand.container.dom.addEventListener( 'resize', function () {
-						explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+					displayStand.container.dom.addEventListener('resize', function() {
+						explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 					});
 					displayStand.closeBtn.dom.addEventListener('click', function() {
 						explore.stop();
@@ -326,38 +334,40 @@ onTaskCardsClassCSS3D: function() {
 						explore = null;
 					});
 
-					var taskBriefcase = new iTopoTaskBriefcase( editor );
-					displayStand.container.dom.appendChild( taskBriefcase.dom );
+					var taskBriefcase = new iTopoTaskBriefcase(editor);
+					displayStand.container.dom.appendChild(taskBriefcase.dom);
 
 				})
 			})
 		});
 
 	},
-		onAnnouncement: function(announcement){
+	onAnnouncement: function(announcement) {
 
-			var displayStand = new iTopoDisplayStand(announcement.Title);
-			document.body.appendChild(displayStand.container.dom);
-			displayStand.container.setDisplay( 'block' );
-			displayStand.container.setPosition('absolate');
+		var displayStand = new iTopoDisplayStand(announcement.Title);
+		document.body.appendChild(displayStand.container.dom);
+		displayStand.container.setDisplay('block');
+		displayStand.container.setPosition('absolate');
 
-			var h1 = document.createElement("h1");
-			var content=document.createTextNode(announcement.Title);
-			h1.appendChild(content);
-			displayStand.container.dom.appendChild(h1);
+		var h1 = document.createElement("h1");
+		var content = document.createTextNode(announcement.Title);
+		h1.appendChild(content);
+		displayStand.container.dom.appendChild(h1);
 
-			var pEle = document.createElement("p");//创建元素节点p
-			var textEle = document.createTextNode(announcement.Description);
-			pEle.appendChild(textEle);//将文本追加到p中
-			displayStand.container.dom.appendChild(pEle);//将p追加到body中
+		var pEle = document.createElement("p"); //创建元素节点p
+		var textEle = document.createTextNode(announcement.Description);
+		pEle.appendChild(textEle); //将文本追加到p中
+		displayStand.container.dom.appendChild(pEle); //将p追加到body中
 
-			displayStand.container.dom.addEventListener( 'resize', function () {
-				explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-			});
-			displayStand.closeBtn.dom.addEventListener('click', function() {
+		displayStand.container.dom.addEventListener('resize', function() {
+			explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+		});
+		displayStand.closeBtn.dom.addEventListener('click', function() {
 
-			});
-		},
+		});
+	},
 }
 
-export { iTopoObjectStarUserHeader };
+export {
+	iTopoObjectStarUserHeader
+};
