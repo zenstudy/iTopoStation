@@ -152,8 +152,9 @@ iTopoObjectSkyCastleHeader.prototype = {
 					}
 
 					var explore = new iTopoStandPlatform.Explore(title);
-					console.log(album2DImgs);
-					explore.show3D(background_outlook , baseModel, album2DImgs);
+					var films = [];
+					films.push({filmTopic:title,album2DImgs:album2DImgs});
+					explore.show3D(background_outlook , baseModel, films, iTopoEarthSettings.standMaxRowItemCount);
 					explore.play();
 
 				});
