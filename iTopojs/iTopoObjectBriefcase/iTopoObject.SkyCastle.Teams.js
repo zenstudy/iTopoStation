@@ -141,8 +141,8 @@ iTopoObjectSkyCastleTeams.prototype = {
 					applyDetail:{ applicantUUID:editor.starUser.info.starUUID, teamToJoinUUID: teamObject.teamUUID, reason:applyReason },
 					taskDescription: "",
 				};
-				console.log(taskToAcceptNewMember);
-				editor.stationDB.addTask(JSON.stringify(taskToAcceptNewMember), function(){
+				//console.log(taskToAcceptNewMember);
+				editor.stationDB.addTask(taskToAcceptNewMember, function(){
 				//	editor.stationDB.addNotification();
 				});
 
@@ -160,7 +160,7 @@ iTopoObjectSkyCastleTeams.prototype = {
 						taskDescription: editor.starUser.info.userNickname + '想加入志愿者团队-' + teamObject.teamName + ',因为' + applyReason,
 					};
 
-					editor.stationDB.addTask(JSON.stringify(taskObject), function(){
+					editor.stationDB.addTask(taskObject, function(){
 					//	editor.stationDB.addNotification();
 					});
 				}

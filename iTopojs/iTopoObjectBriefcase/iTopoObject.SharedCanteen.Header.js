@@ -221,13 +221,14 @@ iTopoObjectSharedCanteenHeader.prototype = {
 
 		var scope = this;
 		var originPosition = new THREE.Vector3();
+		originPosition.set(0.15*iTopoEarthSettings.standMaxBoxW,0,0.16*iTopoEarthSettings.standMaxBoxW);
 		var title = editor.strings.getKey( 'sidebar/SharedCanteen/Header/outook' ) ;
+		
 		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.baseUUID,function(outlookData){
 
-			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook){
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/SharedCanteen', function(background_outlook){
 
-				var originPosition = new THREE.Vector3();
-				editor.resourceTracker.loadModel("iTopoType/TaskObject/EcologicalFarm", originPosition,iTopoEarthSettings.standMaxBoxW/3, function(baseModel){
+				editor.resourceTracker.loadModel("iTopoType/TaskObject/SharedCanteen", originPosition,iTopoEarthSettings.standMaxBoxW/3, function(baseModel){
 
 					var album2DImgs = [];
 					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/outlook/";
@@ -238,8 +239,9 @@ iTopoObjectSharedCanteenHeader.prototype = {
 					}
 
 					var explore = new iTopoStandPlatform.Explore(title);
-					console.log(album2DImgs);
-					explore.show3D(background_outlook , baseModel, album2DImgs);
+					var films = [];
+					films.push({filmTopic:title,album2DImgs:album2DImgs});
+					explore.show3D(background_outlook , baseModel, films, iTopoEarthSettings.standMaxRowItemCount);
 					explore.play();
 
 				});
@@ -252,52 +254,68 @@ iTopoObjectSharedCanteenHeader.prototype = {
 
 	onTaskCardsClassCSS3D: function() {
 		var scope = this;
-		editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"Todo",function(jsonTodo){
-			editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"InProgress",function(jsonInProgress){
-				editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"Done",function(jsonDone){
+		var title = editor.strings.getKey( 'sidebar/SharedCanteen/Header/iTopoTaskCards' ) ;
+		var originPosition = new THREE.Vector3();
 
-					var title = editor.strings.getKey( 'sidebar/skyCastle/Header/iTopoTaskCards' ) ;
-					var displayStand = new iTopoDisplayStand(title);
-					document.body.appendChild(displayStand.container.dom);
-					displayStand.container.setDisplay( 'block' );
-					displayStand.container.setPosition('absolate');
+		editor.resourceTracker.loadiTopoTasksLogo(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
 
-					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
-					explore.initialize();
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/SharedCanteen', function(background_outlook) {
 
-					for (var i = 0; i < jsonTodo.length; i++) {
-						explore.appendCardItem(jsonTodo[i]);
-					}
+				editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"Todo",function(jsonTodo){
+					editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"InProgress",function(jsonInProgress){
+						editor.stationDB.fetchiTopoTasks(scope.taskObject.baseUUID,"Done",function(jsonDone){
 
-					for (var i = 0; i < jsonInProgress.length; i++) {
-						explore.appendCardItem(jsonInProgress[i]);
-					}
+							var films = [];
+							var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/tasks/";
 
-					for (var i = 0; i < jsonDone.length; i++) {
-						explore.appendCardItem(jsonDone[i]);
-					}
+							var album2DImgs1 = [];
+							for (var i = 0; i < jsonTodo.length; i++) {
+								album2DImgs1.push({
+								objectUUID: scope.taskObject.baseUUID,
+								standType: 'iTopoType/standObject/task',
+								standUUID: jsonTodo[i].taskUUID,
+								standStatus:jsonTodo[i].taskStatus,
+								imgTitle: jsonTodo[i].taskTitle,
+								imgURL: baseURL + jsonTodo[i].taskImgFileName ,
+								imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby });
+							}
+							films.push({filmTopic:"待办任务栏",album2DImgs:album2DImgs1});
 
-					explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+							var album2DImgs2 = [];
+							for (var i = 0; i < jsonInProgress.length; i++) {
+								album2DImgs2.push({
+								objectUUID: scope.taskObject.baseUUID,
+								standType: 'iTopoType/standObject/task',
+								standUUID: jsonInProgress[i].taskUUID,
+								standStatus:jsonInProgress[i].taskStatus,
+								imgTitle: jsonInProgress[i].taskTitle,
+								imgURL: baseURL + jsonInProgress[i].taskImgFileName ,
+								imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby });
+							}
+							films.push({filmTopic:"在办任务栏",album2DImgs:album2DImgs2});
 
-					explore.show3D();
-					explore.play();
+							var album2DImgs3 = [];
+							for (var i = 0; i < jsonDone.length; i++) {
+								album2DImgs3.push({
+								objectUUID: scope.taskObject.baseUUID,
+								standType: 'iTopoType/standObject/task',
+								standUUID: jsonDone[i].taskUUID,
+								standStatus:jsonDone[i].taskStatus,
+								imgTitle: jsonDone[i].taskTitle,
+								imgURL: baseURL + jsonDone[i].taskImgFileName ,
+								imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby});
+							}
+							films.push({filmTopic:"已办任务栏",album2DImgs:album2DImgs3});
 
-					displayStand.container.dom.addEventListener( 'resize', function () {
-						explore.setSize( displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-					});
-					displayStand.closeBtn.dom.addEventListener('click', function() {
-						explore.stop();
-						explore.dispose();
-						explore = null;
-					});
+							var explore = new iTopoStandPlatform.Explore(title);
+							explore.show3D(background_outlook , baseModel, films, iTopoEarthSettings.standMaxRowItemCount);
+							explore.play();
 
-					var taskBriefcase = new iTopoTaskBriefcase( editor );
-					displayStand.container.dom.appendChild( taskBriefcase.dom );
-
+						})
+					})
 				})
 			})
-		});
-
+		})
 	},
 
 	getValue: function () {

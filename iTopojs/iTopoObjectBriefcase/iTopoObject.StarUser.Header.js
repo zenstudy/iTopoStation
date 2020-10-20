@@ -211,42 +211,6 @@ iTopoObjectStarUserHeader.prototype = {
 			this.thumbnailManager = null;
 		}
 	},
-	onClickOutlook: function() { // this对应一个item
-
-		var scope = this;
-		var originPosition = new THREE.Vector3();
-		var title = editor.strings.getKey('sidebar/StarUser/Header/Outlook');
-		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.starUUID, function(outlookData) {
-
-			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/Star', function(background_outlook) {
-
-				var originPosition = new THREE.Vector3(0, -iTopoEarthSettings.standMaxBoxH / 2, 0);
-				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, iTopoEarthSettings.standMaxBoxH,
-					function(baseModel) {
-
-						var album2DImgs = [];
-						var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/outlook/";
-						if (outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined) {
-							outlookData.album2DImgs.forEach(function(imgItem) {
-								album2DImgs.push({
-									imgURL: baseURL + imgItem.imgFilenName,
-									imgDesc: imgItem.imgDesc
-								});
-							});
-						}
-
-						var explore = new iTopoStandPlatform.Explore(title);
-						console.log(album2DImgs);
-						explore.show3D(background_outlook, baseModel, album2DImgs);
-						explore.play();
-
-					});
-
-			});
-
-		});
-
-	},
 
 	getValue: function() {
 
@@ -281,6 +245,41 @@ iTopoObjectStarUserHeader.prototype = {
 
 		this.taskObject = taskObject;
 	},
+	onClickOutlook: function() { // this对应一个item
+
+		var scope = this;
+		var originPosition = new THREE.Vector3(0, -iTopoEarthSettings.standMaxBoxH / 2, 0);
+		var title = editor.strings.getKey('sidebar/StarUser/Header/Outlook');
+		editor.stationDB.fetchiTopoBaseOutlook(scope.taskObject.starUUID, function(outlookData) {
+
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/Star', function(background_outlook) {
+
+				editor.resourceTracker.loadiTopoUser(scope.genderInput.getValue(), originPosition, iTopoEarthSettings.standMaxBoxH,
+					function(baseModel) {
+
+						var album2DImgs = [];
+						var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/outlook/";
+						if (outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined) {
+							outlookData.album2DImgs.forEach(function(imgItem) {
+								album2DImgs.push({
+									imgURL: baseURL + imgItem.imgFilenName,
+									imgDesc: imgItem.imgDesc
+								});
+							});
+						}
+
+						var explore = new iTopoStandPlatform.Explore(title);
+						var films = [];
+						films.push({filmTopic:title,album2DImgs:album2DImgs});
+						explore.show3D(background_outlook , baseModel, films, iTopoEarthSettings.standMaxRowItemCount);
+						explore.play();
+					});
+
+			});
+
+		});
+
+	},
 
 	updateOutlook: function(gender) {
 		var scope = this;
@@ -295,51 +294,67 @@ iTopoObjectStarUserHeader.prototype = {
 
 	onTaskCardsClassCSS3D: function() {
 		var scope = this;
-		editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "Todo", function(jsonTodo) {
-			editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "InProgress", function(jsonInProgress) {
-				editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "Done", function(jsonDone) {
+		var title = editor.strings.getKey('sidebar/StarUser/Header/iTopoTaskCards');
+		var originPosition = new THREE.Vector3(0, -iTopoEarthSettings.standMaxBoxH / 2, 0);
+		editor.resourceTracker.loadiTopoTasksLogo(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
 
-					var title = editor.strings.getKey('sidebar/skyCastle/Header/iTopoTaskCards');
-					var displayStand = new iTopoDisplayStand(title);
-					document.body.appendChild(displayStand.container.dom);
-					displayStand.container.setDisplay('block');
-					displayStand.container.setPosition('absolate');
+			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/Star', function(background_outlook) {
 
-					var explore = new iTopoTaskDashboard3D.Explore(displayStand);
-					explore.initialize();
+				editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "Todo", function(jsonTodo) {
+					editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "InProgress", function(jsonInProgress) {
+						editor.stationDB.fetchiTopoTasks(scope.taskObject.starUUID, "Done", function(jsonDone) {
 
-					for (var i = 0; i < jsonTodo.length; i++) {
-						explore.appendCardItem(jsonTodo[i]);
-					}
+							var films = [];
+							var baseURL = "./iTopoObjects/" + scope.taskObject.starUUID + "/tasks/";
 
-					for (var i = 0; i < jsonInProgress.length; i++) {
-						explore.appendCardItem(jsonInProgress[i]);
-					}
+							var album2DImgs1 = [];
+							for (var i = 0; i < jsonTodo.length; i++) {
+								album2DImgs1.push({
+								objectUUID: scope.taskObject.starUUID,
+								standType: 'iTopoType/standObject/task',
+								standUUID: jsonTodo[i].taskUUID,
+								standStatus:jsonTodo[i].taskStatus,
+								imgTitle: jsonTodo[i].taskTitle,
+								imgURL: baseURL + jsonTodo[i].taskImgFileName ,
+								imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby });
+							}
+							films.push({filmTopic:"待办任务栏",album2DImgs:album2DImgs1});
 
-					for (var i = 0; i < jsonDone.length; i++) {
-						explore.appendCardItem(jsonDone[i]);
-					}
+							var album2DImgs2 = [];
+							for (var i = 0; i < jsonInProgress.length; i++) {
+								album2DImgs2.push({
+								objectUUID: scope.taskObject.starUUID,
+								standType: 'iTopoType/standObject/task',
+								standUUID: jsonInProgress[i].taskUUID,
+								standStatus:jsonInProgress[i].taskStatus,
+								imgTitle: jsonInProgress[i].taskTitle,
+								imgURL: baseURL + jsonInProgress[i].taskImgFileName ,
+								imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby });
+							}
+							films.push({filmTopic:"在办任务栏",album2DImgs:album2DImgs2});
 
-					explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
+							var album2DImgs3 = [];
+							for (var i = 0; i < jsonDone.length; i++) {
+								album2DImgs3.push({
+								objectUUID: scope.taskObject.starUUID,
+								standType: 'iTopoType/standObject/task',
+								standUUID: jsonDone[i].taskUUID,
+								standStatus:jsonDone[i].taskStatus,
+								imgTitle: jsonDone[i].taskTitle,
+								imgURL: baseURL + jsonDone[i].taskImgFileName ,
+								imgDesc: '任务创建者:' + jsonDone[i].taskCreatedby});
+							}
+							films.push({filmTopic:"已办任务栏",album2DImgs:album2DImgs3});
 
-					explore.show3D();
-					explore.play();
+							var explore = new iTopoStandPlatform.Explore(title);
+							explore.show3D(background_outlook , baseModel, films, iTopoEarthSettings.standMaxRowItemCount);
+							explore.play();
 
-					displayStand.container.dom.addEventListener('resize', function() {
-						explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
-					});
-					displayStand.closeBtn.dom.addEventListener('click', function() {
-						explore.stop();
-						explore.dispose();
-						explore = null;
-					});
-
-					var taskBriefcase = new iTopoTaskBriefcase(editor);
-					displayStand.container.dom.appendChild(taskBriefcase.dom);
-
+						})
+					})
 				})
 			})
-		});
+		})
 
 	},
 	onAnnouncement: function(announcement) {
@@ -362,6 +377,7 @@ iTopoObjectStarUserHeader.prototype = {
 		displayStand.container.dom.addEventListener('resize', function() {
 			explore.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight());
 		});
+		
 		displayStand.closeBtn.dom.addEventListener('click', function() {
 
 		});

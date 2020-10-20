@@ -101,15 +101,19 @@ var iTopoStandPlatform = {
 
 			var camera = new THREE.PerspectiveCamera(50, this.width / this.height, 1, 10000);
 			camera.name = 'Camera';
-			camera.position.set(0, 0, 2000);
+			camera.position.set(0, 220, 1100);
 			camera.lookAt(0, 0, 0);
 			this.setCamera(camera);
 
 			controls = new iTopoOrbitControls(camera, renderer.domElement);
-			controls.minDistance = 1;
-			controls.maxDistance = 1200;
+
+			controls.enableDamping = true;  // 使动画循环使用时阻尼或自转 意思是否有惯性
 			controls.enablePan = true;
 			controls.enableZoom = true;
+			controls.minDistance = 0;
+			controls.maxDistance = 3000;
+			// controls.minZoom =0;
+			// controls.maxZoom =10;
 			renderer.domElement.removeAttribute("tabindex");
 
 			// var axes = new THREE.AxesHelper(1000);

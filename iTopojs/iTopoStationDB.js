@@ -254,7 +254,7 @@ iTopoStationDB.prototype = {
 		.then(response => response.json())
 		.then(json => {
 			fnAfterFetchedBaseObject(json);
-			console.log('iTopoStationAPI.fetchBaseObjectWithObjectUUID baseObject:' + JSON.stringify(json));
+//			console.log('iTopoStationAPI.fetchBaseObjectWithObjectUUID baseObject:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
@@ -444,7 +444,7 @@ iTopoStationDB.prototype = {
 		.then(response => response.json())
 		.then(json => {
 			fnTaskAdded();
-			console.log('fetch.post:' + JSON.stringify(json));
+			//console.log('fetch.post:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
@@ -463,7 +463,7 @@ iTopoStationDB.prototype = {
 		.then(response => response.json())
 		.then(json => {
 			fnTaskAdded();
-			console.log('fetch.post:' + JSON.stringify(json));
+			//console.log('fetch.post:' + JSON.stringify(json));
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })

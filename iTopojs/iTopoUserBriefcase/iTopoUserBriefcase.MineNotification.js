@@ -59,11 +59,14 @@ iTopoUserBriefcaseMineNotification.prototype = {
 
 			editor.stationDB.fetchiTopoTasks(editor.starUser.info.starUUID, "Todo", function(jsonTodo) {
 
-				jsonTodo.forEach(function(taskTodo) {
-					notificationPanel.addNotificationItem(taskTodo.taskTitle, taskTodo.taskDescription,
-						function() {
-							scope.onNotification(taskTodo);
-						});
+				jsonTodo.forEach(function(task2ReadNotification) {
+					if(task2ReadNotification.taskUUID){
+						notificationPanel.addNotificationItem(task2ReadNotification,
+							function() {
+								scope.onNotification(task2ReadNotification);
+							});
+					}
+
 				})
 			})
 
@@ -72,18 +75,17 @@ iTopoUserBriefcaseMineNotification.prototype = {
 		scope.taskObject = taskObject;
 	},
 
-	onNotification: function(taskForNotification) {
+	onNotification: function(task2ReadNotification) {
 		var scope = this;
 		var title = editor.strings.getKey('userBriefcase/MineNotification/Notification');
 
-		if (taskForNotification.taskType === "MessageToRead") {
+		if (task2ReadNotification.taskType === "MessageToRead") {
 
-			var notificationDlg = new iTopoDialogNotificationDetail(editor, title, taskForNotification, function fnOK() {
+			var notificationDlg = new iTopoDialogNotificationDetail(editor, title, task2ReadNotification, function fnOK() {
 
-				scope.notificationPanel.removeNotificationItem(taskForNotification.taskTitle);
-				editor.stationDB.updateTaskStatus(taskForNotification, "已办",
+				editor.stationDB.updateTaskStatus(task2ReadNotification, "已办",
 					function() {
-						//editor.stationDB.addNotification();//发送通过的信息，申请者的uuid
+						scope.notificationPanel.removeNotificationItem(task2ReadNotification);
 					});
 
 			});
@@ -215,7 +217,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 							taskStatus: '待办',
 							taskDescription: '加入志愿者团队-' + teamObjects[i].teamName + '的申请已经批准，欢迎您的加入。',
 						};
-						editor.stationDB.addTask(JSON.stringify(taskObject), function() {
+						editor.stationDB.addTask(taskObject, function() {
 							//	editor.stationDB.addNotification();
 						});
 
@@ -232,7 +234,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 								taskDescription: "",
 							};
 
-							editor.stationDB.addTask(JSON.stringify(taskObject), function() {
+							editor.stationDB.addTask(taskObject, function() {
 								//	editor.stationDB.addNotification();
 							});
 						}
@@ -267,7 +269,7 @@ iTopoUserBriefcaseMineNotification.prototype = {
 						};
 
 						console.log(taskObject);
-						editor.stationDB.addTask(JSON.stringify(taskObject), function() {
+						editor.stationDB.addTask(taskObject, function() {
 							//	editor.stationDB.addNotification();
 						});
 

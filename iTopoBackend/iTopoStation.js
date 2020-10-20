@@ -630,6 +630,7 @@ function getTaskStatusCollectionName(taskStatus){
 
 	return taskDBName;
 }
+
 app.post('/fetchiTopoTasks', function(req, res) {
 
 	var postData = "";
@@ -673,25 +674,21 @@ app.post('/addTask', function(req, res) {
 
 	req.addListener("end", function() {
 		var postTaskToAdd = JSON.parse(postData);
-		postTaskToAdd = JSON.parse(postTaskToAdd);
-
 		var taskDBName = getTaskStatusCollectionName(postTaskToAdd.taskStatus);
 
 		MongoClient.connect(url, { useUnifiedTopology: true	}, function(err, dbClient) {
 			if (err) throw err;
 			var dbo = dbClient.db(taskDBName);
-
 			//插入数据
 			dbo.collection(postTaskToAdd.objectUUID).insertOne(postTaskToAdd, function(err, result) {
 				if (err) throw err;
-				//console.log(result);
-				res.send(result);
+				console.log(result);
+				res.send(postTaskToAdd);
+				res.end();
 				dbClient.close();
 			});
 
 		});
-
-		res.end();
 	});
 });
 
@@ -705,41 +702,34 @@ app.post('/updateTaskStatus', function(req, res) {
 
 	req.addListener("end", function() {
 		var postTaskToUpdate = JSON.parse(postData);
-		postTaskToUpdate = JSON.parse(postTaskToUpdate);
+		//console.log(postTaskToUpdate);
 
-		var taskDBName1 = getTaskStatusCollectionName(postTaskToUpdate.taskObject.taskObject);
-		var taskDBName2 = getTaskStatusCollectionName(postTaskToUpdate.latestTaskStatus);
-
+		var taskDBName1 = getTaskStatusCollectionName(postTaskToUpdate.taskObject.taskStatus);
 		MongoClient.connect(url, { useUnifiedTopology: true	}, function(err, dbClient) {
 			if (err) throw err;
 
 			var dbo = dbClient.db(taskDBName1);
-			var whereStr = { "baseUUID": baseUUID }; // 查询条件
-			dbo.collection(postTaskToUpdate.objectUUID).remove(whereStr, function(err, cursor) {
+			var whereStr = { "taskUUID": postTaskToUpdate.taskObject.taskUUID }; // 查询条件
+			dbo.collection(postTaskToUpdate.taskObject.objectUUID).deleteOne(whereStr, function(err, result) {
 
-				cursor.each(function(err, result) {
+				if (err) throw err;
 
+				var postTaskToUpdate2 = postTaskToUpdate.taskObject;
+				postTaskToUpdate2.taskStatus = postTaskToUpdate.latestTaskStatus;
+				var taskDBName2 = getTaskStatusCollectionName(postTaskToUpdate.latestTaskStatus);
+				var dbo2 = dbClient.db(taskDBName2);
+				dbo2.collection(postTaskToUpdate2.objectUUID).update(whereStr, postTaskToUpdate2,true,function(err, result) {
+					//console.log(err);
 					if (err) throw err;
-					var postTaskToUpdate2 = result;
-					postTaskToUpdate2.taskStatus = postTaskToUpdate.latestTaskStatus;
-					var dbo2 = dbClient.db(taskDBName2);
-					dbo2.collection(postTaskToUpdate.objectUUID).insertOne(postTaskToUpdate, function(err, result) {
-						if (err) throw err;
-						console.log(result);
-						dbClient.close();
-					});
 
 					dbClient.close();
-					return;
-
+					res.send(result);
+					res.end();
 				});
-			});
-
-		});
-
-		res.end();
-	});
-});
+			})
+		})
+	})
+})
 
 
 app.post('/updateTask2', function(req, res) {

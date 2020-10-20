@@ -1,5 +1,5 @@
 import * as THREE from '../../build/three.module.js';
-import { MeshLine,MeshLineMaterial } from './THREE.MeshLine.js';
+import { MeshLine,MeshLineMaterial } from './iTopo3dpart/THREE.MeshLine.js';
 import { iTopoEarthSettings } from './iTopoEarthSettings.js';
 
 export var iTopoEarthCache = iTopoEarthCache || {};

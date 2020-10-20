@@ -1072,7 +1072,7 @@ iTopoEarthBuilder.createRollFilmCollection = function( films, ptModelOrg, filmCo
 			cellTailBGColor:'#07a0e1',
 		};
 		var rowSpaceHeight = standCellSetting.cellHeaderH+standCellSetting.cellImgH+standCellSetting.cellTailH + standCellSetting.cellGapV;
-
+		console.log(films[iTopic].filmTopic);
 		let textLengthTopic = films[iTopic].filmTopic.length*2;
 		let textureTextTopic = new THREE.CanvasTexture(iTopoEarthBuilder.createHorCanvasFont(textLengthTopic * fontSize * average,
 			fontSize * average, films[iTopic].filmTopic, iTopoEarthSettings.mapTitleColor, standCellSetting.topicBGColor));
@@ -1094,7 +1094,8 @@ iTopoEarthBuilder.createRollFilmCollection = function( films, ptModelOrg, filmCo
 			+ standCellSetting.topicAreaH/2-standCellSetting.cellGapV/2,ptCollectionCenter.z);
 		albumMeshObjects.push(topicHeaderCylinderMesh);
 
-		var geometryTextHeader = new THREE.BoxGeometry(standCellSetting.cellImgW,standCellSetting.cellHeaderH, standCellSetting.cellDepth, standCellSetting.segmentsCount, 1);
+		var geometryTextHeader = new THREE.BoxGeometry(standCellSetting.cellImgW,
+			standCellSetting.cellHeaderH, standCellSetting.cellDepth, standCellSetting.segmentsCount, 1);
 		//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
 		geometryTextHeader.vertices.forEach(function(item) {
 			item.z += Math.sqrt(standCellSetting.radius * standCellSetting.radius - item.x * item.x) -
@@ -1109,7 +1110,8 @@ iTopoEarthBuilder.createRollFilmCollection = function( films, ptModelOrg, filmCo
 				standCellSetting.radius;
 		});
 
-		var geometryTextTail = new THREE.BoxGeometry(standCellSetting.cellImgW,standCellSetting.cellTailH, standCellSetting.cellDepth, standCellSetting.segmentsCount, 1);
+		var geometryTextTail = new THREE.BoxGeometry(standCellSetting.cellImgW,
+			standCellSetting.cellTailH, standCellSetting.cellDepth, standCellSetting.segmentsCount, 1);
 		//  需要长：280，高300 平分6分，60度，中间有间隙取50度，通过公式，为L=n× π× r/180，L=α× r。其中n是圆心角度数，r是半径，L是圆心角弧长得 r=320,n=50,弧度=280，
 		geometryTextTail.vertices.forEach(function(item) {
 			item.z += Math.sqrt(standCellSetting.radius * standCellSetting.radius - item.x * item.x) -

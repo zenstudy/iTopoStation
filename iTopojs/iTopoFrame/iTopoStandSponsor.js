@@ -38,32 +38,42 @@ var iTopoStandSponsor = {
 		var onUpPosition = new THREE.Vector2();
 
 
+		/* 灯光 */
+		function initLight() {
+			scene.add(new THREE.AmbientLight(0x0c0c0c));
+
+			let spotLight = new THREE.SpotLight(0xffffff);
+			spotLight.position.set(-1800, -1800, -1800);
+
+			let spotLight2 = new THREE.SpotLight(0xffffff);
+			spotLight2.position.set(1800, 1800, 1800);
+
+			scene.add(spotLight);
+			scene.add(spotLight2);
+
+			const skyColor = 0xB1E1FF;  // light blue
+			const groundColor = 0xB97A20;  // brownish orange
+			const intensity = 1;
+			const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+			scene.add(light);
+		}
+
 		this.show3D = function (background_texture, films ) {
 
 			scene = new THREE.Scene();
 			scene.background = background_texture;
 			this.setScene(scene);
-
-			scene.add(new THREE.AmbientLight(0x0c0c0c));
-
-			let spotLight = new THREE.SpotLight(0xffffff);
-			spotLight.position.set(-400, -400, -400);
-
-			let spotLight2 = new THREE.SpotLight(0xffffff);
-			spotLight2.position.set(400, 800, 400);
-
-			scene.add(spotLight);
-			scene.add(spotLight2);
+			initLight();
 
 			var camera = new THREE.PerspectiveCamera(50, this.width/this.height, 1, 5000);
 			camera.name = 'Camera';
-			camera.position.set( 0, 0, 2000 );
+			camera.position.set( 0, 0, 3000 );
 			camera.lookAt(0,0,0);
 			this.setCamera(camera);
 
 			controls = new iTopoOrbitControls(camera, renderer.domElement);
 			controls.minDistance = 1;
-			controls.maxDistance = 888;
+			controls.maxDistance =1100;
 			controls.enablePan = true;
 			controls.enableZoom = true;
 			renderer.domElement.removeAttribute("tabindex");
@@ -155,7 +165,7 @@ var iTopoStandSponsor = {
 			//console.log('animate..........');
 			//console.log(controls.noRotate+ ',' + controls.noZoom + ',' + controls.noPan);
 			controls.update();
-			scope.scene.rotation.y += 0.001;
+			scope.scene.rotation.y -= 0.001;
 			renderer.setViewport( 0, 0, renderer.domElement.offsetWidth, renderer.domElement.offsetHeight );
 			renderer.render( scope.scene, camera );
 			prevTime = time;

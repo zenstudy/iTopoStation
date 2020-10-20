@@ -61,7 +61,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/skyCastle/Header' : '共享地球协作中心',
 			'sidebar/skyCastle/Header/Outlook' : '协作中心概貌',
-			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务协作空间',
+			'sidebar/skyCastle/Header/iTopoTaskCards' : '任务协作墙',
 			'sidebar/SkyCastle/Header/Title': '名称',
 			'sidebar/SkyCastle/Header/castleUUID': '协作中心UUID',
 			'sidebar/skyCastle/Header/announcement' : '公告',
@@ -77,7 +77,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/LunarMoon/Header':'月球门户',
 			'sidebar/LunarMoon/Header/Outlook':'月球概貌',
-			'sidebar/LunarMoon/Header/iTopoTaskCards':'任务协作空间',
+			'sidebar/LunarMoon/Header/iTopoTaskCards':'任务协作墙',
 			'sidebar/LunarMoon/Header/lunarMoonUUID': '月球UUID',
 			'sidebar/LunarMoon/Header/Title': '名称',
 			'sidebar/LunarMoon/Parts': '组成',
@@ -85,7 +85,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/InnerEarth/Header':'地心门户',
 			'sidebar/InnerEarth/Header/Outlook':'地心概貌',
-			'sidebar/InnerEarth/Header/iTopoTaskCards':'任务协作空间',
+			'sidebar/InnerEarth/Header/iTopoTaskCards':'任务协作墙',
 			'sidebar/InnerEarth/Header/innerEarthUUID':'地心UUID',
 			'sidebar/InnerEarth/Header/Title':'名称',
 
@@ -93,8 +93,8 @@ function iTopoStrings( config ) {
 			'sidebar/InnerEarth/Life':'生活',
 
 			'sidebar/StarUser/Header': '星民信息',
-			'sidebar/StarUser/Header/Outlook': '用户模型空间',
-			'sidebar/StarUser/Header/iTopoTaskCards': '任务协作空间',
+			'sidebar/StarUser/Header/Outlook': '自我展示空间',
+			'sidebar/StarUser/Header/iTopoTaskCards': '任务协作墙',
 			'sidebar/starUser/Header/starUUID':'starUUID',
 			'sidebar/starUser/Header/gender':'性别',
 			'sidebar/starUser/Header/cellPhone':'手机',
@@ -108,7 +108,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/EcologicalFarm/Header' : '生态基地',
 			'sidebar/EcologicalFarm/Header/siteOutook': '农场概貌',
-			'sidebar/EcologicalFarm/Header/iTopoTaskCards': '任务协作空间',
+			'sidebar/EcologicalFarm/Header/iTopoTaskCards': '任务协作协作墙',
 			'sidebar/EcologicalFarm/Header/newUUID':'换UUID',
 			'sidebar/EcologicalFarm/Header/baseUUID':'基地UUID',
 			'sidebar/EcologicalFarm/Header/taskType' : '类型',
@@ -125,7 +125,7 @@ function iTopoStrings( config ) {
 
 			'sidebar/SharedCanteen/Header':'共享食堂',
 			'sidebar/SharedCanteen/Header/outook': '食堂外观',
-			'sidebar/SharedCanteen/Header/iTopoTaskCards': '任务协作空间',
+			'sidebar/SharedCanteen/Header/iTopoTaskCards': '任务协作墙',
 			'sidebar/SharedCanteen/Header/newUUID':'换UUID',
 			'sidebar/SharedCanteen/Header/baseUUID':'基地UUID',
 			'sidebar/SharedCanteen/Header/taskType' : '类型',
@@ -179,7 +179,10 @@ function iTopoStrings( config ) {
 
 			'iTopoDialog/ApplyToJoining/joiningReason': '描述一下申请加入的原因',
 
-			'iTopoDialog/Sponsor/applyToJoining': '申请加入',
+			'iTopoDialog/Sponsor/SponsorEarthSystem': '赞助共享地球',
+			'iTopoDialog/Sponsor/WechatReward': '微信打赏',
+			'iTopoDialog/Sponsor/AddWXFriend': '添加微信好友',
+			'iTopoDialog/Sponsor/LeaveAMessage' :'给网站管理员留言',
 
 			'iTopoDialog/NotificationDetail/MarkAsRead': '标记成已读',
 

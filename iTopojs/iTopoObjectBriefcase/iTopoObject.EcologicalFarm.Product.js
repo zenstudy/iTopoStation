@@ -1,10 +1,9 @@
 import { UIElement, UISpan, UIRow, UIPanel, UIBreak, UIText } from '../iTopoUI.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoProductManager } from '../iTopoFrame/iTopoProductManager.js';
-import { iTopoArticleManager } from '../iTopoFrame/iTopoArticleManager.js';
-import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
 import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
+import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 
 function iTopoObjectEcologicalFarmProduct(editor) {
 	var scope = this;
@@ -144,20 +143,26 @@ iTopoObjectEcologicalFarmProduct.prototype = {
 	onSiteProductClass3D: function(jsonProductInfo) { // this对应一个item
 		var scope = this;
 		var originPosition = new THREE.Vector3();
-		editor.resourceTracker.loadProductModel(jsonProductInfo.productModelURL,originPosition, 300, function(baseModel){
+		editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook) {
+			editor.resourceTracker.loadProductModel(jsonProductInfo.productModelURL,originPosition, 300, function(baseModel){
 
-				var album2DImgs = [];
-				var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/Products/" + jsonProductInfo.productUUID + "/";
-				jsonProductInfo.album2DImgs.forEach(function(imgItem){
-					album2DImgs.push({ imgURL: baseURL + imgItem.productImgFileName , imgDesc: imgItem.productImgDesc });
-				});
+					var album2DImgs = [];
+					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/Products/" + jsonProductInfo.productUUID + "/";
+					jsonProductInfo.album2DImgs.forEach(function(imgItem){
+						album2DImgs.push({
+							imgTitle: jsonProductInfo.productName ,
+							imgURL: baseURL + imgItem.productImgFileName ,
+							imgDesc: imgItem.productImgDesc });
+					});
 
-				var explore = new iTopoStandPlatform.Explore(jsonProductInfo.productName);
-				console.log(album2DImgs);
-				explore.show3D(null , baseModel, album2DImgs);
-				explore.play();
+					var explore = new iTopoStandPlatform.Explore(jsonProductInfo.productName);
+					var films = [];
+					films.push({filmTopic:"农场特产",album2DImgs:album2DImgs});
+					explore.show3D(background_outlook , baseModel, films, iTopoEarthSettings.standMaxRowItemCount);
+					explore.play();
 
-		}) ;
+			})
+		})
 	}
 }
 

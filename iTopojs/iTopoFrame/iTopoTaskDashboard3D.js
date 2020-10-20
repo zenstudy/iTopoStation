@@ -188,7 +188,7 @@ var iTopoTaskDashboard3D = {
 
 				scope.setSize(displayStand.container.dom.offsetWidth, displayStand.contexHeight()-500);
 
-				editor.stationDB.addTask(JSON.stringify(taskObject), function(){
+				editor.stationDB.addTask(taskObject, function(){
 					editor.signals.objectInStandPlatformSelected.dispatch(scope.objects[0]);
 				});
 

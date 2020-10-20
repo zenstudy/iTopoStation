@@ -22,32 +22,40 @@ iTopoNotificationManager.prototype = {
 		this.itemsPanel.append(this.itemsUL);
 	},
 
-	addNotificationItem : function (itemTitle, itemSummary, itemfn) {
+	addNotificationItem : function (task2ReadNotification, itemfn) {
+
+		if(!task2ReadNotification.taskUUID)
+		return;
+
 		// make a list item
 		var liElement = document.createElement('li');
+		liElement.name = task2ReadNotification.taskUUID;
+
+//		console.log(task2ReadNotification);
+//		alert(liElement.name);
 
 		var h3Element = document.createElement('h3');
-		h3Element.innerText = itemTitle;
+		h3Element.innerText = task2ReadNotification.taskTitle;
 		liElement.appendChild(h3Element);
 
 		var pElement  = document.createElement('p');
-		pElement.innerText = itemSummary;
+		pElement.innerText = task2ReadNotification.taskDescription;
 		liElement.appendChild(pElement);
 
 		liElement.addEventListener('click',itemfn );
 		this.itemsUL.appendChild(liElement);
 	},
 
-	removeNotificationItem : function (itemTitle) {
+	removeNotificationItem : function (task2ReadNotification) {
 		var scope = this;
 		var Lis = this.itemsUL.getElementsByTagName('li');
-		console.log(Lis);
+
 		for(var i = 0; i < Lis.length; i++){
-			var h3Element = Lis[i].getElementsByTagName("h3")[0];
-			console.log(h3Element);
-			console.log(itemTitle);
-			if(h3Element.innerText === itemTitle){
+			var liElement = Lis[i];
+
+			if(liElement.name === task2ReadNotification.taskUUID){
 				this.itemsUL.removeChild(Lis[i]);
+//				alert('remove success');
 				return;
 			}
 		}

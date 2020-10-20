@@ -1,3 +1,34 @@
+在iTopoUserBriefcaseMineNotification删除Item时用ID删除，因为title重复现象明显
+
+1.赞助共享地球
+a.对话框的设计， 开发一个对赞助商轮回的动画，类似央视新闻上的那个滚动广告条，根据赞助的总额度排序来进行轮播。
+
+2. 用户注册功能完善：
+a. 给心愿联盟合作，因为任务协作空间与心愿联盟是一回事儿，了解心愿联盟
+b. 给刚注册的用户发一个欢迎的信息
+c. 用户注册与角色控制,根据身份开启自己的功能
+d. 给每个对象增加一个2D logo的展示位置，希望放到外貌模型中去，与二维码一同展示。
+e. 任务墙，产品墙
+
+3.注册基地和食堂的功能
+a.关注基地和其它用户的功能，并添加到我的订阅，且同时记录到对方我的粉丝当中。
+b.基地的站外分享功能，先支持微信，后支持国外的facebook和twiter.（当下仅支持微信ID)，考虑在示意模型上绘制多种功能按钮。
+
+4.首页
+a. 首页增加弹幕
+b. 首面用户放在一个平面上
+
+5.性能改良
+a.三维在定位对象功能的完善
+b.THREEJS 深度清除内存，非简单dispose，踩坑记录
+https://blog.csdn.net/qq_41488724/article/details/107367159
+
+6.侧栏增加热点管理功能。
+
+7.搜索功能
+
+8. loader统一的问题
+===========
 mongoDB= http://127.0.0.1:27017/
 MongoDB下载地址：http://dl.mongodb.org/dl/win32/x86_64
 win32/mongodb-win32-x86_64-2012plus-4.2.10.zip
@@ -7,78 +38,35 @@ https://blog.csdn.net/qq_32340877/article/details/79142129?ops_request_misc=%257
 
 0.记住：核心思想是打造全网的入口，入口是一个功能汇集处，是人们使用频率最多的地方。这个入口是人们在互联网上的家，因为家可以存放东西，也可以用来做自我展示。
 
-1. 给刚注册的用户发一个欢迎的信息
-
-2. 给心愿联盟合作，因为任务协作空间与心愿联盟是一回事儿，了解心愿联盟
-
-2.threeJS后处理-星空
-https://blog.csdn.net/weixin_39452320/article/details/85107882
-可视化-threejs文字滚动效果
-https://blog.csdn.net/qq_29814417/article/details/103289008?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-2.channel_param
-
-3.THREEJS 深度清除内存，非简单dispose，踩坑记录
-https://blog.csdn.net/qq_41488724/article/details/107367159
-
 ===========
-0. 把消息功能改造成邮箱功能即（邮箱=消息），将来再把邮箱中的邮件改造成可转发的任务功能即（邮件=任务），这样做的好处在于可以相互转发任务。
+1.增加一带一路相关信息的建设
 
-1. 建立面向对象的数据库，同步时以整体进行同步，而非个体，把整个模型当做一个模型来考虑，在协作时，将局部以整体的方式进行同步。
+2. 把消息功能改造成邮箱功能即（邮箱=消息），将来再把邮箱中的邮件改造成可转发的任务功能即（邮件=任务），这样做的好处在于可以相互转发任务。
 
-2. 用户注册与角色控制,根据身份开启自己的功能
+3. 建立面向对象的数据库，同步时以整体进行同步，而非个体，把整个模型当做一个模型来考虑，在协作时，将局部以整体的方式进行同步。
 
-3. loader统一的问题
+4.共享地球系统开发资金问题的解决方法，开源钱包，开源帐户。
 
-4.给每个对象增加一个2D logo的展示位置，希望放到外貌模型中去，与二维码一同展示。
+5.考虑是否为每个uuid增加一个uuid.iTopo.json 文件, 将每一个对象当成一个project来做。
 
-5.赞助对话框的设计
-
-6.三维在定位对象功能的完善
-
-7.首页增加弹幕
-
-8.共享地球系统开发资金问题的解决方法，开源钱包，开源帐户。
-
-9.考虑是否为每个uuid增加一个uuid.iTopo.json 文件, 将每一个对象当成一个project来做。
-
-10.任务卡logo
-希望公共任务空间变成一棵树的形式，供大家领取相应的任务，上传任务和分享任务的功能.
-为服务中心开发一个事务处理模型，
-
-11.产品卡
-上传2D商品的功能,站外分享商品的功能
-
-12.文章管理
-
-13.模型空间（应用空间）
+6.模型空间（应用空间）
 区块链应用安装到用户空间的功能，使用不同的区块链存储共享地球的数据存储，区块链项目开辟他们的空间给共享地球使用，以换取它们的影响力。
 
-14.各类民间机构和公司的入驻问题
+7.各类民间机构和公司的入驻问题
 a.UFO联合会等民间机构入驻的功能。（通过点亮功能入驻）。
 b.酒店入驻的功能，实现类似贝壳那样的在线看房功能。
 c.地球地理信息录入功能，分公共数据和私有数据两部分。
 
-15.侧栏增加热点管理功能。
+8.开发一个节律控制器，类似跟随节气的功能，做到与时俱进。
 
-16.搜索功能
+9.何霞，中国天文博物院（文物考古），文化中国（梁主席），（北斗手机的负责人，成立中国天文研究院，他的儿子，动物保护联盟，他们已经有自己的网站）
 
-17.基地的站外分享功能，先支持微信，后支持国外的facebook和twiter.（当下仅支持微信ID)，考虑在示意模型上绘制多种功能按钮。
-
-18.关注基地和其它用户的功能，并添加到我的订阅，且同时记录到对方我的粉丝当中。
-
-19.开发一个节律控制器，类似跟随节气的功能，做到与时俱进。
-
-20.开发一个对赞助商轮回的动画，类似央视新闻上的那个滚动广告条，根据赞助的总额度排序来进行轮播。
-
-21.增加一带一路相关信息的建设
-
-22.何霞，中国天文博物院（文物考古），文化中国（梁主席），（北斗手机的负责人，成立中国天文研究院，他的儿子，动物保护联盟，他们已经有自己的网站）
-
-23.考虑将用户制作成照片墙
-https://blog.csdn.net/hangGe0111/article/details/88870776?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param
 ===============
+用户制作成照片墙
+https://blog.csdn.net/hangGe0111/article/details/88870776?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param
+
 全景图转换为天空盒图
 https://blog.csdn.net/juebai123/article/details/79450896?utm_medium=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-27.nonecase&depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-blogcommendfrombaidu-27.nonecas
-
 
 Mongodb亿级数据量的性能测试
 https://blog.csdn.net/zrjdds/article/details/52159936
@@ -88,7 +76,6 @@ iTopoConfig\iTopoStorage\iTopoLoader的整合
 
 可视化地球数据展示-7W8数据量城市数据-1千+国家数据JSON，包含经纬度，国家中文名称，英文名称
 https://download.csdn.net/download/qq_29814417/11866679
-
 ===================
 //controls.update() must be called after any manual changes to the camera's transform
 camera.position.set( 0, 20, 100 );
@@ -99,6 +86,14 @@ geometry.dispose();
 material.dispose();
 texture.dispose();
 各个manager管理了载入对象的释放问题。
+
+dragon/threejs教程
+https://teakki.com/space/58a19327f0d40775548c6bd6
+
+threeJS后处理-星空
+https://blog.csdn.net/weixin_39452320/article/details/85107882
+可视化-threejs文字滚动效果
+https://blog.csdn.net/qq_29814417/article/details/103289008?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-2.channel_param
 
 学习codepen的UI布局
 webglstudy学习网，有很多案例
@@ -298,14 +293,10 @@ http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-game-check-animations.
 艺术字
 http://127.0.0.1:8848/threejsfundamentals/threejs/threejs-primitives-text.html
 
-
-
 3d实体对象
 http://127.0.0.1:8848/three.js/examples/webgl_loader_3ds.html
 推土机
 http://127.0.0.1:8848/three.js/examples/webgl_loader_3mf_materials.html
-
-
 
 3d人物
 http://127.0.0.1:8848/three.js/examples/webgl_loader_collada.html

@@ -82,7 +82,7 @@ iTopoThumbnailManager.prototype = {
 		this.thumbnailItemScenes.forEach(function(scene) {
 			//var scene = this.thumbnailItemScenes[0];
 			// so something moves
-			scene.children[0].rotation.y = Date.now() * 0.0001;
+			scene.children[0].rotation.y -= 0.001;
 
 			// get the element that is a place holder for where we want to
 			// draw the scene
@@ -151,7 +151,7 @@ iTopoThumbnailManager.prototype = {
 		this.itemsDom.appendChild(elementListItem);
 
 		var camera = new THREE.PerspectiveCamera(61.8, 1.0, 1, 10);
-		camera.position.z = 2;
+		camera.position.z = 2.2;
 		scene.userData.camera = camera;
 
 		var controls = new OrbitControls(scene.userData.camera, scene.userData.element);

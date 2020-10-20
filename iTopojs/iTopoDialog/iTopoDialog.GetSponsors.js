@@ -1,4 +1,4 @@
-import { UIElement, UISpan, UIPanel, UIText, UIRow, UITextArea, UIButton } from '../iTopoUI.js';
+import { UIElement, UISpan, UIPanel, UIText, UIRow, UITextArea, UIButton, UIDiv } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
 
 function iTopoDialogGetSponsors( editor, dispalyContext, fnOK ) {
@@ -46,27 +46,63 @@ function iTopoDialogGetSponsors( editor, dispalyContext, fnOK ) {
 	scope.closeBtn = closeBtn;
 	scope.header = header;
 
+
+
 	var dlgBody = new UIPanel();
 	dlgBody.setPadding( '10px' );
 	dlgBody.setBackgroundColor( '#eeeeee' );
 
 	scope.container.add( dlgBody );
 	{
-		var lightWishTitleRow = new UIRow();
-		lightWishTitleRow.add( new UIText( strings.getKey( 'iTopoDialog/ApplyToJoining/joiningReason' ) ) );
-		dlgBody.add( lightWishTitleRow );
+		var elementListItem = document.createElement('div');
+		elementListItem.className = 'product-item';
 
-		var lightWishTextAreaRow = new UIRow();
-		var lightWishValueUI = new UITextArea().setHeight( '120px' ).setFontSize( '12px' );
-		lightWishValueUI.dom.cols = 40;
-		lightWishValueUI.setValue( 'apply...' );
-		lightWishValueUI.onKeyUp( function () {
+		var sceneElement=document.createElement("img");
+		sceneElement.src = "./iTopoObjects/00_iTopoEarth/img/pay2QRCode.jpg";
+		elementListItem.appendChild(sceneElement);
+
+		var descriptionElement = document.createElement('div');
+		descriptionElement.innerText = strings.getKey('iTopoDialog/Sponsor/WechatReward');
+		elementListItem.appendChild(descriptionElement);
+
+		dlgBody.dom.appendChild(elementListItem);
+	}
+
+	{
+		var elementListItem = document.createElement('div');
+		elementListItem.className = 'product-item';
+
+		var sceneElement=document.createElement("img");
+		sceneElement.src = "./iTopoObjects/00_iTopoEarth/img/ID2QRCode.jpg";
+		elementListItem.appendChild(sceneElement);
+
+		var descriptionElement = document.createElement('div');
+		descriptionElement.innerText = strings.getKey('iTopoDialog/Sponsor/AddWXFriend');
+		elementListItem.appendChild(descriptionElement);
+
+		dlgBody.dom.appendChild(elementListItem);
+	}
+
+	{
+		var righDiv = new UIDiv();
+		righDiv.setPadding('10px' );
+
+		var labelRow = new UIRow();
+		labelRow.add( new UIText( strings.getKey( 'iTopoDialog/Sponsor/LeaveAMessage' ) ) );
+		righDiv.add( labelRow );
+
+		var sponsorWordsRow = new UIRow();
+		var sponsorWordsUI = new UITextArea().setHeight( '120px' ).setFontSize( '12px' );
+		sponsorWordsUI.dom.cols = 78;
+		sponsorWordsUI.setValue( '我想成为共享地球的赞助单位,我的手机是..., 我的微信ID是...' );
+		sponsorWordsUI.onKeyUp( function () {
 			//baseInfo.lightWish = this.getValue();
 
 		} );
-		lightWishTextAreaRow.add( lightWishValueUI );
+		sponsorWordsRow.add( sponsorWordsUI );
+		righDiv.add( sponsorWordsRow );
 
-		dlgBody.add( lightWishTextAreaRow );
+		dlgBody.add(righDiv);
 	}
 
 	var bottomPanel = new UIPanel();
@@ -75,10 +111,10 @@ function iTopoDialogGetSponsors( editor, dispalyContext, fnOK ) {
 	container.add( bottomPanel );
 	{
 		var lightEarth = new UIButton( strings.getKey( 'iTopoDialog/ok' ) );
-		lightEarth.setLeft( '170px' );
+		lightEarth.setLeft( '380px' );
 		lightEarth.onClick( function () {
 
-			fnOK(lightWishValueUI.getValue());
+			fnOK(sponsorWordsUI.getValue());
 			document.body.removeChild(document.getElementById("BluePrint"));
 
 		} );
@@ -87,7 +123,7 @@ function iTopoDialogGetSponsors( editor, dispalyContext, fnOK ) {
 
 	{
 		var cancelBtn = new UIButton( strings.getKey( 'iTopoDialog/cancel' ) );
-		cancelBtn.setLeft( '180px' );
+		cancelBtn.setLeft( '400px' );
 		cancelBtn.onClick( function () {
 			document.body.removeChild(document.getElementById("BluePrint"));
 		} );

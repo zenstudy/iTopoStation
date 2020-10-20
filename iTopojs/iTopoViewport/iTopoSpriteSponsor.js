@@ -32,7 +32,7 @@ var iTopoSpriteSponsor = function ( editor ) {
 	descriptionElement.innerText = strings.getKey('iTopoSpriteSponsor/becomeSponsor');
 	elementListItem.appendChild(descriptionElement);
 
-	elementListItem.addEventListener('click', function(){
+	descriptionElement.addEventListener('click', function(){
 		scope.onClickSponsor();
 	} );
 	container.dom.appendChild(elementListItem);
@@ -49,8 +49,9 @@ var iTopoSpriteSponsor = function ( editor ) {
 					tmpSponsors.push({
 						sponsorUnit: 'starUser',
 						objectUUID : teamMemberUUID,
+						imgTitle:'starUser',
 						imgURL: imgURL,
-						imgDesc: teamMemberUUID,
+						imgDesc: 'starUser',
 						});
 					tmpArray.push(teamMemberUUID);
 				}
@@ -62,8 +63,9 @@ var iTopoSpriteSponsor = function ( editor ) {
 					tmpSponsors.push( {
 						sponsorUnit: 'team',
 						objectUUID : sponsoredOrganizationUUID,
+						imgTitle:'team',
 						imgURL: imgURL,
-						imgDesc: sponsoredOrganizationUUID,
+						imgDesc: 'team',
 						});
 					tmpArray.push(sponsoredOrganizationUUID);
 				}
@@ -72,7 +74,7 @@ var iTopoSpriteSponsor = function ( editor ) {
 
 		var explore = new iTopoStandSponsor.Explore(sceneElement);
 		var films=[];
-		films.push({filmTopic:"sponsor",album2DImgs:tmpSponsors});
+		films.push({filmTopic:"赞助单位",album2DImgs:tmpSponsors});
 		explore.show3D(null , films );
 		explore.play();
 
@@ -109,9 +111,27 @@ iTopoSpriteSponsor.prototype = {
 	},
 
 	onClickSponsor: function() {
+		var strings = editor.strings;
+		var title = editor.strings.getKey('iTopoDialog/Sponsor/SponsorEarthSystem');
+		var sponsorsDlg = new iTopoDialogGetSponsors(editor,title, function fnOK(msgFromSponsor){
 
-		var title = editor.strings.getKey('iTopoDialog/Sponsor/applyToJoining');
-		var sponsorsDlg = new iTopoDialogGetSponsors(editor,title);
+			var taskObject = {
+				objectUUID : '8E59BDD4-25EE-4E90-A612-4537AFAA80FF',
+				taskUUID:THREE.MathUtils.generateUUID(),
+				taskType:"MessageToRead",
+				generatedFromTaskUUID: "",
+				taskTitle:'有用户想赞助共享地球',
+				taskCreatedby: strings.getKey('iTopoSpriteSponsor/becomeSponsor')+'对话框',
+				taskStatus:'待办',
+				taskDescription: msgFromSponsor,
+			};
+
+			editor.stationDB.addTask(taskObject, function(){
+		
+			});
+
+		});
+
 		document.body.appendChild(sponsorsDlg.container.dom);
 		sponsorsDlg.container.setDisplay('block');
 		sponsorsDlg.container.setPosition('absolate');

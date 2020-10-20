@@ -77,9 +77,7 @@ function iTopoDialogNotificationDetail( editor, dispalyContext, notificationToRe
 		var lightEarth = new UIButton( strings.getKey( 'iTopoDialog/NotificationDetail/MarkAsRead' ) );
 		lightEarth.setLeft( '140px' );
 		lightEarth.onClick( function () {
-			editor.stationDB.updateTaskStatus(JSON.stringify(notificationToRead),"已办", function(){
-				fnOK();
-			});
+			fnOK();
 			document.body.removeChild(document.getElementById("BluePrint"));
 		} );
 		bottomPanel.add( lightEarth );

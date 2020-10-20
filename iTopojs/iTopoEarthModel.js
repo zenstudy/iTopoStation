@@ -2,7 +2,7 @@ import * as THREE from '../../build/three.module.js';
 import {TWEEN} from '../../examples/jsm/libs/tween.module.min.js';
 import {BufferGeometryUtils} from '../../examples/jsm/utils/BufferGeometryUtils.js';
 import {COUNTRIES} from './countries.js';
-import {MeshLine,MeshLineMaterial} from './THREE.MeshLine.js';
+import {MeshLine,MeshLineMaterial} from './iTopo3dpart/THREE.MeshLine.js';
 import {Editor} from '../js/Editor.js';
 import {AddiTopoObjCommand} from './commands/AddiTopoObjCommand.js';
 import {AddiTopoObjArrayCommand} from './commands/AddiTopoObjArrayCommand.js';
