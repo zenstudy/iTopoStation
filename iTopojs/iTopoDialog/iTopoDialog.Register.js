@@ -59,9 +59,9 @@ function iTopoDialogRegister( editor, menubar ) {
 	container.add( buttonPanel );
 
 	{
-		var lightStars = new UIButton( strings.getKey( 'iTopoDialog/register/register' ) );
-		lightStars.setMarginRight( '20px' );
-		lightStars.onClick( function () {
+		var registerButton = new UIButton( strings.getKey( 'iTopoDialog/register/register' ) );
+		registerButton.setMarginRight( '20px' );
+		registerButton.onClick( function () {
 
 			var registeredStarUser = new iTopoStarUser();
 			registeredStarUser.info.userNickname = inputUserName.getValue();
@@ -78,14 +78,31 @@ function iTopoDialogRegister( editor, menubar ) {
 				editor.scene.rotation.y = 0;
 				editor.sceneHelpers.rotation.y = 0;
 
+				var taskObject = {
+					objectUUID : registeredStarUser.info.starUUID,
+					taskUUID:THREE.MathUtils.generateUUID(),
+					taskType:"MessageToRead",
+					generatedFromTaskUUID: "",
+					taskTitle:'有用户想赞助共享地球',
+					taskCreatedby: '共享地球系统',
+					taskStatus:'待办',
+					taskDescription: '欢迎您登陆共享地球系统，我们一起爱护地球，保护地球，也欢迎您在这里打造一片属于自己的天地。',
+				};
+
+				editor.stationDB.addTask(taskObject, function(){
+
+				});
+
 				var star = iTopoEarthModel.lightStars(editor.starUser.info);
 				editor.select(star); // this function will call editor.signals.objectSelected.dispatch(star);
+
+				editor.signals.userRegisteredOrLogin.dispatch(registeredStarUser.info);
 			});
 
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 		} );
 
-		buttonPanel.add( lightStars );
+		buttonPanel.add( registerButton );
 	}
 
 	{
