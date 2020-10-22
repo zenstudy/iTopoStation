@@ -1,7 +1,7 @@
 import { UIElement, UISpan, UIPanel, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
-import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoStandBriefcase } from '../iTopoStandBriefcase/iTopoStandBriefcase.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
 import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';

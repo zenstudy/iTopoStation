@@ -3,7 +3,7 @@ import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
-import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoStandBriefcase } from '../iTopoStandBriefcase/iTopoStandBriefcase.js';
 import { iTopoNotificationManager } from '../iTopoFrame/iTopoNotificationManager.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';

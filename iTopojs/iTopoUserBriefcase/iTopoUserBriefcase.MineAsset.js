@@ -5,7 +5,7 @@ import { OBJLoader } from '../../../examples/jsm/loaders/OBJLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
-import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoStandBriefcase } from '../iTopoStandBriefcase/iTopoStandBriefcase.js';
 import { iTopoDialogRegisterBase } from '../iTopoDialog/iTopoDialog.RegisterBase.js';
 
 function iTopoUserBriefcaseMineAsset(editor) {

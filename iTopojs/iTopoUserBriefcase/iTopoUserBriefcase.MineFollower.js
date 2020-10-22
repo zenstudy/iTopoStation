@@ -5,7 +5,7 @@ import { OBJLoader } from '../../../examples/jsm/loaders/OBJLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
-import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoStandBriefcase } from '../iTopoStandBriefcase/iTopoStandBriefcase.js';
 
 function iTopoUserBriefcaseMineFollower(editor) {
 	var scope = this;
@@ -76,18 +76,20 @@ iTopoUserBriefcaseMineFollower.prototype = {
 		editor.resourceTracker.loadTreeModel(originPosition, 1, function(object){
 
 			editor.stationDB.fetchiTopoStars(function(allUsers){
-
-				taskObject.info.fellowerUUIDs.forEach(function( followerUUID ){
+				if(taskObject.info.fellowerUUIDs){
+					taskObject.info.fellowerUUIDs.forEach(function( followerUUID ){
 
 					allUsers.forEach(function(starUserInfo) {
-						if( followerUUID === starUserInfo.starUUID ){
-							scope.thumbnailManager.createThumbnailItem( starUserInfo.userNickname ,
-							object.clone(), function() {
-								scope.locationStarUser(starUserInfo);
-							});
-						}
+							if( followerUUID === starUserInfo.starUUID ){
+								scope.thumbnailManager.createThumbnailItem( starUserInfo.userNickname ,
+								object.clone(), function() {
+									scope.locationStarUser(starUserInfo);
+								});
+							}
+						})
 					})
-				})
+				}
+				
 
 				scope.thumbnailManager.updateCanvasSize();
 				scope.thumbnailManager.active();

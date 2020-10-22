@@ -2,7 +2,7 @@ import { iTopoOrbitControls } from './iTopoOrbitControls.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoEarthBuilder } from './iTopoEarthBuilder.js';
 import { UIPanel } from '../iTopoUI.js';
-import { iTopoTaskBriefcase } from '../iTopoTaskBriefcase/iTopoTaskBriefcase.js';
+import { iTopoStandBriefcase } from '../iTopoStandBriefcase/iTopoStandBriefcase.js';
 import { iTopoEarthSettings } from '../iTopoEarthSettings.js';
 import { iTopoTrinityHandler } from './iTopoTrinityHandler.js';
 
@@ -28,7 +28,7 @@ var iTopoStandPlatform = {
 			scope = null;
 		});
 
-		var taskBriefcase = new iTopoTaskBriefcase( editor );
+		var taskBriefcase = new iTopoStandBriefcase( editor );
 		displayStand.container.dom.appendChild( taskBriefcase.dom );
 
 		var camera, controls, scene, renderer, events = {};
@@ -475,6 +475,7 @@ var iTopoStandPlatform = {
 		this.dispose = function() {
 			this.clearScene(scope.scene);
 			renderer.dispose();
+			renderer.forceContextLoss();
 			camera = undefined;
 			scope.scene = undefined;
 		};

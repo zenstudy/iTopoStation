@@ -26,8 +26,6 @@ iTopoTaskHistory.prototype = {
 
 	dispose: function() {
 		var scope = this;
-		scope.thumbnailManager.dispose();
-		scope.thumbnailManager = null;
 	},
 
 	getValue: function () {
@@ -36,10 +34,6 @@ iTopoTaskHistory.prototype = {
 
 	setValue: function (taskObject) {
 		var scope = this;
-		if (editor.selected !== null) {
-
-		}
-
 		scope.taskObject = taskObject;
 	}
 }

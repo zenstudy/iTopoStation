@@ -4,7 +4,7 @@ import { iTopoTaskHistory } from './iTopoTask.History.js';
 import { iTopoTaskLinks } from './iTopoTask.Links.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
 
-function iTopoTaskBriefcase(editor) {
+function iTopoStandBriefcase(editor) {
 	var scope = this;
 	var signals = editor.signals;
 	var strings = editor.strings;
@@ -20,7 +20,7 @@ function iTopoTaskBriefcase(editor) {
 
 	// var sharedCanteen = new UISpan().add(
 	// 	new iTopoObjectHeader( editor ),
-	// 	new iTopoTaskBriefcaseBody( editor )
+	// 	new iTopoStandBriefcase( editor )
 	// );
 
 	container.tabsDiv.dom.addEventListener('click', function() {
@@ -47,7 +47,7 @@ function iTopoTaskBriefcase(editor) {
 
 	function removeAllTabs() {
 		tabs.forEach(function(tab){
-			console.log(tab);
+//			console.log(tab);
 			tab.panel.dispose();
 		}) ;
 
@@ -59,7 +59,7 @@ function iTopoTaskBriefcase(editor) {
 	function activeTab( tab ){
 		container.select(tab.name);
 		scope.lastSelectTabName = tab.name;
-		console.log(tab.name);
+//		console.log(tab.name);
 		tab.panel.activeTabPanel();
 	}
 
@@ -119,16 +119,19 @@ function iTopoTaskBriefcase(editor) {
 			return;
 		}
 
-	//	removeAllTabs();
-		container.setDisplay( 'inline-block' );
+		removeAllTabs();
 
 		var standUserData = thrObject.userData;
 
 		if(standUserData.standType === 'iTopoType/standObject/task'){
 			//console.log(standUserData);
+			createTaskbar();
 			refreshTaskUI(standUserData);
+		} else {
+			console.log("coming soon!");
 		}
 
+		container.setDisplay( 'inline-block' );
 	}
 
 	signals.objectInStandPlatformSelected.add(function(thrObject) {
@@ -140,4 +143,4 @@ function iTopoTaskBriefcase(editor) {
 	return container;
 }
 
-export { iTopoTaskBriefcase };
+export { iTopoStandBriefcase };

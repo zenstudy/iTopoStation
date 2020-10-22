@@ -40,20 +40,6 @@ iTopoTaskLinks.prototype = {
 
 	setValue: function (taskObject) {
 		var scope = this;
-		if (editor.selected !== null) {
-
-			var title = editor.strings.getKey( 'sidebar/skyCastle/Life' ) ;
-			var productPanel = new iTopoArticleManager();
-			productPanel.createDisplayStand(scope.container.dom);
-
-			for(var i=0; i < 8; ++i)
-			{
-				var qrcodeURL = "./iTopojs/QRcode/" + "iTopoBaseQrcode" + ".png";
-				productPanel.addArticleItem(qrcodeURL , title + (i+1), 'Lorem ipsum dolor sit amet...', this.onSelect);
-			}
-
-		}
-
 		scope.taskObject = taskObject;
 	},
 

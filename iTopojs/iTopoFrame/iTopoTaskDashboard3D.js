@@ -483,6 +483,7 @@ var iTopoTaskDashboard3D = {
 			//console.log(renderer);
 			//renderer.dispose();
 			this.stop();
+			renderer.forceContextLoss();
 			renderer = null;
 			camera = undefined;
 			scene = undefined;

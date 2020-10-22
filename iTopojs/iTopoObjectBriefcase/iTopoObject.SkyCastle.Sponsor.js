@@ -143,7 +143,7 @@ iTopoObjectSkyCastleSponsor.prototype = {
 		});
 
 		editor.stationDB.fetchiTopoStars(function(allUsers){
-
+			
 			sponsor.teamMemberUUIDs.forEach(function( teamMemberUUID ){
 				allUsers.forEach(function(starUserInfo) {
 					if( teamMemberUUID === starUserInfo.starUUID ){

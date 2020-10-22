@@ -222,6 +222,7 @@ var iTopoStandSponsor = {
 		this.dispose = function () {
 			this.clearScene(scope.scene);
 			renderer.dispose();
+			renderer.forceContextLoss();
 			camera = undefined;
 			scope.scene = undefined;
 		};
