@@ -234,12 +234,20 @@ iTopoObjectStarUserHeader.prototype = {
 			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
 			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.starUUID, function(jsonAnnouncement) {
 
-				jsonAnnouncement.forEach(function(announcement) {
-					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
-						function() {
-							scope.onAnnouncement(announcement);
-						});
-				})
+				jsonAnnouncement.forEach(function(announcement){
+
+				var task2ReadNotification= {
+					taskUUID: THREE.MathUtils.generateUUID(),
+					taskTitle:announcement.Title,
+					taskDescription:announcement.Description,
+				}
+
+			 	scope.notificationPanel.addNotificationItem( task2ReadNotification ,
+			 	function(){
+			 		scope.onAnnouncement(announcement);
+			 	});
+			 })
+			 
 			})
 		}
 

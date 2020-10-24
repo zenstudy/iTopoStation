@@ -237,7 +237,10 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/outlook/";
 					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
 						outlookData.album2DImgs.forEach(function(imgItem){
-							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+							album2DImgs.push({
+								standType: 'iTopoType/standObject/article',
+								imgURL: baseURL + imgItem.imgFilenName ,
+								imgDesc: imgItem.imgDesc });
 						});
 					}
 
@@ -259,7 +262,7 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 		var scope = this;
 		var title = editor.strings.getKey( 'sidebar/EcologicalFarm/Header/iTopoTaskCards' ) ;
 		var originPosition = new THREE.Vector3();
-		
+
 		editor.resourceTracker.loadiTopoTasksLogo(originPosition, iTopoEarthSettings.standMaxBoxW*0.25, function(baseModel){
 
 			editor.resourceTracker.loadOutlook('iTopoType/TaskObject/EcologicalFarm', function(background_outlook) {
@@ -340,14 +343,24 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 			this.latitudeValueUI.setValue(taskObject.lat);
 			this.lightWishValueUI.setValue(taskObject.lightWish);
 			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
+			
+			
 			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.baseUUID,function(jsonAnnouncement){
 
 				jsonAnnouncement.forEach(function(announcement){
-					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
-				  	function(){
-				  		scope.onAnnouncement(announcement);
-				  	});
+
+					var task2ReadNotification= {
+						taskUUID: THREE.MathUtils.generateUUID(),
+						taskTitle:announcement.Title,
+						taskDescription:announcement.Description,
+					}
+
+					scope.notificationPanel.addNotificationItem( task2ReadNotification ,
+					function(){
+						scope.onAnnouncement(announcement);
+					});
 				})
+				
 			})
 		}
 

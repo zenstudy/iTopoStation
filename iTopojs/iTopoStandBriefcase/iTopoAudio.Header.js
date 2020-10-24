@@ -6,7 +6,7 @@ import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';
 import { iTopoStandBriefcase } from '../iTopoStandBriefcase/iTopoStandBriefcase.js';
 
-function iTopoTaskHeader(editor) {
+function iTopoAudioHeader(editor) {
 	var scope = this;
 	var strings = editor.strings;
 
@@ -31,7 +31,7 @@ function iTopoTaskHeader(editor) {
 		var taskUUIDRow = new UIRow();
 		this.taskUUIDInput = new UIInput().setWidth('320px').setFontSize('12px').setDisabled(true);
 		this.taskUUIDInput.setValue(taskInfo.taskUUID);
-		taskUUIDRow.add(new UIText(strings.getKey('iTopoStand/taskbar/Header/taskUUID')).setWidth('90px'));
+		taskUUIDRow.add(new UIText(strings.getKey('taskbar/Header/taskUUID')).setWidth('90px'));
 		taskUUIDRow.add(this.taskUUIDInput);
 
 		containerParameter.add(taskUUIDRow);
@@ -40,7 +40,7 @@ function iTopoTaskHeader(editor) {
 	{
 		// title
 		var titleRow = new UIRow();
-		titleRow.add(new UIText(strings.getKey('iTopoStand/taskbar/Header/taskTitle')).setWidth('90px'));
+		titleRow.add(new UIText(strings.getKey('taskbar/Header/taskTitle')).setWidth('90px'));
 
 		this.titleInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.titleInput.setValue(taskInfo.taskTitle);
@@ -55,7 +55,7 @@ function iTopoTaskHeader(editor) {
 	{
 		// status
 		var statusRow = new UIRow();
-		statusRow.add(new UIText(strings.getKey('iTopoStand/taskbar/Header/taskStatus')).setWidth('90px'));
+		statusRow.add(new UIText(strings.getKey('taskbar/Header/taskStatus')).setWidth('90px'));
 
 		this.statusInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.statusInput.setValue(taskInfo.taskStatus);
@@ -70,7 +70,7 @@ function iTopoTaskHeader(editor) {
 	{
 		// task created by
 		var taskCreatedbyRow = new UIRow();
-		taskCreatedbyRow.add(new UIText(strings.getKey('iTopoStand/taskbar/Header/taskCreatedby')).setWidth('90px'));
+		taskCreatedbyRow.add(new UIText(strings.getKey('taskbar/Header/taskCreatedby')).setWidth('90px'));
 
 		this.taskCreatedbyInput = new UIInput().setWidth('160px').setFontSize('12px');
 		this.taskCreatedbyInput.setValue(taskInfo.taskCreatedby);
@@ -84,7 +84,7 @@ function iTopoTaskHeader(editor) {
 
 	{
 		var taskDescTitleRow = new UIRow();
-		taskDescTitleRow.add(new UIText(strings.getKey('iTopoStand/taskbar/Header/taskDescription')).setWidth('90px'));
+		taskDescTitleRow.add(new UIText(strings.getKey('taskbar/Header/taskDescription')).setWidth('90px'));
 		containerParameter.add(taskDescTitleRow);
 
 		var taskDescTextAreaRow = new UIRow();
@@ -103,10 +103,10 @@ function iTopoTaskHeader(editor) {
 	return this;
 }
 
-iTopoTaskHeader.prototype = Object.create( UIElement.prototype );
-iTopoTaskHeader.prototype.constructor = iTopoTaskHeader;
+iTopoAudioHeader.prototype = Object.create( UIElement.prototype );
+iTopoAudioHeader.prototype.constructor = iTopoAudioHeader;
 
-iTopoTaskHeader.prototype = {
+iTopoAudioHeader.prototype = {
 
 	activeTabPanel: function() {
 		var scope = this;
@@ -142,4 +142,4 @@ iTopoTaskHeader.prototype = {
 	}
 }
 
-export { iTopoTaskHeader };
+export { iTopoAudioHeader };

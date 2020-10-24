@@ -341,10 +341,17 @@ iTopoObjectSharedCanteenHeader.prototype = {
 			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.baseUUID,function(jsonAnnouncement){
 
 				jsonAnnouncement.forEach(function(announcement){
-					scope.notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
-				  	function(){
-				  		scope.onAnnouncement(announcement);
-				  	});
+
+					var task2ReadNotification= {
+						taskUUID: THREE.MathUtils.generateUUID(),
+						taskTitle:announcement.Title,
+						taskDescription:announcement.Description,
+					}
+
+					scope.notificationPanel.addNotificationItem( task2ReadNotification ,
+					function(){
+						scope.onAnnouncement(announcement);
+					});
 				})
 			})
 		}

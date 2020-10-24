@@ -89,11 +89,19 @@ function iTopoObjectSkyCastleHeader(editor) {
 		editor.stationDB.fetchiTopoBaseAnnouncement(iTopoEarthModel.SkyCastle.info.castleUUID,function(jsonAnnouncement){
 
 			jsonAnnouncement.forEach(function(announcement){
-			 	notificationPanel.addNotificationItem(announcement.Title, announcement.Description,
+
+				var task2ReadNotification= {
+					taskUUID: THREE.MathUtils.generateUUID(),
+					taskTitle:announcement.Title,
+					taskDescription:announcement.Description,
+				}
+
+			 	scope.notificationPanel.addNotificationItem( task2ReadNotification ,
 			 	function(){
 			 		scope.onAnnouncement(announcement);
 			 	});
 			 })
+
 		})
 	}
 
@@ -143,11 +151,19 @@ iTopoObjectSkyCastleHeader.prototype = {
 
 					var album2DImgs = [];
 					var baseURL = "./iTopoObjects/" + skyCastleinfo.castleUUID + "/outlook/";
-					//console.log(outlookData);
+
 					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
 						outlookData.album2DImgs.forEach(function(imgItem){
-							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+
+							var extPos=imgItem.imgFilenName.search(/.mp4/);
+							var sType = ( extPos > 0 ) ? 'iTopoType/standObject/video' : 'iTopoType/standObject/article';
+
+							album2DImgs.push({
+								standType: sType,
+								imgURL: baseURL + imgItem.imgFilenName ,
+								imgDesc: imgItem.imgDesc });
 						});
+
 					}
 
 					var explore = new iTopoStandPlatform.Explore(title);

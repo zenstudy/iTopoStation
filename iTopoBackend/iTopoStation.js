@@ -650,6 +650,7 @@ app.post('/fetchiTopoTasks', function(req, res) {
 
 			var taskDBName = getTaskStatusCollectionName(postParameter.taskStatus);
 			var dbo = dbClient.db(taskDBName);
+			console.log(postParameter.objectUUID);
 			var dboCollection = dbo.collection(postParameter.objectUUID);
 			dboCollection.find().toArray(function(err, result) { // 返回集合中所有数据
 				if (err) throw err;

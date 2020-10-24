@@ -203,15 +203,23 @@ function iTopoStrings( config ) {
 			'iTopoStandPlatform/TaskViewTopMenu/AllStand': '全集展示',
 			'iTopoStandPlatform/TaskViewTopMenu/TDB': '待定',
 
-			'taskbar/Header': '任务描述',
-			'taskbar/Header/taskUUID': '任务UUID',
-			'taskbar/Header/taskTitle': '任务标题',
-			'taskbar/Header/taskStatus': '任务状态',
-			'taskbar/Header/taskCreatedby': '任务创建者',
-			'taskbar/Header/taskDescription': '任务描述',
+			'iTopoStand/taskbar/Header': '任务描述',
+			'iTopoStand/taskbar/Header/taskUUID': '任务UUID',
+			'iTopoStand/taskbar/Header/taskTitle': '任务标题',
+			'iTopoStand/taskbar/Header/taskStatus': '任务状态',
+			'iTopoStand/taskbar/Header/taskCreatedby': '任务创建者',
+			'iTopoStand/taskbar/Header/taskDescription': '任务描述',
 
-			'taskbar/History': '任务历史',
-			'taskbar/link': '相关链接',
+			'iTopoStand/taskbar/History': '任务历史',
+			'iTopoStand/taskbar/link': '相关链接',
+
+			'iTopoStand/article/Header':'图片详情',
+			'iTopoStand/article/Title': '名称',
+			'iTopoStand/article/Description': '描述',
+
+			'iTopoStand/video/Header':'视频详情',
+			'iTopoStand/video/Title': '名称',
+			'iTopoStand/video/Description': '描述',
 
 			'userBriefcase/MineNotification': '消息中心',
 			'userBriefcase/MineNotification/Notification': '我的消息',

@@ -1,8 +1,11 @@
 import { UITabbedPanel, UISpan } from '../iTopoUI.js';
+import { iTopoEarthModel } from '../iTopoEarthModel.js';
 import { iTopoTaskHeader } from './iTopoTask.Header.js';
 import { iTopoTaskHistory } from './iTopoTask.History.js';
 import { iTopoTaskLinks } from './iTopoTask.Links.js';
-import { iTopoEarthModel } from '../iTopoEarthModel.js';
+import { iTopoArticleHeader } from './iTopoArticle.Header.js';
+import { iTopoAudioHeader } from './iTopoAudio.Header.js';
+import { iTopoVideoHeader } from './iTopoVideo.Header.js';
 
 function iTopoStandBriefcase(editor) {
 	var scope = this;
@@ -70,9 +73,33 @@ function iTopoStandBriefcase(editor) {
 		var linkTab = new iTopoTaskLinks(editor);
 		linkTab.setValue();
 
-		tabs.push( {name:'header', title:strings.getKey('taskbar/Header')  ,panel: headerTab} );
-		tabs.push( {name:'history', title: strings.getKey('taskbar/History'),panel: historyTab} );
-		tabs.push( {name:'link', title: strings.getKey('taskbar/link'),panel: linkTab} );
+		tabs.push( {name:'header', title:strings.getKey('iTopoStand/taskbar/Header')  ,panel: headerTab} );
+		tabs.push( {name:'history', title: strings.getKey('iTopoStand/taskbar/History'),panel: historyTab} );
+		tabs.push( {name:'link', title: strings.getKey('iTopoStand/taskbar/link'),panel: linkTab} );
+
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+		activeTab( tabs[0] );
+	}
+
+	function createArticlebar() {
+		var headerTab = new iTopoArticleHeader(editor);
+
+		tabs.push( {name:'header', title:strings.getKey('iTopoStand/article/Header')  ,panel: headerTab} );
+
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+		activeTab( tabs[0] );
+	}
+
+	function createVideobar() {
+		var headerTab = new iTopoVideoHeader(editor);
+
+		tabs.push( {name:'header', title:strings.getKey('iTopoStand/video/Header')  ,panel: headerTab} );
 
 		tabs.forEach(function(tab){
 			container.addTab(tab.name, tab.title, tab.panel.container);
@@ -104,6 +131,53 @@ function iTopoStandBriefcase(editor) {
 		});
 	};
 
+	function refreshArticleUI(ArticleUserData) {
+		tabs.forEach(function(tab) { tab.panel.setValue(ArticleUserData); })
+		return;
+	};
+
+	function refreshVideoUI(standUserData) {
+
+		var taskType = "";
+		if(standUserData.standStatus === "待办")
+			taskType = "Todo";
+		if(standUserData.standStatus === "在办")
+			taskType = "InProgress";
+		if(standUserData.standStatus === "已办")
+			taskType = "Done";
+
+		// editor.stationDB.fetchiTopoTasks(standUserData.objectUUID, taskType, function(json){
+		// 	for (var i = 0; i < json.length; i++) {
+		// 		if (json[i].taskUUID === standUserData.standUUID) {
+
+		// 			tabs.forEach(function(tab) { tab.panel.setValue(json[i]); });
+		// 			return;
+		// 		}
+		// 	}
+		// });
+	};
+
+	function refreshAudioUI(standUserData) {
+
+		var taskType = "";
+		if(standUserData.standStatus === "待办")
+			taskType = "Todo";
+		if(standUserData.standStatus === "在办")
+			taskType = "InProgress";
+		if(standUserData.standStatus === "已办")
+			taskType = "Done";
+
+		// editor.stationDB.fetchiTopoTasks(standUserData.objectUUID, taskType, function(json){
+		// 	for (var i = 0; i < json.length; i++) {
+		// 		if (json[i].taskUUID === standUserData.standUUID) {
+
+		// 			tabs.forEach(function(tab) { tab.panel.setValue(json[i]); });
+		// 			return;
+		// 		}
+		// 	}
+		// });
+	};
+
 	function refreshStandUI(thrObject){
 
 		if (ignoreObjectSelectedSignal === true)
@@ -121,14 +195,22 @@ function iTopoStandBriefcase(editor) {
 
 		removeAllTabs();
 
-		var standUserData = thrObject.userData;
-
-		if(standUserData.standType === 'iTopoType/standObject/task'){
+		if(thrObject.userData.standType === 'iTopoType/standObject/task'){
 			//console.log(standUserData);
 			createTaskbar();
-			refreshTaskUI(standUserData);
-		} else {
-			console.log("coming soon!");
+			refreshTaskUI(thrObject.userData);
+		} else if(thrObject.userData.standType === 'iTopoType/standObject/article'){
+			console.log('article comming soon');
+			createArticlebar();
+			refreshArticleUI(thrObject.userData);
+		} else if(thrObject.userData.standType === 'iTopoType/standObject/video'){
+			console.log('video comming soon');
+			createVideobar();
+			refreshVideoUI(thrObject.userData);
+		} else if(thrObject.userData.standType === 'iTopoType/standObject/audio'){
+			console.log('audio comming soon');
+			createAudiobar();
+			refreshAudioUI(thrObject.userData);
 		}
 
 		container.setDisplay( 'inline-block' );
