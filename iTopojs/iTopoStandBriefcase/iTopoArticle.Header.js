@@ -14,16 +14,26 @@ function iTopoArticleHeader(editor) {
 
 	var containerParameter = new UIPanel();
 	containerParameter.setBorderTop('0');
-	containerParameter.setPaddingTop('10px');
+	//containerParameter.setPaddingTop('10px');
 	container.add(containerParameter);
 
-	{
-		var articleTitleRow = new UIRow();
-		this.articleTitleInput = new UIInput().setWidth('320px').setFontSize('12px').setDisabled(true);
-		articleTitleRow.add(new UIText(strings.getKey('iTopoStand/article/Title')).setWidth('90px'));
-		articleTitleRow.add(this.articleTitleInput);
+	// {
+	// 	var articleTitleRow = new UIRow();
+	// 	this.articleTitleInput = new UIInput().setWidth('320px').setFontSize('12px').setDisabled(true);
+	// 	articleTitleRow.add(new UIText(strings.getKey('iTopoStand/article/Title')).setWidth('90px'));
+	// 	articleTitleRow.add(this.articleTitleInput);
 
-		containerParameter.add(articleTitleRow);
+	// 	containerParameter.add(articleTitleRow);
+	// }
+
+	{
+		var imgRow = new UIRow();
+		var sceneElement=document.createElement("img");
+		sceneElement.className = 'standImg';
+		sceneElement.src = '';
+		imgRow.dom.appendChild(sceneElement);
+		containerParameter.add(imgRow);
+		scope.sceneElement = sceneElement;
 	}
 
 	{
@@ -32,15 +42,14 @@ function iTopoArticleHeader(editor) {
 		containerParameter.add(articleDescTitleRow);
 
 		var articleDescTextAreaRow = new UIRow();
-		this.articleDescTextArea = new UITextArea().setWidth('520px').setFontSize('12px') /*.onChange( update )*/ ;
-		this.articleDescTextArea.dom.style.height = '300px';
+		this.articleDescTextArea = new UITextArea().setWidth('720px').setFontSize('12px') /*.onChange( update )*/ ;
+		this.articleDescTextArea.dom.style.height = '360px';
 		this.articleDescTextArea.onKeyUp(function() {
 			//starUser.starWish = this.getValue();
 
 		});
-		articleDescTitleRow.add(this.articleDescTextArea);
-
-		containerParameter.add(articleDescTitleRow);
+		articleDescTextAreaRow.add(this.articleDescTextArea);
+		containerParameter.add(articleDescTextAreaRow);
 	}
 
 	return this;
@@ -61,25 +70,23 @@ iTopoArticleHeader.prototype = {
 
 	dispose: function() {
 		var scope = this;
-
 	},
 
 	getValue: function () {
-
 		return this.articleObject;
-
 	},
 
 	setValue: function (articleObject) {
-
+		var scope = this;
 		if (articleObject !== null) {
 		//	container.setDisplay( 'block' );
 		//console.log(articleObject);
-			this.articleTitleInput.setValue(articleObject.imgTitle);
-			this.articleDescTextArea.setValue(articleObject.imgDesc);
+			scope.sceneElement.src = articleObject.imgURL;
+		//	scope.articleTitleInput.setValue(articleObject.imgTitle);
+			scope.articleDescTextArea.setValue(articleObject.imgDesc);
 		}
 
-		this.articleObject = articleObject;
+		scope.articleObject = articleObject;
 	}
 }
 

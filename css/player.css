@@ -1,11 +1,10 @@
 .player {
   	width: 720px;
   	height: 360px;
-  	margin: 10px auto;
-  	border: 1px solid #000;
-  	background-color: #000;
+  	border: 1px solid #00aaff;
+  	background-color: #55aaff;
   	position: relative;
-  	border-radius: 6px;
+  	border-radius: 2px;
   }
 
   .player video {
@@ -69,4 +68,13 @@
   	background-color: red;
   	right: 10px;
   	top: 10px;
+  }
+
+.standImg {
+  	width: 720px;
+  	height: 360px;
+  	border: 1px solid #00aaff;
+  	background-color: #55aaff;
+  	position: relative;
+  	border-radius: 2px;
   }

@@ -27,9 +27,10 @@ function iTopoVideoHeader(editor) {
 	//     </div>
 	// </div>
 
+	var imgRow = new UIRow();
 	let playerDiv =  document.createElement('div');
 	playerDiv.className = 'player';
-	container.dom.appendChild(playerDiv);
+	imgRow.dom.appendChild(playerDiv);
 
 	// 创建video对象
 	let video = document.createElement('video');
@@ -37,6 +38,7 @@ function iTopoVideoHeader(editor) {
 	video.autoplay = "true"; //要设置播放
 	video.loop = "true"; //要设置播放
 	playerDiv.appendChild(video);
+	scope.video = video;
 
 	let controlsDiv = document.createElement('div');
 	controlsDiv.className = 'controls';
@@ -73,7 +75,25 @@ function iTopoVideoHeader(editor) {
 	extend.href = "#";
 	extend.className = 'extend';
 	controlsDiv.appendChild(extend);
-	
+
+	container.add(imgRow);
+
+	{
+		var articleDescTitleRow = new UIRow();
+		articleDescTitleRow.add(new UIText(strings.getKey('iTopoStand/video/Description')).setWidth('90px'));
+		container.add(articleDescTitleRow);
+
+		var articleDescTextAreaRow = new UIRow();
+		this.articleDescTextArea = new UITextArea().setWidth('720px').setFontSize('12px') /*.onChange( update )*/ ;
+		this.articleDescTextArea.dom.style.height = '360px';
+		this.articleDescTextArea.onKeyUp(function() {
+			//starUser.starWish = this.getValue();
+
+		});
+		articleDescTextAreaRow.add(this.articleDescTextArea);
+		container.add(articleDescTextAreaRow);
+	}
+
 	var tTime = 0;
 
 	//将以秒为单位的时间变成“00:00:00”格式的字符串
@@ -139,20 +159,22 @@ iTopoVideoHeader.prototype = {
 
 	getValue: function () {
 
-		return this.articleObject;
+		return this.videoUserData;
 
 	},
 
-	setValue: function (articleObject) {
-
-		if (articleObject !== null) {
+	setValue: function (videoUserData) {
+		var scope = this;
+		if (videoUserData !== null) {
+		scope.video.src = videoUserData.imgURL;
+		//	console.log(articleObject);
 		//	container.setDisplay( 'block' );
 		//	console.log(articleObject);
 		//	this.articleTitleInput.setValue(articleObject.imgTitle);
-		//	this.articleDescTextArea.setValue(articleObject.imgDesc);
+		scope.articleDescTextArea.setValue(videoUserData.imgDesc);
 		}
 
-		this.articleObject = articleObject;
+		this.videoUserData = videoUserData;
 	}
 }
 

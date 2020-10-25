@@ -234,7 +234,15 @@ iTopoObjectSharedCanteenHeader.prototype = {
 					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/outlook/";
 					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
 						outlookData.album2DImgs.forEach(function(imgItem){
-							album2DImgs.push({ imgURL: baseURL + imgItem.imgFilenName , imgDesc: imgItem.imgDesc });
+							
+							var extPos=imgItem.imgFilenName.search(/.mp4/);
+							var sType = ( extPos > 0 ) ? 'iTopoType/standObject/video' : 'iTopoType/standObject/article';
+							
+							album2DImgs.push({
+								standType: sType,
+								imgURL: baseURL + imgItem.imgFilenName ,
+								imgDesc: imgItem.imgDesc });
+							
 						});
 					}
 

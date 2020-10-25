@@ -136,25 +136,9 @@ function iTopoStandBriefcase(editor) {
 		return;
 	};
 
-	function refreshVideoUI(standUserData) {
-
-		var taskType = "";
-		if(standUserData.standStatus === "待办")
-			taskType = "Todo";
-		if(standUserData.standStatus === "在办")
-			taskType = "InProgress";
-		if(standUserData.standStatus === "已办")
-			taskType = "Done";
-
-		// editor.stationDB.fetchiTopoTasks(standUserData.objectUUID, taskType, function(json){
-		// 	for (var i = 0; i < json.length; i++) {
-		// 		if (json[i].taskUUID === standUserData.standUUID) {
-
-		// 			tabs.forEach(function(tab) { tab.panel.setValue(json[i]); });
-		// 			return;
-		// 		}
-		// 	}
-		// });
+	function refreshVideoUI(videoUserData) {
+		tabs.forEach(function(tab) { tab.panel.setValue(videoUserData); })
+		return;
 	};
 
 	function refreshAudioUI(standUserData) {
@@ -200,11 +184,9 @@ function iTopoStandBriefcase(editor) {
 			createTaskbar();
 			refreshTaskUI(thrObject.userData);
 		} else if(thrObject.userData.standType === 'iTopoType/standObject/article'){
-			console.log('article comming soon');
 			createArticlebar();
 			refreshArticleUI(thrObject.userData);
 		} else if(thrObject.userData.standType === 'iTopoType/standObject/video'){
-			console.log('video comming soon');
 			createVideobar();
 			refreshVideoUI(thrObject.userData);
 		} else if(thrObject.userData.standType === 'iTopoType/standObject/audio'){

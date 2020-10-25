@@ -236,12 +236,19 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 					var album2DImgs = [];
 					var baseURL = "./iTopoObjects/" + scope.taskObject.baseUUID + "/outlook/";
 					if(outlookData.album2DImgs !== null && outlookData.album2DImgs !== undefined){
+
 						outlookData.album2DImgs.forEach(function(imgItem){
+
+							var extPos=imgItem.imgFilenName.search(/.mp4/);
+							var sType = ( extPos > 0 ) ? 'iTopoType/standObject/video' : 'iTopoType/standObject/article';
+
 							album2DImgs.push({
-								standType: 'iTopoType/standObject/article',
+								standType: sType,
 								imgURL: baseURL + imgItem.imgFilenName ,
 								imgDesc: imgItem.imgDesc });
+
 						});
+
 					}
 
 					var explore = new iTopoStandPlatform.Explore(title);
@@ -343,8 +350,8 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 			this.latitudeValueUI.setValue(taskObject.lat);
 			this.lightWishValueUI.setValue(taskObject.lightWish);
 			//如果没有对应的文件夹，则会出错，因为找不到相应的文件
-			
-			
+
+
 			editor.stationDB.fetchiTopoBaseAnnouncement(taskObject.baseUUID,function(jsonAnnouncement){
 
 				jsonAnnouncement.forEach(function(announcement){
@@ -360,7 +367,7 @@ iTopoObjectEcologicalFarmHeader.prototype = {
 						scope.onAnnouncement(announcement);
 					});
 				})
-				
+
 			})
 		}
 
