@@ -54,6 +54,33 @@ app.use('/users', users);
 //     res.render('index', { title: 'Express' });
 //   });
 
+//根据用户starUUID查询用户信息
+app.post('/fileExists', function(req, res) {
+
+	var postData = "";
+	req.addListener("data", function(postDataChunk) {
+		postData += postDataChunk;
+	});
+
+	req.addListener("end", function() {
+
+		var filePath = JSON.parse(postData);
+
+		if (filePath === null || filePath === undefined || filePath === '') {
+			res.end('false');
+			return;
+		}
+
+		fs.exists(filePath, function(exists) {
+			res.send(exists);
+			res.end();
+			return;
+		});
+
+	});
+
+});
+
 app.get('/', function(req, res) {
 	const indexPageFile = __dirname + '/iTopoCanteen.html';
 

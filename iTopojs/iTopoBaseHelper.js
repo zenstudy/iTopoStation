@@ -107,30 +107,53 @@ iTopoBaseHelper.prototype.updateBase = function() {
 	}
 };
 
+// iTopoBaseHelper.prototype.showQRCode = function() {
+// 	var scope = this;
+// 	let P1 = new Promise( resolve => {
+// 		var qrcodeURL = "./iTopoObjects/" + this.userData.objectUUID + "/WXqrcode.png";
+
+// 		editor.stationDB.fileExists(qrcodeURL,function fnAfterGetResult(exist){
+// 			alert(exist);
+// 			if(exist){
+// 				var fLoader = new THREE.FileLoader();
+// 				fLoader.load(qrcodeURL,
+// 					function ( data ) {// onLoad回调
+// 						scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
+// 					}
+// 				);
+// 			}
+// 		})
+
+// 	});
+
+// 	let P2 = new Promise( resolve => {
+// 		var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
+// 		scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
+// 	});
+
+// 	console.log('iTopoBaseHelper.showQRCode');
+// 	Promise.race([P1 , P2])
+// 	.then(value => {
+// 	    console.log(value);
+// 		editor.signals.sceneGraphChanged.dispatch();
+// 	});
+
+// }
+
 iTopoBaseHelper.prototype.showQRCode = function() {
 	var scope = this;
-	let P1 = new Promise( resolve => {
-		var qrcodeURL = "./iTopoObjects/" + this.userData.objectUUID + "/WXqrcode.png";
-		var fLoader = new THREE.FileLoader();
-		fLoader.load(qrcodeURL,
-			function ( data ) {// onLoad回调
-				scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
-			}
-		);
-	});
+	var qrcodeURL = "./iTopoObjects/" + this.userData.objectUUID + "/WXqrcode.png";
+	editor.stationDB.fileExists('.' + qrcodeURL, function fnAfterGetResult(exist){
+		if(exist){
+			var qrcodeURL = "./iTopoObjects/" + scope.userData.objectUUID + "/WXqrcode.png";
+			scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
+		} else {
+			var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
+			scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
+		}
 
-	let P2 = new Promise( resolve => {
-		var qrcodeURL = "./iTopoObjects/00_Default_Resource/" + "iTopoBaseQrcode" + ".png";
-		scope.CreateQRCode(new THREE.TextureLoader().load(qrcodeURL));
-	});
-
-	console.log('iTopoBaseHelper.showQRCode');
-	Promise.race([P1 , P2])
-	.then(value => {
-	    console.log(value);
 		editor.signals.sceneGraphChanged.dispatch();
-	});
-
+	})
 }
 
 iTopoBaseHelper.prototype.CreateQRCode = function(texture) {

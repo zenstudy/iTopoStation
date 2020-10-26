@@ -29,6 +29,8 @@ var iTopoStationAPI = {
 	fetchiTopoTasks:'http://127.0.0.1:8081/fetchiTopoTasks',
 	addTask:'http://127.0.0.1:8081/addTask',
 	updateTaskStatus:'http://127.0.0.1:8081/updateTaskStatus',
+
+	fileExists: 'http://127.0.0.1:8081/fileExists',
 }
 
 function iTopoStationDB() {
@@ -42,8 +44,26 @@ iTopoStationDB.prototype.constructor = iTopoStationDB;
 iTopoStationDB.prototype = {
 
 	dispose: function() {
-
 		console.log('===disposed:iTopoStationDB=========== ');
+	},
+
+	fileExists: function(filePath, fnAfterGetResult){
+
+		var request = new Request(iTopoStationAPI.fileExists, {
+			method: 'POST',
+			body: JSON.stringify(filePath),
+			headers: new Headers()
+		});
+
+		fetch(request)
+		.then(response => response.json())
+		.then(json => {
+			var exist = json;
+			fnAfterGetResult(exist);
+		 }).catch(function(e) {
+		  	console.log('error: ' + e.toString());
+		 })
+
 	},
 
 	fetchiWorldGeo: function(fnAfterFetch) {
