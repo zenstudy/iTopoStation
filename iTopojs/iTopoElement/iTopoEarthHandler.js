@@ -26,7 +26,7 @@ function iTopoEarthHandler(editor, sidebar, userBriefcase) {
 			editor.sceneHelpers.rotation.y = 0;
 			iTopoEarthModel.appendBaseObject(baseObjectOnEarth);
 			scope.userBriefcase.registerBaseIntoMineAsset(baseObjectOnEarth);
-
+			console.log(starUUID);
 			editor.stationDB.fetchUserWithStarUUID(starUUID, function(starUserInfo){
 				console.log(starUserInfo);
 				if(starUserInfo.userRegisteredBases === undefined) {

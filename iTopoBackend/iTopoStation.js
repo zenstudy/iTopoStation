@@ -296,12 +296,12 @@ app.post('/updateStarUser', function(req, res) {
 			var dbo = dbClient.db("iTopoEarthSociety");
 
 			//插入数据
-			var whereStr = {
-				"starUUID": starUUID
-			}; // 查询条件
-			dbo.collection("iTopoUser").updateOne(whereStr, newUserStarInfo, function(err, result) {
+			var whereStr = { "starUUID": newUserStarInfo.starUUID }; // 查询条件
+			delete newUserStarInfo._id;//true
+			console.log(newUserStarInfo);
+			dbo.collection("iTopoUser").updateOne(whereStr, {$set:newUserStarInfo}, function(err, result) {
 				if (err) throw err;
-				//				console.log(result);
+				//console.log(result);
 				res.send(result);
 				dbClient.close();
 			});
@@ -346,7 +346,7 @@ app.post('/registerBaseObjectOnEarth', function(req, res) {
 			//插入数据
 			dbo.collection("iTopobase").insertOne(newBaseInfo, function(err, result) {
 				if (err) throw err;
-				//				console.log(result);
+				//console.log(result);
 				res.send(result);
 				dbClient.close();
 			});

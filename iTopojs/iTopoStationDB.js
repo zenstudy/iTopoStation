@@ -255,7 +255,8 @@ iTopoStationDB.prototype = {
 		.then(response => response.json())
 		.then(json => {
 			fnAfterLight();
-			console.log('fetch.post:' + JSON.stringify(json));
+			console.log('fetch.post:');
+			console.log(json);
 		 }).catch(function(e) {
 		  	console.log('error: ' + e.toString());
 		 })
