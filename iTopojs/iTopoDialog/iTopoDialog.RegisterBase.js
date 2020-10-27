@@ -196,7 +196,7 @@ function iTopoDialogRegisterBase( editor, dispalyContext ) {
 		lightEarth.setLeft( '170px' );
 		lightEarth.onClick( function () {
 
-			//editor.signals.baseRegistered.dispatch( editor.starUser.starUUID, baseInfo);
+			editor.signals.baseRegistered.dispatch( editor.starUser.starUUID, baseInfo);
 			document.body.removeChild(document.getElementById("iTopoDialog"));
 
 		} );

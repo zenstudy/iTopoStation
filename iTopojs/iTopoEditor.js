@@ -22,6 +22,7 @@ function iTopoEditor() {
 		// notifications
 		userRegisteredOrLogin: new Signal(),
 		userLogoff: new Signal(),
+		baseRegistered: new Signal(),
 
 		editorCleared: new Signal(),
 
@@ -47,7 +48,6 @@ function iTopoEditor() {
 
 		geometryChanged: new Signal(),
 
-		baseRegistered: new Signal(),
 		objectHovered: new Signal(),
 		objectSelected: new Signal(),//important
 		objectFocused: new Signal(),

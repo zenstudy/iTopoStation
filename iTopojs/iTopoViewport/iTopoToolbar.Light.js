@@ -71,6 +71,12 @@ iTopoToolbarLight.prototype = {
 	},
 
 	onRegisterEcologicalFarm: function() {
+
+			if(editor.starUser.alreadyLoggedIn() === false){
+				alert(editor.strings.getKey('iTopoMessage/RegisterBase/WidthOutLogining'));
+				return;
+			}
+
 			var title = editor.strings.getKey('iTopoToolbarLight/RegisterEcologicalFarm');
 			var applyDlg = new iTopoDialogRegisterBase(editor,title);
 			document.body.appendChild(applyDlg.container.dom);
@@ -87,6 +93,12 @@ iTopoToolbarLight.prototype = {
 	},
 
 	onRegisterSharedCanteen: function() {// this对应一个item
+
+			if(editor.starUser.alreadyLoggedIn() === false){
+				alert(editor.strings.getKey('iTopoMessage/RegisterSharedCanteen/WidthOutLogining'));
+				return;
+			}
+
 			var title = editor.strings.getKey('iTopoToolbarLight/RegisterSharedCanteen');
 			var applyDlg = new iTopoDialogRegisterBase(editor,title);
 			document.body.appendChild(applyDlg.container.dom);

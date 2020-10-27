@@ -228,6 +228,9 @@ function iTopoStrings( config ) {
 			'userBriefcase/MineFollower': '我的粉丝',
 
 			'userBriefcase/BluePrintPage': '什么是共享地球',
+
+			'iTopoMessage/RegisterBase/WidthOutLogining': '您尚未注册或登陆共享地球，请注册或登陆后再注册基地',
+			'iTopoMessage/RegisterSharedCanteen/WidthOutLogining': '您尚未注册或登陆共享地球，请注册或登陆后再注册食堂',
 		},
 
 		en: {
