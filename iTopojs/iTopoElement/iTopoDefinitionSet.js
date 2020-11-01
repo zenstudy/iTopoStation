@@ -1,8 +1,6 @@
 //此类主要用于描述系统内定义的各类，并对关键字段进行描述
 var iTopoDefinitionSet = {
 
-
-
 	taskInfo: function () {
 		var dataInfo = {
 			objectUUID :"" ,

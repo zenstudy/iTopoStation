@@ -30,6 +30,10 @@ import { iTopoObjectSharedCanteenHeader } from './iTopoObject.SharedCanteen.Head
 import { iTopoObjectSharedCanteenMenu } from './iTopoObject.SharedCanteen.Menu.js';
 import { iTopoObjectSharedCanteenLife } from './iTopoObject.SharedCanteen.Life.js';
 
+import { iTopoObjectBlockChainGate } from './iTopoObject.BlockChain.Gate.js';
+import { iTopoObjectYuhuaZhaiGate } from './iTopoObject.YuhuaZhai.Gate.js';
+import { iTopoObjectBeltAndRoadGate } from './iTopoObject.BeltAndRoad.Gate.js';
+
 
 function iTopoObjectBriefcase(editor) {
 	var scope = this;
@@ -181,6 +185,50 @@ function iTopoObjectBriefcase(editor) {
 		activeTab( tabs[0] );
 	}
 
+	function createBlockChainCenterTabs(){
+
+		var gateTab = new iTopoObjectBlockChainGate(editor);
+		tabs.push( {name:'blockChainCenter', title:strings.getKey('sidebar/BlockChain/Gate')  ,panel: gateTab} );
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+		activeTab( tabs[0] );
+	}
+
+	function createBlockChainCenterTabs(){
+
+		var gateTab = new iTopoObjectBlockChainGate(editor);
+		tabs.push( {name:'blockChainCenter', title:strings.getKey('sidebar/BlockChain/Gate'), panel: gateTab} );
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+		activeTab( tabs[0] );
+	}
+
+	function createYuhuaZhaiTabs(){
+
+		var yuhuaZhaiTab = new iTopoObjectYuhuaZhaiGate(editor);
+		tabs.push( {name:'YuhuaZhai', title:strings.getKey('sidebar/YuhuaZhai/Gate'), panel: yuhuaZhaiTab} );
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+		activeTab( tabs[0] );
+	}
+
+	function createBeltAndRoadTabs(){
+
+		var beltAndRoadTab = new iTopoObjectBeltAndRoadGate(editor);
+		tabs.push( {name:'BeltAndRoad', title:strings.getKey('sidebar/BeltAndRoad/Gate'), panel: beltAndRoadTab} );
+		tabs.forEach(function(tab){
+			container.addTab(tab.name, tab.title, tab.panel.container);
+		}) ;
+
+		activeTab( tabs[0] );
+	}
+
 	function refreshEcologicalFarmTabs() {
 
 		editor.stationDB.fetchiTopobase(function(json){
@@ -294,10 +342,10 @@ function iTopoObjectBriefcase(editor) {
 		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
 			return;
 
-		if (iTopoEarthModel.LunarMoon.info.lunarMoonUUID === editor.selected.userData.objectUUID) {
+		if (iTopoEarthModel.lunarMoon.info.lunarMoonUUID === editor.selected.userData.objectUUID) {
 
 			tabs.forEach(function(tab) {
-				tab.panel.setValue(iTopoEarthModel.LunarMoon.info);
+				tab.panel.setValue(iTopoEarthModel.lunarMoon.info);
 			});
 
 			return;
@@ -328,6 +376,69 @@ function iTopoObjectBriefcase(editor) {
 				}
 		});
 
+	}
+
+	function refreshBlockChainCenterTabs(){
+
+		if(editor.selected === null)
+			return;
+
+		if(editor.selected.userData === null || editor.selected.userData === undefined)
+			return;
+
+		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+			return;
+
+		if (iTopoEarthModel.blockChainCenter.info.chainUUID === editor.selected.userData.objectUUID) {
+
+			tabs.forEach(function(tab) {
+				tab.panel.setValue(iTopoEarthModel.blockChainCenter.info);
+			});
+
+			return;
+		}
+	}
+
+	function refreshYuhuaZhaiTabs(){
+
+		if(editor.selected === null)
+			return;
+
+		if(editor.selected.userData === null || editor.selected.userData === undefined)
+			return;
+
+		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+			return;
+
+		if (iTopoEarthModel.yuhuaZhai.info.canteenUUID === editor.selected.userData.objectUUID) {
+
+			tabs.forEach(function(tab) {
+				tab.panel.setValue(iTopoEarthModel.yuhuaZhai.info);
+			});
+
+			return;
+		}
+	}
+
+	function refreshBeltAndRoadTabs(){
+
+		if(editor.selected === null)
+			return;
+
+		if(editor.selected.userData === null || editor.selected.userData === undefined)
+			return;
+
+		if(editor.selected.userData.objectUUID === null || editor.selected.userData.objectUUID === undefined)
+			return;
+
+		if (iTopoEarthModel.beltAndRoad.info.canteenUUID === editor.selected.userData.objectUUID) {
+
+			tabs.forEach(function(tab) {
+				tab.panel.setValue(iTopoEarthModel.beltAndRoad.info);
+			});
+
+			return;
+		}
 	}
 
 	var ignoreObjectSelectedSignal = false;
@@ -376,6 +487,15 @@ function iTopoObjectBriefcase(editor) {
 				case "iTopoType/TaskObject/Star":
 					createStarTabs();
 					break;
+				case "iTopoType/TaskObject/iTopoBlockChain":
+					createBlockChainCenterTabs();
+					break;
+				case "iTopoType/TaskObject/iTopoYuhuaZhai":
+					createYuhuaZhaiTabs();
+					break;
+				case "iTopoType/TaskObject/iTopoBeltAndRoad":
+					createBeltAndRoadTabs();
+					break;
 				default:
 					createiTopoSkyCastleTabs();
 					console.log('did not implement');
@@ -401,6 +521,15 @@ function iTopoObjectBriefcase(editor) {
 				break;
 			case 'iTopoType/TaskObject/Star':
 				refreshStarTabs();
+				break;
+			case 'iTopoType/TaskObject/iTopoBlockChain':
+				refreshBlockChainCenterTabs();
+				break;
+			case "iTopoType/TaskObject/iTopoYuhuaZhai":
+				refreshYuhuaZhaiTabs();
+				break;
+			case "iTopoType/TaskObject/iTopoBeltAndRoad":
+				refreshBeltAndRoadTabs();
 				break;
 			default:
 				refreshiTopoSkyCastleTabs();

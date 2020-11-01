@@ -10,7 +10,7 @@ import { iTopoStandPlatform } from '../iTopoFrame/iTopoStandPlatform.js';
 function iTopoObjectLunarMoonHeader(editor) {
 	var scope = this;
 	var strings = editor.strings;
-	var lunarMooninfo=iTopoEarthModel.LunarMoon.info;
+	var lunarMooninfo=iTopoEarthModel.lunarMoon.info;
 
 	var container = new UISpan();
 	this.container = container;
@@ -106,7 +106,7 @@ iTopoObjectLunarMoonHeader.prototype = {
 	onClickLunarMoonModel: function() {// this对应一个item
 
 		var scope = this;
-		var lunarMoonInfo=iTopoEarthModel.LunarMoon.info;
+		var lunarMoonInfo=iTopoEarthModel.lunarMoon.info;
 		var title = editor.strings.getKey( 'sidebar/LunarMoon/Header/Outlook' ) ;
 		var originPosition = new THREE.Vector3();
 		originPosition.set(0.15*iTopoEarthSettings.standMaxBoxW,0,0.16*iTopoEarthSettings.standMaxBoxW);
@@ -138,7 +138,7 @@ iTopoObjectLunarMoonHeader.prototype = {
 onTaskCardsClassCSS3D: function() {// this对应一个item
 
 		var scope = this;
-		var lunarMooninfo=iTopoEarthModel.LunarMoon.info;
+		var lunarMooninfo=iTopoEarthModel.lunarMoon.info;
 		var title = editor.strings.getKey( 'sidebar/LunarMoon/Header/iTopoTaskCards' ) ;
 		var originPosition = new THREE.Vector3();
 

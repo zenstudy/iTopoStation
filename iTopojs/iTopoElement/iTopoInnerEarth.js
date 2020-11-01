@@ -10,7 +10,7 @@ class iTopoInnerEarth {
 		lng : 0,
 		lat : -90,
 		size : 100,
-		dis2Cloud : -220,
+		dis2Cloud : 20,
 		}
   }
 }

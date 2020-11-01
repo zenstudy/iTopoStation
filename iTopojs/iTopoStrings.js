@@ -16,6 +16,9 @@ function iTopoStrings( config ) {
 			'iTopoType/TaskObject/iTopoSkyCastle':'共享地球协作中心',
 			'iTopoType/TaskObject/iTopoInnerEarth':'地心门户',
 			'iTopoType/TaskObject/iTopoLunarMoon': '月球门户',
+			'iTopoType/TaskObject/iTopoBlockChain':'区块链门户',
+			'iTopoType/TaskObject/iTopoBeltAndRoad':'一带一路模型',
+			'iTopoType/TaskObject/iTopoYuhuaZhai':'雨花斋门户',
 
 			'menubar/iTopoEarthHub': '共享地球首页',
 			'menubar/iTopoEarthHub/iTopoSkyCastle' : '共享地球协作中心',
@@ -149,9 +152,30 @@ function iTopoStrings( config ) {
 			'sidebar/contribute/editTask' :'查看',
 			'sidebar/contribute/removeTask': '删除',
 
+			'sidebar/BlockChain/Gate': '区块链中心',
+			'sidebar/BlockChain/Gate/Outlook': '区块链门户',
+			'sidebar/BlockChain/Gate/iTopoTaskCards':'任务协作墙',
+			'sidebar/BlockChain/Gate/chainUUID':'chainUUID',
+			'sidebar/BlockChain/Gate/Title':'名称',
+			'sidebar/BlockChain/Gate/announcement':'公告',
+
+			'sidebar/YuhuaZhai/Gate': '雨花斋',
+			'sidebar/YuhuaZhai/Gate/Outlook': '雨花斋概貌',
+			'sidebar/YuhuaZhai/Gate/iTopoTaskCards': '任务协作墙',
+			'sidebar/YuhuaZhai/Gate/canteenUUID': 'canteenUUID',
+			'sidebar/YuhuaZhai/Gate/Title': '名称',
+			'sidebar/YuhuaZhai/Gate/announcement': '公告',
+			'sidebar/YuhuaZhai/Gate/GateLink': '雨花斋公益网址',
+			'sidebar/YuhuaZhai/Gate/lightWish': '雨花斋心愿',
+
+			'sidebar/BeltAndRoad/Gate': '一带一路模型',
+			'sidebar/BeltAndRoad/Gate/Outlook': '概貌',
+			'sidebar/BeltAndRoad/Gate/iTopoTaskCards' : '任务协作墙',
+			'sidebar/BeltAndRoad/Gate/modelUUID':'modelUUID',
+			'sidebar/BeltAndRoad/Gate/Title':'名称',
+
 			'iTopoDialog/ok':'确定',
 			'iTopoDialog/cancel':'取消',
-
 
 			'iTopoDialog/login/login' : '登陆',
 			'iTopoDialog/login/userName':'用户名',

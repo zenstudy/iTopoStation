@@ -1,6 +1,12 @@
-注册食堂和添加任务前，判断用户是否登陆，若没有注册提示用户注册，/ 或没有登陆提示用户登陆，给每个对象增加一个2D logo的展示位置，希望放到外貌模型中去，与二维码一同展示。
-关注基地和其它用户的功能，并添加到我的订阅，且同时记录到对方我的粉丝当中。
-考虑是否添加评论、分享、共享等共同操作一个模型的行为的组织管理，基地的站外分享功能，先支持微信，后支持国外的facebook和twiter.（当下仅支持微信ID)，考虑在示意模型上绘制多种功能按钮。
+
+1.将各个功能封装成命令，启用前判断是否用户已经注册或登陆
+2.上传或修改自己的信息时，判断是否是自己的资产
+3.给每个对象增加一个2D logo的展示位置，希望放到外貌模型中去，与二维码一同展示。
+4.关注基地和其它用户的功能，并添加到我的订阅，且同时记录到对方我的粉丝当中。
+5.考虑是否添加评论、分享、共享等共同操作一个模型的行为的组织管理，基地的站外分享功能，先支持微信，后支持国外的facebook和twiter.（当下仅支持微信ID)，考虑在示意模型上绘制多种功能按钮。
+6.给每个基地搞个独立的网址
+7.与非小号联合搞共享地球区块链板块
+8.效仿CSDN注册登陆
 
 1.首页
 a.首页增加弹幕
@@ -48,7 +54,15 @@ c.地球地理信息录入功能，分公共数据和私有数据两部分。
 8.开发一个节律控制器，类似跟随节气的功能，做到与时俱进。
 
 9.何霞，中国天文博物院（文物考古），文化中国（梁主席），（北斗手机的负责人，成立中国天文研究院，他的儿子，动物保护联盟，他们已经有自己的网站）
+==============
+CodePen Home/three.js animation line by points
+[](https://codepen.io/towrabbit/pen/NWWzZBw)
 
+===============
+关于three.js中添加文字的方式
+https://blog.csdn.net/qq563969790/article/details/76584976
+threejs开发3d地球酷炫效果
+[](https://blog.csdn.net/xiaohu12685/article/details/107903083)
 ===============
 用户制作成照片墙
 https://blog.csdn.net/hangGe0111/article/details/88870776?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.channel_param

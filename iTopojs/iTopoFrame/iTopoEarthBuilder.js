@@ -503,9 +503,9 @@ iTopoEarthBuilder.createInnerEarth = function(option) {
 	return innerEarthBuid;
 }
 
-iTopoEarthBuilder.createLunarMoon = function(option) {
+iTopoEarthBuilder.createEquatorObject = function(option) {
 
-	var lunarMoonBuid = {};
+	var equatorObjectBuid = {};
 
 	let starPoint;
 	if(iTopoEarthSettings.GLOBAL_KIND === "Global3D")
@@ -530,7 +530,7 @@ iTopoEarthBuilder.createLunarMoon = function(option) {
 	starMesh.position.copy(starPoint);
 	starMesh.name = option.textValue;
 	starMesh.userData = userData;
-	lunarMoonBuid.starMesh = starMesh;
+	equatorObjectBuid.starMesh = starMesh;
 
 	if (!option.textMarked) {
 
@@ -544,7 +544,7 @@ iTopoEarthBuilder.createLunarMoon = function(option) {
 			fontMesh.scale.x = option.fontSize / option.average * textLength;
 			fontMesh.scale.y = option.fontSize / option.average;
 
-			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud + option.starSize/2 + option.fontSize/2;
 			var	ptOnSphere = createPosition(option.pos[0], option.pos[1],dis2zero);
 //			console.log(ptOnSphere);
 			fontMesh.position.copy(ptOnSphere); // 定义提示文字显示位置
@@ -553,15 +553,15 @@ iTopoEarthBuilder.createLunarMoon = function(option) {
 		} else {
 			fontMesh.scale.x = option.fontSize / option.average * textLength;
 			fontMesh.scale.y = option.fontSize / option.average;
-			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud - option.starSize/2 - option.fontSize/2;
+			var dis2zero = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO+option.dis2Cloud + option.starSize/2 + option.fontSize/2;
 			fontMesh.position.set(cityX, cityY, dis2zero); // 定义提示文字显示位置
 		}
 
-		lunarMoonBuid.fontMesh = fontMesh;
+		equatorObjectBuid.fontMesh = fontMesh;
 
 	}
 
-	return lunarMoonBuid;
+	return equatorObjectBuid;
 }
 
 iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor, bgColor) {
@@ -581,22 +581,6 @@ iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor, bgC
 	ctx.fillText(textValue, w / 2, h / 2);
 	return canvas;
 }
-
-// canvas实现文字函数
-// iTopoEarthBuilder.createHorCanvasFont = function(w, h, textValue, fontColor) {
-// 	var canvas = document.createElement('canvas');
-// 	canvas.width = w;
-// 	canvas.height = h;
-// 	var ctx = canvas.getContext('2d');
-// 	//ctx.fillStyle = '#0fffef';
-// 	//ctx.fillRect(0, 0, w, h);
-// 	ctx.font = h + "px '微软雅黑'";
-// 	ctx.textAlign = 'center';
-// 	ctx.textBaseline = 'middle';
-// 	ctx.fillStyle = fontColor;
-// 	ctx.fillText(textValue, w / 2, h / 2);
-// 	return canvas;
-// }
 
 iTopoEarthBuilder.createVerCanvasFont = function(fontSize, dpi, textValue, fontColor) {
 	var canvas = document.createElement('canvas');
@@ -1260,4 +1244,65 @@ iTopoEarthBuilder.createVideoBox = function () {
   material.map = texture;
 
 	return mesh;
+}
+
+iTopoEarthBuilder.createHorAxiatonalLine = function ( ) {
+
+	var radius = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO;
+	let curve = new THREE.EllipseCurve(
+	    0,  0,                  // ax, aY
+	    radius, radius,         // xRadius, yRadius
+	    0, 2*Math.PI, // aStartAngle, aEndAngle
+	    true,                  // aClockwise
+	    0                       // aRotation
+	);
+
+	var pointsNumber = 100;
+	var points = curve.getPoints( pointsNumber );
+	//points=points.shift();
+	var geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+    var lineMaterial = new THREE.LineDashedMaterial({
+        color: iTopoEarthSettings.AxiatonalColor,//线段的颜色
+        dashSize: 1,//短划线的大小
+        gapSize: 5//短划线之间的距离
+    });
+
+	var flyLine = new THREE.LineLoop( geometry, lineMaterial );
+	flyLine.computeLineDistances();//不可或缺的，若无，则线段不能显示为虚线
+	let euler = new THREE.Euler(Math.PI/2, 0, 0);
+	flyLine.setRotationFromEuler(euler);
+
+	return flyLine;
+}
+
+iTopoEarthBuilder.createVerAxiatonalLines = function ( eulerAngle ) {
+
+	var radius = iTopoEarthSettings.CITY_RADIUS*iTopoEarthSettings.COLUD_RADIUS_RATIO;
+
+	let curve = new THREE.EllipseCurve(
+	    0,  0,                  // ax, aY
+	    radius, radius,         // xRadius, yRadius
+	    Math.PI/2, 3*Math.PI/2, // aStartAngle, aEndAngle
+	    true,                  // aClockwise
+	    0                       // aRotation
+	);
+
+	var pointsNumber = 100;
+	var points = curve.getPoints( pointsNumber );
+	//points=points.shift();
+	var geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+    var lineMaterial = new THREE.LineDashedMaterial({
+        color: iTopoEarthSettings.AxiatonalColor,//线段的颜色
+        dashSize: 1,//短划线的大小
+        gapSize: 5//短划线之间的距离
+    });
+
+	var flyLine = new THREE.Line( geometry, lineMaterial );
+	flyLine.computeLineDistances();//不可或缺的，若无，则线段不能显示为虚线
+	let euler = new THREE.Euler(0, eulerAngle,0);
+	flyLine.setRotationFromEuler(euler);
+
+	return flyLine;
 }

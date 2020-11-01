@@ -50,6 +50,7 @@ iTopoEarthSettings = {
 	markingTextColor: '#44efe4',
 	markingSymbolColor: '#004cff',
 	markingPlaneColor: '#ffffff',
+	AxiatonalColor:'#44efe4',
 	topicFontSize:60,
 	markingFontSize:5,
 

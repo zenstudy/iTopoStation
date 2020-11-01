@@ -10,8 +10,12 @@ import {iTopoEarthBuilder} from './iTopoFrame/iTopoEarthBuilder.js';
 import {iTopoEarthCache} from './iTopoEarthCache.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
 import {iTopoSkyCastle} from './iTopoElement/iTopoSkyCastle.js';
-import {iTopoLunarMoon} from './iTopoElement/iTopoLunarMoon.js';
 import {iTopoInnerEarth} from './iTopoElement/iTopoInnerEarth.js';
+
+import {iTopoBlockChain} from './iTopoElement/iTopoBlockChain.js';
+import {iTopoBeltAndRoad} from './iTopoElement/iTopoBeltAndRoad.js';
+import {iTopoLunarMoon} from './iTopoElement/iTopoLunarMoon.js';
+import {iTopoYuhuaZhai} from './iTopoElement/iTopoYuhuaZhai.js';
 
 export var iTopoEarthModel = iTopoEarthModel || {};
 
@@ -19,7 +23,11 @@ let layerPlanet, layerMarks, layerCloud, layerStars;
 
 iTopoEarthModel.SkyCastle = new iTopoSkyCastle();
 iTopoEarthModel.InnerEarth = new iTopoInnerEarth();
-iTopoEarthModel.LunarMoon = new iTopoLunarMoon();
+
+iTopoEarthModel.blockChainCenter = new iTopoBlockChain();
+iTopoEarthModel.beltAndRoad = new iTopoBeltAndRoad();
+iTopoEarthModel.lunarMoon = new iTopoLunarMoon();
+iTopoEarthModel.yuhuaZhai = new iTopoYuhuaZhai();
 
 iTopoEarthModel.GetModelTopic = function() {
 
@@ -59,9 +67,24 @@ iTopoEarthModel.ReCreate = function() {
 	}
 
 	iTopoEarthModel.CreateGlobalModel();
-	iTopoEarthModel.CreateiTopoSkyCastle();
+
 	iTopoEarthModel.CreateiTopoInnerEarth();
+	iTopoEarthModel.CreateiTopoSkyCastle();
+
+	iTopoEarthModel.CreateBlockChainModel();
+	iTopoEarthModel.CreateBeltAndRoadModel();
+	iTopoEarthModel.CreateiTopoYuhuanZhai();
 	iTopoEarthModel.CreateiTopoLunarMoon();
+
+	var axiatonalLines = [];
+	for(var i = 0; i < 4; ++i){
+		axiatonalLines.push(iTopoEarthBuilder.createVerAxiatonalLines(i*Math.PI*2/4));
+	}
+	editor.execute(new AddiTopoObjArrayCommand(editor, axiatonalLines));
+
+	var horAxiatonalLine = iTopoEarthBuilder.createHorAxiatonalLine();
+	editor.execute(new AddiTopoObjCommand(editor,horAxiatonalLine));
+
 	iTopoEarthModel.MarkiTopoStars();
 
 	if (iTopoEarthSettings.MAP_KIND == "共创基地") {
@@ -153,12 +176,6 @@ iTopoEarthModel.CreateiTopoSkyCastle = function() {
 
 	editor.execute(new AddiTopoObjCommand(editor, skyCastle.starMesh));
 	editor.execute(new AddiTopoObjCommand(editor, skyCastle.fontMesh));
-
-	// const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
-	// 	+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );
-	// iTopoEarthModel.ParticlesMove(seeFrom, editor.camera);
-	// editor.camera.position.copy(seeFrom);
-	// editor.camera.lookAt(0, 0, 0);
 }
 
 iTopoEarthModel.CreateiTopoInnerEarth = function() {
@@ -180,6 +197,96 @@ iTopoEarthModel.CreateiTopoInnerEarth = function() {
 
 	editor.execute(new AddiTopoObjCommand(editor, innerEarth.starMesh));
 	editor.execute(new AddiTopoObjCommand(editor, innerEarth.fontMesh));
+}
+
+iTopoEarthModel.CreateBlockChainModel = function() {
+
+	var option = {
+		"objectUUID": iTopoEarthModel.blockChainCenter.info.chainUUID,
+		"objectType": "iTopoType/TaskObject/iTopoBlockChain",
+		"pos": [iTopoEarthModel.blockChainCenter.info.lng, iTopoEarthModel.blockChainCenter.info.lat],
+		"starSize": iTopoEarthModel.blockChainCenter.info.size,
+		"dis2Cloud": iTopoEarthModel.blockChainCenter.info.dis2Cloud,
+		"textMarked": false,
+		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoBlockChain'),
+		"fontColor": iTopoEarthSettings.markingTextColor,
+		"fontSize": iTopoEarthSettings.markingFontSize*60,
+		"average": getAverage(),
+	}
+
+	var blockChainMesh = iTopoEarthBuilder.createEquatorObject(option);
+
+	editor.execute(new AddiTopoObjCommand(editor, blockChainMesh.starMesh));
+	editor.execute(new AddiTopoObjCommand(editor, blockChainMesh.fontMesh));
+}
+
+iTopoEarthModel.CreateBeltAndRoadModel = function() {
+
+	var option = {
+		"objectUUID": iTopoEarthModel.beltAndRoad.info.chainUUID,
+		"objectType": "iTopoType/TaskObject/iTopoBeltAndRoad",
+		"pos": [iTopoEarthModel.beltAndRoad.info.lng, iTopoEarthModel.beltAndRoad.info.lat],
+		"starSize": iTopoEarthModel.beltAndRoad.info.size,
+		"dis2Cloud": iTopoEarthModel.beltAndRoad.info.dis2Cloud,
+		"textMarked": false,
+		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoBeltAndRoad'),
+		"fontColor": iTopoEarthSettings.markingTextColor,
+		"fontSize": iTopoEarthSettings.markingFontSize*60,
+		"average": getAverage(),
+	}
+
+	var beltAndRoadBuild = iTopoEarthBuilder.createEquatorObject(option);
+
+	editor.execute(new AddiTopoObjCommand(editor, beltAndRoadBuild.starMesh));
+	editor.execute(new AddiTopoObjCommand(editor, beltAndRoadBuild.fontMesh));
+}
+
+iTopoEarthModel.CreateiTopoChainMesh = function() {
+
+	var option = {
+		"objectUUID": iTopoEarthModel.meshChain.info.chainUUID,
+		"objectType": "iTopoType/TaskObject/iTopoChainMesh",
+		"pos": [iTopoEarthModel.meshChain.info.lng, iTopoEarthModel.meshChain.info.lat],
+		"starSize": iTopoEarthModel.meshChain.info.size,
+		"dis2Cloud": iTopoEarthModel.meshChain.info.dis2Cloud,
+		"textMarked": false,
+		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoChainMesh'),
+		"fontColor": iTopoEarthSettings.markingTextColor,
+		"fontSize": iTopoEarthSettings.markingFontSize*60,
+		"average": getAverage(),
+	}
+
+	var meshChainBuild = iTopoEarthBuilder.createEquatorObject(option);
+
+	editor.execute(new AddiTopoObjCommand(editor, meshChainBuild.starMesh));
+	editor.execute(new AddiTopoObjCommand(editor, meshChainBuild.fontMesh));
+
+	// const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
+	// 	+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );
+	// iTopoEarthModel.ParticlesMove(seeFrom, editor.camera);
+	// editor.camera.position.copy(seeFrom);
+	// editor.camera.lookAt(0, 0, 0);
+}
+
+iTopoEarthModel.CreateiTopoYuhuanZhai = function() {
+
+	var option = {
+		"objectUUID": iTopoEarthModel.yuhuaZhai.info.canteenUUID,
+		"objectType": "iTopoType/TaskObject/iTopoYuhuaZhai",
+		"pos": [iTopoEarthModel.yuhuaZhai.info.lng, iTopoEarthModel.yuhuaZhai.info.lat],
+		"starSize": iTopoEarthModel.yuhuaZhai.info.size,
+		"dis2Cloud": iTopoEarthModel.yuhuaZhai.info.dis2Cloud,
+		"textMarked": false,
+		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoYuhuaZhai'),
+		"fontColor": iTopoEarthSettings.markingTextColor,
+		"fontSize": iTopoEarthSettings.markingFontSize*60,
+		"average": getAverage(),
+	}
+
+	var yuhuaZhaiBuild = iTopoEarthBuilder.createEquatorObject(option);
+
+	editor.execute(new AddiTopoObjCommand(editor, yuhuaZhaiBuild.starMesh));
+	editor.execute(new AddiTopoObjCommand(editor, yuhuaZhaiBuild.fontMesh));
 
 	// const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
 	// 	+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );
@@ -191,11 +298,11 @@ iTopoEarthModel.CreateiTopoInnerEarth = function() {
 iTopoEarthModel.CreateiTopoLunarMoon = function() {
 
 	var option = {
-		"objectUUID": iTopoEarthModel.LunarMoon.info.lunarMoonUUID,
+		"objectUUID": iTopoEarthModel.lunarMoon.info.lunarMoonUUID,
 		"objectType": "iTopoType/TaskObject/iTopoLunarMoon",
-		"pos": [iTopoEarthModel.LunarMoon.info.lng, iTopoEarthModel.LunarMoon.info.lat],
-		"starSize": iTopoEarthModel.LunarMoon.info.size,
-		"dis2Cloud": iTopoEarthModel.LunarMoon.info.dis2Cloud,
+		"pos": [iTopoEarthModel.lunarMoon.info.lng, iTopoEarthModel.lunarMoon.info.lat],
+		"starSize": iTopoEarthModel.lunarMoon.info.size,
+		"dis2Cloud": iTopoEarthModel.lunarMoon.info.dis2Cloud,
 		"textMarked": false,
 		"textValue": editor.strings.getKey('iTopoType/TaskObject/iTopoLunarMoon'),
 		"fontColor": iTopoEarthSettings.markingTextColor,
@@ -203,10 +310,10 @@ iTopoEarthModel.CreateiTopoLunarMoon = function() {
 		"average": getAverage(),
 	}
 
-	var lunarMoon = iTopoEarthBuilder.createLunarMoon(option);
+	var lunarMoonBuild = iTopoEarthBuilder.createEquatorObject(option);
 
-	editor.execute(new AddiTopoObjCommand(editor, lunarMoon.starMesh));
-	editor.execute(new AddiTopoObjCommand(editor, lunarMoon.fontMesh));
+	editor.execute(new AddiTopoObjCommand(editor, lunarMoonBuild.starMesh));
+	editor.execute(new AddiTopoObjCommand(editor, lunarMoonBuild.fontMesh));
 
 	// const seeFrom = createPosition(userStarInfo.lng, userStarInfo.lat, iTopoEarthSettings.CITY_RADIUS * iTopoEarthSettings.COLUD_RADIUS_RATIO
 	// 	+ option.dis2Cloud+0.2*iTopoEarthSettings.CITY_RADIUS );
@@ -516,9 +623,9 @@ iTopoEarthModel.MarkiTopoCanteen = function() {
 	});
 }
 
-iTopoEarthModel.MarkHorizenSuperNodes = function() {
+iTopoEarthModel.MarkHorizenSecureNodes = function() {
 
-	editor.stationDB.fetchHorizenSuperNodes(function(json){
+	editor.stationDB.fetchHorizenSecureNodes(function(json){
 		var average = getAverage();
 			if (iTopoEarthSettings.markingKind === "lightCone") {
 

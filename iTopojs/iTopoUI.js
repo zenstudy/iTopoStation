@@ -252,7 +252,6 @@ function UIText( text ) {
 	this.setValue( text );
 
 	return this;
-
 }
 
 UIText.prototype = Object.create( UIElement.prototype );

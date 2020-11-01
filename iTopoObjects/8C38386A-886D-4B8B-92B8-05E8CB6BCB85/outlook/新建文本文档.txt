@@ -1,0 +1,9 @@
+{
+	"3dModelURL":"./iTopoObjects/00_Default_Resource/cartoon_lowpoly_small_city_free_pack/scene.gltf",
+	"album2DImgs": [{
+			"imgFilenName": "Horizen-logo-tagline-full-colors.jpg",
+			"imgDesc": "Horizen"
+		}
+		
+	]
+}

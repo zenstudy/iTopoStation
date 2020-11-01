@@ -11,7 +11,7 @@ import { iTopoResourceTracker} from './iTopoFrame/iTopoResourceTracker.js';
 
 var _DEFAULT_CAMERA = new THREE.PerspectiveCamera( 45, 1, 0.1, 10000 );
 _DEFAULT_CAMERA.name = 'Camera';
-_DEFAULT_CAMERA.position.set( 0, 0, Math.PI* 1800 );
+_DEFAULT_CAMERA.position.set( 0, 0, Math.PI* 2000 );
 _DEFAULT_CAMERA.lookAt( new THREE.Vector3() );
 
 function iTopoEditor() {
