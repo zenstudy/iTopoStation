@@ -1,5 +1,7 @@
 import { ajaxPost } from './ajaxPostHelper.js'
 
+var siteURL = 'http://127.0.0.1:8081/';
+
 var iTopoStationAPI = {
 	WORLD_JSON_FILE: "./iTopoObjects/00_iTopoEarth/world.json",
 	HORIZEN_SUPERNODES_FILE: "./iTopoObjects/00_iTopoEarth/ZenSuperNodes.json",
@@ -9,28 +11,28 @@ var iTopoStationAPI = {
 	//ITOPOBASE_FILE: "./iTopoObjects/00_iTopoEarth/iTopobase.json",
 	//ITOPOUSER_FILE: "./iTopoObjects/00_iTopoEarth/iTopoUser.json",
 
-	fetchiTopoStars: 'http://127.0.0.1:8081/fetchiTopoStars',
-	iTopoEarthRegister : 'http://127.0.0.1:8081/iTopoEarthRegister',
-	iTopoEarthLogin : 'http://127.0.0.1:8081/iTopoEarthLogin',
-	fetchUserWithStarUUID:'http://127.0.0.1:8081/fetchUserWithStarUUID',
-	updateStarUser:'http://127.0.0.1:8081/updateStarUser',
+	fetchiTopoStars: siteURL+'fetchiTopoStars',
+	iTopoEarthRegister : siteURL+'iTopoEarthRegister',
+	iTopoEarthLogin : siteURL+'iTopoEarthLogin',
+	fetchUserWithStarUUID:siteURL+'fetchUserWithStarUUID',
+	updateStarUser:siteURL+'updateStarUser',
 
-	fetchiTopobase: 'http://127.0.0.1:8081/fetchiTopobase',
-	registerBaseObjectOnEarth:'http://127.0.0.1:8081/registerBaseObjectOnEarth',
-	fetchBaseObjectWithObjectUUID: 'http://127.0.0.1:8081/fetchBaseObjectWithObjectUUID',
-	fetchiTopoBaseAnnouncement:'http://127.0.0.1:8081/fetchiTopoBaseAnnouncement',
-	fetchiTopoBaseOutlook: 'http://127.0.0.1:8081/fetchiTopoBaseOutlook',
-	fetchiTopobaseWorkTeams: 'http://127.0.0.1:8081/fetchiTopobaseWorkTeams',
-	addMemberToiTopobaseTeams: 'http://127.0.0.1:8081/addMemberToiTopobaseTeams',
-	fetchiTopobaseSponsors: 'http://127.0.0.1:8081/fetchiTopobaseSponsors',
-	fetchiTopoBaseProductCategorys:'http://127.0.0.1:8081/fetchiTopoBaseProductCategorys',
-	fetchiTopoBaseProducts:'http://127.0.0.1:8081/fetchiTopoBaseProducts',
+	fetchiTopobase: siteURL+'fetchiTopobase',
+	registerBaseObjectOnEarth:siteURL+'registerBaseObjectOnEarth',
+	fetchBaseObjectWithObjectUUID: siteURL+'fetchBaseObjectWithObjectUUID',
+	fetchiTopoBaseAnnouncement:siteURL+'fetchiTopoBaseAnnouncement',
+	fetchiTopoBaseOutlook: siteURL+'fetchiTopoBaseOutlook',
+	fetchiTopobaseWorkTeams: siteURL+'fetchiTopobaseWorkTeams',
+	addMemberToiTopobaseTeams: siteURL+'addMemberToiTopobaseTeams',
+	fetchiTopobaseSponsors: siteURL+'fetchiTopobaseSponsors',
+	fetchiTopoBaseProductCategorys:siteURL+'fetchiTopoBaseProductCategorys',
+	fetchiTopoBaseProducts:siteURL+'fetchiTopoBaseProducts',
 
-	fetchiTopoTasks:'http://127.0.0.1:8081/fetchiTopoTasks',
-	addTask:'http://127.0.0.1:8081/addTask',
-	updateTaskStatus:'http://127.0.0.1:8081/updateTaskStatus',
+	fetchiTopoTasks:siteURL+'fetchiTopoTasks',
+	addTask:siteURL+'addTask',
+	updateTaskStatus:siteURL+'updateTaskStatus',
 
-	fileExists: 'http://127.0.0.1:8081/fileExists',
+	fileExists: siteURL+'fileExists',
 }
 
 function iTopoStationDB() {
