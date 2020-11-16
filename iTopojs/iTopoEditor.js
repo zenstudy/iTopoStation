@@ -1,4 +1,4 @@
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
 import { iTopoLoader as _Loader } from './iTopoLoader.js';
 import { iTopoHistory as _History } from './iTopoHistory.js';

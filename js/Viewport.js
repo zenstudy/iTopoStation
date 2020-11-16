@@ -2,9 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
-import { TransformControls } from '../../examples/jsm/controls/TransformControls.js';
+import { TransformControls } from '../threejs/examples/jsm/controls/TransformControls.js';
 
 import { UIPanel } from './libs/ui.js';
 

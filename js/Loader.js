@@ -2,33 +2,33 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
-import { ThreeMFLoader } from '../../examples/jsm/loaders/3MFLoader.js';
-import { AMFLoader } from '../../examples/jsm/loaders/AMFLoader.js';
-import { ColladaLoader } from '../../examples/jsm/loaders/ColladaLoader.js';
-import { DRACOLoader } from '../../examples/jsm/loaders/DRACOLoader.js';
-import { FBXLoader } from '../../examples/jsm/loaders/FBXLoader.js';
-import { GLTFLoader } from '../../examples/jsm/loaders/GLTFLoader.js';
-import { KMZLoader } from '../../examples/jsm/loaders/KMZLoader.js';
-import { MD2Loader } from '../../examples/jsm/loaders/MD2Loader.js';
-import { MTLLoader } from '../../examples/jsm/loaders/MTLLoader.js';
-import { OBJLoader } from '../../examples/jsm/loaders/OBJLoader.js';
-import { PLYLoader } from '../../examples/jsm/loaders/PLYLoader.js';
-import { STLLoader } from '../../examples/jsm/loaders/STLLoader.js';
-import { SVGLoader } from '../../examples/jsm/loaders/SVGLoader.js';
-import { TDSLoader } from '../../examples/jsm/loaders/TDSLoader.js';
-import { VTKLoader } from '../../examples/jsm/loaders/VTKLoader.js';
-import { VRMLLoader } from '../../examples/jsm/loaders/VRMLLoader.js';
+import { ThreeMFLoader } from '../threejs/examples/jsm/loaders/3MFLoader.js';
+import { AMFLoader } from '../threejs/examples/jsm/loaders/AMFLoader.js';
+import { ColladaLoader } from '../threejs/examples/jsm/loaders/ColladaLoader.js';
+import { DRACOLoader } from '../threejs/examples/jsm/loaders/DRACOLoader.js';
+import { FBXLoader } from '../threejs/examples/jsm/loaders/FBXLoader.js';
+import { GLTFLoader } from '../threejs/examples/jsm/loaders/GLTFLoader.js';
+import { KMZLoader } from '../threejs/examples/jsm/loaders/KMZLoader.js';
+import { MD2Loader } from '../threejs/examples/jsm/loaders/MD2Loader.js';
+import { MTLLoader } from '../threejs/examples/jsm/loaders/MTLLoader.js';
+import { OBJLoader } from '../threejs/examples/jsm/loaders/OBJLoader.js';
+import { PLYLoader } from '../threejs/examples/jsm/loaders/PLYLoader.js';
+import { STLLoader } from '../threejs/examples/jsm/loaders/STLLoader.js';
+import { SVGLoader } from '../threejs/examples/jsm/loaders/SVGLoader.js';
+import { TDSLoader } from '../threejs/examples/jsm/loaders/TDSLoader.js';
+import { VTKLoader } from '../threejs/examples/jsm/loaders/VTKLoader.js';
+import { VRMLLoader } from '../threejs/examples/jsm/loaders/VRMLLoader.js';
 
-import { TGALoader } from '../../examples/jsm/loaders/TGALoader.js';
+import { TGALoader } from '../threejs/examples/jsm/loaders/TGALoader.js';
 
 import { AddObjectCommand } from './commands/AddObjectCommand.js';
 import { SetSceneCommand } from './commands/SetSceneCommand.js';
 
 import { LoaderUtils } from './LoaderUtils.js';
 
-import { JSZip } from '../../examples/jsm/libs/jszip.module.min.js';
+import { JSZip } from '../threejs/examples/jsm/libs/jszip.module.min.js';
 
 function Loader( editor ) {
 
@@ -166,7 +166,7 @@ function Loader( editor ) {
 					var contents = event.target.result;
 
 					var loader = new DRACOLoader();
-					loader.setDecoderPath( '../examples/js/libs/draco/' );
+					loader.setDecoderPath( 'threejs/examples/js/libs/draco/' );
 					loader.decodeDracoFile( contents, function ( geometry ) {
 
 						var material = new THREE.MeshStandardMaterial();
@@ -207,7 +207,7 @@ function Loader( editor ) {
 					var contents = event.target.result;
 
 					var dracoLoader = new DRACOLoader();
-					dracoLoader.setDecoderPath( '../examples/js/libs/draco/gltf/' );
+					dracoLoader.setDecoderPath( 'threejs/examples/js/libs/draco/gltf/' );
 
 					var loader = new GLTFLoader();
 					loader.setDRACOLoader( dracoLoader );
@@ -241,7 +241,7 @@ function Loader( editor ) {
 					} else {
 
 						var dracoLoader = new DRACOLoader();
-						dracoLoader.setDecoderPath( '../examples/js/libs/draco/gltf/' );
+						dracoLoader.setDecoderPath( 'threejs/examples/js/libs/draco/gltf/' );
 
 						loader = new GLTFLoader( manager );
 						loader.setDRACOLoader( dracoLoader );

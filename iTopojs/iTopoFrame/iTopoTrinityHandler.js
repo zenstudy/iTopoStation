@@ -1,4 +1,4 @@
-import * as THREE from '../../../build/three.module.js';
+import * as THREE from '../../threejs/build/three.module.js';
 import {iTopoEarthSettings} from '../iTopoEarthSettings.js';
 
 class iTopoTrinityHandler {

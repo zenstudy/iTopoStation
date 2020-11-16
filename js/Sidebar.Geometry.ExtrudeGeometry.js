@@ -2,7 +2,7 @@
  * @author Temdog007 / http://github.com/Temdog007
  */
 
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
 import { UIRow, UIText, UIInteger, UICheckbox, UIButton, UINumber } from './libs/ui.js';
 

@@ -1,7 +1,7 @@
-import * as THREE from '../../../build/three.module.js';
+import * as THREE from '../../threejs/build/three.module.js';
 
 import { UIPanel, UIButton } from '../iTopoUI.js';
-import { UIBoolean } from '../../js/libs/ui.three.js';
+//import { UIBoolean } from '../threejs/js/libs/ui.three.js';
 import { iTopoDialogRegister } from '../iTopoDialog/iTopoDialog.Register.js';
 
 function iTopoMenubarRegister( editor, menubar ) {

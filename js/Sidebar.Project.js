@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
 import { UIPanel, UIRow, UIInput, UICheckbox, UIText, UIListbox, UISpan, UIButton, UISelect, UINumber } from './libs/ui.js';
 import { UIBoolean } from './libs/ui.three.js';

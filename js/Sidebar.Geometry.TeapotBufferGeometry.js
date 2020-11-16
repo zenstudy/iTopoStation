@@ -4,7 +4,7 @@
 
 import { UIRow, UIText, UIInteger, UICheckbox, UINumber } from './libs/ui.js';
 
-import { TeapotBufferGeometry } from '../../examples/jsm/geometries/TeapotBufferGeometry.js';
+import { TeapotBufferGeometry } from '../threejs/examples/jsm/geometries/TeapotBufferGeometry.js';
 
 function SidebarGeometryTeapotBufferGeometry( signals, object ) {
 

@@ -4,7 +4,7 @@
 
 import { UIPanel } from '../iTopoUI.js';
 
-import * as THREE from '../../../build/three.module.js';
+import * as THREE from '../../threejs/build/three.module.js';
 
 function ViewHelper( editorCamera, container ) {
 

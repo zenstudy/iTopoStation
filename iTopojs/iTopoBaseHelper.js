@@ -1,10 +1,10 @@
 //import * as THREE from '../../build/three.module.js';
-import {Vector3} from '../../src/math/Vector3.js';
-import {Color} from '../../src/math/Color.js';
-import {Object3D} from '../../src/core/Object3D.js';
-import {Mesh} from '../../src/objects/Mesh.js';
-import {MeshBasicMaterial} from '../../src/materials/MeshBasicMaterial.js';
-import {TWEEN} from '../../examples/jsm/libs/tween.module.min.js';
+import {Vector3} from '../threejs/src/math/Vector3.js';
+import {Color} from '../threejs/src/math/Color.js';
+import {Object3D} from '../threejs/src/core/Object3D.js';
+import {Mesh} from '../threejs/src/objects/Mesh.js';
+import {MeshBasicMaterial} from '../threejs/src/materials/MeshBasicMaterial.js';
+import {TWEEN} from '../threejs/examples/jsm/libs/tween.module.min.js';
 import {iTopoEarthModel} from './iTopoEarthModel.js';
 import {iTopoEarthSettings} from './iTopoEarthSettings.js';
 

@@ -6,13 +6,13 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link rel="apple-touch-icon" href="images/icon.png">
 		<link rel="manifest" href="manifest.json">
-		<link rel="shortcut icon" href="../files/favicon.ico" />
+		<link rel="shortcut icon" href="three.js/files/favicon.ico" />
 	</head>
 	<body>
 		<link rel="stylesheet" href="css/main.css">
 		<link type="text/css" rel="stylesheet" href="css/iTopoCell.css" />
 		<link type="text/css" rel="stylesheet" href="css/player.css" />
-		<script src="../examples/js/libs/draco/draco_encoder.js"></script>
+		<script src="threejs/examples/js/libs/draco/draco_encoder.js"></script>
 
 		<link rel="stylesheet" href="js/libs/codemirror/codemirror.css">
 		<link rel="stylesheet" href="js/libs/codemirror/theme/monokai.css">
@@ -45,8 +45,9 @@
 		<script src="js/libs/signals.min.js"></script>
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
-
+			import * as THREE from "./threejs/build/three.module.js";
+			import { VRButton } from "./threejs/examples/jsm/webxr/VRButton.js";
+	
 			import { iTopoEditor } from './iTopojs/iTopoEditor.js';
 			import { iTopoViewport } from './iTopojs/iTopoViewport/iTopoViewport.js';
 			import { iTopoToolbar } from './iTopojs/iTopoViewport/iTopoToolbar.js';
@@ -59,7 +60,7 @@
 			import { iTopoEarthModel } from './iTopojs/iTopoEarthModel.js';
 			import { iTopoEarthHandler } from './iTopojs/iTopoElement/iTopoEarthHandler.js';
 			
-			import { VRButton } from '../examples/jsm/webxr/VRButton.js';
+		
 
 			window.URL = window.URL || window.webkitURL;
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;

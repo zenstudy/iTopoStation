@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
 import { UIPanel, UIRow, UIText, UIInput, UIButton, UISpan } from './libs/ui.js';
 
@@ -30,7 +30,7 @@ import { SidebarGeometryTorusGeometry } from './Sidebar.Geometry.TorusGeometry.j
 import { SidebarGeometryTorusKnotGeometry } from './Sidebar.Geometry.TorusKnotGeometry.js';
 import { SidebarGeometryTubeGeometry } from './Sidebar.Geometry.TubeGeometry.js';
 
-import { VertexNormalsHelper } from '../../examples/jsm/helpers/VertexNormalsHelper.js';
+import { VertexNormalsHelper } from '../threejs/examples/jsm/helpers/VertexNormalsHelper.js';
 
 var geometryUIClasses = {
 	'BoxBufferGeometry': SidebarGeometryBoxGeometry,

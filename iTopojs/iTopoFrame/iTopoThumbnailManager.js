@@ -1,5 +1,5 @@
-import * as THREE from '../../../build/three.module.js';
-import { OrbitControls } from '../../../examples/jsm/controls/OrbitControls.js';
+import * as THREE from '../../threejs/build/three.module.js';
+import { OrbitControls } from '../../threejs/examples/jsm/controls/OrbitControls.js';
 
 
 function iTopoThumbnailManager() {

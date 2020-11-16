@@ -1,6 +1,6 @@
 import { UIElement,UISpan ,UIPanel, UIDiv, UIBreak, UIRow, UIColor, UISelect, UIText, UINumber, UIInteger, UITextArea, UIInput, UIButton  } from '../iTopoUI.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js'
-import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
+import { GLTFLoader } from '../../threejs/examples/jsm/loaders/GLTFLoader.js';
 import { iTopoThumbnailManager } from '../iTopoFrame/iTopoThumbnailManager.js';
 import { iTopoDisplayStand } from '../iTopoFrame/iTopoDisplayStand.js';
 import { iTopoTaskDashboard3D } from '../iTopoFrame/iTopoTaskDashboard3D.js';

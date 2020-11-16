@@ -2,10 +2,10 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
-import { RGBELoader } from '../../examples/jsm/loaders/RGBELoader.js';
-import { TGALoader } from '../../examples/jsm/loaders/TGALoader.js';
+import { RGBELoader } from '../threejs/examples/jsm/loaders/RGBELoader.js';
+import { TGALoader } from '../threejs/examples/jsm/loaders/TGALoader.js';
 
 import { UIElement, UISpan, UIDiv, UIRow, UIButton, UICheckbox, UIText, UINumber } from './iTopoUI.js';
 import { MoveObjectCommand } from '../js/commands/MoveObjectCommand.js';

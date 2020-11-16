@@ -1,6 +1,6 @@
-import * as THREE from '../../../build/three.module.js';
+import * as THREE from '../../threejs/build/three.module.js';
 
-import { TransformControls } from '../../../examples/jsm/controls/TransformControls.js';
+import { TransformControls } from '../../threejs/examples/jsm/controls/TransformControls.js';
 import { UIPanel } from '../iTopoUI.js';
 
 import { EditorControls } from '../../js/EditorControls.js';
@@ -14,7 +14,7 @@ import { SetPositionCommand } from '../commands/SetPositionCommand.js';
 import { SetRotationCommand } from '../commands/SetRotationCommand.js';
 import { SetScaleCommand } from '../commands/SetScaleCommand.js';
 
-import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
+import { TWEEN } from '../../threejs/examples/jsm/libs/tween.module.min.js';
 import { iTopoEarthModel } from '../iTopoEarthModel.js';
 import { iTopoEarthSettings } from'../iTopoEarthSettings.js';
 import { iTopoBaseHelper } from'../iTopoBaseHelper.js';

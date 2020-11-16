@@ -1,5 +1,5 @@
-import { CSS3DRenderer, CSS3DObject } from '../../../examples/jsm/renderers/CSS3DRenderer.js';
-import { TWEEN } from '../../../examples/jsm/libs/tween.module.min.js';
+import { CSS3DRenderer, CSS3DObject } from '../../threejs/examples/jsm/renderers/CSS3DRenderer.js';
+import { TWEEN } from '../../threejs/examples/jsm/libs/tween.module.min.js';
 import { UIPanel } from '../iTopoUI.js';
 import { iTopoOrbitControls } from './iTopoOrbitControls.js';
 

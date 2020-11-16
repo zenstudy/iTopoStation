@@ -2,7 +2,7 @@
  * @author rfm1201
  */
 
-import * as THREE from '../../build/three.module.js';
+import * as THREE from '../threejs/build/three.module.js';
 
 import { UIRow, UIText, UIInteger, UINumber } from './libs/ui.js';
 import { UIPoints2 } from './libs/ui.three.js';

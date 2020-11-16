@@ -1,10 +1,10 @@
-import * as THREE from '../../../build/three.module.js';
-import { GLTFLoader } from '../../../examples/jsm/loaders/GLTFLoader.js';
-import { OBJLoader } from '../../../examples/jsm/loaders/OBJLoader.js';
-import { OBJLoader2 } from '../../../examples/jsm/loaders/OBJLoader2.js';
-import { DRACOLoader } from '../../../examples/jsm/loaders/DRACOLoader.js';
-import { MTLLoader } from '../../../examples/jsm/loaders/MTLLoader.js';
-import { MtlObjBridge } from '../../../examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
+import * as THREE from '../../threejs/build/three.module.js';
+import { GLTFLoader } from '../../threejs/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from '../../threejs/examples/jsm/loaders/OBJLoader.js';
+import { OBJLoader2 } from '../../threejs/examples/jsm/loaders/OBJLoader2.js';
+import { DRACOLoader } from '../../threejs/examples/jsm/loaders/DRACOLoader.js';
+import { MTLLoader } from '../../threejs/examples/jsm/loaders/MTLLoader.js';
+import { MtlObjBridge } from '../../threejs/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
 
 function iTopoResourceTracker() {
 
@@ -15,7 +15,7 @@ function iTopoResourceTracker() {
 
 	//this.resMgr = new iTopoResourceTracker();
 	this.dracoLoader = new DRACOLoader();
-	this.dracoLoader.setDecoderPath('../examples/js/libs/draco/gltf/');
+	this.dracoLoader.setDecoderPath('threejs/examples/js/libs/draco/gltf/');
 
 	this.resources = new Set();
 
